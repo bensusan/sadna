@@ -69,18 +69,13 @@ public class Product {
 		this.category = category;
 	}
 
-
-	public PurchasePolicy getPurchasePolicy() {
-		return purchasePolicy;
-	}
-
-
 	public void setPurchasePolicy(PurchasePolicy purchasePolicy) {
 		this.purchasePolicy = purchasePolicy;
 	}
 
 
-	public void purchase(){
+	public boolean purchase(Guest g, int price){
 		//TODO
+		return false;
 	}
 }

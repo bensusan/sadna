@@ -1,5 +1,5 @@
 package main;
 
-public class StoreManager {
+public class StoreManager extends StoreOwner {
 
 }

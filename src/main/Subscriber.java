@@ -1,5 +1,7 @@
 package main;
 
+import java.util.List;
+
 public class Subscriber extends Guest {
 	
 	private String username;
@@ -8,6 +10,9 @@ public class Subscriber extends Guest {
 	private String address;
 	private int phone;
 	private int creditCardNumber;
+	private List<Cart> purchaseHistory;
+	private List<StoreManager> manager;
+	private List<StoreOwner> owner;
 	
 	public Subscriber() {
 		super();
@@ -20,7 +25,7 @@ public class Subscriber extends Guest {
 	}
 
 	public Subscriber(Cart cart, String username, String password, String fullName, String address, int phone,
-			int creditCardNumber) {
+			int creditCardNumber,List<Cart> purchaseHistory,List<StoreManager> manager,List<StoreOwner> owner) {
 		super(cart);
 		this.username = username;
 		this.password = password;
@@ -28,6 +33,9 @@ public class Subscriber extends Guest {
 		this.address = address;
 		this.phone = phone;
 		this.creditCardNumber = creditCardNumber;
+		this.purchaseHistory=purchaseHistory;
+		this.manager=manager;
+		this.owner=owner;
 	}
 
 	public String getUsername() {
@@ -77,6 +85,13 @@ public class Subscriber extends Guest {
 	public void setCreditCardNumber(int creditCardNumber) {
 		this.creditCardNumber = creditCardNumber;
 	}
+	public List<Cart> getPurchaseHistory() {
+		return purchaseHistory;
+	}
+
+	public void setPurchaseHistory(List<Cart> purchaseHistory) {
+		this.purchaseHistory = purchaseHistory;
+	}
 
 	
 	/**
@@ -94,5 +109,75 @@ public class Subscriber extends Guest {
 		//TODO missing implementation
 				return null;
 	}
+	
+	/**
+	 * add cart to history
+	 * @param cart
+	 * @return true if succseed false otherwise
+	 */
+	public boolean addPurchaseToHistory(Cart cart)
+	{
+		//TODO missing implementation
+		return false;
+	}
+	
+	/**
+	 * add new ownership
+	 * @param owner
+	 * @return true if succseed false otherwise
+	 */
+	public boolean addOwner(StoreOwner owner)
+	{
+		//TODO missing implementation
+				return false;
+	}
+	/**
+	 * add new manager responsibility
+	 * @param manager
+	 * @return true if succseed false otherwise
+	 */
+	public boolean addManager(StoreManager manager)
+	{
+		//TODO missing implementation
+				return false;
+	}
+	
+	/**
+	 * delete ownership
+	 * @param owner
+	 * @return true if succseed false otherwise
+	 */
+	public boolean deleteOwner(StoreOwner owner){
+		//TODO missing implementation
+		return false;
+	}
+	/**
+	 * delete manager responsibility
+	 * @param manager
+	 * @return true if succseed false otherwise
+	 */
+	public boolean deleteManager(StoreManager manager){
+		//TODO missing implementation
+		return false;
+	}
+
+	public List<StoreManager> getManager() {
+		return manager;
+	}
+
+	public void setManager(List<StoreManager> manager) {
+		this.manager = manager;
+	}
+
+	public List<StoreOwner> getOwner() {
+		return owner;
+	}
+
+	public void setOwner(List<StoreOwner> owner) {
+		this.owner = owner;
+	}
+	
+
+	
 
 }

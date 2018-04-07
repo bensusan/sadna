@@ -1,13 +1,14 @@
 package TS_SharedClasses;
 
 import java.util.List;
+import java.util.Map;
 
 public class Store {
 	private int storeId;
 	private String address;
 	private int phone;
 	private int gradeing;
-	private List<Product> products;
+	private Map<Product, Integer> products;
 	private List<Cart> purchaseHistory;
 	public boolean isOpen;
 	
@@ -17,7 +18,7 @@ public class Store {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Store(int storeId, String address, int phone, int gradeing, List<Product> products,
+	public Store(int storeId, String address, int phone, int gradeing, Map<Product, Integer> products,
 			List<Cart> purchaseHistory,boolean isOpen) {
 		super();
 		this.storeId = storeId;
@@ -62,11 +63,11 @@ public class Store {
 		this.gradeing = gradeing;
 	}
 
-	public List<Product> getProducts() {
+	public Map<Product, Integer> getProducts() {
 		return products;
 	}
 
-	public void setProducts(List<Product> products) {
+	public void setProducts(Map<Product, Integer> products) {
 		this.products = products;
 	}
 

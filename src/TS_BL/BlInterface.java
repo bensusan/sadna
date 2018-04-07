@@ -20,13 +20,13 @@ public interface BlInterface {
 	public boolean puchaseCart(Guest g, int creditCardNumber, String buyerAddress);
 	public boolean pruchaseProduct(Guest g, Product product, int amount, int creditCardNumber, String buyerAddress);
 	public int updatePrice(HiddenDiscount hd, int price,int code);
-	public boolean purchase(PurchaseType ip, Guest g, int price);
+	public boolean purchase(PurchaseType ip, Guest g, int price, int amount);
 	public int getDiscountedPrice(ImmediatelyPurchase ip, int price);
 	public boolean isLotteryDone(LotteryPurchase lp);
 	public void closeCurrentLottery(LotteryPurchase lp);
 	public void openNewLottery(LotteryPurchase lp);
-	public boolean purchase(Product p, Guest g, int price);
-	public boolean purchase(PurchasePolicy pp, Guest g, int price);
+	public boolean purchase(Product p, Guest g, int price, int amount);
+	public boolean purchase(PurchasePolicy pp, Guest g, int price, int amount);
 	public boolean canPurchase(PurchasePolicy pp, Guest g);
 	public boolean checkInStock(Store s, Product p,int amount);
 	public boolean addPurchaseToHistory(Store s, Cart cart);

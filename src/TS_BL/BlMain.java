@@ -84,7 +84,7 @@ public class BlMain{
 	}
 
 	
-	public static boolean purchase(PurchaseType ip, Guest g, int price) {
+	public static boolean purchase(PurchaseType ip, Guest g, int price, int amount) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -114,13 +114,13 @@ public class BlMain{
 	}
 
 	
-	public static boolean purchase(Product p, Guest g, int price) {
+	public static boolean purchase(Product p, Guest g, int price, int amount) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	
-	public static boolean purchase(PurchasePolicy pp, Guest g, int price) {
+	public static boolean purchase(PurchasePolicy pp, Guest g, int price, int amount) {
 		// TODO Auto-generated method stub
 		return false;
 	}

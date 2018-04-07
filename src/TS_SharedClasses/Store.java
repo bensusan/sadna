@@ -1,5 +1,6 @@
 package TS_SharedClasses;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,8 +11,9 @@ public class Store {
 	private int gradeing;
 	private Map<Product, Integer> products;
 	private List<Cart> purchaseHistory;
-	public boolean isOpen;
-	
+	private boolean isOpen;
+	private List<StoreOwner> myOwners;
+	private List<StoreManager> myManagers;
 
 	public Store() {
 		super();
@@ -28,6 +30,8 @@ public class Store {
 		this.products = products;
 		this.purchaseHistory = purchaseHistory;
 		this.isOpen=isOpen;
+		myOwners = new LinkedList<StoreOwner>();
+		myManagers = new LinkedList<StoreManager>();
 		
 	}
 
@@ -85,6 +89,22 @@ public class Store {
 
 	public void setIsOpen(boolean isOpen) {
 		this.isOpen = isOpen;
+	}
+
+	public List<StoreOwner> getMyOwners() {
+		return myOwners;
+	}
+
+	public void setMyOwners(List<StoreOwner> myOwners) {
+		this.myOwners = myOwners;
+	}
+
+	public List<StoreManager> getMyManagers() {
+		return myManagers;
+	}
+
+	public void setMyManagers(List<StoreManager> myManagers) {
+		this.myManagers = myManagers;
 	}
 	
 }

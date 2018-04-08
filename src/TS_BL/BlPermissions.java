@@ -31,8 +31,8 @@ public class BlPermissions {
 	}
 
 
-	public static boolean updateProductDetails(Store s, Product newProduct, int amount) {
-		return s.getProducts().put(newProduct, amount) != null;
+	public static boolean updateProductDetails(Store s, Product oldProduct, Product newProduct, int amount) {
+		return deleteProductFromStore(s, oldProduct) && addProductToStore(s, newProduct, amount);
 	}
 
 

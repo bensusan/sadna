@@ -14,6 +14,7 @@ public class Store {
 	private boolean isOpen;
 	private List<StoreOwner> myOwners;
 	private List<StoreManager> myManagers;
+	private int moneyEarned;
 
 	public Store() {
 		super();
@@ -21,7 +22,7 @@ public class Store {
 	}
 
 	public Store(int storeId, String address, int phone, int gradeing, Map<Product, Integer> products,
-			List<Cart> purchaseHistory,boolean isOpen) {
+			List<Cart> purchaseHistory, boolean isOpen) {
 		super();
 		this.storeId = storeId;
 		this.address = address;
@@ -30,9 +31,9 @@ public class Store {
 		this.products = products;
 		this.purchaseHistory = purchaseHistory;
 		this.isOpen=isOpen;
-		myOwners = new LinkedList<StoreOwner>();
-		myManagers = new LinkedList<StoreManager>();
-		
+		this.myOwners = new LinkedList<StoreOwner>();
+		this.myManagers = new LinkedList<StoreManager>();
+		this.moneyEarned = 0;
 	}
 
 	public int getStoreId() {
@@ -105,6 +106,14 @@ public class Store {
 
 	public void setMyManagers(List<StoreManager> myManagers) {
 		this.myManagers = myManagers;
+	}
+
+	public int getMoneyEarned() {
+		return moneyEarned;
+	}
+
+	public void setMoneyEarned(int moneyEarned) {
+		this.moneyEarned = moneyEarned;
 	}
 	
 }

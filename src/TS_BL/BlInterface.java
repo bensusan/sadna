@@ -34,7 +34,7 @@ public interface BlInterface {
 	public boolean stockUpdate(Store s, Product p, int amount);
 	public boolean addProductToStore(StoreManager sm, Product product,int amount);
 	public boolean deleteProductFromStore(StoreManager sm, Product product);
-	public boolean updateProductDetails(StoreManager sm, Product newProduct, int amount);
+	public boolean updateProductDetails(StoreManager sm, Product oldProduct, Product newProduct, int amount);
 	public boolean addPolicyToProduct(StoreManager sm, PurchasePolicy policy,Product product);
 	public boolean addDiscountToProduct(StoreManager sm, DiscountPolicy discount,Product product);
 	public boolean addNewStoreOwner(StoreManager sm, StoreOwner owner);
@@ -44,7 +44,7 @@ public interface BlInterface {
 	public List<Cart> getPurchaseHistory(StoreManager sm);
 	public boolean addProductToStore(StoreOwner so, Product product,int amount);
 	public boolean deleteProductFromStore(StoreOwner so, Product product);
-	public boolean updateProductDetails(StoreOwner so, Product newProduct, int amount);
+	public boolean updateProductDetails(StoreOwner so, Product oldProduct, Product newProduct, int amount);
 	public boolean addPolicyToProduct(StoreOwner so, PurchasePolicy policy, Product product);
 	public boolean addDiscountToProduct(StoreOwner so, DiscountPolicy discount, Product product);
 	public boolean addNewStoreOwner(StoreOwner oldSo, StoreOwner newSo);
@@ -62,5 +62,9 @@ public interface BlInterface {
 	public List<Cart> viewSubscriberHistory(SystemAdministrator sa, Subscriber s);
 	public List<Cart> viewStoreHistory(SystemAdministrator sa, Store store);
 	
+	
+	
+	//More functions that are necessary.
+	public boolean payToStore(Store s, int price);
 	
 }

@@ -14,12 +14,23 @@ import TS_SharedClasses.StoreOwner;
 
 public class BlAmit {
 
+	//start new functions
+	public static boolean payToStore(Store s, int price){
+		//TODO maybe later this function will return false
+		s.setMoneyEarned(s.getMoneyEarned() + price);
+		return true;
+	}
+	
+	//end of new functions
+	
+	
 	public static boolean purchase(Product p, Guest g, int price, int amount) {
-		return BlMain.purchase(p.getPurchasePolicy(), g, price, amount) && buyProduct(p.getStore(), p, amount);
+		Cart newCart = new Cart();
+		return purchase(p.getPurchasePolicy(), g, price, amount) && buyProduct(p.getStore(), p, amount) && payToStore(p.getStore(), price) && BlMain.addProduct(newCart, p, amount) && addPurchaseToHistory(p.getStore(), newCart);
 	}
 
 	public static boolean purchase(PurchasePolicy pp, Guest g, int price, int amount) {
-		return BlMain.canPurchase(pp, g) && BlMain.purchase(pp.getPurchaseType(), g, price, amount);
+		return canPurchase(pp, g) && BlMain.purchase(pp.getPurchaseType(), g, price, amount);
 	}
 
 	public static boolean canPurchase(PurchasePolicy pp, Guest g) {
@@ -41,7 +52,7 @@ public class BlAmit {
 
 
 	public static boolean buyProduct(Store s, Product p, int amount) {
-		return BlMain.checkInStock(s, p, amount) && BlMain.stockUpdate(s, p, s.getProducts().get(p) - amount);  
+		return BlMain.checkInStock(s, p, amount) && BlMain.stockUpdate(s, p, s.getProducts().get(p) - amount) ;  
 	}
 
 
@@ -64,9 +75,8 @@ public class BlAmit {
 		return sm.getPremisions()[BlPermissions.deleteProductFromStore] && BlPermissions.deleteProductFromStore(sm.getStore(), product);
 	}
 
-
-	public static boolean updateProductDetails(StoreManager sm, Product newProduct, int amount) {
-		return sm.getPremisions()[BlPermissions.updateProductDetails] && BlPermissions.updateProductDetails(sm.getStore(), newProduct, amount);
+	public static boolean updateProductDetails(StoreManager sm, Product oldProduct, Product newProduct, int amount) {
+		return sm.getPremisions()[BlPermissions.updateProductDetails] && BlPermissions.updateProductDetails(sm.getStore(), oldProduct, newProduct, amount);
 	}
 
 
@@ -114,8 +124,7 @@ public class BlAmit {
 		return BlPermissions.deleteProductFromStore(so.getStore(), product);
 	}
 
-
-	public static boolean updateProductDetails(StoreOwner so, Product newProduct, int amount) {
-		return BlPermissions.updateProductDetails(so.getStore(), newProduct, amount);
+	public static boolean updateProductDetails(StoreOwner so, Product oldProduct, Product newProduct, int amount) {
+		return BlPermissions.updateProductDetails(so.getStore(), oldProduct, newProduct, amount);
 	}
 }

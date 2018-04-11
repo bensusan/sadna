@@ -1,19 +1,19 @@
 package TS_BL;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import TS_SharedClasses.Cart;
-import TS_SharedClasses.DiscountPolicy;
-import TS_SharedClasses.Guest;
-import TS_SharedClasses.Product;
-import TS_SharedClasses.PurchasePolicy;
-import TS_SharedClasses.Store;
-import TS_SharedClasses.StoreManager;
-import TS_SharedClasses.StoreOwner;
+import TS_SharedClasses.*;
 
 public class BlAmit {
 
+	static List<Subscriber> allSubscribers = new LinkedList<Subscriber>();
+	static Map<Guest, List<Integer>> allUsersWithTheirCreditCards = new HashMap<Guest, List<Integer>>(); //TODO need to insert to here all guests that payed with their credit card for pay back
+	
 	//start new functions
 	public static boolean payToStore(Store s, int price){
 		//TODO maybe later this function will return false
@@ -21,6 +21,125 @@ public class BlAmit {
 		return true;
 	}
 	
+	//return null if not good else return the new subscriber
+	public static Subscriber signUp(Guest g, String username, String password, String fullName, String address, int phone, int creditCardNumber){
+		if(misspelled(username) || misspelled(fullName) || misspelled(address))
+			return null; //exception spell in user name | full name | address
+		if(!legalPassword(password))
+			return null; //password rules failed.
+		if(checkIfSubscriberExists(username) != null)
+			return null; //user name exists
+		return new Subscriber(g.getCart(), username, password, fullName, address, phone, creditCardNumber, new LinkedList<Cart>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>());
+		
+	}
+	
+	public static Subscriber signIn(Guest g, String username, String password){
+		if(misspelled(username))
+			return null; //exception spell in user name
+		if(!legalPassword(password))
+			return null; //password rules failed.
+		return checkIfSubscriberExists(username);
+	}
+	
+	public static Subscriber checkIfSubscriberExists(String username){
+		for (Subscriber subscriber : allSubscribers) {
+			if(subscriber.getUsername().equals(username))
+				return subscriber;
+		}
+		return null;
+	}
+	
+	public static boolean misspelled(String str){
+		//TODO - check if string could be misspelled
+		return false;
+	}
+	
+	public static boolean legalPassword(String pass){
+		//TODO - check password rules
+		return true;
+	}
+	
+	//1.3
+	public static Map<Store, Map<Product, Integer>> getAllStoresWithThierProductsAndAmounts(){
+		Map<Store, Map<Product, Integer>> res = new HashMap<Store, Map<Product, Integer>>();
+		List<Store> stores = getAllStores();
+		for (Store store : stores) {
+			res.put(store, store.getProducts());
+		}
+		return res;
+	}
+	
+	public static List<Store> getAllStores(){
+		List<Store> res = new LinkedList<Store>();
+		Store newStore;
+		for (Subscriber subscriber : allSubscribers) {
+			for (StoreOwner owner : subscriber.getOwner()) {
+				newStore = owner.getStore();
+				for (Store store : res) {
+					if(store.equals(owner.getStore()))
+						newStore = null;
+						break;
+				}
+				if(newStore != null)
+					res.add(newStore);
+				newStore = null;
+			}
+		}
+		return res;
+	}
+	
+	//1.4
+	public static List<Product> findProductByName(String name){
+		return findProductByCriterion("Name", name);
+	}
+	
+	public static List<Product> findProductByCategory(String category){
+		return findProductByCriterion("Category", category);
+	}
+	
+	public static List<Product> findProductByCriterion(String criterion, String str){
+		List<Product> res = new LinkedList<Product>();
+		Map<Store, Map<Product, Integer>> swithpanda = getAllStoresWithThierProductsAndAmounts();
+		for (Map<Product, Integer> panda : swithpanda.values()) {
+			for (Product p : panda.keySet()) {
+				if(productInCriterion(criterion, str, p))
+					res.add(p);
+			}
+		}
+		return res;
+	}
+	
+	public static boolean productInCriterion(String criterion, String str, Product p){
+		if(criterion.equals("Name") && p.getName().equals(str))
+			return true;
+		if(criterion.equals("Category") && p.getCategory().equals(str))
+			return true;
+		return false;
+	}
+	
+	//1.7.1 . need to add the errors and the third function in BLPremissions
+	public static void expiredProducts(StoreOwner so){
+		BlPermissions.expiredProducts(so.getStore(), allUsersWithTheirCreditCards);
+	}
+	
+	public static void expiredProducts(StoreManager sm){
+		if(sm.getPremisions()[BlPermissions.expiredProducts]) 
+			BlPermissions.expiredProducts(sm.getStore(), allUsersWithTheirCreditCards);
+	}
+	
+	public static void expiredProducts(Store s){
+		for (Product product : s.getProducts().keySet()) {
+			PurchaseType pt = product.getPurchasePolicy().getPurchaseType(); 
+			if(pt instanceof LotteryPurchase){
+				Calendar today = Calendar.getInstance();
+				today.set(Calendar.HOUR_OF_DAY, 0);
+				LotteryPurchase lpt = ((LotteryPurchase)pt); 
+				if(lpt.getLotteryEndDate().before(today.getTime())){
+					BlMain.closeCurrentLottery(lpt);
+				}
+			}
+		}
+	}
 	//end of new functions
 	
 	

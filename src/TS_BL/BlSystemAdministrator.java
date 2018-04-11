@@ -5,7 +5,7 @@ import java.util.List;
 import TS_SharedClasses.*;
 
 public class BlSystemAdministrator {
-
+	
 	/**
 	 * remove subscriber from the system
 	 * @param s
@@ -34,4 +34,5 @@ public class BlSystemAdministrator {
 		//TODO missing implementation
 				return null;
 	}
+	
 }

@@ -12,7 +12,6 @@ public class PurchasePolicy {
 		this.purchaseType = purchaseType;
 	}
 
-	
 	public PurchaseType getPurchaseType() {
 		return purchaseType;
 	}

@@ -8,8 +8,8 @@ import TS_SharedClasses.*;
 
 public class BlMain{	
 	
-	static List<Subscriber> allSubscribers = new LinkedList<Subscriber>();
-	static Map<Guest, List<Integer>> allUsersWithTheirCreditCards = new HashMap<Guest, List<Integer>>(); //TODO need to insert to here all guests that payed with their credit card for pay back
+	public static List<Subscriber> allSubscribers = new LinkedList<Subscriber>();
+	public static Map<Guest, List<Integer>> allUsersWithTheirCreditCards = new HashMap<Guest, List<Integer>>(); //TODO need to insert to here all guests that payed with their credit card for pay back
 	
 	public static boolean puchaseCart(Cart c, int creditCardNumber, String buyerAddress) {
 		
@@ -204,7 +204,7 @@ public class BlMain{
 
 	
 	public static boolean addDiscountToProduct(StoreOwner so, DiscountPolicy discount, Product product) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
@@ -216,83 +216,118 @@ public class BlMain{
 
 	
 	public static boolean addNewManager(StoreOwner so, StoreManager manager) {
-		// TODO Auto-generated method stub
+		List<StoreManager> sMng = so.getStore().getMyManagers();
+		if(sMng.contains(manager))
+			return false;
+		
+		sMng.add(manager);
+		so.getStore().setMyManagers(sMng);
 		return false;
 	}
 
 	
 	public static boolean closeStore(StoreOwner so) {
-		// TODO Auto-generated method stub
-		return false;
+		so.getStore().setIsOpen(false);
+		return true;
 	}
 
 	
 	public static boolean openStore(StoreOwner so) {
-		// TODO Auto-generated method stub
-		return false;
+		so.getStore().setIsOpen(true);
+		return true;
 	}
 
 	
 	public static List<Cart> getPurchaseHistory(StoreOwner so) {
-		// TODO Auto-generated method stub
+		//TODO , StoreOwner doesn't even extends Subscriber
 		return null;
 	}
 
 	
 	public static Store openStore(Subscriber sub, String storeName, String Description) {
-		// TODO Auto-generated method stub
+		//TODO: list of stores for sub? store constructor doesn't fit
 		return null;
 	}
 
 	
 	public static boolean addPurchaseToHistory(Subscriber sub, Cart cart) {
-		// TODO Auto-generated method stub
-		return false;
+		if(cart == null || sub == null)
+			return false;
+		
+		sub.setCart(cart);
+		return true;
 	}
 
 	
 	public static boolean addOwner(Subscriber sub, StoreOwner owner) {
-		// TODO Auto-generated method stub
-		return false;
+		List<StoreOwner> sOwn = sub.getOwner();
+		if(sOwn.contains(owner))
+			return false;
+		
+		sOwn.add(owner);
+		sub.setOwner(sOwn);
+		return true;
 	}
 
 	
 	public static boolean addManager(Subscriber sub, StoreManager manager) {
-		// TODO Auto-generated method stub
-		return false;
+		List<StoreManager> sMng = sub.getManager();
+		if(sMng.contains(manager))
+			return false;
+		
+		sMng.add(manager);
+		sub.setManager(sMng);
+		return true;
 	}
 
 	
 	public static boolean deleteOwner(Subscriber sub, StoreOwner owner) {
-		// TODO Auto-generated method stub
-		return false;
+		List<StoreOwner> sOwn = sub.getOwner();
+		if(!sOwn.contains(owner))
+			return false;
+		
+		sOwn.remove(owner);
+		sub.setOwner(sOwn);
+		return true;
 	}
 
 	
 	public static boolean deleteManager(Subscriber sub, StoreManager manager) {
-		// TODO Auto-generated method stub
-		return false;
+		List<StoreManager> sMng = sub.getManager();
+		if(!sMng.contains(manager))
+			return false;
+		
+		sMng.remove(manager);
+		sub.setManager(sMng);
+		return true;
 	}
 
 	
 	public static boolean removeSubscriber(SystemAdministrator sa, Subscriber s) {
-		// TODO Auto-generated method stub
-		return false;
+		List<Subscriber> subList = BlMain.allSubscribers;
+		if(!subList.contains(s))
+			return false;
+		
+		subList.remove(s);
+		BlMain.allSubscribers = subList;
+		return true;
 	}
 
 	
 	public static List<Cart> viewSubscriberHistory(SystemAdministrator sa, Subscriber s) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Subscriber> subList = BlMain.allSubscribers;
+		if(!subList.contains(s))
+			return null;
+		
+		return subList.get(subList.indexOf(s)).getPurchaseHistory();
 	}
 
 	
 	public static List<Cart> viewStoreHistory(SystemAdministrator sa, Store store) {
-		// TODO Auto-generated method stub
+		//TODO: add list for stores?
 		return null;
 	}
 
-	
 	//More functions that are necessary.
 	public static boolean payToStore(Store s, int price){
 		return BlStore.payToStore(s, price);

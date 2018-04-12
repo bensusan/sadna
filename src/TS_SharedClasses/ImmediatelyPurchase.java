@@ -18,7 +18,6 @@ public class ImmediatelyPurchase implements PurchaseType {
 		this.discountPolicy = discountPolicy;
 	}
 
-	
 	public DiscountPolicy getDiscountPolicy() {
 		return discountPolicy;
 	}

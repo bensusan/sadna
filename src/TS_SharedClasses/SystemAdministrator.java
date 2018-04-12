@@ -3,6 +3,8 @@ package TS_SharedClasses;
 import java.util.ArrayList;
 import java.util.List;
 
+import TS_BL.BlMain;
+
 public class SystemAdministrator extends Subscriber {
 	private List<Subscriber> listOfSubs;
 	private List<Store> listOfStores;
@@ -11,7 +13,7 @@ public class SystemAdministrator extends Subscriber {
 			int creditCardNumber, List<Cart> purchaseHistory, List<StoreManager> manager, List<StoreOwner> owner) {
 		super(username, password, fullName, address, phone, creditCardNumber, purchaseHistory, manager, owner);
 		
-		listOfSubs = new ArrayList<Subscriber>();
+		listOfSubs = BlMain.allSubscribers;
 		listOfStores = new ArrayList<Store>();
 	}
 	
@@ -21,10 +23,6 @@ public class SystemAdministrator extends Subscriber {
 	
 	public List<Subscriber> getSubs(){
 		return listOfSubs;
-	}
-	
-	public void setSubs(List<Subscriber> subs){
-		this.listOfSubs = subs;
 	}
 	
 	public void setStores(List<Store> stores){

@@ -13,10 +13,10 @@ public class BlSystemAdministrator {
 	 */
 	public static boolean removeSubscriber(SystemAdministrator sa, Subscriber s)
 	{
-		List<Subscriber> subs = sa.getSubs();
+		List<Subscriber> subs = BlMain.allSubscribers;
 		if(subs.contains(s)){
 			subs.remove(s);
-			sa.setSubs(subs);
+			BlMain.allSubscribers = subs;
 			return true;
 		}
 		
@@ -29,7 +29,7 @@ public class BlSystemAdministrator {
 	 */
 	public static List<Cart> viewSubscriberHistory(SystemAdministrator sa, Subscriber s)
 	{
-		List<Subscriber> subs = sa.getSubs();
+		List<Subscriber> subs = BlMain.allSubscribers;
 		if(subs.contains(s)){
 			return s.getPurchaseHistory();
 		}

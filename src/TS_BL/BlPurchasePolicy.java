@@ -9,7 +9,7 @@ public class BlPurchasePolicy {
 	}
 	
 	public static boolean canPurchase(PurchasePolicy pp, Guest g) {
-		//TODO think if there are any conditionals here.
+		//TODO
 		return true;
 	}
 	

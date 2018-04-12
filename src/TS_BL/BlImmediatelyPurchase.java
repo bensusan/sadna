@@ -14,7 +14,6 @@ public class BlImmediatelyPurchase{
 	//Gets the original price, calculate and return the price after the discount.
 	public static int getDiscountedPrice(ImmediatelyPurchase ip, int price)
 	{
-		//TODO
-		return 0;
+		return (ip.getDiscountPolicy().getDiscountPrecentage() / 100) * price;
 	}
 }

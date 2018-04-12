@@ -1,116 +1,104 @@
 package TS_BL;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import TS_SharedClasses.*;
 
 public class BlMain{	
 	
+	static List<Subscriber> allSubscribers = new LinkedList<Subscriber>();
+	static Map<Guest, List<Integer>> allUsersWithTheirCreditCards = new HashMap<Guest, List<Integer>>(); //TODO need to insert to here all guests that payed with their credit card for pay back
+	
 	public static boolean puchaseCart(Cart c, int creditCardNumber, String buyerAddress) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		return BlCart.puchaseCart(c, creditCardNumber, buyerAddress);
 	}
 
 	
 	public static boolean addProduct(Cart c, Product p, int amount) {
-		// TODO Auto-generated method stub
-		return false;
+		return BlCart.addProduct(c, p, amount);
 	}
 
 	
 	public static boolean removeProduct(Cart c, Product p) {
-		// TODO Auto-generated method stub
-		return false;
+		return BlCart.removeProduct(c, p);
 	}
 
 	
 	public static boolean editProduct(Cart c, Product p, int amount) {
-		// TODO Auto-generated method stub
-		return false;
+		return BlCart.editProduct(c, p, amount);
 	}
 
 	
 	public static boolean editCart(Cart c, Map<Product, Integer> newCart) {
-		// TODO Auto-generated method stub
-		return false;
+		return BlCart.editCart(c, newCart);
 	}
 
 	
 	public static int updatePrice(DiscountPolicy dp, int price) {
-		// TODO Auto-generated method stub
-		return 0;
+		return BlDiscountPolicy.updatePrice(dp, price);
 	}
 
 	
 	public static boolean addProductToCart(Guest g, Product p, int amount) {
-		// TODO Auto-generated method stub
-		return false;
+		return BlGuest.addProductToCart(g, p, amount);
 	}
 
 	
 	public static boolean removeProductFromCart(Guest g, Product p) {
-		// TODO Auto-generated method stub
-		return false;
+		return BlGuest.removeProductFromCart(g, p);
 	}
 
 	
 	public static boolean editProductInCart(Guest g, Product p, int amount) {
-		// TODO Auto-generated method stub
-		return false;
+		return BlGuest.editProductInCart(g, p, amount);
 	}
 
 	
 	public static boolean editCart(Guest g, Map<Product, Integer> newCart) {
-		// TODO Auto-generated method stub
-		return false;
+		return BlGuest.editCart(g, newCart);
 	}
 
 	
 	public static boolean puchaseCart(Guest g, int creditCardNumber, String buyerAddress) {
-		// TODO Auto-generated method stub
-		return false;
+		return BlGuest.puchaseCart(g, creditCardNumber, buyerAddress);
 	}
 
 	
 	public static boolean pruchaseProduct(Guest g, Product product, int amount, int creditCardNumber, String buyerAddress) {
-		// TODO Auto-generated method stub
-		return false;
+		return BlGuest.pruchaseProduct(g, product, amount, creditCardNumber, buyerAddress);
 	}
 
 	
 	public static int updatePrice(HiddenDiscount hd, int price, int code) {
-		// TODO Auto-generated method stub
-		return 0;
+		return BlHiddenDiscount.updatePrice(hd, price, code);
 	}
 
 	
-	public static boolean purchase(PurchaseType ip, Guest g, int price, int amount) {
-		// TODO Auto-generated method stub
-		return false;
+	public static boolean purchase(PurchaseType pt, Guest g, int price, int amount) {
+		return BlPurchaseType.purchase(pt, g, price, amount);
 	}
 
 	
 	public static int getDiscountedPrice(ImmediatelyPurchase ip, int price) {
-		// TODO Auto-generated method stub
-		return 0;
+		return BlImmediatelyPurchase.getDiscountedPrice(ip, price);
 	}
 
 	
 	public static boolean isLotteryDone(LotteryPurchase lp) {
-		// TODO Auto-generated method stub
-		return false;
+		return BlLotteryPurchase.isLotteryDone(lp);
 	}
 
 	
 	public static void closeCurrentLottery(LotteryPurchase lp) {
-		// TODO Auto-generated method stub
-		
+		BlLotteryPurchase.closeCurrentLottery(lp);
 	}
 
 	
 	public static void openNewLottery(LotteryPurchase lp) {
-		// TODO Auto-generated method stub
-		
+		BlLotteryPurchase.openNewLottery(lp);
 	}
 
 	
@@ -129,49 +117,39 @@ public class BlMain{
 	}
 
 	public static boolean checkInStock(Store s, Product p, int amount) {
-		return s.getProducts().get(p) != null && s.getProducts().get(p) >= amount;
+		return BlStore.stockUpdate(s, p, amount);
 	}
 
 	public static boolean addPurchaseToHistory(Store s, Cart cart) {
-		List<Cart> res = s.getPurchaseHistory();
-		if(!res.add(cart))
-			return false;
-		s.setPurchaseHistory(res);
-		return true;
+		return BlStore.addPurchaseToHistory(s, cart);
 	}
 
 
 	public static boolean buyProduct(Store s, Product p, int amount) {
-		return BlMain.checkInStock(s, p, amount) && BlMain.stockUpdate(s, p, s.getProducts().get(p) - amount) ;  
+		return BlStore.buyProduct(s, p, amount);  
 	}
 
 
 	public static boolean stockUpdate(Store s, Product p, int amount) {
-		if(amount < 0 || !BlMain.checkInStock(s, p, amount))
-			return false;
-		Map<Product, Integer> products = s.getProducts();
-		products.put(p, products.get(p) - amount);
-		if(products.get(p) == 0)
-			products.remove(p);
-		return true;
+		return BlStore.stockUpdate(s, p, amount);
 	}
 	
 	public static boolean addProductToStore(StoreManager sm, Product product, int amount) {
-		return sm.getPremisions()[BlPermissions.addDiscountToProduct] && BlPermissions.addProductToStore(sm.getStore(), product, amount);
+		return BlStoreManager.addProductToStore(sm, product, amount);
 	}
 
 
 	public static boolean deleteProductFromStore(StoreManager sm, Product product) {
-		return sm.getPremisions()[BlPermissions.deleteProductFromStore] && BlPermissions.deleteProductFromStore(sm.getStore(), product);
+		return BlStoreManager.deleteProductFromStore(sm, product);
 	}
 
 	public static boolean updateProductDetails(StoreManager sm, Product oldProduct, Product newProduct, int amount) {
-		return sm.getPremisions()[BlPermissions.updateProductDetails] && BlPermissions.updateProductDetails(sm.getStore(), oldProduct, newProduct, amount);
+		return BlStoreManager.updateProductDetails(sm, oldProduct, newProduct, amount);
 	}
 
 
 	public static boolean addPolicyToProduct(StoreManager sm, PurchasePolicy policy, Product product) {
-		return sm.getPremisions()[BlPermissions.addPolicyToProduct] && BlPermissions.addPolicyToProduct(sm.getStore(), policy, product);
+		return BlStoreManager.addPolicyToProduct(sm, policy, product);
 	}
 
 
@@ -317,8 +295,101 @@ public class BlMain{
 	
 	//More functions that are necessary.
 	public static boolean payToStore(Store s, int price){
-		//TODO maybe later this function will return false
-		s.setMoneyEarned(s.getMoneyEarned() + price);
+		return BlStore.payToStore(s, price);
+	}
+	
+	public static Subscriber signUp(Guest g, String username, String password, String fullName, String address, int phone, int creditCardNumber){
+		return BlGuest.signUp(g, username, password, fullName, address, phone, creditCardNumber);
+	}
+	
+	public static Subscriber signIn(Guest g, String username, String password){
+		return BlGuest.signIn(g, username, password);
+	}
+	
+	public static void expiredProducts(StoreOwner so){
+		BlStoreOwner.expiredProducts(so);
+	}
+	
+	public static void expiredProducts(StoreManager sm){
+		BlStoreManager.expiredProducts(sm);
+	}
+	
+	
+	
+	//////////////////////////////////////Help functions for everyone
+	public static Subscriber checkIfSubscriberExists(String username){
+		for (Subscriber subscriber : allSubscribers) {
+			if(subscriber.getUsername().equals(username))
+				return subscriber;
+		}
+		return null;
+	}
+	
+	public static boolean misspelled(String str){
+		//TODO - check if string could be misspelled
+		return false;
+	}
+	
+	public static boolean legalPassword(String pass){
+		//TODO - check password rules
 		return true;
 	}
+	
+	public static Map<Store, Map<Product, Integer>> getAllStoresWithThierProductsAndAmounts(){
+		Map<Store, Map<Product, Integer>> res = new HashMap<Store, Map<Product, Integer>>();
+		List<Store> stores = getAllStores();
+		for (Store store : stores) {
+			res.put(store, store.getProducts());
+		}
+		return res;
+	}
+	
+	public static List<Store> getAllStores(){
+		List<Store> res = new LinkedList<Store>();
+		Store newStore;
+		for (Subscriber subscriber : allSubscribers) {
+			for (StoreOwner owner : subscriber.getOwner()) {
+				newStore = owner.getStore();
+				for (Store store : res) {
+					if(store.equals(owner.getStore()))
+						newStore = null;
+						break;
+				}
+				if(newStore != null)
+					res.add(newStore);
+				newStore = null;
+			}
+		}
+		return res;
+	}
+	
+	public static List<Product> findProductByName(String name){
+		return findProductByCriterion("Name", name);
+	}
+	
+	public static List<Product> findProductByCategory(String category){
+		return findProductByCriterion("Category", category);
+	}
+	
+	public static List<Product> findProductByCriterion(String criterion, String str){
+		List<Product> res = new LinkedList<Product>();
+		Map<Store, Map<Product, Integer>> swithpanda = getAllStoresWithThierProductsAndAmounts();
+		for (Map<Product, Integer> panda : swithpanda.values()) {
+			for (Product p : panda.keySet()) {
+				if(productInCriterion(criterion, str, p))
+					res.add(p);
+			}
+		}
+		return res;
+	}
+	
+	public static boolean productInCriterion(String criterion, String str, Product p){
+		if(criterion.equals("Name") && p.getName().equals(str))
+			return true;
+		if(criterion.equals("Category") && p.getCategory().equals(str))
+			return true;
+		return false;
+	}
+	
+	
 }

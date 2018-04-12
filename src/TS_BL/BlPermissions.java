@@ -1,5 +1,6 @@
 package TS_BL;
 
+import java.util.Calendar;
 import java.util.List;
 
 import TS_SharedClasses.*;
@@ -16,7 +17,9 @@ public class BlPermissions {
 	addNewManager = 6,
 	closeStore = 7,
 	openStore = 8,
-	getPurchaseHistory = 9;
+	getPurchaseHistory = 9,
+	expiredProducts = 10;
+	
 
 	//Here we will implement Store's owner and Store's manager permissions
 	public static boolean addProductToStore(Store s, Product product, int amount) {
@@ -91,6 +94,20 @@ public class BlPermissions {
 	public static List<Cart> getPurchaseHistory(Store s) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public static void expiredProducts(Store s){
+		for (Product product : s.getProducts().keySet()) {
+			PurchaseType pt = product.getPurchasePolicy().getPurchaseType(); 
+			if(pt instanceof LotteryPurchase){
+				Calendar today = Calendar.getInstance();
+				today.set(Calendar.HOUR_OF_DAY, 0);
+				LotteryPurchase lpt = ((LotteryPurchase)pt); 
+				if(lpt.getLotteryEndDate().before(today.getTime())){
+					BlMain.closeCurrentLottery(lpt);
+				}
+			}
+		}
 	}
 
 

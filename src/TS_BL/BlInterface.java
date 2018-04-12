@@ -66,5 +66,20 @@ public interface BlInterface {
 	
 	//More functions that are necessary.
 	public boolean payToStore(Store s, int price);
+	public Subscriber signUp(Guest g, String username, String password, String fullName, String address, int phone, int creditCardNumber);
+	public Subscriber signIn(Guest g, String username, String password);
+	public Subscriber checkIfSubscriberExists(String username);
+	public boolean misspelled(String str);
+	public boolean legalPassword(String pass);
+	public Map<Store, Map<Product, Integer>> getAllStoresWithThierProductsAndAmounts();
+	public List<Store> getAllStores();
+	public List<Product> findProductByName(String name);
+	public List<Product> findProductByCategory(String category);
+	public List<Product> findProductByCriterion(String criterion, String str);
+	public boolean productInCriterion(String criterion, String str, Product p);
+	public void expiredProducts(StoreOwner so);
+	public void expiredProducts(StoreManager sm);
+	
+	
 	
 }

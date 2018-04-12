@@ -2,7 +2,10 @@ package TS_BL;
 
 import TS_SharedClasses.*;
 
-public abstract class BlPurchaseType {
+public class BlPurchaseType {
 
-	public abstract boolean purchase(PurchaseType pt, Guest g, int price);
+	public static boolean purchase(PurchaseType pt, Guest g, int price, int amount){
+		//TODO
+		return false;
+	}
 }

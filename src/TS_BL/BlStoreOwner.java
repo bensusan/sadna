@@ -11,19 +11,15 @@ public class BlStoreOwner {
 	 * @param amount
 	 * @return true if the add succseed false otherwise
 	 */
-	public boolean addProductToStore(StoreOwner so, Product product,int amount)
-	{
-		//TODO missing implementation
-		return false;
+	public static boolean addProductToStore(StoreOwner so, Product product, int amount) {
+		return BlPermissions.addProductToStore(so.getStore(), product, amount);
 	}
 	/**
 	 * @param product
 	 * @return true if the delete succseed false otherwise
 	 */
-	public boolean deleteProductFromStore(StoreOwner so, Product product)
-	{
-		//TODO missing implementation
-		return false;
+	public static boolean deleteProductFromStore(StoreOwner so, Product product) {
+		return BlPermissions.deleteProductFromStore(so.getStore(), product);
 	}
 	/**
 	 * update the product details , assumption the new product have same id like the old one 
@@ -31,10 +27,8 @@ public class BlStoreOwner {
 	 * @param amount
 	 * @return true if succseed false otherwise
 	 */
-	public boolean updateProductDetails(StoreOwner so, Product newProduct, int amount)
-	{
-		//TODO missing implementation
-		return false;
+	public static boolean updateProductDetails(StoreOwner so, Product oldProduct, Product newProduct, int amount) {
+		return BlPermissions.updateProductDetails(so.getStore(), oldProduct, newProduct, amount);
 	}
 	/**
 	 * add policy to product
@@ -42,7 +36,7 @@ public class BlStoreOwner {
 	 * @param product
 	 * @return true if succseed false otherwise
 	 */
-	public boolean addPolicyToProduct(StoreOwner so, PurchasePolicy policy, Product product)
+	public static boolean addPolicyToProduct(StoreOwner so, PurchasePolicy policy, Product product)
 	{
 		//TODO missing implementation
 		return false;
@@ -54,7 +48,7 @@ public class BlStoreOwner {
 	 * @param product
 	 * @return true if succseed false otherwise
 	 */
-	public boolean addDiscountToProduct(StoreOwner so, DiscountPolicy discount, Product product)
+	public static boolean addDiscountToProduct(StoreOwner so, DiscountPolicy discount, Product product)
 	{
 		//TODO missing implementation
 		return false;
@@ -64,7 +58,7 @@ public class BlStoreOwner {
 	 * @param owner
 	 * @return true if succseed false otherwise
 	 */
-	public boolean addNewStoreOwner(StoreOwner oldSo, StoreOwner newSo)
+	public static boolean addNewStoreOwner(StoreOwner oldSo, StoreOwner newSo)
 	{
 		//TODO missing implementation
 		return false;
@@ -74,7 +68,7 @@ public class BlStoreOwner {
 	 * @param manager
 	 * @return true if succseed false otherwise
 	 */
-	public boolean addNewManager(StoreOwner so, StoreManager manager)
+	public static boolean addNewManager(StoreOwner so, StoreManager manager)
 	{
 		//TODO missing implementation
 		return false;
@@ -82,7 +76,7 @@ public class BlStoreOwner {
 	/**
 	 * @return true if the store close false otherwise
 	 */
-	public boolean closeStore(StoreOwner so)
+	public static boolean closeStore(StoreOwner so)
 	{
 		//TODO missing implementation
 		return false;
@@ -90,7 +84,7 @@ public class BlStoreOwner {
 	/**
 	 * @return true if the store reopen false otherwise
 	 */
-	public boolean openStore(StoreOwner so)
+	public static boolean openStore(StoreOwner so)
 	{
 		//TODO missing implementation
 		return false;
@@ -98,9 +92,13 @@ public class BlStoreOwner {
 	/**
 	 * @return history of pruchase in the store
 	 */
-	public List<Cart> getPurchaseHistory(StoreOwner so)
+	public static List<Cart> getPurchaseHistory(StoreOwner so)
 	{
 		//TODO missing implementation
 		return null;
+	}
+	
+	public static void expiredProducts(StoreOwner so){
+		BlPermissions.expiredProducts(so.getStore());
 	}
 }

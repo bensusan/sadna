@@ -23,6 +23,14 @@ public class SystemAdministrator extends Subscriber {
 		return listOfSubs;
 	}
 	
+	public void setSubs(List<Subscriber> subs){
+		this.listOfSubs = subs;
+	}
+	
+	public void setStores(List<Store> stores){
+		this.listOfStores = stores;
+	}
+	
 	public void addStore(Store s){
 		listOfStores.add(s);
 	}

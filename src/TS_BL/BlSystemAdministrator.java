@@ -9,12 +9,19 @@ public class BlSystemAdministrator {
 	/**
 	 * remove subscriber from the system
 	 * @param s
-	 * @return true if succseed false otherwise
+	 * @return true if succeed false otherwise
 	 */
 	public static boolean removeSubscriber(SystemAdministrator sa, Subscriber s)
 	{
-		//TODO missing implementation
-				return true;
+		List<Subscriber> subs = sa.getSubs();
+		if(subs.contains(s)){
+			subs.remove(s);
+			sa.setSubs(subs);
+			return true;
+		}
+		
+		else
+			return false;
 	}
 	/**
 	 * @param s
@@ -22,8 +29,13 @@ public class BlSystemAdministrator {
 	 */
 	public static List<Cart> viewSubscriberHistory(SystemAdministrator sa, Subscriber s)
 	{
-		//TODO missing implementation
-				return null;
+		List<Subscriber> subs = sa.getSubs();
+		if(subs.contains(s)){
+			return s.getPurchaseHistory();
+		}
+		
+		else
+			return null;
 	}
 	/**
 	 * @param store
@@ -31,8 +43,13 @@ public class BlSystemAdministrator {
 	 */
 	public static List<Cart> viewStoreHistory(SystemAdministrator sa, Store store)
 	{
-		//TODO missing implementation
-				return null;
+		List<Store> stores = sa.getStores();
+		if(stores.contains(store)){
+			return store.getPurchaseHistory();
+		}
+		
+		else
+			return null;
 	}
 	
 }

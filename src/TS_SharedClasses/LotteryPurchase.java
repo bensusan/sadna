@@ -38,4 +38,10 @@ public class LotteryPurchase implements PurchaseType {
 	public void setParticipants(Map<Guest, Integer> participants) {
 		this.participants = participants;
 	}
+
+	@Override
+	public boolean purchase(Guest g, int price, int amount) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

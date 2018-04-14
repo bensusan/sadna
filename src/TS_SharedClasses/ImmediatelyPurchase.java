@@ -1,5 +1,7 @@
 package TS_SharedClasses;
 
+import TS_BL.BlImmediatelyPurchase;
+
 public class ImmediatelyPurchase implements PurchaseType {
 
 	private DiscountPolicy discountPolicy;
@@ -21,6 +23,17 @@ public class ImmediatelyPurchase implements PurchaseType {
 	
 	public DiscountPolicy getDiscountPolicy() {
 		return discountPolicy;
+	}
+
+	@Override
+	public boolean purchase(Guest g, int price, int amount) {
+		boolean bool = true;
+		for (int i = 0; i < amount; i++){
+			bool = BlImmediatelyPurchase.purchase(this, g, price);
+			if(!bool)
+				return bool;
+		}
+		return bool;
 	}
 	
 	

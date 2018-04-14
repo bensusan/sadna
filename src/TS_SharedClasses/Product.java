@@ -8,6 +8,7 @@ public class Product {
 	private int grading;
 	private String category;
 	private PurchasePolicy purchasePolicy;
+	private Store store;
 		
 	public Product(String id, String name, int price, int grading, String category, PurchasePolicy purchasePolicy) {
 		this.id = id;
@@ -64,6 +65,14 @@ public class Product {
 
 	public PurchasePolicy getPurchasePolicy() {
 		return purchasePolicy;
+	}
+
+	public Store getStore() {
+		return store;
+	}
+
+	public void setStore(Store store) {
+		this.store = store;
 	}
 	
 }

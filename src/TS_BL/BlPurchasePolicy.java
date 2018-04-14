@@ -4,16 +4,13 @@ import TS_SharedClasses.*;
 
 public class BlPurchasePolicy {
 
-	public boolean purchase(PurchasePolicy pp, Guest g, int price)
-	{
-		//TODO
-		return false;
+	public static boolean purchase(PurchasePolicy pp, Guest g, int price, int amount) {
+		return canPurchase(pp, g) && BlMain.purchase(pp.getPurchaseType(), g, price, amount);
 	}
 	
-	public boolean canPurchase(PurchasePolicy pp, Guest g)
-	{
+	public static boolean canPurchase(PurchasePolicy pp, Guest g) {
 		//TODO
-		return false;
+		return true;
 	}
 	
 	//From here methods that define the rules. for example minimum number of products per order.

@@ -20,13 +20,13 @@ public interface BlInterface {
 	public boolean puchaseCart(Guest g, int creditCardNumber, String buyerAddress);
 	public boolean pruchaseProduct(Guest g, Product product, int amount, int creditCardNumber, String buyerAddress);
 	public int updatePrice(HiddenDiscount hd, int price,int code);
-	public boolean purchase(PurchaseType ip, Guest g, int price);
+	public boolean purchase(PurchaseType ip, Guest g, int price, int amount);
 	public int getDiscountedPrice(ImmediatelyPurchase ip, int price);
 	public boolean isLotteryDone(LotteryPurchase lp);
 	public void closeCurrentLottery(LotteryPurchase lp);
 	public void openNewLottery(LotteryPurchase lp);
-	public boolean purchase(Product p, Guest g, int price);
-	public boolean purchase(PurchasePolicy pp, Guest g, int price);
+	public boolean purchase(Product p, Guest g, int price, int amount);
+	public boolean purchase(PurchasePolicy pp, Guest g, int price, int amount);
 	public boolean canPurchase(PurchasePolicy pp, Guest g);
 	public boolean checkInStock(Store s, Product p,int amount);
 	public boolean addPurchaseToHistory(Store s, Cart cart);
@@ -34,7 +34,7 @@ public interface BlInterface {
 	public boolean stockUpdate(Store s, Product p, int amount);
 	public boolean addProductToStore(StoreManager sm, Product product,int amount);
 	public boolean deleteProductFromStore(StoreManager sm, Product product);
-	public boolean updateProductDetails(StoreManager sm, Product newProduct, int amount);
+	public boolean updateProductDetails(StoreManager sm, Product oldProduct, Product newProduct, int amount);
 	public boolean addPolicyToProduct(StoreManager sm, PurchasePolicy policy,Product product);
 	public boolean addDiscountToProduct(StoreManager sm, DiscountPolicy discount,Product product);
 	public boolean addNewStoreOwner(StoreManager sm, StoreOwner owner);
@@ -44,7 +44,7 @@ public interface BlInterface {
 	public List<Cart> getPurchaseHistory(StoreManager sm);
 	public boolean addProductToStore(StoreOwner so, Product product,int amount);
 	public boolean deleteProductFromStore(StoreOwner so, Product product);
-	public boolean updateProductDetails(StoreOwner so, Product newProduct, int amount);
+	public boolean updateProductDetails(StoreOwner so, Product oldProduct, Product newProduct, int amount);
 	public boolean addPolicyToProduct(StoreOwner so, PurchasePolicy policy, Product product);
 	public boolean addDiscountToProduct(StoreOwner so, DiscountPolicy discount, Product product);
 	public boolean addNewStoreOwner(StoreOwner oldSo, StoreOwner newSo);
@@ -61,6 +61,25 @@ public interface BlInterface {
 	public boolean removeSubscriber(SystemAdministrator sa, Subscriber s);
 	public List<Cart> viewSubscriberHistory(SystemAdministrator sa, Subscriber s);
 	public List<Cart> viewStoreHistory(SystemAdministrator sa, Store store);
+	
+	
+	
+	//More functions that are necessary.
+	public boolean payToStore(Store s, int price);
+	public Subscriber signUp(Guest g, String username, String password, String fullName, String address, int phone, int creditCardNumber);
+	public Subscriber signIn(Guest g, String username, String password);
+	public Subscriber checkIfSubscriberExists(String username);
+	public boolean misspelled(String str);
+	public boolean legalPassword(String pass);
+	public Map<Store, Map<Product, Integer>> getAllStoresWithThierProductsAndAmounts();
+	public List<Store> getAllStores();
+	public List<Product> findProductByName(String name);
+	public List<Product> findProductByCategory(String category);
+	public List<Product> findProductByCriterion(String criterion, String str);
+	public boolean productInCriterion(String criterion, String str, Product p);
+	public void expiredProducts(StoreOwner so);
+	public void expiredProducts(StoreManager sm);
+	
 	
 	
 }

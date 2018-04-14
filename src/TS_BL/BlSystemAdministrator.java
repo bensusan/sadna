@@ -5,33 +5,51 @@ import java.util.List;
 import TS_SharedClasses.*;
 
 public class BlSystemAdministrator {
-
+	
 	/**
 	 * remove subscriber from the system
 	 * @param s
-	 * @return true if succseed false otherwise
+	 * @return true if succeed false otherwise
 	 */
-	public boolean removeSubscriber(SystemAdministrator sa, Subscriber s)
+	public static boolean removeSubscriber(SystemAdministrator sa, Subscriber s)
 	{
-		//TODO missing implementation
-				return true;
+		List<Subscriber> subs = BlMain.allSubscribers;
+		if(subs.contains(s)){
+			subs.remove(s);
+			BlMain.allSubscribers = subs;
+			return true;
+		}
+		
+		else
+			return false;
 	}
 	/**
 	 * @param s
 	 * @return the purchase history that made by the subscriber
 	 */
-	public List<Cart> viewSubscriberHistory(SystemAdministrator sa, Subscriber s)
+	public static List<Cart> viewSubscriberHistory(SystemAdministrator sa, Subscriber s)
 	{
-		//TODO missing implementation
-				return null;
+		List<Subscriber> subs = BlMain.allSubscribers;
+		if(subs.contains(s)){
+			return s.getPurchaseHistory();
+		}
+		
+		else
+			return null;
 	}
 	/**
 	 * @param store
 	 * @return the purchase history that made in the store
 	 */
-	public List<Cart> viewStoreHistory(SystemAdministrator sa, Store store)
+	public static List<Cart> viewStoreHistory(SystemAdministrator sa, Store store)
 	{
-		//TODO missing implementation
-				return null;
+		List<Store> stores = sa.getStores();
+		if(stores.contains(store)){
+			return store.getPurchaseHistory();
+		}
+		
+		else
+			return null;
 	}
+	
 }

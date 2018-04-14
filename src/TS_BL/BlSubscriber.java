@@ -13,7 +13,7 @@ public class BlSubscriber {
 	 * @param Description
 	 * @return new Store if succseed null otherwise
 	 */
-	public Store openStore(Subscriber sub, String storeName,String Description)
+	public static Store openStore(Subscriber sub, String storeName,String Description)
 	{
 		//address and phone
 		//TODO missing implementation
@@ -25,7 +25,7 @@ public class BlSubscriber {
 	 * @param cart
 	 * @return true if succseed false otherwise
 	 */
-	public boolean addPurchaseToHistory(Subscriber sub, Cart cart)
+	public static boolean addPurchaseToHistory(Subscriber sub, Cart cart)
 	{
 		//TODO missing implementation
 		return false;
@@ -36,7 +36,7 @@ public class BlSubscriber {
 	 * @param owner
 	 * @return true if succseed false otherwise
 	 */
-	public boolean addOwner(Subscriber sub, StoreOwner owner)
+	public static boolean addOwner(Subscriber sub, StoreOwner owner)
 	{
 		//TODO missing implementation
 				return false;
@@ -46,7 +46,7 @@ public class BlSubscriber {
 	 * @param manager
 	 * @return true if succseed false otherwise
 	 */
-	public boolean addManager(Subscriber sub, StoreManager manager)
+	public static boolean addManager(Subscriber sub, StoreManager manager)
 	{
 		//TODO missing implementation
 				return false;
@@ -57,7 +57,7 @@ public class BlSubscriber {
 	 * @param owner
 	 * @return true if succseed false otherwise
 	 */
-	public boolean deleteOwner(Subscriber sub, StoreOwner owner)
+	public static boolean deleteOwner(Subscriber sub, StoreOwner owner)
 	{
 		//TODO missing implementation
 		return false;
@@ -67,7 +67,7 @@ public class BlSubscriber {
 	 * @param manager
 	 * @return true if succseed false otherwise
 	 */
-	public boolean deleteManager(Subscriber sub, StoreManager manager)
+	public static boolean deleteManager(Subscriber sub, StoreManager manager)
 	{
 		//TODO missing implementation
 		return false;

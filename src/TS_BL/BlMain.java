@@ -199,54 +199,43 @@ public class BlMain{
 
 	
 	public static boolean addPolicyToProduct(StoreOwner so, PurchasePolicy policy, Product product) {
-		// TODO Auto-generated method stub
-		return false;
+		return BlPermissions.addPolicyToProduct(so.getStore(), policy, product);
 	}
 
 	
 	public static boolean addDiscountToProduct(StoreOwner so, DiscountPolicy discount, Product product) {
-		
-		return false;
+		return BlPermissions.addDiscountToProduct(so.getStore(), discount, product);
 	}
 
 	
 	public static boolean addNewStoreOwner(StoreOwner oldSo, StoreOwner newSo) {
-		// TODO Auto-generated method stub
-		return false;
+		return BlPermissions.addNewStoreOwner(oldSo.getStore(), newSo);
 	}
 
 	
 	public static boolean addNewManager(StoreOwner so, StoreManager manager) {
-		List<StoreManager> sMng = so.getStore().getMyManagers();
-		if(sMng.contains(manager))
-			return false;
-		
-		sMng.add(manager);
-		so.getStore().setMyManagers(sMng);
-		return false;
+		return BlPermissions.addNewManager(so.getStore(), manager);		
 	}
 
 	
 	public static boolean closeStore(StoreOwner so) {
-		so.getStore().setIsOpen(false);
-		return true;
+		return BlPermissions.closeStore(so.getStore());
 	}
 
 	
 	public static boolean openStore(StoreOwner so) {
-		so.getStore().setIsOpen(true);
-		return true;
+		return BlPermissions.openStore(so.getStore());
 	}
 
 	
 	public static List<Cart> getPurchaseHistory(StoreOwner so) {
-		//TODO , StoreOwner doesn't even extends Subscriber
-		return null;
+		return BlPermissions.getPurchaseHistory(so.getStore());
 	}
 
 	
 	public static Store openStore(Subscriber sub, String storeName, String Description) {
-		//TODO: list of stores for sub? store constructor doesn't fit
+		//TODO: list of stores for sub? store constructor doesn't fit + check who will call this method
+		
 		return null;
 	}
 
@@ -325,8 +314,7 @@ public class BlMain{
 
 	
 	public static List<Cart> viewStoreHistory(SystemAdministrator sa, Store store) {
-		//TODO: add list for stores?
-		return null;
+		return BlPermissions.getPurchaseHistory(store);
 	}
 
 	//More functions that are necessary.

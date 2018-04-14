@@ -80,20 +80,29 @@ public class BlPermissions {
 
 
 	public static boolean closeStore(Store s) {
-		// TODO Auto-generated method stub
-		return false;
+		if(s.getIsOpen()){
+			s.setIsOpen(false);
+			return true;
+		}
+		
+		else
+			return false;
 	}
 
 
 	public static boolean openStore(Store s) {
-		// TODO Auto-generated method stub
-		return false;
+		if(!s.getIsOpen()){
+			s.setIsOpen(true);
+			return true;
+		}
+		
+		else
+			return false;
 	}
 
 
 	public static List<Cart> getPurchaseHistory(Store s) {
-		// TODO Auto-generated method stub
-		return null;
+		return s.getPurchaseHistory();
 	}
 	
 	public static void expiredProducts(Store s){

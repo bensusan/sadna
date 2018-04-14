@@ -66,8 +66,8 @@ public class BlOfir {
 		return true;
 	}
 
-	public static int updatePrice(DiscountPolicy dp, int price) {
-		return BlDiscountPolicy.updatePrice(dp, price);
+	public static int updatePrice(DiscountPolicy dp, int price, int code) {
+		return dp.updatePrice(price, code);
 	}
 
 	public static boolean addProductToCart(Guest g, Product p, int amount) {

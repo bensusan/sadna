@@ -10,12 +10,12 @@ import TS_SharedClasses.*;
 public class BlMain{	
 	
 	public static List<Subscriber> allSubscribers = new LinkedList<Subscriber>();
-	public static Map<Guest, List<Integer>> allUsersWithTheirCreditCards = new HashMap<Guest, List<Integer>>(); //TODO need to insert to here all guests that payed with their credit card for pay back
+	public static Map<Guest, List<String>> allUsersWithTheirCreditCards = new HashMap<Guest, List<String>>(); //TODO need to insert to here all guests that payed with their credit card for pay back
 	
-	public static boolean puchaseCart(Cart c, int creditCardNumber, String buyerAddress) {
-		
-		return BlCart.puchaseCart(c, creditCardNumber, buyerAddress);
-	}
+//	public static boolean puchaseCart(Cart c, int creditCardNumber, String buyerAddress) {
+//		
+//		return BlCart.puchaseCart(c, creditCardNumber, buyerAddress);
+//	}
 
 	
 	public static boolean addProduct(Cart c, Product p, int amount) {
@@ -38,8 +38,8 @@ public class BlMain{
 	}
 
 	
-	public static int updatePrice(DiscountPolicy dp, int price) {
-		return BlDiscountPolicy.updatePrice(dp, price);
+	public static int updatePrice(DiscountPolicy dp, int price, int code) {
+		return dp.updatePrice(price, code);
 	}
 
 	
@@ -63,23 +63,25 @@ public class BlMain{
 	}
 
 	
-	public static boolean puchaseCart(Guest g, int creditCardNumber, String buyerAddress) {
+	public static boolean puchaseCart(Guest g, String creditCardNumber, String buyerAddress) {
+		addCreditCartToMap(creditCardNumber, g);
 		return BlGuest.puchaseCart(g, creditCardNumber, buyerAddress);
 	}
 
 	
-	public static boolean pruchaseProduct(Guest g, Product product, int amount, int creditCardNumber, String buyerAddress) {
+	public static boolean pruchaseProduct(Guest g, Product product, int amount, String creditCardNumber, String buyerAddress) {
+		addCreditCartToMap(creditCardNumber, g);
 		return BlGuest.pruchaseProduct(g, product, amount, creditCardNumber, buyerAddress);
 	}
 
 	
 	public static int updatePrice(HiddenDiscount hd, int price, int code) {
-		return BlHiddenDiscount.updatePrice(hd, price, code);
+		return hd.updatePrice(price, code);
 	}
 
 	
 	public static boolean purchase(PurchaseType pt, Guest g, int price, int amount) {
-		return BlPurchaseType.purchase(pt, g, price, amount);
+		return pt.purchase(g, price, amount);
 	}
 
 	
@@ -322,7 +324,7 @@ public class BlMain{
 		return BlStore.payToStore(s, price);
 	}
 	
-	public static Subscriber signUp(Guest g, String username, String password, String fullName, String address, int phone, int creditCardNumber){
+	public static Subscriber signUp(Guest g, String username, String password, String fullName, String address, int phone, String creditCardNumber){
 		return BlGuest.signUp(g, username, password, fullName, address, phone, creditCardNumber);
 	}
 	
@@ -415,5 +417,9 @@ public class BlMain{
 		return false;
 	}
 	
-	
+	public static void addCreditCartToMap(String creditCardNumber, Guest g){
+		List<String> lst = allUsersWithTheirCreditCards.get(g);
+		lst.add(creditCardNumber);
+		allUsersWithTheirCreditCards.put(g, lst);
+	}
 }

@@ -340,7 +340,13 @@ public class BlMain{
 		BlStoreManager.expiredProducts(sm);
 	}
 	
-	
+	//return money if lottery is done and nobody won
+		public static boolean retMoney(Guest g, int amountToRet){
+			return true;
+		}
+		public static boolean payMoney(Guest g, int amountToPay){
+			return true;
+		}
 	
 	//////////////////////////////////////Help functions for everyone
 	public static Subscriber checkIfSubscriberExists(String username){

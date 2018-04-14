@@ -1,5 +1,7 @@
 package TS_BL;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import TS_SharedClasses.Cart;
@@ -13,9 +15,11 @@ import TS_SharedClasses.PurchaseType;
 
 public class BlOfir {
 
-	public static boolean purchaseCart(Cart c, int creditCardNumber, String buyerAddress) {
-		return BlMain.puchaseCart(c, creditCardNumber, buyerAddress);
-	}
+	//do i need this? need to delete
+	//	public static boolean purchaseCart(Cart c, int creditCardNumber, String buyerAddress) {
+	//		Guest g = new Guest(c);
+	//		return puchaseCart(g, creditCardNumber, buyerAddress);
+	//	}
 
 	public static boolean addProduct(Cart c, Product p, int amount) {
 		Map<Product, Integer> toRet = c.getProducts();
@@ -37,6 +41,12 @@ public class BlOfir {
 	}
 
 	public static boolean editProduct(Cart c, Product p, int amount) {
+		if(c.getProducts().containsKey(p)){
+			Map<Product, Integer> toRet = c.getProducts();
+			toRet.put(p, amount);
+			c.setProducts(toRet);
+			return true;
+		}
 		return false;
 	}
 
@@ -48,7 +58,7 @@ public class BlOfir {
 		for (Product p : newCart.keySet()) {
 			if (!c.getProducts().containsKey(p)) {
 				return false; // the p product doesn't exist in the cart,
-								// therefore you need to add it
+				// therefore you need to add it
 			}
 			toRet.put(p, newCart.get(p));
 		}
@@ -57,7 +67,7 @@ public class BlOfir {
 	}
 
 	public static int updatePrice(DiscountPolicy dp, int price) {
-		return BlMain.updatePrice(dp, price);
+		return BlDiscountPolicy.updatePrice(dp, price);
 	}
 
 	public static boolean addProductToCart(Guest g, Product p, int amount) {
@@ -86,7 +96,7 @@ public class BlOfir {
 		Map<Product, Integer> toRet = c.getProducts();
 		if (!c.getProducts().containsKey(p)) {
 			return false; // the p product doesn't exist in the cart, therefore
-							// you need to add it
+			// you need to add it
 		}
 		toRet.put(p, amount);
 		c.setProducts(toRet);
@@ -102,39 +112,47 @@ public class BlOfir {
 	}
 
 	public static boolean puchaseCart(Guest g, int creditCardNumber, String buyerAddress) {
-		return BlMain.puchaseCart(g, creditCardNumber, buyerAddress);
+		for (Product p : g.getCart().getProducts().keySet()) {
+			pruchaseProduct(g, p, g.getCart().getProducts().get(p), creditCardNumber, buyerAddress);
+		}
+		return true;
 	}
 
 	public static boolean pruchaseProduct(Guest g, Product product, int amount, int creditCardNumber, String buyerAddress) {
-		return BlMain.pruchaseProduct(g, product, amount, creditCardNumber, buyerAddress);
+		Map <Product, Integer> prods = new HashMap<Product, Integer>();
+		prods.put(product, amount);
+		Cart c = new Cart(prods);
+		return BlMain.buyProduct(product.getStore(), product, amount) && BlMain.payToStore(product.getStore(), product.getPrice())
+				&& BlMain.addPurchaseToHistory(product.getStore(), c) 
+				&& BlPurchasePolicy.purchase(product.getPurchasePolicy(), g, product.getPrice(), amount); // true = call for paying system
 	}
 
 	public static int updatePrice(HiddenDiscount hd, int price, int code) {
-		return BlMain.updatePrice(hd, price, code);
+		return hd.updatePrice(price, code);
 	}
 
 	public static boolean purchase(PurchaseType ip, Guest g, int price, int amount) {
-		if (ip instanceof ImmediatelyPurchase) {
-			int priceAfterDiscount = getDiscountedPrice((ImmediatelyPurchase) ip, price);
-			return BlMain.purchase(ip, g, priceAfterDiscount, amount);
-		}
-		return BlMain.purchase(ip, g, price, amount);
+		return ip.purchase(g, price, amount);
 	}
 
 	public static int getDiscountedPrice(ImmediatelyPurchase ip, int price) {
-		return BlMain.getDiscountedPrice(ip, price);
+		return BlImmediatelyPurchase.getDiscountedPrice(ip, price);
 	}
 
-	public static boolean isLotteryDone(LotteryPurchase lp) {
-		return BlMain.isLotteryDone(lp);
+	//to get price in args
+	public static boolean isLotteryDone(LotteryPurchase lp, int price) {
+		//	return BlLotteryPurchase.isLotteryDone(lp);
+		return BlLotteryPurchase.isLotteryDone(lp, price);
+		
 	}
 
 	public static void closeCurrentLottery(LotteryPurchase lp) {
-		BlMain.closeCurrentLottery(lp);
+		//	BlLotteryPurchase.closeCurrentLottery(lp);
+		BlLotteryPurchase.closeCurrentLottery(lp);
 	}
 
-	public static void openNewLottery(LotteryPurchase lp) {
-		BlMain.openNewLottery(lp);
-	}
+		public static void openNewLottery(LotteryPurchase lp, Date newDate) {
+			BlLotteryPurchase.openNewLottery(lp, newDate);
+		}
 
 }

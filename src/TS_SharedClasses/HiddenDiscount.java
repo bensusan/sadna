@@ -2,6 +2,8 @@ package TS_SharedClasses;
 
 import java.sql.Date;
 
+import TS_BL.BlHiddenDiscount;
+
 public class HiddenDiscount extends DiscountPolicy{
 	private int code;
 
@@ -17,4 +19,10 @@ public class HiddenDiscount extends DiscountPolicy{
 	public void setCode(int code) {
 		this.code = code;
 	}
+
+	@Override
+	public int updatePrice(int price, int code) {
+		return BlHiddenDiscount.updatePrice(this, price, code);
+	}
+
 }

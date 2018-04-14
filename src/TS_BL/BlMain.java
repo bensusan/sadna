@@ -1,5 +1,6 @@
 package TS_BL;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -87,8 +88,8 @@ public class BlMain{
 	}
 
 	
-	public static boolean isLotteryDone(LotteryPurchase lp) {
-		return BlLotteryPurchase.isLotteryDone(lp);
+	public static boolean isLotteryDone(LotteryPurchase lp, int price) {
+		return BlLotteryPurchase.isLotteryDone(lp, price);
 	}
 
 	
@@ -97,8 +98,8 @@ public class BlMain{
 	}
 
 	
-	public static void openNewLottery(LotteryPurchase lp) {
-		BlLotteryPurchase.openNewLottery(lp);
+	public static void openNewLottery(LotteryPurchase lp, Date endDate) {
+		BlLotteryPurchase.openNewLottery(lp, endDate);
 	}
 
 	

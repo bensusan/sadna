@@ -9,7 +9,7 @@ public class BlImmediatelyPurchase{
 	public static boolean purchase(ImmediatelyPurchase ip, Guest g, int price)
 	{
 		int newPrice = getDiscountedPrice(ip, price);
-		return BlMoneySystem.payMoney(g, newPrice);
+		return BlMain.payMoney(g, newPrice);
 	}
 	
 	//Gets the original price, calculate and return the price after the discount.

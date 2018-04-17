@@ -13,11 +13,11 @@ import TS_SharedClasses.*;
 
 public class cartTests {
 
-	private Cart c;
-	private Product p;
+	private static Cart c;
+	private static Product p;
 	
 	@BeforeClass
-    public  void oneTimeSetUp() {
+    public static void oneTimeSetUp() {
 		
 		c=new Cart();
 		p=new Product("123", "ball", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase()));

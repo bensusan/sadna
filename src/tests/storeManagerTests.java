@@ -6,15 +6,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import TS_BL.BlMain;
-import TS_BL.BlPermissions;
 import TS_SharedClasses.*;
 
 public class storeManagerTests {
-	private StoreManager sm;
-	private boolean arr[];
-	private Store s;
+	
+	private static StoreManager sm;
+	private static boolean arr[];
+	private static Store s;
+	
 	@BeforeClass
-    public  void oneTimeSetUp() {
+    public static void oneTimeSetUp() {
 		arr=new boolean[11];
 		for (int i=0;i<arr.length;i++)
 			arr[i]=false;
@@ -105,7 +106,7 @@ public class storeManagerTests {
 
 	@Test
 	public void testGetPurchaseHistory() {
-		assertNull(BlMain.getPurchaseHistory(sm));
+		assertTrue(BlMain.getPurchaseHistory(sm).isEmpty());
 	}
 
 	@Test

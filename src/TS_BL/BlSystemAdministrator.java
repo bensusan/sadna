@@ -41,7 +41,7 @@ public class BlSystemAdministrator {
 	 * @param store
 	 * @return the purchase history that made in the store
 	 */
-	public static List<Cart> viewStoreHistory(SystemAdministrator sa, Store store)
+	public static List<Purchase> viewStoreHistory(SystemAdministrator sa, Store store)
 	{
 		List<Store> stores = sa.getStores();
 		if(stores.contains(store)){

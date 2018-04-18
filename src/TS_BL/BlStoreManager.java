@@ -94,7 +94,7 @@ public class BlStoreManager {
 	/**
 	 * @return history of pruchase in the store
 	 */
-	public static List<Cart> getPurchaseHistory(StoreManager sm) {
+	public static List<Purchase> getPurchaseHistory(StoreManager sm) {
 		return sm.getPremisions()[BlMain.getPurchaseHistory] ? BlPermissions.getPurchaseHistory(sm.getStore()) : null;
 	}
 	

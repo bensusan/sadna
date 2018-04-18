@@ -1,5 +1,6 @@
 package TS_BL;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -16,12 +17,7 @@ public class BlGuest {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean addProductToCart(Guest g, Product p, int amount) {
-		Cart c = g.getCart();
-		Map<Product, Integer> toRet = c.getProducts();
-		toRet.put(p, amount);
-		c.setProducts(toRet);
-		g.setCart(c);
-		return true;
+		return BlCart.addProduct(g.getCart(), p, amount);
 	}
 
 	/**
@@ -31,15 +27,7 @@ public class BlGuest {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean removeProductFromCart(Guest g, Product p) {
-		if (g.getCart().getProducts().containsKey(p)) {
-			Cart c = g.getCart();
-			Map<Product, Integer> toRet = c.getProducts();
-			toRet.remove(p);
-			c.setProducts(toRet);
-			g.setCart(c);
-			return true;
-		}
-		return false;
+		return BlCart.removeProduct(g.getCart(), p);
 	}
 
 	/**
@@ -50,16 +38,7 @@ public class BlGuest {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean editProductInCart(Guest g, Product p, int amount) {
-		Cart c = g.getCart();
-		Map<Product, Integer> toRet = c.getProducts();
-		if (!c.getProducts().containsKey(p)) {
-			return false; // the p product doesn't exist in the cart, therefore
-			// you need to add it
-		}
-		toRet.put(p, amount);
-		c.setProducts(toRet);
-		g.setCart(c);
-		return true;
+		return BlCart.editProduct(g.getCart(), p, amount);
 	}
 
 	/**
@@ -69,10 +48,7 @@ public class BlGuest {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean editCart(Guest g, Map<Product, Integer> newCart) {
-		Cart c = g.getCart();
-		c.setProducts(newCart);
-		g.setCart(c);
-		return true;
+		return BlCart.editCart(g.getCart(), newCart);
 	}
 
 	/**
@@ -83,9 +59,12 @@ public class BlGuest {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean puchaseCart(Guest g, String creditCardNumber, String buyerAddress) {
+		if(g.equals(null) || !BlMain.legalCreditCard(creditCardNumber))
+			return false;
 		for (Product p : g.getCart().getProducts().keySet()) {
 			pruchaseProduct(g, p, g.getCart().getProducts().get(p), creditCardNumber, buyerAddress);
 		}
+		BlMain.addCreditCartToMap(creditCardNumber, g);
 		return true;
 	}
 
@@ -99,12 +78,18 @@ public class BlGuest {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean pruchaseProduct(Guest g, Product product, int amount, String creditCardNumber, String buyerAddress) {
-		Map <Product, Integer> prods = new HashMap<Product, Integer>();
-		prods.put(product, amount);
-		Cart c = new Cart(prods);
-		return BlMain.buyProduct(product.getStore(), product, amount) && BlMain.payToStore(product.getStore(), product.getPrice())
-				&& BlMain.addPurchaseToHistory(product.getStore(), c) 
-				&& BlPurchasePolicy.purchase(product.getPurchasePolicy(), g, product.getPrice(), amount); // true = call for paying system
+		BlMain.addCreditCartToMap(creditCardNumber, g);
+		if(BlMain.purchase(product, g, product.getPrice(), amount)){
+			Date date = new Date();
+			Map<Product, Integer> purchased = new HashMap<Product, Integer>();
+			purchased.put(product, amount);
+			Cart c = new Cart();
+			c.setProducts(purchased);
+			Purchase purchase = new Purchase(date, BlMain.getPurchaseId(), c);
+			BlMain.incrementPurchaseId();
+			return BlMain.addPurchaseToHistory(product.getStore(), purchase);
+		}
+		return false;
 	}
 	
 	public static Subscriber signUp(Guest g, String username, String password, String fullName, String address, int phone, String creditCardNumber){

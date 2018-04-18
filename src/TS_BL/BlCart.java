@@ -6,17 +6,17 @@ import TS_SharedClasses.*;
 
 public class BlCart {
 
-	/**
-	 * customer try to puchase this cart with given details
-	 * 
-	 * @param creditCardNumber
-	 * @param buyerAddress
-	 * @return true if succseed false otherwise
-	 */
-	public static boolean puchaseCart(Cart c, int creditCardNumber, String buyerAddress) {
-		// TODO missing implementation
-		return true;
-	}
+//	/**
+//	 * customer try to puchase this cart with given details
+//	 * 
+//	 * @param creditCardNumber
+//	 * @param buyerAddress
+//	 * @return true if succseed false otherwise
+//	 */
+//	public static boolean puchaseCart(Cart c, int creditCardNumber, String buyerAddress) {
+//		// TODO missing implementation
+//		return true;
+//	}
 
 	/**
 	 * add <p,amount> to products
@@ -26,6 +26,8 @@ public class BlCart {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean addProduct(Cart c, Product p, int amount) {
+		if(c.equals(null) || p.equals(null) || amount < 1)
+			return false;
 		Map<Product, Integer> toRet = c.getProducts();
 		toRet.put(p, amount);
 		c.setProducts(toRet);
@@ -39,6 +41,8 @@ public class BlCart {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean removeProduct(Cart c, Product p) {
+		if(c.equals(null) || p.equals(null))
+			return false;
 		if (c.getProducts().containsKey(p)) {
 			Map<Product, Integer> toRet = c.getProducts();
 			toRet.remove(p);
@@ -56,6 +60,8 @@ public class BlCart {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean editProduct(Cart c, Product p, int amount) {
+		if(c.equals(null) || p.equals(null) || amount < 1)
+			return false;
 		if(c.getProducts().containsKey(p)){
 			Map<Product, Integer> toRet = c.getProducts();
 			toRet.put(p, amount);
@@ -74,6 +80,8 @@ public class BlCart {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean editCart(Cart c, Map<Product, Integer> newCart) {
+		if(c.equals(null) || newCart.equals(null))
+			return false;
 		Map<Product, Integer> toRet = c.getProducts();
 		for (Product p : newCart.keySet()) {
 			if (!c.getProducts().containsKey(p)) {

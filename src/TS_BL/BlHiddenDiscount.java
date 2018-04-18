@@ -20,10 +20,16 @@ public class BlHiddenDiscount {
 	 * @return the price after discount if the code correct
 	 */
 	public static int updatePrice(HiddenDiscount hd, int price, int code) {
+		if (!checkCodeForDiscount(code))
+			return price;
 		Date date = new Date();
 		if (date.after(hd.getDiscountEndDate())){
 			return price;
 		}
 		return (price * hd.getDiscountPrecentage()) / 100;
+	}
+	
+	public static boolean checkCodeForDiscount(int code){
+		return true;
 	}
 }

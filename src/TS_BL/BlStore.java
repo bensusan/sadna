@@ -22,9 +22,9 @@ public class BlStore {
 	 * @param cart
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean addPurchaseToHistory(Store s, Cart cart) {
-		List<Cart> res = s.getPurchaseHistory();
-		if(!res.add(cart))
+	public static boolean addPurchaseToHistory(Store s, Purchase p) {
+		List<Purchase> res = s.getPurchaseHistory();
+		if(!res.add(p))
 			return false;
 		s.setPurchaseHistory(res);
 		return true;

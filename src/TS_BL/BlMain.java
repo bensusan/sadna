@@ -210,7 +210,10 @@ public class BlMain {
 		if (cart == null || sub == null)
 			return false;
 
-		sub.setCart(cart);
+		List<Cart> allCarts = sub.getPurchaseHistory();
+		allCarts.add(cart);
+		sub.setPurchaseHistory(allCarts);
+		
 		return true;
 	}
 

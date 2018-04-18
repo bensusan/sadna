@@ -105,5 +105,9 @@ public class BlPermissions {
 		}
 	}
 
+	public static boolean changeStorePurchasePolicy(Store s, PurchasePolicy pp){
+		s.setStorePolicy(pp);
+		return true;
+	}
 
 }

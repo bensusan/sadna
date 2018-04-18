@@ -8,7 +8,7 @@ public class ImmediatelyPurchase implements PurchaseType {
 
 	public ImmediatelyPurchase() {
 		super();
-		discountPolicy = null;
+		discountPolicy = new OvertDiscount();
 	}
 
 	public ImmediatelyPurchase(DiscountPolicy discountPolicy) {

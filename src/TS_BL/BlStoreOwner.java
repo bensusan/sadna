@@ -101,4 +101,8 @@ public class BlStoreOwner {
 	public static void expiredProducts(StoreOwner so){
 		BlPermissions.expiredProducts(so.getStore());
 	}
+	
+	public static boolean changeStorePurchasePolicy(StoreOwner so, PurchasePolicy pp){
+		return BlPermissions.changeStorePurchasePolicy(so.getStore(), pp);
+	}
 }

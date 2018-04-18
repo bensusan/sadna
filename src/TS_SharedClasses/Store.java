@@ -15,7 +15,8 @@ public class Store {
 	private List<StoreOwner> myOwners;
 	private List<StoreManager> myManagers;
 	private int moneyEarned;
-
+	private PurchasePolicy storePolicy;
+	
 	public Store() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -34,6 +35,13 @@ public class Store {
 		this.myOwners = new LinkedList<StoreOwner>();
 		this.myManagers = new LinkedList<StoreManager>();
 		this.moneyEarned = 0;
+		this.setStorePolicy(null);
+	}
+	
+	public Store(int storeId, String address, int phone, int gradeing, Map<Product, Integer> products,
+			List<Cart> purchaseHistory, boolean isOpen, PurchasePolicy storePolicy) {
+		this(storeId, address, phone, gradeing, products, purchaseHistory, isOpen);
+		this.setStorePolicy(storePolicy);
 	}
 
 	public int getStoreId() {
@@ -114,6 +122,14 @@ public class Store {
 
 	public void setMoneyEarned(int moneyEarned) {
 		this.moneyEarned = moneyEarned;
+	}
+
+	public PurchasePolicy getStorePolicy() {
+		return storePolicy;
+	}
+
+	public void setStorePolicy(PurchasePolicy storePolicy) {
+		this.storePolicy = storePolicy;
 	}
 	
 }

@@ -1,6 +1,8 @@
 package TS_BL;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import TS_SharedClasses.*;
 
@@ -11,7 +13,9 @@ public class BlLotteryPurchase {
 	// when the lottery will done, we will have the guests to continue the
 	// process.
 	public static boolean purchase(LotteryPurchase lp, Guest g, int price) {
-		// TODO
+		Map <Guest, Integer> guestPrice = lp.getParticipants();
+		guestPrice.put(g, price);
+		lp.setParticipants(guestPrice);
 		return false;
 	}
 
@@ -37,7 +41,7 @@ public class BlLotteryPurchase {
 		Date date = new Date();
 		lp.setLotteryEndDate((java.sql.Date) date);
 		for(Guest g : lp.getParticipants().keySet()){
-			BlMoneySystem.retMoney(g, lp.getParticipants().get(g));
+			BlMain.retMoney(g, lp.getParticipants().get(g));
 		}
 		
 	}

@@ -79,7 +79,8 @@ public interface BlInterface {
 	public boolean productInCriterion(String criterion, String str, Product p);
 	public void expiredProducts(StoreOwner so);
 	public void expiredProducts(StoreManager sm);
-	
+	public void changeStorePurchasePolicy(StoreOwner so, PurchasePolicy pp);
+	public void changeStorePurchasePolicy(StoreManager so, PurchasePolicy pp);
 	
 	
 }

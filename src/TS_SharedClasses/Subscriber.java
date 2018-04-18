@@ -9,13 +9,13 @@ public class Subscriber extends Guest {
 	private String fullName;
 	private String address;
 	private int phone;
-	private int creditCardNumber;
+	private String creditCardNumber;
 	private List<Cart> purchaseHistory;
 	private List<StoreManager> manager;
 	private List<StoreOwner> owner;
 
 	public Subscriber(String username, String password, String fullName, String address, int phone,
-			int creditCardNumber,List<Cart> purchaseHistory,List<StoreManager> manager,List<StoreOwner> owner) {
+			String creditCardNumber,List<Cart> purchaseHistory,List<StoreManager> manager,List<StoreOwner> owner) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -29,7 +29,7 @@ public class Subscriber extends Guest {
 	}
 	
 	public Subscriber(Cart cart, String username, String password, String fullName, String address, int phone,
-			int creditCardNumber,List<Cart> purchaseHistory,List<StoreManager> manager,List<StoreOwner> owner) {
+			String creditCardNumber,List<Cart> purchaseHistory,List<StoreManager> manager,List<StoreOwner> owner) {
 		super(cart);
 		this.username = username;
 		this.password = password;
@@ -82,11 +82,11 @@ public class Subscriber extends Guest {
 		this.phone = phone;
 	}
 
-	public int getCreditCardNumber() {
+	public String getCreditCardNumber() {
 		return creditCardNumber;
 	}
 
-	public void setCreditCardNumber(int creditCardNumber) {
+	public void setCreditCardNumber(String creditCardNumber) {
 		this.creditCardNumber = creditCardNumber;
 	}
 	

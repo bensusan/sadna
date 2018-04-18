@@ -9,16 +9,12 @@ public class BlImmediatelyPurchase{
 	public static boolean purchase(ImmediatelyPurchase ip, Guest g, int price)
 	{
 		int newPrice = getDiscountedPrice(ip, price);
-		return BlMoneySystem.payMoney(g, newPrice);
+		return BlMain.payMoney(g, newPrice);
 	}
 	
 	//Gets the original price, calculate and return the price after the discount.
 	public static int getDiscountedPrice(ImmediatelyPurchase ip, int price)
 	{
-<<<<<<< HEAD
-		return (ip.getDiscountPolicy().getDiscountPrecentage() / 100) * price;
-=======
 		return price * ip.getDiscountPolicy().getDiscountPrecentage() / 100;
->>>>>>> Ofir
 	}
 }

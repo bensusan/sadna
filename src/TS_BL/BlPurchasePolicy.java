@@ -8,7 +8,7 @@ public class BlPurchasePolicy {
 		return canPurchase(pp, g) && BlMain.purchase(pp.getPurchaseType(), g, price, amount);
 	}
 	
-	public static boolean canPurchase(PurchasePolicy pp, Guest g) {
+	private static boolean canPurchase(PurchasePolicy pp, Guest g) {
 		//TODO
 		return true;
 	}

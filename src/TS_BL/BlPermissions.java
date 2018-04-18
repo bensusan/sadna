@@ -7,20 +7,6 @@ import TS_SharedClasses.*;
 
 public class BlPermissions {
 
-	final static int 
-	addProductToStore = 0,
-	deleteProductFromStore = 1,
-	updateProductDetails = 2,
-	addPolicyToProduct = 3,
-	addDiscountToProduct = 4,
-	addNewStoreOwner = 5,
-	addNewManager = 6,
-	closeStore = 7,
-	openStore = 8,
-	getPurchaseHistory = 9,
-	expiredProducts = 10;
-	
-
 	//Here we will implement Store's owner and Store's manager permissions
 	public static boolean addProductToStore(Store s, Product product, int amount) {
 		if(s.getProducts().get(product) != null)

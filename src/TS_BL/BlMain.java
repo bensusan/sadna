@@ -12,7 +12,7 @@ public class BlMain {
 	// constants according to BlPermission's functions order.
 	public final static int addProductToStore = 0, deleteProductFromStore = 1, updateProductDetails = 2,
 			addPolicyToProduct = 3, addDiscountToProduct = 4, addNewStoreOwner = 5, addNewManager = 6, closeStore = 7,
-			openStore = 8, getPurchaseHistory = 9, expiredProducts = 10;
+			openStore = 8, getPurchaseHistory = 9, expiredProducts = 10, changeStorePurchasePolicy = 11;
 
 	public static List<Subscriber> allSubscribers = new LinkedList<Subscriber>();
 	public static Map<Guest, List<String>> allUsersWithTheirCreditCards = new HashMap<Guest, List<String>>(); // TODO
@@ -296,6 +296,14 @@ public class BlMain {
 
 	public static void expiredProducts(StoreManager sm) {
 		BlStoreManager.expiredProducts(sm);
+	}
+	
+	public static boolean changeStorePurchasePolicy(StoreOwner so, PurchasePolicy pp){
+		return BlStoreOwner.changeStorePurchasePolicy(so, pp);
+	}
+	
+	public static boolean changeStorePurchasePolicy(StoreManager sm, PurchasePolicy pp){
+		return BlStoreManager.changeStorePurchasePolicy(sm, pp);
 	}
 
 	// return money if lottery is done and nobody won

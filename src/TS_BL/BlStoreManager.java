@@ -102,4 +102,8 @@ public class BlStoreManager {
 		if(sm.getPremisions()[BlMain.expiredProducts]) 
 			BlPermissions.expiredProducts(sm.getStore());
 	}
+	
+	public static boolean changeStorePurchasePolicy(StoreManager sm, PurchasePolicy pp){
+		return sm.getPremisions()[BlMain.changeStorePurchasePolicy] && BlPermissions.changeStorePurchasePolicy(sm.getStore(), pp);
+	}
 }

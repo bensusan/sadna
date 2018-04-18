@@ -16,6 +16,7 @@ public class BlMain {
 
 	public static List<Subscriber> allSubscribers = new LinkedList<Subscriber>();
 	public static Map<Guest, List<String>> allUsersWithTheirCreditCards = new HashMap<Guest, List<String>>(); // TODO
+	public static int purchaseId = -1;
 	// need to insert to here all guests that payed with their credit card for pay back
 	
 	// public static boolean puchaseCart(Cart c, int creditCardNumber, String
@@ -41,7 +42,7 @@ public class BlMain {
 	}
 
 	public static int updatePrice(DiscountPolicy dp, int price, int code) {
-		return dp.updatePrice(price, code);
+		return BlDiscountPolicy.updatePrice(dp, price , code);
 	}
 
 	public static boolean addProductToCart(Guest g, Product p, int amount) {
@@ -61,22 +62,21 @@ public class BlMain {
 	}
 
 	public static boolean puchaseCart(Guest g, String creditCardNumber, String buyerAddress) {
-		addCreditCartToMap(creditCardNumber, g);
 		return BlGuest.puchaseCart(g, creditCardNumber, buyerAddress);
 	}
 
 	public static boolean pruchaseProduct(Guest g, Product product, int amount, String creditCardNumber,
 			String buyerAddress) {
-		addCreditCartToMap(creditCardNumber, g);
 		return BlGuest.pruchaseProduct(g, product, amount, creditCardNumber, buyerAddress);
 	}
-
+	
+	//do we need this function? already have update price with discount policy
 	public static int updatePrice(HiddenDiscount hd, int price, int code) {
-		return hd.updatePrice(price, code);
+		return BlHiddenDiscount.updatePrice(hd, price, code);
 	}
 
 	public static boolean purchase(PurchaseType pt, Guest g, int price, int amount) {
-		return pt.purchase(g, price, amount);
+		return BlPurchaseType.purchase(pt, g, price, amount);
 	}
 
 	public static int getDiscountedPrice(ImmediatelyPurchase ip, int price) {
@@ -107,8 +107,8 @@ public class BlMain {
 		return BlStore.stockUpdate(s, p, amount);
 	}
 
-	public static boolean addPurchaseToHistory(Store s, Cart cart) {
-		return BlStore.addPurchaseToHistory(s, cart);
+	public static boolean addPurchaseToHistory(Store s, Purchase p) {
+		return BlStore.addPurchaseToHistory(s, p);
 	}
 
 	public static boolean buyProduct(Store s, Product p, int amount) {
@@ -155,7 +155,7 @@ public class BlMain {
 		return BlStoreManager.openStore(sm);
 	}
 
-	public static List<Cart> getPurchaseHistory(StoreManager sm) {
+	public static List<Purchase> getPurchaseHistory(StoreManager sm) {
 		return BlStoreManager.getPurchaseHistory(sm);
 	}
 
@@ -195,7 +195,7 @@ public class BlMain {
 		return BlPermissions.openStore(so.getStore());
 	}
 
-	public static List<Cart> getPurchaseHistory(StoreOwner so) {
+	public static List<Purchase> getPurchaseHistory(StoreOwner so) {
 		return BlPermissions.getPurchaseHistory(so.getStore());
 	}
 
@@ -272,7 +272,7 @@ public class BlMain {
 		return subList.get(subList.indexOf(s)).getPurchaseHistory();
 	}
 
-	public static List<Cart> viewStoreHistory(SystemAdministrator sa, Store store) {
+	public static List<Purchase> viewStoreHistory(SystemAdministrator sa, Store store) {
 		return BlPermissions.getPurchaseHistory(store);
 	}
 
@@ -326,6 +326,16 @@ public class BlMain {
 		return true;
 	}
 
+	//credit card must have between 8 to 16 digits and digits only!
+	public static boolean legalCreditCard(String creditCardNumber){
+		if(creditCardNumber.length() < 8 || creditCardNumber.length() > 16)
+			return false;
+		String regex = "[0-9]+";
+		if(creditCardNumber.matches(regex))
+			return true;
+		return false;
+	}
+	
 	public static Map<Store, Map<Product, Integer>> getAllStoresWithThierProductsAndAmounts() {
 		Map<Store, Map<Product, Integer>> res = new HashMap<Store, Map<Product, Integer>>();
 		List<Store> stores = getAllStores();
@@ -386,5 +396,13 @@ public class BlMain {
 		List<String> lst = allUsersWithTheirCreditCards.get(g);
 		lst.add(creditCardNumber);
 		allUsersWithTheirCreditCards.put(g, lst);
+	}
+	
+	public static void incrementPurchaseId(){
+		purchaseId++;
+	}
+	
+	public static int getPurchaseId(){
+		return purchaseId;
 	}
 }

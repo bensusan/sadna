@@ -10,7 +10,7 @@ public class Store {
 	private int phone;
 	private int gradeing;
 	private Map<Product, Integer> products;
-	private List<Cart> purchaseHistory;
+	private List<Purchase> purchaseHistory;
 	private boolean isOpen;
 	private List<StoreOwner> myOwners;
 	private List<StoreManager> myManagers;
@@ -22,7 +22,7 @@ public class Store {
 	}
 
 	public Store(int storeId, String address, int phone, int gradeing, Map<Product, Integer> products,
-			List<Cart> purchaseHistory, boolean isOpen) {
+			List<Purchase> purchaseHistory, boolean isOpen) {
 		super();
 		this.storeId = storeId;
 		this.address = address;
@@ -76,11 +76,11 @@ public class Store {
 		this.products = products;
 	}
 
-	public List<Cart> getPurchaseHistory() {
+	public List<Purchase> getPurchaseHistory() {
 		return purchaseHistory;
 	}
 
-	public void setPurchaseHistory(List<Cart> purchaseHistory) {
+	public void setPurchaseHistory(List<Purchase> purchaseHistory) {
 		this.purchaseHistory = purchaseHistory;
 	}
 	

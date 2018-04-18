@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import TS_BL.BlImmediatelyPurchase;
+import TS_BL.BlLotteryPurchase;
+
 public class LotteryPurchase implements PurchaseType {
 	
 	private Date lotteryEndDate;
@@ -41,7 +44,12 @@ public class LotteryPurchase implements PurchaseType {
 
 	@Override
 	public boolean purchase(Guest g, int price, int amount) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean bool = true;
+		for (int i = 0; i < amount; i++){
+			bool = BlLotteryPurchase.purchase(this, g, price);
+			if(!bool)
+				return bool;
+		}
+		return bool;
 	}
 }

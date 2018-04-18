@@ -87,7 +87,7 @@ public class BlPermissions {
 	}
 
 
-	public static List<Cart> getPurchaseHistory(Store s) {
+	public static List<Purchase> getPurchaseHistory(Store s) {
 		return s.getPurchaseHistory();
 	}
 	

@@ -2,38 +2,86 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import TS_BL.BlMain;
+import TS_SharedClasses.*;
 
 public class subscriberTests {
 
+	private static Subscriber sub;
+	private static StoreOwner owner;
+	private static StoreManager manager;
+	@BeforeClass
+    public static void oneTimeSetUp() {
+		sub=new Subscriber(new Cart(), "abc123", "0987654", "moshe datz", "herzel 23 herzelia", 0541234567, "1234567890123456", new LinkedList(), new LinkedList(), new LinkedList());
+		owner=new StoreOwner(new Store());
+		manager=new StoreManager(null,new Store());
+	}
+	
 	@Test
 	public void testOpenStore() {
+		
+		
 		fail("Not yet implemented");
 	}
 
 	@Test
 	public void testAddPurchaseToHistory() {
-		fail("Not yet implemented");
+		
+		Cart cart=new Cart();
+		Map<Product,Integer> products=new HashMap<Product,Integer>();
+		products.put(new Product("456", "ping pong ball", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase())), 3);
+		cart.setProducts(products);
+		Subscriber sub2=null;
+		assertFalse(BlMain.addPurchaseToHistory(sub2, cart));
+		sub.setCart(cart);
+		assertFalse(BlMain.addPurchaseToHistory(sub, null));
+		assertTrue(BlMain.addPurchaseToHistory(sub, cart));
+		assertTrue(sub.getPurchaseHistory().contains(cart));
 	}
 
 	@Test
 	public void testAddOwner() {
-		fail("Not yet implemented");
+		Subscriber sub2=null;
+		assertFalse(BlMain.addOwner(sub2, owner));
+		assertFalse(BlMain.addOwner(sub, null));
+		assertTrue(BlMain.addOwner(sub, owner));
+		assertTrue(sub.getOwner().contains(owner));
 	}
 
 	@Test
 	public void testAddManager() {
-		fail("Not yet implemented");
+		Subscriber sub2=null;
+		assertFalse(BlMain.addManager(sub2, manager));
+		assertFalse(BlMain.addManager(sub, null));
+		assertTrue(BlMain.addManager(sub, manager));
+		assertTrue(sub.getManager().contains(manager));
 	}
 
 	@Test
 	public void testDeleteOwner() {
-		fail("Not yet implemented");
+		Subscriber sub2=null;
+		assertFalse(BlMain.deleteOwner(sub2, owner));
+		assertFalse(BlMain.deleteOwner(sub, null));
+		assertTrue(BlMain.deleteOwner(sub, owner));
+		assertFalse(sub.getOwner().contains(owner));
+		assertFalse(BlMain.deleteOwner(sub, owner));//does not exist
 	}
 
 	@Test
 	public void testDeleteManager() {
-		fail("Not yet implemented");
+		Subscriber sub2=null;
+		assertFalse(BlMain.deleteManager(sub2, manager));
+		assertFalse(BlMain.deleteManager(sub, null));
+		assertTrue(BlMain.deleteManager(sub, manager));
+		assertFalse(sub.getManager().contains(manager));
+		assertFalse(BlMain.deleteManager(sub, manager));//does not exist
 	}
 
 }

@@ -55,8 +55,5 @@ public class productTests {
 		//regular case
 		assertTrue(BlMain.purchase(p, g, 10, 20));
 	}
-	
-	
-	
 
 }

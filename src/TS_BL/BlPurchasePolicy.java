@@ -15,4 +15,5 @@ public class BlPurchasePolicy {
 	
 	//From here methods that define the rules. for example minimum number of products per order.
 	//TODO
+	+
 }

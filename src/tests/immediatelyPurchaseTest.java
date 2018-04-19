@@ -36,6 +36,8 @@ public class immediatelyPurchaseTest {
 		assertFalse(BlMain.purchase(ip, g, 0, 5));
 		//test zero amount 
 		assertFalse(BlMain.purchase(ip, g, 100, 0));
+		//test good case
+		assertFalse(BlMain.purchase(ip, g, 100, 5));
 	}
 	
 	@Test
@@ -46,6 +48,7 @@ public class immediatelyPurchaseTest {
 		assertEquals(-1, BlMain.getDiscountedPrice(ip, 0));
 		//test null immidietly purchase
 		assertEquals(-1, BlMain.getDiscountedPrice(null, 100));
+		//test good case
 		OvertDiscount od = new OvertDiscount(Date.valueOf("2019-01-01"), 50);
 		this.ip.setDiscountPolicy(od);
 		assertEquals(75, BlMain.getDiscountedPrice(ip, 150));

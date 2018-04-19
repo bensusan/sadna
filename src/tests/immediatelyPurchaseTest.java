@@ -24,7 +24,7 @@ public class immediatelyPurchaseTest {
 		//costumer
 		Guest g = new Guest();
 		//initialize discount policy
-		OvertDiscount od = new OvertDiscount(Date.valueOf("2019-01-01"), 50);
+		OvertDiscount od = new OvertDiscount(Date.valueOf("2019-01-01" ), 50);
 		this.ip.setDiscountPolicy(od);
 		//test null costumer
 		assertFalse(BlMain.purchase(ip, null, 150, 5));

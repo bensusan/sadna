@@ -8,14 +8,45 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.sql.Date;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import TS_BL.BlMain;
 import TS_SharedClasses.*;
 
 public class GuestAT {
-
+	
+	private Guest g;
+	private Subscriber sub;
+	private StoreOwner so;
+	private Product immediateOvertProduct;
+	private Product immediateNoDiscountProduct;
+	private Product lotteryProduct;
+	private Product zeroAmountProduct;
+	
+	@Before
+	public void bef(){
+		g = new Guest();
+		sub = BlMain.signUp(g, "globUse", "globPass", "usr", "name", 132456, "123456");
+		Store s1 = BlMain.openStore(sub, 123456, "Tel Aviv", 123654, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
+		List<StoreOwner> own1 = sub.getOwner();
+		so = own1.get(0);
+		
+		immediateOvertProduct = new Product("111", "prod1", 200, 4, "test cat 1", 
+				new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
+		immediateNoDiscountProduct = new Product("222", "prod2", 200, 4, "test cat 2", 
+				new PurchasePolicy(new ImmediatelyPurchase()));
+		lotteryProduct = new Product("333", "prod3", 100, 4, "test cat 3", 
+				new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
+		zeroAmountProduct = new Product("333", "prod4", 200, 4, "test cat 4", 
+				new PurchasePolicy(new ImmediatelyPurchase()));
+		
+		BlMain.addProductToStore(so, immediateOvertProduct, 10);
+		BlMain.addProductToStore(so, immediateNoDiscountProduct, 10);
+		BlMain.addProductToStore(so, lotteryProduct, 10);
+		BlMain.addProductToStore(so, zeroAmountProduct, 0);
+	}
 	//1.1
 	//could not test specificlly entry to system there is no entry to system yet
 	
@@ -185,19 +216,56 @@ public class GuestAT {
 	//1.7.1
 	@Test
 	public void testLotteryPurchase(){
-		fail("need to check purchase flow");
+		fail("need to implement");
 	}
 	
 	//1.7.2
 	@Test
 	public void testSinglePurchase(){
-		fail("need to check purchase flow");	
+		//notice the store in @Before function
+		//purchase zero amount of product in store
+		Guest g1 = new Guest();
+		assertFalse(BlMain.pruchaseProduct(g1,this.zeroAmountProduct, 1, "123456789", "rehovot"));
+		
+		//purchase more then amount
+		Guest g2 = new Guest();
+		assertFalse(BlMain.pruchaseProduct(g2, this.immediateNoDiscountProduct, 11, "132456" , "rehovot"));
+		
+		//test success purchase no discount
+		assertTrue(BlMain.pruchaseProduct(g2, this.immediateNoDiscountProduct, 3, "132456" , "rehovot"));
+		
+		//test success purchase no discount
+		assertTrue(BlMain.pruchaseProduct(g2, this.immediateOvertProduct, 6, "132456" , "rehovot"));
+		
+		Map<Product, Integer> prods = so.getStore().getProducts();
+		assertEquals(7, prods.get(this.immediateNoDiscountProduct).intValue());
+		assertEquals(6, prods.get(this.immediateOvertProduct).intValue());
+		
 	}
 		
 	//1.7.3
 	@Test
 	public void testCartPurchase(){
-		fail("need to check purchase flow");
+		//purchase zero amount of product in store
+		Guest g1 = new Guest();
+		BlMain.addProductToCart(g1, this.zeroAmountProduct, 1);
+		assertFalse(BlMain.puchaseCart(g1, "132456", "rehovot"));
+		
+		//purchase more then amount
+		Guest g2 = new Guest();
+		BlMain.addProductToCart(g2, this.immediateNoDiscountProduct, 11);
+		assertFalse(BlMain.puchaseCart(g2, "132456", "rehovot"));
+		
+		//test success purchase no discount
+		Guest g3 = new Guest();
+		BlMain.addProductToCart(g3, this.immediateNoDiscountProduct, 4);
+		assertFalse(BlMain.puchaseCart(g3, "132456", "rehovot"));
+		
+		//test success purchase no discount
+		Guest g4 = new Guest();
+		BlMain.addProductToCart(g4, this.immediateOvertProduct, 4);
+		assertFalse(BlMain.puchaseCart(g4, "132456", "rehovot"));
+		
 	}
 		
 	

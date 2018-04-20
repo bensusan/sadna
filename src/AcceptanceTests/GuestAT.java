@@ -22,7 +22,7 @@ public class GuestAT {
 		assertNotNull(s1);
 		
 		//sad case - existing username
-		Subscriber s2 = BlMain.signUp(g, "sagivmap", "456789", "Sagiv Mag", "Be'er Sheva", 88456456, "654321");
+		Subscriber s2 = BlMain.signUp(g, "sagivmap", "45678999", "Sagiv Mag", "Be'er Sheva", 88456456, "654321");
 		assertNull(s2);
 	}
 

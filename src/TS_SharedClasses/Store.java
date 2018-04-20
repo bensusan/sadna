@@ -39,7 +39,7 @@ public class Store {
 	}
 	
 	public Store(int storeId, String address, int phone, int gradeing, Map<Product, Integer> products,
-			List<Cart> purchaseHistory, boolean isOpen, PurchasePolicy storePolicy) {
+			List<Purchase> purchaseHistory, boolean isOpen, PurchasePolicy storePolicy) {
 		this(storeId, address, phone, gradeing, products, purchaseHistory, isOpen);
 		this.setStorePolicy(storePolicy);
 	}

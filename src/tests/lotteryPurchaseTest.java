@@ -1,6 +1,7 @@
 package tests;
 import static org.junit.Assert.*;
-import org.junit.BeforeClass;
+
+import org.junit.Before;
 import org.junit.Test;
 import TS_BL.BlMain;
 import TS_SharedClasses.*;
@@ -12,7 +13,7 @@ public class lotteryPurchaseTest {
 
 	private LotteryPurchase lp;
 	
-	@BeforeClass
+	@Before
 	public  void oneTimeSetUp() {
 		lp = new LotteryPurchase(Date.valueOf("2019-01-01"));
 	}

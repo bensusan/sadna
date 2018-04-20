@@ -2,6 +2,7 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import TS_BL.BlMain;
@@ -17,7 +18,7 @@ public class productTests {
 	private Store s;
 	private StoreOwner so;
 	
-	@BeforeClass
+	@Before
     public  void oneTimeSetUp() {
 		/*initiating product*/		
 		String dateAsString = "2019-01-01";

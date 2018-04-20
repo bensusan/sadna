@@ -3,6 +3,7 @@ import static org.junit.Assert.*;
 
 import java.sql.Date;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import TS_BL.BlMain;
@@ -12,7 +13,7 @@ public class hiddenDiscountTest {
 	
 	private HiddenDiscount hd;
 	
-	@BeforeClass
+	@Before
     public  void oneTimeSetUp() {
 		String dateAsString = "2019-01-01";
 		Date d = Date.valueOf(dateAsString);

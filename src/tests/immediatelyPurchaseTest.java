@@ -1,6 +1,7 @@
 package tests;
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import TS_BL.BlMain;
@@ -14,8 +15,8 @@ public class immediatelyPurchaseTest {
 
 	private ImmediatelyPurchase ip;
 	
-	@BeforeClass
-    public  void oneTimeSetUp() {
+	@Before
+    public void oneTimeSetUp() {
 		ip = new ImmediatelyPurchase();
 	}
 	

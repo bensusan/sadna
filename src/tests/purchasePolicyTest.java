@@ -1,6 +1,8 @@
 package tests;
 
 import static org.junit.Assert.*;
+
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import TS_BL.BlMain;
@@ -13,7 +15,7 @@ public class purchasePolicyTest {
 	
 	private PurchasePolicy pp;
 	
-	@BeforeClass
+	@Before
     public void oneTimeSetUp() {
 		pp = new PurchasePolicy(new ImmediatelyPurchase());
 	}

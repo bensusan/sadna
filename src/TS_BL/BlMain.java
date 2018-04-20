@@ -218,6 +218,8 @@ public class BlMain {
 	}
 
 	public static boolean addOwner(Subscriber sub, StoreOwner owner) {
+		if(sub == null || owner == null)
+			return false;
 		List<StoreOwner> sOwn = sub.getOwner();
 		if (sOwn.contains(owner))
 			return false;
@@ -228,6 +230,8 @@ public class BlMain {
 	}
 
 	public static boolean addManager(Subscriber sub, StoreManager manager) {
+		if(sub == null || manager == null)
+			return false;
 		List<StoreManager> sMng = sub.getManager();
 		if (sMng.contains(manager))
 			return false;
@@ -238,6 +242,8 @@ public class BlMain {
 	}
 
 	public static boolean deleteOwner(Subscriber sub, StoreOwner owner) {
+		if(sub == null || owner == null)
+			return false;
 		List<StoreOwner> sOwn = sub.getOwner();
 		if (!sOwn.contains(owner))
 			return false;
@@ -248,6 +254,8 @@ public class BlMain {
 	}
 
 	public static boolean deleteManager(Subscriber sub, StoreManager manager) {
+		if(sub == null || manager == null)
+			return false;
 		List<StoreManager> sMng = sub.getManager();
 		if (!sMng.contains(manager))
 			return false;
@@ -258,6 +266,8 @@ public class BlMain {
 	}
 
 	public static boolean removeSubscriber(SystemAdministrator sa, Subscriber s) {
+		if(sa == null || s == null)
+			return false;
 		List<Subscriber> subList = BlMain.allSubscribers;
 		if (!subList.contains(s))
 			return false;
@@ -268,6 +278,8 @@ public class BlMain {
 	}
 
 	public static List<Cart> viewSubscriberHistory(SystemAdministrator sa, Subscriber s) {
+		if(sa == null || s == null)
+			return null;
 		List<Subscriber> subList = BlMain.allSubscribers;
 		if (!subList.contains(s))
 			return null;
@@ -276,6 +288,8 @@ public class BlMain {
 	}
 
 	public static List<Purchase> viewStoreHistory(SystemAdministrator sa, Store store) {
+		if(sa == null || store == null)
+			return null;
 		return BlPermissions.getPurchaseHistory(store);
 	}
 

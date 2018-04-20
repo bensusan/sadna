@@ -26,7 +26,7 @@ public class BlCart {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean addProduct(Cart c, Product p, int amount) {
-		if(c.equals(null) || p.equals(null) || amount < 1)
+		if(c == null || p == null || amount < 1)
 			return false;
 		Map<Product, Integer> toRet = c.getProducts();
 		toRet.put(p, amount);
@@ -41,7 +41,7 @@ public class BlCart {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean removeProduct(Cart c, Product p) {
-		if(c.equals(null) || p.equals(null))
+		if(c == null || p == null)
 			return false;
 		if (c.getProducts().containsKey(p)) {
 			Map<Product, Integer> toRet = c.getProducts();
@@ -60,7 +60,7 @@ public class BlCart {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean editProduct(Cart c, Product p, int amount) {
-		if(c.equals(null) || p.equals(null) || amount < 1)
+		if(c == null || p == null || amount < 1)
 			return false;
 		if(c.getProducts().containsKey(p)){
 			Map<Product, Integer> toRet = c.getProducts();
@@ -80,7 +80,7 @@ public class BlCart {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean editCart(Cart c, Map<Product, Integer> newCart) {
-		if(c.equals(null) || newCart.equals(null))
+		if(c == null || newCart == null)
 			return false;
 		Map<Product, Integer> toRet = c.getProducts();
 		for (Product p : newCart.keySet()) {

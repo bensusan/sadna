@@ -17,7 +17,7 @@ public class BlGuest {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean addProductToCart(Guest g, Product p, int amount) {
-		return BlCart.addProduct(g.getCart(), p, amount);
+		return g != null && BlCart.addProduct(g.getCart(), p, amount);
 	}
 
 	/**
@@ -27,7 +27,7 @@ public class BlGuest {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean removeProductFromCart(Guest g, Product p) {
-		return BlCart.removeProduct(g.getCart(), p);
+		return g != null && BlCart.removeProduct(g.getCart(), p);
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class BlGuest {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean editProductInCart(Guest g, Product p, int amount) {
-		return BlCart.editProduct(g.getCart(), p, amount);
+		return g != null && BlCart.editProduct(g.getCart(), p, amount);
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class BlGuest {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean editCart(Guest g, Map<Product, Integer> newCart) {
-		return BlCart.editCart(g.getCart(), newCart);
+		return g != null && BlCart.editCart(g.getCart(), newCart);
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class BlGuest {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean puchaseCart(Guest g, String creditCardNumber, String buyerAddress) {
-		if(g.equals(null) || !BlMain.legalCreditCard(creditCardNumber))
+		if(g == null || !BlMain.legalCreditCard(creditCardNumber))
 			return false;
 		for (Product p : g.getCart().getProducts().keySet()) {
 			pruchaseProduct(g, p, g.getCart().getProducts().get(p), creditCardNumber, buyerAddress);
@@ -78,6 +78,8 @@ public class BlGuest {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean pruchaseProduct(Guest g, Product product, int amount, String creditCardNumber, String buyerAddress) {
+		if(g == null || product == null)
+			return false;
 		BlMain.addCreditCartToMap(creditCardNumber, g);
 		if(BlMain.purchase(product, g, product.getPrice(), amount)){
 			Date date = new Date();
@@ -93,6 +95,8 @@ public class BlGuest {
 	}
 	
 	public static Subscriber signUp(Guest g, String username, String password, String fullName, String address, int phone, String creditCardNumber){
+		if(g == null)
+			return null;
 		if(BlMain.misspelled(username) || BlMain.misspelled(fullName) || BlMain.misspelled(address))
 			return null; //exception spell in user name | full name | address
 		if(!BlMain.legalPassword(password))
@@ -104,6 +108,8 @@ public class BlGuest {
 	}
 	
 	public static Subscriber signIn(Guest g, String username, String password){
+		if(g == null)
+			return null;
 		if(BlMain.misspelled(username))
 			return null; //exception spell in user name
 		if(!BlMain.legalPassword(password))

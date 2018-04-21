@@ -353,12 +353,19 @@ public class BlMain {
 
 	//credit card must have between 8 to 16 digits and digits only!
 	public static boolean legalCreditCard(String creditCardNumber){
-		if(creditCardNumber.length() < 8 || creditCardNumber.length() > 16)
+		if(creditCardNumber == null || creditCardNumber.length() < 8 || creditCardNumber.length() > 16)
 			return false;
 		String regex = "[0-9]+";
 		if(creditCardNumber.matches(regex))
 			return true;
 		return false;
+	}
+	
+	//should be update in the future
+	public static boolean legalAddress(String buyerAddress){
+		if(buyerAddress == null)
+			return false;
+		return true;
 	}
 	
 	public static Map<Store, Map<Product, Integer>> getAllStoresWithThierProductsAndAmounts() {

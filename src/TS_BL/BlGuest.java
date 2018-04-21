@@ -59,7 +59,7 @@ public class BlGuest {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean puchaseCart(Guest g, String creditCardNumber, String buyerAddress) {
-		if(g == null || !BlMain.legalCreditCard(creditCardNumber))
+		if(g == null || g.getCart().getProducts().isEmpty() || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.legalAddress(buyerAddress))
 			return false;
 		for (Product p : g.getCart().getProducts().keySet()) {
 			pruchaseProduct(g, p, g.getCart().getProducts().get(p), creditCardNumber, buyerAddress);
@@ -78,7 +78,7 @@ public class BlGuest {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean pruchaseProduct(Guest g, Product product, int amount, String creditCardNumber, String buyerAddress) {
-		if(g == null || product == null)
+		if(g == null || product == null || amount < 1 || g.getCart().getProducts().isEmpty() || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.legalAddress(buyerAddress))
 			return false;
 		BlMain.addCreditCartToMap(creditCardNumber, g);
 		if(BlMain.purchase(product, g, product.getPrice(), amount)){

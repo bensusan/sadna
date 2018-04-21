@@ -28,6 +28,8 @@ public class BlCart {
 	public static boolean addProduct(Cart c, Product p, int amount) {
 		if(c == null || p == null || amount < 1)
 			return false;
+		if(c.getProducts().containsKey(p))
+			return false;
 		Map<Product, Integer> toRet = c.getProducts();
 		toRet.put(p, amount);
 		c.setProducts(toRet);

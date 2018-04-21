@@ -26,6 +26,8 @@ public class ImmediatelyPurchase implements PurchaseType {
 
 	@Override
 	public boolean purchase(Guest g, int price, int amount) {
+		if(amount <= 0)
+			return false;
 		boolean bool = true;
 		for (int i = 0; i < amount; i++){
 			bool = BlImmediatelyPurchase.purchase(this, g, price);

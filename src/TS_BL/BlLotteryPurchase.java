@@ -13,13 +13,17 @@ public class BlLotteryPurchase {
 	// when the lottery will done, we will have the guests to continue the
 	// process.
 	public static boolean purchase(LotteryPurchase lp, Guest g, int price) {
+		if (lp == null || g == null || price <= 0)
+			return false;
 		Map <Guest, Integer> guestPrice = lp.getParticipants();
 		guestPrice.put(g, price);
 		lp.setParticipants(guestPrice);
-		return false;
+		return true;
 	}
 
 	public static boolean isLotteryDone(LotteryPurchase lp, int price) {
+		if(lp == null || price <= 0)
+			return false;
 		Date date =  new Date();
 		if(date.after(lp.getLotteryEndDate())){
 			closeCurrentLottery(lp);

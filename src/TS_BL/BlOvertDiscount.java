@@ -10,9 +10,11 @@ public class BlOvertDiscount {
 	 * @return the price after discount
 	 */
 	public static int updatePrice(OvertDiscount od, int price) {
+		if(od == null || price <= 0)
+			return -1;
 		Date date = new Date();
 		if (date.after(od.getDiscountEndDate())){
-			return price;
+			return -1;
 		}
 		return (price * od.getDiscountPrecentage()) / 100;
 	}

@@ -12,14 +12,14 @@ public class BlStoreOwner {
 	 * @return true if the add succseed false otherwise
 	 */
 	public static boolean addProductToStore(StoreOwner so, Product product, int amount) {
-		return BlPermissions.addProductToStore(so.getStore(), product, amount);
+		return so != null && BlPermissions.addProductToStore(so.getStore(), product, amount);
 	}
 	/**
 	 * @param product
 	 * @return true if the delete succseed false otherwise
 	 */
 	public static boolean deleteProductFromStore(StoreOwner so, Product product) {
-		return BlPermissions.deleteProductFromStore(so.getStore(), product);
+		return so != null && BlPermissions.deleteProductFromStore(so.getStore(), product);
 	}
 	/**
 	 * update the product details , assumption the new product have same id like the old one 
@@ -28,7 +28,7 @@ public class BlStoreOwner {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean updateProductDetails(StoreOwner so, Product oldProduct, Product newProduct, int amount) {
-		return BlPermissions.updateProductDetails(so.getStore(), oldProduct, newProduct, amount);
+		return so != null && BlPermissions.updateProductDetails(so.getStore(), oldProduct, newProduct, amount);
 	}
 	/**
 	 * add policy to product
@@ -99,10 +99,10 @@ public class BlStoreOwner {
 	}
 	
 	public static void expiredProducts(StoreOwner so){
-		BlPermissions.expiredProducts(so.getStore());
+		if(so != null) BlPermissions.expiredProducts(so.getStore());
 	}
 	
 	public static boolean changeStorePurchasePolicy(StoreOwner so, PurchasePolicy pp){
-		return BlPermissions.changeStorePurchasePolicy(so.getStore(), pp);
+		return so != null && BlPermissions.changeStorePurchasePolicy(so.getStore(), pp);
 	}
 }

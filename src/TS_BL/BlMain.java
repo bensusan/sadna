@@ -9,6 +9,7 @@ import TS_SharedClasses.*;
 
 public class BlMain {
 
+	public final static int NUM_OF_PERMISSIONS = 12; 
 	// constants according to BlPermission's functions order.
 	public final static int addProductToStore = 0, deleteProductFromStore = 1, updateProductDetails = 2,
 			addPolicyToProduct = 3, addDiscountToProduct = 4, addNewStoreOwner = 5, addNewManager = 6, closeStore = 7,

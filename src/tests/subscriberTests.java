@@ -2,6 +2,7 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -32,12 +33,13 @@ public class subscriberTests {
 		Map<Product,Integer> products=new HashMap<Product,Integer>();
 		products.put(new Product("456", "ping pong ball", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase())), 3);
 		cart.setProducts(products);
-		Subscriber sub2=null;
-		assertFalse(BlMain.addPurchaseToHistory(sub2, cart));
+		Purchase purchase = new Purchase(new Date(System.currentTimeMillis()), BlMain.getPurchaseId(), cart);
+		Subscriber sub2 = null;
+		assertFalse(BlMain.addPurchaseToHistory(sub2, purchase));
 		sub.setCart(cart);
 		assertFalse(BlMain.addPurchaseToHistory(sub, null));
-		assertTrue(BlMain.addPurchaseToHistory(sub, cart));
-		assertTrue(sub.getPurchaseHistory().contains(cart));
+		assertTrue(BlMain.addPurchaseToHistory(sub, purchase));
+		assertTrue(sub.getPurchaseHistory().contains(purchase));
 	}
 
 	@Test

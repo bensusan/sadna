@@ -10,12 +10,12 @@ public class Subscriber extends Guest {
 	private String address;
 	private String phone;
 	private String creditCardNumber;
-	private List<Cart> purchaseHistory;
+	private List<Purchase> purchaseHistory;
 	private List<StoreManager> manager;
 	private List<StoreOwner> owner;
 
 	public Subscriber(String username, String password, String fullName, String address, String phone,
-			String creditCardNumber,List<Cart> purchaseHistory,List<StoreManager> manager,List<StoreOwner> owner) {
+			String creditCardNumber,List<Purchase> purchaseHistory,List<StoreManager> manager,List<StoreOwner> owner) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -23,13 +23,13 @@ public class Subscriber extends Guest {
 		this.address = address;
 		this.phone = phone;
 		this.creditCardNumber = creditCardNumber;
-		this.purchaseHistory=purchaseHistory;
+		this.purchaseHistory = purchaseHistory;
 		this.manager=manager;
 		this.owner=owner;
 	}
 	
 	public Subscriber(Cart cart, String username, String password, String fullName, String address, String phone,
-			String creditCardNumber,List<Cart> purchaseHistory,List<StoreManager> manager,List<StoreOwner> owner) {
+			String creditCardNumber,List<Purchase> purchaseHistory,List<StoreManager> manager,List<StoreOwner> owner) {
 		super(cart);
 		this.username = username;
 		this.password = password;
@@ -37,7 +37,7 @@ public class Subscriber extends Guest {
 		this.address = address;
 		this.phone = phone;
 		this.creditCardNumber = creditCardNumber;
-		this.purchaseHistory=purchaseHistory;
+		this.purchaseHistory = purchaseHistory;
 		this.manager=manager;
 		this.owner=owner;
 	}
@@ -90,11 +90,11 @@ public class Subscriber extends Guest {
 		this.creditCardNumber = creditCardNumber;
 	}
 	
-	public List<Cart> getPurchaseHistory() {
+	public List<Purchase> getPurchaseHistory() {
 		return purchaseHistory;
 	}
 
-	public void setPurchaseHistory(List<Cart> purchaseHistory) {
+	public void setPurchaseHistory(List<Purchase> purchaseHistory) {
 		this.purchaseHistory = purchaseHistory;
 	}
 

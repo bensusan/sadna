@@ -32,13 +32,13 @@ public class BlSubscriber {
 	 * @param cart
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean addPurchaseToHistory(Subscriber sub, Cart cart)
+	public static boolean addPurchaseToHistory(Subscriber sub, Purchase p)
 	{
-		if (cart == null || sub == null)
+		if (p == null || sub == null)
 			return false;
 	
-		List<Cart> allCarts = sub.getPurchaseHistory();
-		allCarts.add(cart);
+		List<Purchase> allCarts = sub.getPurchaseHistory();
+		allCarts.add(p);
 		sub.setPurchaseHistory(allCarts);
 		
 		return true;

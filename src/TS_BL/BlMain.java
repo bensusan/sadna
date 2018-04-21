@@ -206,8 +206,8 @@ public class BlMain {
 		return BlSubscriber.openStore(sub,gradeing,products,purchaseHistory,isOpen);
 	}
 
-	public static boolean addPurchaseToHistory(Subscriber sub, Cart cart) {
-		return BlSubscriber.addPurchaseToHistory(sub, cart);
+	public static boolean addPurchaseToHistory(Subscriber sub, Purchase purchase) {
+		return BlSubscriber.addPurchaseToHistory(sub, purchase);
 	}
 
 	public static boolean addOwner(Subscriber sub, StoreOwner owner) {
@@ -230,7 +230,7 @@ public class BlMain {
 		return BlSystemAdministrator.removeSubscriber(sa, s);
 	}
 
-	public static List<Cart> viewSubscriberHistory(SystemAdministrator sa, Subscriber s) {
+	public static List<Purchase> viewSubscriberHistory(SystemAdministrator sa, Subscriber s) {
 		return BlSystemAdministrator.viewSubscriberHistory(sa, s);
 	}
 

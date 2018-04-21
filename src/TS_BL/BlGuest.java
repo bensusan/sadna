@@ -103,7 +103,7 @@ public class BlGuest {
 			return null; //password rules failed.
 		if(BlMain.checkIfSubscriberExists(username) != null)
 			return null; //user name exists
-		Subscriber newSub = new Subscriber(g.getCart(), username, password, fullName, address, phone, creditCardNumber, new LinkedList<Cart>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>()); 
+		Subscriber newSub = new Subscriber(g.getCart(), username, password, fullName, address, phone, creditCardNumber, new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>()); 
 		BlMain.allSubscribers.add(newSub);
 		return newSub;
 		

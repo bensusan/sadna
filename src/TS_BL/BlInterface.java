@@ -29,7 +29,7 @@ public interface BlInterface {
 	public boolean purchase(PurchasePolicy pp, Guest g, int price, int amount);
 	public boolean canPurchase(PurchasePolicy pp, Guest g);
 	public boolean checkInStock(Store s, Product p,int amount);
-	public boolean addPurchaseToHistory(Store s, Cart cart);
+	public boolean addPurchaseToHistory(Store s, Purchase purchase);
 	public boolean buyProduct(Store s, Product p, int amount);
 	public boolean stockUpdate(Store s, Product p, int amount);
 	public boolean addProductToStore(StoreManager sm, Product product,int amount);
@@ -53,7 +53,7 @@ public interface BlInterface {
 	public boolean openStore(StoreOwner so);
 	public List<Purchase> getPurchaseHistory(StoreOwner so);
 	public Store openStore(Subscriber sub, String storeName,String Description);
-	public boolean addPurchaseToHistory(Subscriber sub, Cart cart);
+	public boolean addPurchaseToHistory(Subscriber sub, Purchase purchase);
 	public boolean addOwner(Subscriber sub, StoreOwner owner);
 	public boolean addManager(Subscriber sub, StoreManager manager);
 	public boolean deleteOwner(Subscriber sub, StoreOwner owner);

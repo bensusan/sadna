@@ -29,7 +29,7 @@ public class BlSystemAdministrator {
 	 * @param s
 	 * @return the purchase history that made by the subscriber
 	 */	
-	public static List<Cart> viewSubscriberHistory(SystemAdministrator sa, Subscriber s) {
+	public static List<Purchase> viewSubscriberHistory(SystemAdministrator sa, Subscriber s) {
 		if(sa == null || s == null)
 			return null;
 		

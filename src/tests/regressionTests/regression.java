@@ -160,7 +160,6 @@ public class regression {
 	}
 	
 
-	//1.7 +7.1+7.3
 	@Test
 	public void testPruchaseCart() {
 		BlMain.purchaseCart(alex, "1111111111111111", "max shein 22 nes ziona");

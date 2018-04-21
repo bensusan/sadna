@@ -43,7 +43,7 @@ public class lotteryPurchaseTest {
 		assertFalse(BlMain.isLotteryDone(lp, 0));
 		//test passed date of lottery
 		lp.setLotteryEndDate(Date.valueOf("2018-01-01"));
-		assertFalse(BlMain.isLotteryDone(lp, 100));
+		assertTrue(BlMain.isLotteryDone(lp, 100));
 		
 		//test not reached to price
 		Map<Guest, Integer> p = new HashMap<Guest, Integer>();

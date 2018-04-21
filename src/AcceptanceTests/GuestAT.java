@@ -39,7 +39,7 @@ public class GuestAT {
 				new PurchasePolicy(new ImmediatelyPurchase()));
 		lotteryProduct = new Product("333", "prod3", 100, 4, "test cat 3", 
 				new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
-		zeroAmountProduct = new Product("333", "prod4", 200, 4, "test cat 4", 
+		zeroAmountProduct = new Product("444", "prod4", 200, 4, "test cat 4", 
 				new PurchasePolicy(new ImmediatelyPurchase()));
 		
 		BlMain.addProductToStore(so, immediateOvertProduct, 10);

@@ -61,7 +61,7 @@ public class BlMain {
 		return BlGuest.editCart(g, newCart);
 	}
 
-	public static boolean puchaseCart(Guest g, String creditCardNumber, String buyerAddress) {
+	public static boolean purchaseCart(Guest g, String creditCardNumber, String buyerAddress) {
 		return BlGuest.puchaseCart(g, creditCardNumber, buyerAddress);
 	}
 

@@ -65,17 +65,17 @@ public class guestTests {
 	}
 
 	@Test
-	public void testPuchaseCart() {
+	public void testPurchaseCart() {
 		Guest g=new Guest();
 		
-		assertFalse(BlMain.puchaseCart(g, "1234567890123456", "herzel 23 tel aviv"));//empty cart
+		assertFalse(BlMain.purchaseCart(g, "1234567890123456", "herzel 23 tel aviv"));//empty cart
 		Product p=new Product("995", "apple", 5, 3, "fruits", new PurchasePolicy(new ImmediatelyPurchase()));
 		BlMain.addProductToCart(g, p, 1);
-		assertFalse(BlMain.puchaseCart(g, "1", "herzel 23 tel aviv"));
-		assertFalse(BlMain.puchaseCart(g, null, "herzel 23 tel aviv"));
-		assertFalse(BlMain.puchaseCart(g, "1234567890123456", null));
-		assertFalse(BlMain.puchaseCart(null, "1234567890123456", "herzel 23 tel aviv"));
-		assertTrue(BlMain.puchaseCart(g, "1234567890123456", "herzel 23 tel aviv"));
+		assertFalse(BlMain.purchaseCart(g, "1", "herzel 23 tel aviv"));
+		assertFalse(BlMain.purchaseCart(g, null, "herzel 23 tel aviv"));
+		assertFalse(BlMain.purchaseCart(g, "1234567890123456", null));
+		assertFalse(BlMain.purchaseCart(null, "1234567890123456", "herzel 23 tel aviv"));
+		assertTrue(BlMain.purchaseCart(g, "1234567890123456", "herzel 23 tel aviv"));
 	}
 
 	@Test

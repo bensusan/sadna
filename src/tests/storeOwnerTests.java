@@ -19,7 +19,7 @@ public class storeOwnerTests {
 	@BeforeClass
     public static void oneTimeSetUp() {
 		
-		s=new Store(123, "hadekel 72 Ranana", 1542365985, 3, new HashMap<>(),new LinkedList<Cart> (), true);
+		s=new Store(123, "hadekel 72 Ranana", "1542365985", 3, new HashMap<Product,Integer>(),new LinkedList<Purchase> (), true);
 		so=new StoreOwner(s);
 	}
 	

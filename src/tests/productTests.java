@@ -29,7 +29,7 @@ public class productTests {
 		p = new Product( "01081991" , "test product", 150, 5, "test category", pp);
 		
 		/*initiating store*/
-		s=new Store(123, "hadekel 72 Ranana", 1542365985, 3, new HashMap<>(),new LinkedList<Purchase> (), true);
+		s=new Store(123, "hadekel 72 Ranana", "1542365985", 3, new HashMap<Product,Integer>(),new LinkedList<Purchase> (), true);
 		
 		/*initiating store owner*/
 		so=new StoreOwner(s);

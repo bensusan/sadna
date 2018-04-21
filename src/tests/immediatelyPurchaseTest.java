@@ -38,7 +38,7 @@ public class immediatelyPurchaseTest {
 		//test zero amount 
 		assertFalse(BlMain.purchase(ip, g, 100, 0));
 		//test good case
-		assertFalse(BlMain.purchase(ip, g, 100, 5));
+		assertTrue(BlMain.purchase(ip, g, 100, 5));
 	}
 	
 	@Test

@@ -31,7 +31,7 @@ public class cartTests {
 		assertTrue(BlMain.addProduct(c, p, 1));
 		assertEquals(c.getProducts().get(p).intValue(),1);
 		assertFalse(BlMain.addProduct(c, p, 1));
-		assertEquals(c.getProducts().get(p).intValue(),2);
+		assertEquals(c.getProducts().get(p).intValue(),1);
 		Product p2=new Product("456", "ping pong ball", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase()));
 		assertTrue(BlMain.addProduct(c, p2, 1));
 	}

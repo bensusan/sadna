@@ -28,7 +28,7 @@ public class GuestAT {
 	public void bef(){
 		g = new Guest();
 		sub = BlMain.signUp(g, "globUse", "globPass", "usr", "name", "132412356", "123456");
-		Store s1 = BlMain.openStore(sub, 123456, "Tel Aviv", 123654, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
+		Store s1 = BlMain.openStore(sub, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
 		List<StoreOwner> own1 = sub.getOwner();
 		so = own1.get(0);
 		
@@ -95,7 +95,7 @@ public class GuestAT {
 		
 		Guest g1 = new Guest();
 		Subscriber sub1 = BlMain.signUp(g1, "usr1", "pass1", "usr", "name", "132412356", "123456");
-		Store s1 = BlMain.openStore(sub1, 123456, "Tel Aviv", 123654, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
+		Store s1 = BlMain.openStore(sub1, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
 		List<StoreOwner> own1 = sub1.getOwner();
 		StoreOwner so1 = own1.get(0);
 		
@@ -107,7 +107,7 @@ public class GuestAT {
 		
 		Guest g2 = new Guest();
 		Subscriber sub2 = BlMain.signUp(g2, "usr1", "pass1", "usr", "name", "123456789", "123456");
-		Store s2 = BlMain.openStore(sub2, 123456, "Tel Aviv", 123654, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
+		Store s2 = BlMain.openStore(sub2, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
 		List<StoreOwner> own2 = sub1.getOwner();
 		StoreOwner so2 = own2.get(0);
 		
@@ -248,22 +248,22 @@ public class GuestAT {
 		//purchase zero amount of product in store
 		Guest g1 = new Guest();
 		BlMain.addProductToCart(g1, this.zeroAmountProduct, 1);
-		assertFalse(BlMain.puchaseCart(g1, "132456", "rehovot"));
+		assertFalse(BlMain.purchaseCart(g1, "132456", "rehovot"));
 		
 		//purchase more then amount
 		Guest g2 = new Guest();
 		BlMain.addProductToCart(g2, this.immediateNoDiscountProduct, 11);
-		assertFalse(BlMain.puchaseCart(g2, "132456", "rehovot"));
+		assertFalse(BlMain.purchaseCart(g2, "132456", "rehovot"));
 		
 		//test success purchase no discount
 		Guest g3 = new Guest();
 		BlMain.addProductToCart(g3, this.immediateNoDiscountProduct, 4);
-		assertFalse(BlMain.puchaseCart(g3, "132456", "rehovot"));
+		assertFalse(BlMain.purchaseCart(g3, "132456", "rehovot"));
 		
 		//test success purchase no discount
 		Guest g4 = new Guest();
 		BlMain.addProductToCart(g4, this.immediateOvertProduct, 4);
-		assertFalse(BlMain.puchaseCart(g4, "132456", "rehovot"));
+		assertFalse(BlMain.purchaseCart(g4, "132456", "rehovot"));
 		
 	}
 		

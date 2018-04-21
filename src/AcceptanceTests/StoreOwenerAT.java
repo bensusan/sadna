@@ -27,7 +27,7 @@ public class StoreOwenerAT {
 	public void beforeTests(){
 		g = new Guest();
 		sub = BlMain.signUp(g, "globUse", "globPass", "usr", "name", "132412356", "123456");
-		Store s1 = BlMain.openStore(sub, 123456, "Tel Aviv", 123654, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
+		Store s1 = BlMain.openStore(sub, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
 		List<StoreOwner> own1 = sub.getOwner();
 		so = own1.get(0);
 		
@@ -189,9 +189,9 @@ public class StoreOwenerAT {
 		BlMain.addProductToCart(g1, prod1, 1);
 		BlMain.addProductToCart(g2, prod3, 3);
 		
-		BlMain.puchaseCart(g1, "123456789123", "holon");
+		BlMain.purchaseCart(g1, "123456789123", "holon");
 		BlMain.pruchaseProduct(g2, prod2, 3, "123456789321", "Eilat");
-		BlMain.puchaseCart(g2, "123456789123", "holon");
+		BlMain.purchaseCart(g2, "123456789123", "holon");
 		
 		List<Purchase> purchases = BlMain.getPurchaseHistory(so);
 		List<Cart> carts = new ArrayList<Cart>();

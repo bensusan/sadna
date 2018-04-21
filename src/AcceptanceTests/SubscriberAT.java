@@ -44,25 +44,17 @@ public class SubscriberAT {
 	@Test
 	public void testOpenStore(){
 		// incorrect inputs
-		assertNull(BlMain.openStore(sub, -789456 , "Tel Aviv", 123654, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true));
-		assertNull(BlMain.openStore(sub, 0 , "Tel Aviv", 123654, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true));
-		assertNull(BlMain.openStore(sub, 789456 , "", 123654, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true));
-		assertNull(BlMain.openStore(sub, 789456 , "Tel Aviv", -123456, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true));
-		assertNull(BlMain.openStore(sub, 789456 , "Tel Aviv", 0, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true));
-		assertNull(BlMain.openStore(sub, 789456 , "Tel Aviv", 123654, -5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true));
-		assertNull(BlMain.openStore(sub, 789456 , "Tel Aviv", 123654, 5, null, new ArrayList<Purchase>(), true));
-		assertNull(BlMain.openStore(sub, 789456 , "Tel Aviv", 123654, 5, new HashMap<Product, Integer>(), null, true));
-		assertNull(BlMain.openStore(null, 789456 , "Tel Aviv", 123654, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), false));
+		assertNull(BlMain.openStore(sub, -5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true));
+		assertNull(BlMain.openStore(sub,  5, null, new ArrayList<Purchase>(), true));
+		assertNull(BlMain.openStore(sub,  5, new HashMap<Product, Integer>(), null, true));
+		assertNull(BlMain.openStore(null,  5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), false));
 		
 		//good case
-		Store toCheck = BlMain.openStore(sub, 789456 , "Tel Aviv", 123654, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
+		Store toCheck = BlMain.openStore(sub, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
 		
 		List<StoreOwner> ownStores = sub.getOwner();
 		assertEquals(toCheck, ownStores.get(0).getStore());
 		
-		
-		//open store with the same id
-		assertNull(BlMain.openStore(sub, 789456 , "Tel Aviv", 123654, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true));
 	}
 }
 

@@ -10,7 +10,6 @@ import java.util.Set;
 import java.sql.Date;
 
 import org.junit.Before;
-import org.junit.Test;
 import TS_BL.BlMain;
 import TS_SharedClasses.*;
 
@@ -27,7 +26,7 @@ public class StoreOwenerAT {
 	@Before
 	public void beforeTests(){
 		g = new Guest();
-		sub = BlMain.signUp(g, "globUse", "globPass", "usr", "name", 132456, "123456");
+		sub = BlMain.signUp(g, "globUse", "globPass", "usr", "name", "132412356", "123456");
 		Store s1 = BlMain.openStore(sub, 123456, "Tel Aviv", 123654, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
 		List<StoreOwner> own1 = sub.getOwner();
 		so = own1.get(0);

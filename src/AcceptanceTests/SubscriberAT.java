@@ -10,7 +10,6 @@ import java.util.Set;
 import java.sql.Date;
 
 import org.junit.Before;
-import org.junit.Test;
 import TS_BL.BlMain;
 import TS_SharedClasses.*;
 
@@ -21,7 +20,7 @@ public class SubscriberAT {
 	@Before
 	public void beforeTests(){
 		signed = new Guest();
-		sub = BlMain.signUp(signed, "usr", "pass", "name", "address", 132456, "123456");
+		sub = BlMain.signUp(signed, "usr", "pass", "name", "address", "132412356", "123456");
 	}
 	//2.1
 	@Test

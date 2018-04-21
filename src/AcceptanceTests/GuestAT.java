@@ -11,7 +11,6 @@ import java.util.Set;
 import java.sql.Date;
 
 import org.junit.Before;
-import org.junit.Test;
 import TS_BL.BlMain;
 import TS_SharedClasses.*;
 
@@ -28,7 +27,7 @@ public class GuestAT {
 	@Before
 	public void bef(){
 		g = new Guest();
-		sub = BlMain.signUp(g, "globUse", "globPass", "usr", "name", 132456, "123456");
+		sub = BlMain.signUp(g, "globUse", "globPass", "usr", "name", "132412356", "123456");
 		Store s1 = BlMain.openStore(sub, 123456, "Tel Aviv", 123654, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
 		List<StoreOwner> own1 = sub.getOwner();
 		so = own1.get(0);
@@ -55,7 +54,7 @@ public class GuestAT {
 	public void testGuestToSubscriber(){
 		Guest g = new Guest();
 		//good case - add new sub
-		Subscriber s1 = BlMain.signUp(g, "sagivmap", "123123", "Sagiv Map", "Jerusalem", 88123132, "123456");
+		Subscriber s1 = BlMain.signUp(g, "sagivmap", "123123", "Sagiv Map", "Jerusalem", "132412356", "123456");
 		assertNotNull(s1);
 		assertEquals(g.getCart(), s1.getCart());
 		assertEquals("sagivmap", s1.getUsername());
@@ -67,23 +66,23 @@ public class GuestAT {
 		assertEquals("123456", s1.getCreditCardNumber());
 		
 		//sad case - existing username
-		Subscriber s2 = BlMain.signUp(g, "sagivmap", "45678999", "Sagiv Mag", "Be'er Sheva", 88456456, "654321");
+		Subscriber s2 = BlMain.signUp(g, "sagivmap", "45678999", "Sagiv Mag", "Be'er Sheva", "132412356", "654321");
 		assertNull(s2);
 		
 		//bad case - corrupt input
-		Subscriber s3 = BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", 987654321, "789456");
-		assertNull(BlMain.signUp(null, "advasan", "789789", "Adva San", "Be'er Sheva", 987654321, "789456"));
-		assertNull(BlMain.signUp(g, null, "789789", "Adva San", "Be'er Sheva", 987654321, "789456"));
-		assertNull(BlMain.signUp(g, "advasan", null, "Adva San", "Be'er Sheva", 987654321, "789456"));
-		assertNull(BlMain.signUp(g, "advasan", "", "Adva San", "Be'er Sheva", 987654321, "789456"));
-		assertNull(BlMain.signUp(g, "advasan", "789789", null, "Be'er Sheva", 987654321, "789456"));
-		assertNull(BlMain.signUp(g, "advasan", "789789", "", "Be'er Sheva", 987654321, "789456"));
-		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", "", 987654321, "789456"));
-		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", null, 987654321, "789456"));
-		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", -132456, "789456"));
-		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", 0, "789456"));
-		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", 987654321, null));
-		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", 987654321, ""));
+		Subscriber s3 = BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", "132412356", "789456");
+		assertNull(BlMain.signUp(null, "advasan", "789789", "Adva San", "Be'er Sheva", "132412356", "789456"));
+		assertNull(BlMain.signUp(g, null, "789789", "Adva San", "Be'er Sheva", "132412356", "789456"));
+		assertNull(BlMain.signUp(g, "advasan", null, "Adva San", "Be'er Sheva", "132412356", "789456"));
+		assertNull(BlMain.signUp(g, "advasan", "", "Adva San", "Be'er Sheva", "132412356", "789456"));
+		assertNull(BlMain.signUp(g, "advasan", "789789", null, "Be'er Sheva", "132412356", "789456"));
+		assertNull(BlMain.signUp(g, "advasan", "789789", "", "Be'er Sheva", "132412356", "789456"));
+		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", "", "132412356", "789456"));
+		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", null, "132412356", "789456"));
+		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", "dsa541a", "789456"));
+		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", "", "789456"));
+		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", "132412356", null));
+		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", "132412356", ""));
 	}
 	
 	//1.3
@@ -95,7 +94,7 @@ public class GuestAT {
 		assertTrue(info.size() == 0);
 		
 		Guest g1 = new Guest();
-		Subscriber sub1 = BlMain.signUp(g1, "usr1", "pass1", "usr", "name", 132456, "123456");
+		Subscriber sub1 = BlMain.signUp(g1, "usr1", "pass1", "usr", "name", "132412356", "123456");
 		Store s1 = BlMain.openStore(sub1, 123456, "Tel Aviv", 123654, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
 		List<StoreOwner> own1 = sub1.getOwner();
 		StoreOwner so1 = own1.get(0);

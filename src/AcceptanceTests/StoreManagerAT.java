@@ -1,29 +1,62 @@
-package tests;
-
+package AcceptanceTests;
+import org.junit.Test;
 import static org.junit.Assert.*;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.sql.Date;
 
+import org.junit.Before;
 import TS_BL.BlMain;
 import TS_SharedClasses.*;
 
-public class storeManagerTests {
-	
-	private static StoreManager sm;
-	private static boolean arr[];
-	private static Store s;
-	
-	//4.1
-	@BeforeClass
-    public static void oneTimeSetUp() {
-		arr=new boolean[11];
+public class StoreManagerAT {
+
+	private Guest g;
+	private Subscriber sub;
+	private StoreOwner so;
+	private StoreManager sm;
+	private Product prod1;
+	private Product prod2;
+	private Product prod3;
+	private Product prod4;
+	private boolean[] arr;
+	@Before
+	public void beforeTests(){
+		g = new Guest();
+		sub = BlMain.signUp(g, "globUse", "globPass", "usr", "name", "132412356", "123456");
+		Store s1 = BlMain.openStore(sub, 123456, "Tel Aviv", 123654, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
+		List<StoreOwner> own1 = sub.getOwner();
+		so = own1.get(0);
+		
+		prod1 = new Product("111", "prod1", 200, 4, "test cat 1", 
+				new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
+		prod2 = new Product("222", "prod2", 200, 4, "test cat 2", 
+				new PurchasePolicy(new ImmediatelyPurchase()));
+		prod3 = new Product("333", "prod3", 100, 4, "test cat 3", 
+				new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
+		prod4 = new Product("444", "prod4", 200, 4, "test cat 4", 
+				new PurchasePolicy(new ImmediatelyPurchase()));
+		
+		BlMain.addProductToStore(so, prod1, 10);
+		BlMain.addProductToStore(so, prod2, 10);
+		BlMain.addProductToStore(so, prod3, 10);
+		BlMain.addProductToStore(so, prod4, 10);
+		
+		arr=new boolean[12];
 		for (int i=0;i<arr.length;i++)
 			arr[i]=false;
-		s=new Store();
-		sm=new StoreManager(arr, s);
+		
+		sm = new StoreManager(arr, so.getStore());
+		BlMain.addNewManager(so, sm);
+		
 	}
+	
+	//4.1
+	
 	@Test
 	public void testAddProductToStore() {
 		Product product=new Product("569", "ball", 10, 7, "toys", null);

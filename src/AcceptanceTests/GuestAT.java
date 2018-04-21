@@ -106,7 +106,7 @@ public class GuestAT {
 		BlMain.addProductToStore(so1, p2, 3);
 		
 		Guest g2 = new Guest();
-		Subscriber sub2 = BlMain.signUp(g2, "usr1", "pass1", "usr", "name", 132456, "123456");
+		Subscriber sub2 = BlMain.signUp(g2, "usr1", "pass1", "usr", "name", "123456789", "123456");
 		Store s2 = BlMain.openStore(sub2, 123456, "Tel Aviv", 123654, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
 		List<StoreOwner> own2 = sub1.getOwner();
 		StoreOwner so2 = own2.get(0);

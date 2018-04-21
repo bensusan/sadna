@@ -9,7 +9,7 @@ public class SystemAdministrator extends Subscriber {
 	private List<Subscriber> listOfSubs;
 	private List<Store> listOfStores;
 
-	public SystemAdministrator(String username, String password, String fullName, String address, int phone,
+	public SystemAdministrator(String username, String password, String fullName, String address, String phone,
 			String creditCardNumber, List<Cart> purchaseHistory, List<StoreManager> manager, List<StoreOwner> owner) {
 		super(username, password, fullName, address, phone, creditCardNumber, purchaseHistory, manager, owner);
 		

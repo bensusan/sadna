@@ -7,7 +7,7 @@ import java.util.Map;
 public class Store {
 	private int storeId;
 	private String address;
-	private int phone;
+	private String phone;
 	private int gradeing;
 	private Map<Product, Integer> products;
 	private List<Purchase> purchaseHistory;
@@ -22,7 +22,7 @@ public class Store {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Store(int storeId, String address, int phone, int gradeing, Map<Product, Integer> products,
+	public Store(int storeId, String address, String phone, int gradeing, Map<Product, Integer> products,
 			List<Purchase> purchaseHistory, boolean isOpen) {
 		super();
 		this.storeId = storeId;
@@ -38,7 +38,7 @@ public class Store {
 		this.setStorePolicy(null);
 	}
 	
-	public Store(int storeId, String address, int phone, int gradeing, Map<Product, Integer> products,
+	public Store(int storeId, String address, String phone, int gradeing, Map<Product, Integer> products,
 			List<Purchase> purchaseHistory, boolean isOpen, PurchasePolicy storePolicy) {
 		this(storeId, address, phone, gradeing, products, purchaseHistory, isOpen);
 		this.setStorePolicy(storePolicy);
@@ -60,11 +60,11 @@ public class Store {
 		this.address = address;
 	}
 
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 

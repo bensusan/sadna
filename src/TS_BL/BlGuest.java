@@ -94,10 +94,10 @@ public class BlGuest {
 		return false;
 	}
 	
-	public static Subscriber signUp(Guest g, String username, String password, String fullName, String address, int phone, String creditCardNumber){
+	public static Subscriber signUp(Guest g, String username, String password, String fullName, String address, String phone, String creditCardNumber){
 		if(g == null)
 			return null;
-		if(BlMain.misspelled(username) || BlMain.misspelled(fullName) || BlMain.misspelled(address))
+		if(!BlMain.correctSpelledLettersSpacesNumbers(username) || !BlMain.correctSpelledLettersSpaces(fullName) || !BlMain.correctSpelledLettersSpacesNumbers(address) || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.correctSpelledNumbers(phone))
 			return null; //exception spell in user name | full name | address
 		if(!BlMain.legalPassword(password))
 			return null; //password rules failed.
@@ -112,7 +112,7 @@ public class BlGuest {
 	public static Subscriber signIn(Guest g, String username, String password){
 		if(g == null)
 			return null;
-		if(BlMain.misspelled(username))
+		if(!BlMain.correctSpelledLettersSpacesNumbers(username))
 			return null; //exception spell in user name
 		if(!BlMain.legalPassword(password))
 			return null; //password rules failed.

@@ -299,7 +299,7 @@ public class BlMain {
 	}
 
 	public static Subscriber signUp(Guest g, String username, String password, String fullName, String address,
-			int phone, String creditCardNumber) {
+			String phone, String creditCardNumber) {
 		return BlGuest.signUp(g, username, password, fullName, address, phone, creditCardNumber);
 	}
 
@@ -341,14 +341,21 @@ public class BlMain {
 		return null;
 	}
 
-	public static boolean misspelled(String str) {
-		// TODO - check if string could be misspelled
-		return false;
+	public static boolean correctSpelledLettersSpacesNumbers(String str) {
+		return str != null && str.matches("[0-9a-zA-Z\\s]+");
+	}
+	
+	public static boolean correctSpelledLettersSpaces(String str) {
+		return str != null && str.matches("[a-zA-Z\\s]+");
+	}
+	
+	public static boolean correctSpelledNumbers(String str){
+		return str != null && str.matches("[0-9]+");
 	}
 
 	public static boolean legalPassword(String pass) {
-		// TODO - check password rules
-		return true;
+		//may change in the future
+		return correctSpelledLettersSpacesNumbers(pass);
 	}
 
 	//credit card must have between 8 to 16 digits and digits only!

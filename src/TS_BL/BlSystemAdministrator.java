@@ -46,6 +46,9 @@ public class BlSystemAdministrator {
 	 */
 	public static List<Purchase> viewStoreHistory(SystemAdministrator sa, Store store)
 	{
+		if(sa == null || store == null)
+			return null;
+		
 		List<Store> stores = sa.getStores();
 		if(stores.contains(store)){
 			return store.getPurchaseHistory();

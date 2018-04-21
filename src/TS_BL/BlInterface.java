@@ -41,7 +41,7 @@ public interface BlInterface {
 	public boolean addNewManager(StoreManager oldMan, StoreManager newMan);
 	public boolean closeStore(StoreManager sm);
 	public boolean openStore(StoreManager sm);
-	public List<Cart> getPurchaseHistory(StoreManager sm);
+	public List<Purchase> getPurchaseHistory(StoreManager sm);
 	public boolean addProductToStore(StoreOwner so, Product product,int amount);
 	public boolean deleteProductFromStore(StoreOwner so, Product product);
 	public boolean updateProductDetails(StoreOwner so, Product oldProduct, Product newProduct, int amount);
@@ -51,7 +51,7 @@ public interface BlInterface {
 	public boolean addNewManager(StoreOwner so, StoreManager manager);
 	public boolean closeStore(StoreOwner so);
 	public boolean openStore(StoreOwner so);
-	public List<Cart> getPurchaseHistory(StoreOwner so);
+	public List<Purchase> getPurchaseHistory(StoreOwner so);
 	public Store openStore(Subscriber sub, String storeName,String Description);
 	public boolean addPurchaseToHistory(Subscriber sub, Cart cart);
 	public boolean addOwner(Subscriber sub, StoreOwner owner);
@@ -59,8 +59,8 @@ public interface BlInterface {
 	public boolean deleteOwner(Subscriber sub, StoreOwner owner);
 	public boolean deleteManager(Subscriber sub, StoreManager manager);
 	public boolean removeSubscriber(SystemAdministrator sa, Subscriber s);
-	public List<Cart> viewSubscriberHistory(SystemAdministrator sa, Subscriber s);
-	public List<Cart> viewStoreHistory(SystemAdministrator sa, Store store);
+	public List<Purchase> viewSubscriberHistory(SystemAdministrator sa, Subscriber s);
+	public List<Purchase> viewStoreHistory(SystemAdministrator sa, Store store);
 	
 	
 	

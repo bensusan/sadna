@@ -70,7 +70,6 @@ public class BlPermissions {
 		return true;
 	}
 
-
 	public static boolean closeStore(Store s) {
 		if(s != null && s.getIsOpen()){
 			s.setIsOpen(false);
@@ -81,7 +80,6 @@ public class BlPermissions {
 			return false;
 	}
 
-
 	public static boolean openStore(Store s) {
 		if(s != null && !s.getIsOpen()){
 			s.setIsOpen(true);
@@ -91,7 +89,6 @@ public class BlPermissions {
 		else
 			return false;
 	}
-
 
 	public static List<Purchase> getPurchaseHistory(Store s) {
 		return s != null ? s.getPurchaseHistory() : null;

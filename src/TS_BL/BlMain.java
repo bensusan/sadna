@@ -189,109 +189,52 @@ public class BlMain {
 	}
 
 	public static boolean closeStore(StoreOwner so) {
-		return BlPermissions.closeStore(so.getStore());
+		return BlStoreOwner.closeStore(so);
 	}
 
 	public static boolean openStore(StoreOwner so) {
-		return BlPermissions.openStore(so.getStore());
+		return BlStoreOwner.openStore(so);
 	}
 
 	public static List<Purchase> getPurchaseHistory(StoreOwner so) {
-		return BlPermissions.getPurchaseHistory(so.getStore());
+		return BlStoreOwner.getPurchaseHistory(so);
 	}
 
-	public static Store openStore(Subscriber sub, String storeName, String Description) {
-		// TODO: list of stores for sub? store constructor doesn't fit + check
-		// who will call this method
-
-		return null;
+	public static Store openStore(Subscriber sub, int gradeing, Map<Product, Integer> products,
+			List<Purchase> purchaseHistory, boolean isOpen) {
+		return BlSubscriber.openStore(sub,gradeing,products,purchaseHistory,isOpen);
 	}
 
 	public static boolean addPurchaseToHistory(Subscriber sub, Cart cart) {
-		if (cart == null || sub == null)
-			return false;
-
-		List<Cart> allCarts = sub.getPurchaseHistory();
-		allCarts.add(cart);
-		sub.setPurchaseHistory(allCarts);
-		
-		return true;
+		return BlSubscriber.addPurchaseToHistory(sub, cart);
 	}
 
 	public static boolean addOwner(Subscriber sub, StoreOwner owner) {
-		if(sub == null || owner == null)
-			return false;
-		List<StoreOwner> sOwn = sub.getOwner();
-		if (sOwn.contains(owner))
-			return false;
-
-		sOwn.add(owner);
-		sub.setOwner(sOwn);
-		return true;
+		return BlSubscriber.addOwner(sub,owner);
 	}
 
 	public static boolean addManager(Subscriber sub, StoreManager manager) {
-		if(sub == null || manager == null)
-			return false;
-		List<StoreManager> sMng = sub.getManager();
-		if (sMng.contains(manager))
-			return false;
-
-		sMng.add(manager);
-		sub.setManager(sMng);
-		return true;
+		return BlSubscriber.addManager(sub, manager);
 	}
 
 	public static boolean deleteOwner(Subscriber sub, StoreOwner owner) {
-		if(sub == null || owner == null)
-			return false;
-		List<StoreOwner> sOwn = sub.getOwner();
-		if (!sOwn.contains(owner))
-			return false;
-
-		sOwn.remove(owner);
-		sub.setOwner(sOwn);
-		return true;
+		return BlSubscriber.deleteOwner(sub, owner);
 	}
 
 	public static boolean deleteManager(Subscriber sub, StoreManager manager) {
-		if(sub == null || manager == null)
-			return false;
-		List<StoreManager> sMng = sub.getManager();
-		if (!sMng.contains(manager))
-			return false;
-
-		sMng.remove(manager);
-		sub.setManager(sMng);
-		return true;
+		return BlSubscriber.deleteManager(sub, manager);
 	}
 
 	public static boolean removeSubscriber(SystemAdministrator sa, Subscriber s) {
-		if(sa == null || s == null)
-			return false;
-		List<Subscriber> subList = BlMain.allSubscribers;
-		if (!subList.contains(s))
-			return false;
-
-		subList.remove(s);
-		BlMain.allSubscribers = subList;
-		return true;
+		return BlSystemAdministrator.removeSubscriber(sa, s);
 	}
 
 	public static List<Cart> viewSubscriberHistory(SystemAdministrator sa, Subscriber s) {
-		if(sa == null || s == null)
-			return null;
-		List<Subscriber> subList = BlMain.allSubscribers;
-		if (!subList.contains(s))
-			return null;
-
-		return subList.get(subList.indexOf(s)).getPurchaseHistory();
+		return BlSystemAdministrator.viewSubscriberHistory(sa, s);
 	}
 
 	public static List<Purchase> viewStoreHistory(SystemAdministrator sa, Store store) {
-		if(sa == null || store == null)
-			return null;
-		return BlPermissions.getPurchaseHistory(store);
+		return BlSystemAdministrator.viewStoreHistory(sa, store);
 	}
 
 	// More functions that are necessary.

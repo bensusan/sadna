@@ -38,8 +38,7 @@ public class BlStoreOwner {
 	 */
 	public static boolean addPolicyToProduct(StoreOwner so, PurchasePolicy policy, Product product)
 	{
-		//TODO missing implementation
-		return false;
+		return so != null && BlPermissions.addPolicyToProduct(so.getStore(), policy, product);
 	}
 	
 	/**
@@ -50,8 +49,7 @@ public class BlStoreOwner {
 	 */
 	public static boolean addDiscountToProduct(StoreOwner so, DiscountPolicy discount, Product product)
 	{
-		//TODO missing implementation
-		return false;
+		return so != null && BlPermissions.addDiscountToProduct(so.getStore(), discount, product);
 	}
 	/**
 	 * add new owner to store
@@ -60,8 +58,7 @@ public class BlStoreOwner {
 	 */
 	public static boolean addNewStoreOwner(StoreOwner oldSo, StoreOwner newSo)
 	{
-		//TODO missing implementation
-		return false;
+		return (oldSo != null && newSo != null && oldSo.getStore() != null) && BlPermissions.addNewStoreOwner(oldSo.getStore(), newSo);
 	}
 	/**
 	 * add new manager to store
@@ -70,32 +67,31 @@ public class BlStoreOwner {
 	 */
 	public static boolean addNewManager(StoreOwner so, StoreManager manager)
 	{
-		//TODO missing implementation
-		return false;
+		return (so != null && manager != null && so.getStore() != null) && BlPermissions.addNewManager(so.getStore(), manager);
 	}
 	/**
 	 * @return true if the store close false otherwise
 	 */
 	public static boolean closeStore(StoreOwner so)
 	{
-		//TODO missing implementation
-		return false;
+		return so != null && BlPermissions.closeStore(so.getStore());
 	}
 	/**
 	 * @return true if the store reopen false otherwise
 	 */
 	public static boolean openStore(StoreOwner so)
 	{
-		//TODO missing implementation
-		return false;
+		return so != null && BlPermissions.openStore(so.getStore());
 	}
 	/**
 	 * @return history of pruchase in the store
 	 */
-	public static List<Cart> getPurchaseHistory(StoreOwner so)
+	public static List<Purchase> getPurchaseHistory(StoreOwner so)
 	{
-		//TODO missing implementation
-		return null;
+		if(so == null || so.getStore() == null)
+			return null;
+		
+		return so.getStore().getPurchaseHistory();
 	}
 	
 	public static void expiredProducts(StoreOwner so){

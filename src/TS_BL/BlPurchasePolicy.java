@@ -10,7 +10,7 @@ public class BlPurchasePolicy {
 	
 	private static boolean canPurchase(PurchasePolicy pp, Guest g) {
 		//TODO
-		return true;
+		return pp != null && g != null;
 	}
 	
 	//From here methods that define the rules. for example minimum number of products per order.

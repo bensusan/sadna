@@ -3,6 +3,7 @@ package tests.regressionTests;
 import static org.junit.Assert.*;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,8 +54,8 @@ public class regression {
 	}
 	@Test
 	public void testOpenStore() {
-		ofirStore=BlMain.openStore((Subscriber) ofir, "ofir's store", "ofir's store");
-		orStore=BlMain.openStore((Subscriber) or,"or's store","or's store");
+		ofirStore=BlMain.openStore((Subscriber) ofir,5, new HashMap<Product, Integer>(), new LinkedList<Purchase>(),true);
+		orStore=BlMain.openStore((Subscriber) or,5, new HashMap<Product, Integer>(), new LinkedList<Purchase>(),true);
 		assertTrue(BlMain.getAllStores().contains(ofirStore));
 		assertTrue(BlMain.getAllStores().contains(orStore));
 		assertTrue(BlMain.getAllStoresWithThierProductsAndAmounts().keySet().contains(ofirStore));
@@ -160,7 +161,6 @@ public class regression {
 	}
 	
 
-	//1.7 +7.1+7.3
 	@Test
 	public void testPruchaseCart() {
 		BlMain.purchaseCart(alex, "1111111111111111", "max shein 22 nes ziona");

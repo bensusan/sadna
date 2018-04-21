@@ -80,7 +80,6 @@ public class guestTests {
 
 	@Test
 	public void testPruchaseProduct() {
-		//TODO product in store
 		Guest g=new Guest();
 		Product p=new Product("995", "apple", 5, 3, "fruits", new PurchasePolicy(new ImmediatelyPurchase()));
 		assertFalse(BlMain.pruchaseProduct(null, p, 1, "1234567890123456", "herzel 23 tel aviv"));
@@ -90,7 +89,6 @@ public class guestTests {
 		assertFalse(BlMain.pruchaseProduct(g, p, 1, null, "herzel 23 tel aviv"));
 		assertFalse(BlMain.pruchaseProduct(g, p, 1, "1234567890123456", null));
 		assertTrue(BlMain.pruchaseProduct(g, p, 1, "1234567890123456", "herzel 23 tel aviv"));
-		//immediate
 		Product p1=new Product("995", "apple", 5, 3, "fruits", new PurchasePolicy(new LotteryPurchase(new Date(2017, 12, 12))));
 		assertFalse(BlMain.pruchaseProduct(g, p1, 1, "1234567890123456", "herzel 23 tel aviv"));//lottery end
 		((LotteryPurchase)p1.getPurchasePolicy().getPurchaseType()).setLotteryEndDate(new Date(2018,12,12));
@@ -100,7 +98,6 @@ public class guestTests {
 	@Test
 	public void testSignUp() {
 		Guest g=new Guest();
-		//bad
 		assertNull(BlMain.signUp(null, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
 		assertNull(BlMain.signUp(g, "**ghju%", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
 		assertNull(BlMain.signUp(g, null, "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
@@ -115,7 +112,7 @@ public class guestTests {
 		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1"));
 		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "123456789o123456"));
 		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", null));
-		//good
+
 		Subscriber s=BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456");
 		assertEquals(g.getCart(),s.getCart());
 		assertEquals(s.getAddress(),"herzel 23 herzelia");

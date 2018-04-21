@@ -15,7 +15,7 @@ public class storeManagerTests {
 	private static boolean arr[];
 	private static Store s;
 	
-	//4.1
+	
 	@BeforeClass
     public static void oneTimeSetUp() {
 		arr=new boolean[11];
@@ -76,10 +76,6 @@ public class storeManagerTests {
 		assertTrue(BlMain.addDiscountToProduct(sm, discount, product));
 	}
 
-	@Test
-	public void testAddNewStoreOwner() {
-		fail("Not yet implemented");
-	}
 
 	@Test
 	public void testAddNewManager() {
@@ -111,9 +107,5 @@ public class storeManagerTests {
 		assertTrue(BlMain.getPurchaseHistory(sm).isEmpty());
 	}
 
-	@Test
-	public void testExpiredProducts() {
-		fail("Not yet implemented");
-	}
 
 }

@@ -24,12 +24,6 @@ public class subscriberTests {
 		manager=new StoreManager(null,new Store());
 	}
 	
-	@Test
-	public void testOpenStore() {
-		
-		
-		fail("Not yet implemented");
-	}
 
 	@Test
 	public void testAddPurchaseToHistory() {

@@ -78,7 +78,7 @@ public class BlGuest {
 	 * @return true if succseed false otherwise
 	 */
 	public static boolean pruchaseProduct(Guest g, Product product, int amount, String creditCardNumber, String buyerAddress) {
-		if(g == null || product == null || amount < 1 || g.getCart().getProducts().isEmpty() || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.legalAddress(buyerAddress))
+		if(g == null || product == null || amount < 1 || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.legalAddress(buyerAddress))
 			return false;
 		BlMain.addCreditCartToMap(creditCardNumber, g);
 		if(BlMain.purchase(product, g, product.getPrice(), amount)){

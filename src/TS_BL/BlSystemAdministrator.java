@@ -1,3 +1,4 @@
+
 package TS_BL;
 
 import java.util.List;
@@ -11,32 +12,34 @@ public class BlSystemAdministrator {
 	 * @param s
 	 * @return true if succeed false otherwise
 	 */
-	public static boolean removeSubscriber(SystemAdministrator sa, Subscriber s)
-	{
-		List<Subscriber> subs = BlMain.allSubscribers;
-		if(subs.contains(s)){
-			subs.remove(s);
-			BlMain.allSubscribers = subs;
-			return true;
-		}
-		
-		else
+	public static boolean removeSubscriber(SystemAdministrator sa, Subscriber s) {
+		if(sa == null || s == null)
 			return false;
+
+		List<Subscriber> subList = BlMain.allSubscribers;
+		if (!subList.contains(s))
+			return false;
+
+		subList.remove(s);
+		BlMain.allSubscribers = subList;
+		return true;
 	}
+	
 	/**
 	 * @param s
 	 * @return the purchase history that made by the subscriber
-	 */
-	public static List<Cart> viewSubscriberHistory(SystemAdministrator sa, Subscriber s)
-	{
-		List<Subscriber> subs = BlMain.allSubscribers;
-		if(subs.contains(s)){
-			return s.getPurchaseHistory();
-		}
-		
-		else
+	 */	
+	public static List<Cart> viewSubscriberHistory(SystemAdministrator sa, Subscriber s) {
+		if(sa == null || s == null)
 			return null;
+		
+		List<Subscriber> subList = BlMain.allSubscribers;
+		if (!subList.contains(s))
+			return null;
+
+		return subList.get(subList.indexOf(s)).getPurchaseHistory();
 	}
+	
 	/**
 	 * @param store
 	 * @return the purchase history that made in the store
@@ -47,9 +50,7 @@ public class BlSystemAdministrator {
 		if(stores.contains(store)){
 			return store.getPurchaseHistory();
 		}
-		
 		else
 			return null;
 	}
-	
 }

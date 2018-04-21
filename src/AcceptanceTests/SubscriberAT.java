@@ -20,7 +20,7 @@ public class SubscriberAT {
 	@Before
 	public void beforeTests(){
 		signed = new Guest();
-		sub = BlMain.signUp(signed, "usr", "pass", "name", "address", "132412356", "123456");
+		sub = BlMain.signUp(signed, "usr", "pass", "name", "address", "132412356", "1234567891011");
 	}
 	//2.1
 	@Test

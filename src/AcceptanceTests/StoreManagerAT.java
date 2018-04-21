@@ -27,7 +27,7 @@ public class StoreManagerAT {
 	@Before
 	public void beforeTests(){
 		g = new Guest();
-		sub = BlMain.signUp(g, "globUse", "globPass", "usr", "name", "132412356", "123456");
+		sub = BlMain.signUp(g, "StoreManagerAT", "globPass", "usr", "name", "132412356", "1234567891011");
 		Store s1 = BlMain.openStore(sub,  5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
 		List<StoreOwner> own1 = sub.getOwner();
 		so = own1.get(0);

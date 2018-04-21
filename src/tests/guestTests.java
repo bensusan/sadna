@@ -61,7 +61,7 @@ public class guestTests {
 		Product p=new Product("995", "apple", 5, 3, "fruits", new PurchasePolicy(new ImmediatelyPurchase()));
 		BlMain.addProductToCart(g, p, 1);
 		assertTrue(BlMain.editCart(g, new HashMap<Product,Integer>()));
-		assertFalse(g.getCart().getProducts().containsKey(p));
+		assertTrue(g.getCart().getProducts().containsKey(p));
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class guestTests {
 		assertFalse(BlMain.puchaseCart(g, "1234567890123456", "herzel 23 tel aviv"));//empty cart
 		Product p=new Product("995", "apple", 5, 3, "fruits", new PurchasePolicy(new ImmediatelyPurchase()));
 		BlMain.addProductToCart(g, p, 1);
-		assertFalse(BlMain.puchaseCart(g, "12345678901234", "herzel 23 tel aviv"));
+		assertFalse(BlMain.puchaseCart(g, "1", "herzel 23 tel aviv"));
 		assertFalse(BlMain.puchaseCart(g, null, "herzel 23 tel aviv"));
 		assertFalse(BlMain.puchaseCart(g, "1234567890123456", null));
 		assertFalse(BlMain.puchaseCart(null, "1234567890123456", "herzel 23 tel aviv"));
@@ -101,22 +101,22 @@ public class guestTests {
 	public void testSignUp() {
 		Guest g=new Guest();
 		//bad
-		assertNull(BlMain.signUp(null, "abc", "123", "oded menashe", "herzel 23 herzelia", 0541234567, "1234567890123456"));
-		assertNull(BlMain.signUp(g, "**ghju%", "123", "oded menashe", "herzel 23 herzelia", 0541234567, "1234567890123456"));
-		assertNull(BlMain.signUp(g, null, "123", "oded menashe", "herzel 23 herzelia", 0541234567, "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", "(T#ghn526?.<~", "oded menashe", "herzel 23 herzelia", 0541234567, "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", null, "oded menashe", "herzel 23 herzelia", 0541234567, "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", "123", "oded 55menashe89", "herzel 23 herzelia", 0541234567, "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", "123", null, "herzel 23 herzelia", 0541234567, "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "&&JKGjhg64?.}", 0541234567, "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", null, 0541234567, "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", -5, "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", 054124567, "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", 0541234567, "12345678901234567"));
-		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", 0541234567, "123456789o123456"));
-		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", 0541234567, null));
+		assertNull(BlMain.signUp(null, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
+		assertNull(BlMain.signUp(g, "**ghju%", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
+		assertNull(BlMain.signUp(g, null, "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
+		assertNull(BlMain.signUp(g, "abc", "(T#ghn526?.<~", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
+		assertNull(BlMain.signUp(g, "abc", null, "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
+		assertNull(BlMain.signUp(g, "abc", "123", "oded 55menashe89", "herzel 23 herzelia", "0541234567", "1234567890123456"));
+		assertNull(BlMain.signUp(g, "abc", "123", null, "herzel 23 herzelia", "0541234567", "1234567890123456"));
+		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "&&JKGjhg64?.}", "0541234567", "1234567890123456"));
+		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", null, "0541234567", "1234567890123456"));
+		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "-5", "1234567890123456"));
+		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "1", "1234567890123456"));
+		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1"));
+		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "123456789o123456"));
+		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", null));
 		//good
-		Subscriber s=BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", 0541234567, "1234567890123456");
+		Subscriber s=BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456");
 		assertEquals(g.getCart(),s.getCart());
 		assertEquals(s.getAddress(),"herzel 23 herzelia");
 		assertEquals(s.getCreditCardNumber(),"1234567890123456");
@@ -124,11 +124,11 @@ public class guestTests {
 		assertTrue(s.getManager().isEmpty());
 		assertTrue(s.getOwner().isEmpty());
 		assertEquals(s.getPassword(),"123");
-		assertEquals(s.getPhone(),0541234567);
+		assertEquals(s.getPhone(),"0541234567");
 		assertTrue(s.getPurchaseHistory().isEmpty());
 		assertEquals(s.getUsername(),"abc");
 		//exsist user
-		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", 0541234567, "1234567890123456"));
+		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
 		
 	}
 
@@ -145,7 +145,7 @@ public class guestTests {
 		Subscriber s1=BlMain.signIn(g, "abc", "123");
 		
 		assertEquals(s1.getUsername(),"abc");
-		assertEquals(s1.getPhone(),0541234567);
+		assertEquals(s1.getPhone(),"0541234567");
 		assertEquals(s1.getPassword(),"123");
 		assertEquals(s1.getFullName(),"oded menashe");
 		assertEquals(s1.getCreditCardNumber(),"1234567890123456");

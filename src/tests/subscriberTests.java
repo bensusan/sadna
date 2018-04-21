@@ -19,7 +19,7 @@ public class subscriberTests {
 	private static StoreManager manager;
 	@BeforeClass
     public static void oneTimeSetUp() {
-		sub=new Subscriber(new Cart(), "abc123", "0987654", "moshe datz", "herzel 23 herzelia", 0541234567, "1234567890123456", new LinkedList(), new LinkedList(), new LinkedList());
+		sub=new Subscriber(new Cart(), "abc123", "0987654", "moshe datz", "herzel 23 herzelia", "0541234567", "1234567890123456", new LinkedList(), new LinkedList(), new LinkedList());
 		owner=new StoreOwner(new Store());
 		manager=new StoreManager(null,new Store());
 	}

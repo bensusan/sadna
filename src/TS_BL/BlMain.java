@@ -17,6 +17,7 @@ public class BlMain {
 	public static List<Subscriber> allSubscribers = new LinkedList<Subscriber>();
 	public static Map<Guest, List<String>> allUsersWithTheirCreditCards = new HashMap<Guest, List<String>>(); // TODO
 	public static int purchaseId = -1;
+	public static int storeId = -1;
 	// need to insert to here all guests that payed with their credit card for pay back
 	
 	// public static boolean puchaseCart(Cart c, int creditCardNumber, String
@@ -443,5 +444,9 @@ public class BlMain {
 	
 	public static int getPurchaseId(){
 		return purchaseId;
+	}
+	
+	public static int getStoreId(){
+		return storeId++;
 	}
 }

@@ -34,7 +34,7 @@ public class purchasePolicyTest {
 		//Test zero proce
 		assertFalse(BlMain.purchase(pp, g, 100, 0));
 		//Test normal case
-		assertFalse(BlMain.purchase(pp, g, 100, 3));
+		assertTrue(BlMain.purchase(pp, g, 100, 3));
 	}
 	
 

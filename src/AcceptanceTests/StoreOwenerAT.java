@@ -108,7 +108,110 @@ public class StoreOwenerAT {
 	
 	//3.2.1
 	@Test
-	public void testDefinePurchasePolicy()
+	public void testDefinePurchasePolicy(){
+		BlMain.addProductToStore(so, prod1, 10);
+		
+		//incorrect Input
+		assertFalse(BlMain.addPolicyToProduct(so, null, prod1));
+		assertFalse(BlMain.addPolicyToProduct(so, new PurchasePolicy(new ImmediatelyPurchase()), null));
+		StoreOwner so2 = null;
+		assertFalse(BlMain.addPolicyToProduct(so2, new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))), prod1));
+		
+		//good case
+		PurchasePolicy newPolicy = new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01")));
+		assertTrue(BlMain.addPolicyToProduct(so, newPolicy, prod1));
+		
+		//add policy to non exists prod
+		Product notExits = new Product("404", "notExits", 200, 4, "test cat 2", new PurchasePolicy(new ImmediatelyPurchase()));
+		assertFalse(BlMain.addPolicyToProduct(so, new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))), notExits));
+		
+	}
 	
-
+	//3.2.2
+	@Test
+	public void testDefineDiscountPolicy(){
+		BlMain.addProductToStore(so, prod1, 10);
+		
+		//incorrect Input
+		assertFalse(BlMain.addDiscountToProduct(so, null, prod1));
+		assertFalse(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 10), null));
+		StoreOwner so2 = null;
+		assertFalse(BlMain.addDiscountToProduct(so2, new OvertDiscount(new java.sql.Date(0), 10), prod1));
+		//not found
+		Product notExits = new Product("404", "notExits", 200, 4, "test cat 2", new PurchasePolicy(new ImmediatelyPurchase()));
+		assertFalse(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 10), notExits));
+		//good case
+		assertTrue(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 10), prod1));
+		
+		BlMain.addProductToStore(so, prod2, 10);
+		assertTrue(BlMain.addDiscountToProduct(so, new HiddenDiscount(123, Date.valueOf("2019-01-01"), 20), prod2));
+	}
+	
+	//3.3
+	@Test
+	public void testAddStoreOwner(){
+		StoreOwner so2 = new StoreOwner(so.getStore());
+		
+		//incorrect Input
+		assertFalse(BlMain.addNewStoreOwner(so, null));
+		StoreOwner nullso = null;
+		assertFalse(BlMain.addNewStoreOwner(nullso, so2));
+		
+		//need to add function add new store owner from subscriber
+		assertTrue(BlMain.addNewStoreOwner(so, so2));
+		
+	}
+	
+	//3.4
+	@Test
+	public void testAddStoreManager(){
+		StoreManager sm = new StoreManager(new boolean[13], so.getStore());
+		
+		//incorrect Input
+		assertFalse(BlMain.addNewManager(so, null));
+		StoreOwner nullso = null;
+		assertFalse(BlMain.addNewManager(nullso, sm));
+		
+		
+		//need to add function add new man owner from subscriber
+		assertFalse(BlMain.addNewManager(so, sm));
+	}
+	
+	//3.7
+	@Test
+	public void testWatchPurchaseHistory(){
+		assertTrue(BlMain.addProductToStore(so, prod2, 10));
+		assertTrue(BlMain.addProductToStore(so, prod1, 10));
+		assertTrue(BlMain.addProductToStore(so, prod3, 10));
+		
+		Guest g1 = new Guest();
+		Guest g2 = new Guest();
+		
+		BlMain.addProductToCart(g1, prod1, 1);
+		BlMain.addProductToCart(g2, prod3, 3);
+		
+		BlMain.puchaseCart(g1, "123456789123", "holon");
+		BlMain.pruchaseProduct(g2, prod2, 3, "123456789321", "Eilat");
+		BlMain.puchaseCart(g2, "123456789123", "holon");
+		
+		List<Purchase> purchases = BlMain.getPurchaseHistory(so);
+		List<Cart> carts = new ArrayList<Cart>();
+		for(Purchase p : purchases){
+			carts.add(p.getPurchased());
+		}
+		assertTrue(carts.contains(g1.getCart()));
+		assertTrue(carts.contains(g2.getCart()));
+		
+	}
 }
+
+
+
+
+
+
+
+
+
+
+

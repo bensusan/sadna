@@ -110,7 +110,7 @@ public class BlMain {
 	}
 
 	public static boolean checkInStock(Store s, Product p, int amount) {
-		return BlStore.stockUpdate(s, p, amount);
+		return BlStore.checkInStock(s, p, amount);
 	}
 
 	public static boolean addPurchaseToHistory(Store s, Purchase p) {

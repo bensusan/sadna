@@ -10,21 +10,23 @@ import java.util.Set;
 import java.sql.Date;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
+
 import TS_BL.BlMain;
 import TS_SharedClasses.*;
 
 public class StoreOwenerAT {
 
-	private Guest g;
-	private Subscriber sub;
-	private StoreOwner so;
-	private Product prod1;
-	private Product prod2;
-	private Product prod3;
-	private Product prod4;
+	private static Guest g;
+	private static Subscriber sub;
+	private static StoreOwner so;
+	private static Product prod1;
+	private static Product prod2;
+	private static Product prod3;
+	private static Product prod4;
 	
-	@Before
-	public void beforeTests(){
+	@BeforeClass
+	public static void beforeTests(){
 		g = new Guest();
 		sub = BlMain.signUp(g, "StoreOwenerAT", "globPass", "usr", "name", "132412356", "1234567891011");
 		Store s1 = BlMain.openStore(sub, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);

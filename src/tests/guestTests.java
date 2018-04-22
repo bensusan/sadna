@@ -85,7 +85,7 @@ public class guestTests {
 		assertFalse(BlMain.pruchaseProduct(null, p, 1, "1234567890123456", "herzel 23 tel aviv"));
 		assertFalse(BlMain.pruchaseProduct(g, null, 1, "1234567890123456", "herzel 23 tel aviv"));
 		assertFalse(BlMain.pruchaseProduct(g, p, -1, "1234567890123456", "herzel 23 tel aviv"));
-		assertFalse(BlMain.pruchaseProduct(g, p, 1, "12345678901456", "herzel 23 tel aviv"));
+		assertFalse(BlMain.pruchaseProduct(g, p, 1, "1", "herzel 23 tel aviv"));
 		assertFalse(BlMain.pruchaseProduct(g, p, 1, null, "herzel 23 tel aviv"));
 		assertFalse(BlMain.pruchaseProduct(g, p, 1, "1234567890123456", null));
 		assertTrue(BlMain.pruchaseProduct(g, p, 1, "1234567890123456", "herzel 23 tel aviv"));

@@ -10,15 +10,17 @@ import java.util.Set;
 import java.sql.Date;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
+
 import TS_BL.BlMain;
 import TS_SharedClasses.*;
 
 public class SubscriberAT {
-	private Guest signed = new Guest();
-	private Subscriber sub;
+	private static Guest signed = new Guest();
+	private static Subscriber sub;
 	
-	@Before
-	public void beforeTests(){
+	@BeforeClass
+	public static void beforeTests(){
 		signed = new Guest();
 		sub = BlMain.signUp(signed, "usr", "pass", "name", "address", "132412356", "1234567891011");
 	}

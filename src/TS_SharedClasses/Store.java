@@ -1,5 +1,6 @@
 package TS_SharedClasses;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,11 @@ public class Store {
 		this.phone = phone;
 		this.gradeing = gradeing;
 		this.products = products;
+		if(products == null)
+			this.products = new HashMap<Product, Integer>();
 		this.purchaseHistory = purchaseHistory;
+		if(purchaseHistory == null)
+			this.purchaseHistory = new LinkedList<Purchase>();
 		this.isOpen=isOpen;
 		this.myOwners = new LinkedList<StoreOwner>();
 		this.myManagers = new LinkedList<StoreManager>();

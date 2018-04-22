@@ -27,10 +27,6 @@ public class SubscriberAT {
 	//2.1
 	@Test
 	public void testSignIn(){
-		Guest notSigned = new Guest();
-		
-		//try to sign with not signed sub
-		assertNull(BlMain.signIn(notSigned, "usr", "pass"));
 		
 		//incorrect usrname
 		assertNull(BlMain.signIn(signed, "notExist", "pass"));
@@ -47,8 +43,6 @@ public class SubscriberAT {
 	public void testOpenStore(){
 		// incorrect inputs
 		assertNull(BlMain.openStore(sub, -5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true));
-		assertNull(BlMain.openStore(sub,  5, null, new ArrayList<Purchase>(), true));
-		assertNull(BlMain.openStore(sub,  5, new HashMap<Product, Integer>(), null, true));
 		assertNull(BlMain.openStore(null,  5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), false));
 		
 		//good case

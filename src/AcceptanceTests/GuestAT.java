@@ -108,7 +108,7 @@ public class GuestAT {
 		BlMain.addProductToStore(so1, p2, 3);
 		
 		Guest g2 = new Guest();
-		Subscriber sub2 = BlMain.signUp(g2, "usr1", "pass1", "usr", "name", "123456789", "13332123132");
+		Subscriber sub2 = BlMain.signUp(g2, "usr2", "pass1", "user", "name", "123456789", "13332123132");
 		Store s2 = BlMain.openStore(sub2, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
 		List<StoreOwner> own2 = sub1.getOwner();
 		StoreOwner so2 = own2.get(0);
@@ -226,21 +226,21 @@ public class GuestAT {
 		//notice the store in @Before function
 		//purchase zero amount of product in store
 		Guest g1 = new Guest();
-		assertFalse(BlMain.pruchaseProduct(g1,this.zeroAmountProduct, 1, "1234512316789", "rehovot"));
+		assertFalse(BlMain.pruchaseProduct(g1,zeroAmountProduct, 1, "1234512316789", "rehovot"));
 		
 		//purchase more then amount
 		Guest g2 = new Guest();
-		assertFalse(BlMain.pruchaseProduct(g2, this.immediateNoDiscountProduct, 11, "1234512316789" , "rehovot"));
+		assertFalse(BlMain.pruchaseProduct(g2, immediateNoDiscountProduct, 11, "1234512316789" , "rehovot"));
 		
 		//test success purchase no discount
-		assertTrue(BlMain.pruchaseProduct(g2, this.immediateNoDiscountProduct, 3, "1234512316789" , "rehovot"));
+		assertTrue(BlMain.pruchaseProduct(g2, immediateNoDiscountProduct, 3, "1234512316789" , "rehovot"));
 		
 		//test success purchase no discount
-		assertTrue(BlMain.pruchaseProduct(g2, this.immediateOvertProduct, 6, "1234512316789" , "rehovot"));
+		assertTrue(BlMain.pruchaseProduct(g2, immediateOvertProduct, 6, "1234512316789" , "rehovot"));
 		
 		Map<Product, Integer> prods = so.getStore().getProducts();
-		assertEquals(7, prods.get(this.immediateNoDiscountProduct).intValue());
-		assertEquals(6, prods.get(this.immediateOvertProduct).intValue());
+		assertEquals(7, prods.get(immediateNoDiscountProduct).intValue());
+		assertEquals(6, prods.get(immediateOvertProduct).intValue());
 		
 	}
 		
@@ -249,22 +249,22 @@ public class GuestAT {
 	public void testCartPurchase(){
 		//purchase zero amount of product in store
 		Guest g1 = new Guest();
-		BlMain.addProductToCart(g1, this.zeroAmountProduct, 1);
+		BlMain.addProductToCart(g1,zeroAmountProduct, 1);
 		assertFalse(BlMain.purchaseCart(g1, "132456", "rehovot"));
 		
 		//purchase more then amount
 		Guest g2 = new Guest();
-		BlMain.addProductToCart(g2, this.immediateNoDiscountProduct, 11);
+		BlMain.addProductToCart(g2, immediateNoDiscountProduct, 11);
 		assertFalse(BlMain.purchaseCart(g2, "132456", "rehovot"));
 		
 		//test success purchase no discount
 		Guest g3 = new Guest();
-		BlMain.addProductToCart(g3, this.immediateNoDiscountProduct, 4);
+		BlMain.addProductToCart(g3, immediateNoDiscountProduct, 4);
 		assertFalse(BlMain.purchaseCart(g3, "132456", "rehovot"));
 		
 		//test success purchase no discount
 		Guest g4 = new Guest();
-		BlMain.addProductToCart(g4, this.immediateOvertProduct, 4);
+		BlMain.addProductToCart(g4, immediateOvertProduct, 4);
 		assertFalse(BlMain.purchaseCart(g4, "132456", "rehovot"));
 		
 	}

@@ -9,8 +9,9 @@ public class BlPermissions {
 
 	//Here we will implement Store's owner and Store's manager permissions
 	public static boolean addProductToStore(Store s, Product product, int amount) {
-		if(s == null || product == null || amount <= 0)
+		if(s == null || product == null || amount <= 0 || product.getStore() != null)
 			return false;
+		product.setStore(s);
 		if(s.getProducts().get(product) != null)
 			return s.getProducts().put(product, s.getProducts().get(product)+ amount) != null;
 		return s.getProducts().put(product, amount) == null;
@@ -18,7 +19,10 @@ public class BlPermissions {
 
 
 	public static boolean deleteProductFromStore(Store s, Product product) {
-		return s != null && product != null && s.getProducts().remove(product) != null;
+		if(s == null || product == null || s.getProducts().remove(product) == null)
+			return false;
+		product.setStore(null);
+		return true;
 	}
 
 

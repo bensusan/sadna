@@ -13,7 +13,7 @@ public class BlPermissions {
 			return false;
 		if(s.getProducts().get(product) != null)
 			return s.getProducts().put(product, s.getProducts().get(product)+ amount) != null;
-		return s.getProducts().put(product, amount) != null;
+		return s.getProducts().put(product, amount) == null;
 	}
 
 

@@ -13,7 +13,7 @@ public class BlStore {
 	 * @return true if product in stock false otherwise
 	 */
 	public static boolean checkInStock(Store s, Product p, int amount) {
-		return s.getProducts().get(p) != null && s.getProducts().get(p) >= amount;
+		return s != null && p != null && s.getProducts().get(p) != null && s.getProducts().get(p) >= amount;
 	}
 
 	/**

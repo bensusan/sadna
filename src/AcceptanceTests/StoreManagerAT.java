@@ -31,7 +31,7 @@ public class StoreManagerAT {
 	public static void beforeTests(){
 		g = new Guest();
 		sub = BlMain.signUp(g, "StoreManagerAT", "globPass", "usr", "name", "132412356", "1234567891011");
-		Store s1 = BlMain.openStore(sub,  5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
+		Store s1 = BlMain.openStore(sub,  5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), false);
 		List<StoreOwner> own1 = sub.getOwner();
 		so = own1.get(0);
 		
@@ -94,7 +94,7 @@ public class StoreManagerAT {
 	@Test
 	public void testAddPolicyToProduct() {
 		PurchasePolicy policy=new PurchasePolicy(new ImmediatelyPurchase());
-		Product product=new Product("569", "ball", 8, 7, "toys", null);
+		Product product=new Product("569", "ball", 8, 7, "toys", new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
 		BlMain.addProductToStore(sm, product, 5);
 		assertFalse(BlMain.addPolicyToProduct(sm, policy, product));
 		arr[BlMain.addPolicyToProduct]=true;

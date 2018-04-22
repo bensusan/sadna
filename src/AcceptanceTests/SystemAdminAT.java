@@ -26,9 +26,10 @@ public class SystemAdminAT {
 	@BeforeClass
 	public static void beforeTests(){
 		sa = new SystemAdministrator("admin", "nimda", "sagivmap", "Ashdod", "088559977", "132456789987", new ArrayList<Purchase>(), new ArrayList<StoreManager>(), new ArrayList<StoreOwner>());
-		s1 = BlMain.signUp(new Guest(), "first", "first", "name1", "add1" , "012345678945", "987564321123");
-		s2 = BlMain.signUp(new Guest(), "second", "second", "name2", "add2" , "012345678945", "987564321123");
-		s3 = BlMain.signUp(new Guest(), "third", "third", "name3", "add3" , "012345678945", "987564321123");
+		s1 = BlMain.signUp(new Guest(), "first", "first", "nameA", "add1" , "012345678945", "987564321123");
+		s2 = BlMain.signUp(new Guest(), "second", "second", "nameB", "add2" , "012345678945", "987564321123");
+		s3 = BlMain.signUp(new Guest(), "third", "third", "nameC", "add3" , "012345678945", "987564321123");
+		System.out.println(s1);
 	}
 	
 	//5.2
@@ -42,9 +43,9 @@ public class SystemAdminAT {
 		Subscriber notExits  = new Subscriber( new Cart(), "forth", "forth", "name4", "add4" , "012345678945", "987564321123", new ArrayList<Purchase>(), new ArrayList<StoreManager>(), new ArrayList<StoreOwner>());
 		assertFalse(BlMain.removeSubscriber(sa, notExits));
 		
-		assertTrue(BlMain.removeSubscriber(sa, s1));
+		assertTrue(BlMain.removeSubscriber(sa, this.s1));
 		
-		assertFalse(BlMain.allSubscribers.contains(s1));
+		assertFalse(BlMain.allSubscribers.contains(this.s1));
 	}
 	
 	//5.4

@@ -175,7 +175,7 @@ public class StoreOwenerAT {
 		
 		
 		//need to add function add new man owner from subscriber
-		assertFalse(BlMain.addNewManager(so, sm));
+		assertTrue(BlMain.addNewManager(so, sm));
 	}
 	
 	//3.7

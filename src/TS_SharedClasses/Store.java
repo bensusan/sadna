@@ -17,11 +17,6 @@ public class Store {
 	private List<StoreManager> myManagers;
 	private int moneyEarned;
 	private PurchasePolicy storePolicy;
-	
-	public Store() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	public Store(int storeId, String address, String phone, int gradeing, Map<Product, Integer> products,
 			List<Purchase> purchaseHistory, boolean isOpen) {

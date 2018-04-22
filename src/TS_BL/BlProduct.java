@@ -8,6 +8,6 @@ public class BlProduct {
 		PurchasePolicy policy = p.getStore().getStorePolicy();
 		if(policy == null)
 			policy = p.getPurchasePolicy();
-		return BlMain.purchase(policy , g, price, amount) && BlMain.buyProduct(p.getStore(), p, amount) && BlMain.payToStore(p.getStore(), price);
+		return g != null && BlMain.purchase(policy , g, price, amount) && BlMain.buyProduct(p.getStore(), p, amount) && BlMain.payToStore(p.getStore(), price);
 	}
 }

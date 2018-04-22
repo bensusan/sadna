@@ -1,6 +1,7 @@
 package TS_SharedClasses;
 
-import java.sql.Date;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,8 +29,8 @@ public class LotteryPurchase implements PurchaseType {
 	}
 
 	
-	public void setLotteryEndDate(Date lotteryEndDate) {
-		this.lotteryEndDate = lotteryEndDate;
+	public void setLotteryEndDate(Date date) {
+		this.lotteryEndDate = date;
 	}
 
 	

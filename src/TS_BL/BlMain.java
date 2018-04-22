@@ -16,7 +16,7 @@ public class BlMain {
 			openStore = 8, getPurchaseHistory = 9, expiredProducts = 10, changeStorePurchasePolicy = 11;
 
 	public static List<Subscriber> allSubscribers = new LinkedList<Subscriber>();
-	public static Map<Guest, List<String>> allUsersWithTheirCreditCards = new HashMap<Guest, List<String>>(); // TODO
+	public static Map<Guest, LinkedList<String>> allUsersWithTheirCreditCards = new HashMap<Guest, LinkedList<String>>(); // TODO
 	public static int purchaseId = -1;
 	public static int storeId = -1;
 	// need to insert to here all guests that payed with their credit card for pay back
@@ -377,7 +377,7 @@ public class BlMain {
 	}
 
 	public static void addCreditCartToMap(String creditCardNumber, Guest g) {
-		List<String> lst = allUsersWithTheirCreditCards.get(g);
+		LinkedList<String> lst = allUsersWithTheirCreditCards.get(g);
 		lst.add(creditCardNumber);
 		allUsersWithTheirCreditCards.put(g, lst);
 	}

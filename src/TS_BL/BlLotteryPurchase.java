@@ -34,7 +34,7 @@ public class BlLotteryPurchase {
 			sumOfMoney += num;
 		}
 		if(sumOfMoney >= price){
-			lp.setLotteryEndDate((java.sql.Date) date);
+			lp.setLotteryEndDate(date);
 			return true;
 		}
 		return false;
@@ -43,7 +43,7 @@ public class BlLotteryPurchase {
 
 	public static void closeCurrentLottery(LotteryPurchase lp) {
 		Date date = new Date();
-		lp.setLotteryEndDate((java.sql.Date) date);
+		lp.setLotteryEndDate((java.util.Date) date);
 		for(Guest g : lp.getParticipants().keySet()){
 			BlMain.retMoney(g, lp.getParticipants().get(g));
 		}

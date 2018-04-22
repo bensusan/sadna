@@ -22,6 +22,8 @@ public class BlSubscriber {
 	public static Store openStore(Subscriber sub, int gradeing, Map<Product, Integer> products,
 			List<Purchase> purchaseHistory, boolean isOpen)
 	{
+		if(sub == null || gradeing < 0 || gradeing > 5)
+			return null;
 		List<StoreOwner> own=sub.getOwner();
 		Store s = new Store(BlMain.getStoreId(), sub.getAddress(), sub.getPhone(), gradeing, products, purchaseHistory, isOpen);
 		StoreOwner so=new StoreOwner(s);

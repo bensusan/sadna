@@ -15,6 +15,8 @@ public class Cart {
 	public Cart(Map<Product, Integer> products) {
 		super();
 		this.products = products;
+		if(products == null)
+			this.products = new HashMap<Product, Integer>();
 	}
 	
 	public Map<Product,Integer> getProducts() {

@@ -2,6 +2,9 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -21,7 +24,7 @@ public class storeManagerTests {
 		arr=new boolean[11];
 		for (int i=0;i<arr.length;i++)
 			arr[i]=false;
-		s=new Store();
+		s=new Store(BlMain.getStoreId(), "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true);
 		sm=new StoreManager(arr, s);
 	}
 	@Test

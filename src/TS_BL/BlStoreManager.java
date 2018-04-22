@@ -12,7 +12,7 @@ public class BlStoreManager {
 	 * @return true if the add succseed false otherwise
 	 */
 	public static boolean addProductToStore(StoreManager sm, Product product, int amount) {
-		return sm != null && sm.getPremisions()[BlMain.addDiscountToProduct] && BlPermissions.addProductToStore(sm.getStore(), product, amount);
+		return sm != null && sm.getPremisions()[BlMain.addProductToStore] && BlPermissions.addProductToStore(sm.getStore(), product, amount);
 	}
 
 	/**

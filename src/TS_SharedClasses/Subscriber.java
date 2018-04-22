@@ -1,5 +1,6 @@
 package TS_SharedClasses;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Subscriber extends Guest {
@@ -24,8 +25,14 @@ public class Subscriber extends Guest {
 		this.phone = phone;
 		this.creditCardNumber = creditCardNumber;
 		this.purchaseHistory = purchaseHistory;
+		if(purchaseHistory == null)
+			this.purchaseHistory = new LinkedList<Purchase>();
 		this.manager=manager;
+		if(manager == null)
+			this.manager = new LinkedList<StoreManager>();
 		this.owner=owner;
+		if(owner == null)
+			this.owner = new LinkedList<StoreOwner>();
 	}
 	
 	public Subscriber(Cart cart, String username, String password, String fullName, String address, String phone,
@@ -38,8 +45,14 @@ public class Subscriber extends Guest {
 		this.phone = phone;
 		this.creditCardNumber = creditCardNumber;
 		this.purchaseHistory = purchaseHistory;
+		if(purchaseHistory == null)
+			this.purchaseHistory = new LinkedList<Purchase>();
 		this.manager=manager;
+		if(manager == null)
+			this.manager = new LinkedList<StoreManager>();
 		this.owner=owner;
+		if(owner == null)
+			this.owner = new LinkedList<StoreOwner>();
 	}
 
 	public String getUsername() {

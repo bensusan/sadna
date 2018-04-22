@@ -21,6 +21,8 @@ public class LotteryPurchase implements PurchaseType {
 	public LotteryPurchase(Date lotteryEndDate, Map<Guest,Integer> participants) {
 		this.lotteryEndDate = lotteryEndDate;
 		this.participants = participants;
+		if(participants == null)
+			this.participants = new HashMap<Guest, Integer>();
 	}
 
 	

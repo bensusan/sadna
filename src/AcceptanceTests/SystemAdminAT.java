@@ -43,9 +43,9 @@ public class SystemAdminAT {
 		Subscriber notExits  = new Subscriber( new Cart(), "forth", "forth", "name4", "add4" , "012345678945", "987564321123", new ArrayList<Purchase>(), new ArrayList<StoreManager>(), new ArrayList<StoreOwner>());
 		assertFalse(BlMain.removeSubscriber(sa, notExits));
 		
-		assertTrue(BlMain.removeSubscriber(sa, this.s1));
+		assertTrue(BlMain.removeSubscriber(sa, s1));
 		
-		assertFalse(BlMain.allSubscribers.contains(this.s1));
+		assertFalse(BlMain.allSubscribers.contains(s1));
 	}
 	
 	//5.4

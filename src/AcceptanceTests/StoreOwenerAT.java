@@ -41,6 +41,8 @@ public class StoreOwenerAT {
 				new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
 		prod4 = new Product("444", "prod4", 200, 4, "test cat 4", 
 				new PurchasePolicy(new ImmediatelyPurchase()));
+		
+
 	}
 	
 	//3.1.3
@@ -54,7 +56,7 @@ public class StoreOwenerAT {
 		assertFalse(BlMain.addProductToStore(so2, prod2, 1));
 		
 		//good case
-		assertTrue(BlMain.addProductToStore(so, prod2, 1));
+ 		assertTrue(BlMain.addProductToStore(so, prod2, 1));
 		//add the same product with diff amount
 		assertTrue(BlMain.addProductToStore(so, prod2, 2));
 		Store s = so.getStore();

@@ -112,7 +112,7 @@ public class storeOwnerTests {
 		assertFalse(BlMain.addNewStoreOwner(so, null));
 		StoreOwner so2=null;
 		assertFalse(BlMain.addNewStoreOwner(so2, so));
-		so2=new StoreOwner(new Store());
+		so2=new StoreOwner(new Store(BlMain.getStoreId(), "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
 		assertFalse(BlMain.addNewStoreOwner(so, so2));//not same store
 		so2.setStore(so.getStore());
 		assertTrue(BlMain.addNewStoreOwner(so, so2));
@@ -125,7 +125,7 @@ public class storeOwnerTests {
 		StoreOwner so2=null;
 		StoreManager sm=new StoreManager(new boolean[13], so.getStore());
 		assertFalse(BlMain.addNewManager(so2, sm));
-		sm.setStore(new Store());
+		sm.setStore(new Store(BlMain.getStoreId(), "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
 		assertFalse(BlMain.addNewManager(so, sm));//not same store
 		sm.setStore(so.getStore());
 		assertTrue(BlMain.addNewManager(so, sm));

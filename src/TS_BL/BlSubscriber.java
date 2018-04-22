@@ -22,7 +22,11 @@ public class BlSubscriber {
 	public static Store openStore(Subscriber sub, int gradeing, Map<Product, Integer> products,
 			List<Purchase> purchaseHistory, boolean isOpen)
 	{
+		List<StoreOwner> own=sub.getOwner();
 		Store s = new Store(BlMain.getStoreId(), sub.getAddress(), sub.getPhone(), gradeing, products, purchaseHistory, isOpen);
+		StoreOwner so=new StoreOwner(s);
+		own.add(so);
+		sub.setOwner(own);
 		return s;
 	}
 	

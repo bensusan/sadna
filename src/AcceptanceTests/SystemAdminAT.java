@@ -11,18 +11,20 @@ import java.util.Set;
 import java.sql.Date;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
+
 import TS_BL.BlMain;
 import TS_SharedClasses.*;
 
 public class SystemAdminAT {
 	
-	private SystemAdministrator sa;
-	private Subscriber s1;
-	private Subscriber s2;
-	private Subscriber s3;
+	private static SystemAdministrator sa;
+	private static Subscriber s1;
+	private static Subscriber s2;
+	private static Subscriber s3;
 
-	@Before
-	public void beforeTests(){
+	@BeforeClass
+	public static void beforeTests(){
 		sa = new SystemAdministrator("admin", "nimda", "sagivmap", "Ashdod", "088559977", "132456789987", new ArrayList<Purchase>(), new ArrayList<StoreManager>(), new ArrayList<StoreOwner>());
 		s1 = BlMain.signUp(new Guest(), "first", "first", "name1", "add1" , "012345678945", "987564321123");
 		s2 = BlMain.signUp(new Guest(), "second", "second", "name2", "add2" , "012345678945", "987564321123");

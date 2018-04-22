@@ -382,6 +382,9 @@ public class BlMain {
 
 	public static void addCreditCartToMap(String creditCardNumber, Guest g) {
 		LinkedList<String> lst = allUsersWithTheirCreditCards.get(g);
+		if(lst==null){
+			lst = new LinkedList<String>();
+		}
 		lst.add(creditCardNumber);
 		allUsersWithTheirCreditCards.put(g, lst);
 	}

@@ -21,4 +21,9 @@ public class OvertDiscount extends DiscountPolicy {
 			return -1;
 		return BlOvertDiscount.updatePrice(this, price);
 	}
+
+	@Override
+	public int updatePrice(int price) {
+		return BlOvertDiscount.updatePrice(this, price);
+	}
 }

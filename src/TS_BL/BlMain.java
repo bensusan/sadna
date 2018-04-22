@@ -43,6 +43,10 @@ public class BlMain {
 		return BlCart.editCart(c, newCart);
 	}
 
+	public static int updatePrice(DiscountPolicy dp, int price) {
+		return BlDiscountPolicy.updatePrice(dp, price);
+	}
+	
 	public static int updatePrice(DiscountPolicy dp, int price, int code) {
 		return BlDiscountPolicy.updatePrice(dp, price , code);
 	}

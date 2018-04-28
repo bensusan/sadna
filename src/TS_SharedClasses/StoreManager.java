@@ -7,11 +7,12 @@ public class StoreManager{
 	private boolean[] premisions;
 	private Store store;
 	
-	public StoreManager(boolean[] premisions, Store store) {
+	public StoreManager(Store store) {
 		super();
-		this.premisions = premisions;
-		if(this.premisions == null)
-			this.premisions = new boolean[BlMain.NUM_OF_PERMISSIONS];
+		this.premisions = new boolean[BlMain.NUM_OF_PERMISSIONS];
+		for(int i = 0; i < BlMain.NUM_OF_PERMISSIONS; i++){
+			this.premisions[i] = false;
+		}
 		this.store = store;
 	}
 	

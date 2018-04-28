@@ -400,4 +400,38 @@ public class BlMain {
 	public static int getStoreId(){
 		return storeId++;
 	}
+	
+	public static boolean equalsLists(List<?> a, List<?> b){
+		return (a==null && b==null) || (a!=null && b!=null && equalsLeftListToRightList(a, b) && equalsLeftListToRightList(b, a));
+	}
+	
+	private static boolean equalsLeftListToRightList(List<?> a, List<?> b){
+		boolean found = false;
+		for (Object key : a) {
+			if(b.contains(key))
+			{
+				for (int i = 0; i < b.size(); i++) {
+					if(b.get(i).equals(key))
+						found = true;
+				}
+			}
+		}
+		return found;
+	}
+	
+	public static boolean equalsMaps(Map<?, ?> a, Map<?, ?> b){
+		return (a==null && b==null) || (a!=null && b!=null && equalsLeftMapToRightMap(a, b) && equalsLeftMapToRightMap(b, a));
+	}
+	
+	private static boolean equalsLeftMapToRightMap(Map<?, ?> a, Map<?, ?> b){
+		for (Object key : a.keySet()) {
+			if(a.get(key) != b.get(key))
+				return false;
+		}
+		for (Object key : b.keySet()) {
+			if(a.get(key) != b.get(key))
+				return false;
+		}
+		return true;
+	}
 }

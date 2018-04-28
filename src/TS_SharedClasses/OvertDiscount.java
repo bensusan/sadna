@@ -26,4 +26,6 @@ public class OvertDiscount extends DiscountPolicy {
 	public int updatePrice(int price) {
 		return BlOvertDiscount.updatePrice(this, price);
 	}
+	
+	
 }

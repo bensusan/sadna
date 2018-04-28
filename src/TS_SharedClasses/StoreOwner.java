@@ -16,4 +16,23 @@ public class StoreOwner {
 	public void setStore(Store store) {
 		this.store = store;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		StoreOwner other = (StoreOwner) obj;
+		if (store == null) {
+			if (other.store != null)
+				return false;
+		} else if (!store.equals(other.store))
+			return false;
+		return true;
+	}
+	
+	
 }

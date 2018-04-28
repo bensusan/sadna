@@ -3,6 +3,8 @@ package TS_SharedClasses;
 import java.util.LinkedList;
 import java.util.List;
 
+import TS_BL.BlMain;
+
 public class Subscriber extends Guest {
 	
 	private String username;
@@ -126,5 +128,54 @@ public class Subscriber extends Guest {
 	public void setOwner(List<StoreOwner> owner) {
 		this.owner = owner;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Subscriber other = (Subscriber) obj;
+		if (address == null) {
+			if (other.address != null)
+				return false;
+		} else if (!address.equals(other.address))
+			return false;
+		if (creditCardNumber == null) {
+			if (other.creditCardNumber != null)
+				return false;
+		} else if (!creditCardNumber.equals(other.creditCardNumber))
+			return false;
+		if (fullName == null) {
+			if (other.fullName != null)
+				return false;
+		} else if (!fullName.equals(other.fullName))
+			return false;
+		if(!BlMain.equalsLists(manager, other.manager))
+			return false;
+		if(!BlMain.equalsLists(owner, other.owner))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (phone == null) {
+			if (other.phone != null)
+				return false;
+		} else if (!phone.equals(other.phone))
+			return false;
+		if(!BlMain.equalsLists(purchaseHistory, other.purchaseHistory))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
+	}
+	
 	
 }

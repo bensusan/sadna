@@ -7,6 +7,7 @@ import java.util.Map;
 
 import TS_BL.BlImmediatelyPurchase;
 import TS_BL.BlLotteryPurchase;
+import TS_BL.BlMain;
 
 public class LotteryPurchase implements PurchaseType {
 	
@@ -57,4 +58,25 @@ public class LotteryPurchase implements PurchaseType {
 		}
 		return bool;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LotteryPurchase other = (LotteryPurchase) obj;
+		if (lotteryEndDate == null) {
+			if (other.lotteryEndDate != null)
+				return false;
+		} else if (!lotteryEndDate.equals(other.lotteryEndDate))
+			return false;
+		if(!BlMain.equalsMaps(participants, other.participants))
+			return false;
+		return true;
+	}
+	
+	
 }

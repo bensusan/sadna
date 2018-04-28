@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import TS_BL.BlMain;
+
 public class Store {
 	private int storeId;
 	private String address;
@@ -131,5 +133,67 @@ public class Store {
 	public void setStorePolicy(PurchasePolicy storePolicy) {
 		this.storePolicy = storePolicy;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + gradeing;
+		result = prime * result + (isOpen ? 1231 : 1237);
+		result = prime * result + moneyEarned;
+		result = prime * result + ((myManagers == null) ? 0 : myManagers.hashCode());
+		result = prime * result + ((myOwners == null) ? 0 : myOwners.hashCode());
+		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
+		result = prime * result + ((products == null) ? 0 : products.hashCode());
+		result = prime * result + ((purchaseHistory == null) ? 0 : purchaseHistory.hashCode());
+		result = prime * result + storeId;
+		result = prime * result + ((storePolicy == null) ? 0 : storePolicy.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Store other = (Store) obj;
+		if (address == null) {
+			if (other.address != null)
+				return false;
+		} else if (!address.equals(other.address))
+			return false;
+		if (gradeing != other.gradeing)
+			return false;
+		if (isOpen != other.isOpen)
+			return false;
+		if (moneyEarned != other.moneyEarned)
+			return false;
+		if(!BlMain.equalsLists(myManagers, other.myManagers))
+			return false;
+		if(!BlMain.equalsLists(myOwners, other.myOwners))
+			return false;
+		if (phone == null) {
+			if (other.phone != null)
+				return false;
+		} else if (!phone.equals(other.phone))
+			return false;
+		if(!BlMain.equalsMaps(products, other.products))
+			return false;
+		if(!BlMain.equalsLists(this.purchaseHistory, other.purchaseHistory))
+				return false;
+		if (storeId != other.storeId)
+			return false;
+		if (storePolicy == null) {
+			if (other.storePolicy != null)
+				return false;
+		} else if (!storePolicy.equals(other.storePolicy))
+			return false;
+		return true;
+	}
+	
 	
 }

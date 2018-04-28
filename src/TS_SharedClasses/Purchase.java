@@ -40,4 +40,29 @@ public class Purchase {
 		this.purchased = purchased;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Purchase other = (Purchase) obj;
+		if (purchaseID != other.purchaseID)
+			return false;
+		if (purchased == null) {
+			if (other.purchased != null)
+				return false;
+		} else if (!purchased.equals(other.purchased))
+			return false;
+		if (whenPurchased == null) {
+			if (other.whenPurchased != null)
+				return false;
+		} else if (!whenPurchased.equals(other.whenPurchased))
+			return false;
+		return true;
+	}
+
+	
 }

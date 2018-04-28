@@ -36,5 +36,22 @@ public class SystemAdministrator extends Subscriber {
 	public List<Store> getStores(){
 		return listOfStores;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SystemAdministrator other = (SystemAdministrator) obj;
+		if(!BlMain.equalsLists(listOfStores, other.listOfStores))
+			return false;
+		if(!BlMain.equalsLists(listOfSubs, other.listOfSubs))
+			return false;
+		return true;
+	}
+	
 	
 }

@@ -29,5 +29,21 @@ public class HiddenDiscount extends DiscountPolicy{
 	public int updatePrice(int price) {
 		return -1; //can't update price in hidden discount without any code
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HiddenDiscount other = (HiddenDiscount) obj;
+		if (code != other.code)
+			return false;
+		return true;
+	}
+	
+	
 
 }

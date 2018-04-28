@@ -36,6 +36,24 @@ public class ImmediatelyPurchase implements PurchaseType {
 		}
 		return bool;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ImmediatelyPurchase other = (ImmediatelyPurchase) obj;
+		if (discountPolicy == null) {
+			if (other.discountPolicy != null)
+				return false;
+		} else if (!discountPolicy.equals(other.discountPolicy))
+			return false;
+		return true;
+	}
+	
 	
 	
 }

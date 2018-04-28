@@ -84,6 +84,12 @@ public class BlMain {
 	public static boolean purchase(PurchaseType pt, Guest g, int price, int amount) {
 		return BlPurchaseType.purchase(pt, g, price, amount);
 	}
+	public static boolean purchase(ImmediatelyPurchase ip, Guest g, int price){
+		return BlImmediatelyPurchase.purchase(ip, g, price);
+	}
+	public static boolean purchase(LotteryPurchase lp, Guest g, int price) {
+		return BlLotteryPurchase.purchase(lp, g, price);
+	}
 
 	public static int getDiscountedPrice(ImmediatelyPurchase ip, int price) {
 		return BlImmediatelyPurchase.getDiscountedPrice(ip, price);

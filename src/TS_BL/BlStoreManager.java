@@ -11,7 +11,7 @@ public class BlStoreManager {
 	 * @param amount
 	 * @return true if the add succseed false otherwise
 	 */
-	public static boolean addProductToStore(StoreManager sm, Product product, int amount) {
+	static boolean addProductToStore(StoreManager sm, Product product, int amount) {
 		return sm != null && sm.getPremisions()[BlMain.addProductToStore] && BlPermissions.addProductToStore(sm.getStore(), product, amount);
 	}
 
@@ -19,7 +19,7 @@ public class BlStoreManager {
 	 * @param product
 	 * @return true if the delete succseed false otherwise
 	 */
-	public static boolean deleteProductFromStore(StoreManager sm, Product product) {
+	static boolean deleteProductFromStore(StoreManager sm, Product product) {
 		return sm != null && sm.getPremisions()[BlMain.deleteProductFromStore] && BlPermissions.deleteProductFromStore(sm.getStore(), product);
 	}
 
@@ -31,7 +31,7 @@ public class BlStoreManager {
 	 * @param amount
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean updateProductDetails(StoreManager sm, Product oldProduct, Product newProduct, int amount) {
+	static boolean updateProductDetails(StoreManager sm, Product oldProduct, Product newProduct, int amount) {
 		return sm != null && sm.getPremisions()[BlMain.updateProductDetails] && BlPermissions.updateProductDetails(sm.getStore(), oldProduct, newProduct, amount);
 	}
 
@@ -42,7 +42,7 @@ public class BlStoreManager {
 	 * @param product
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean addPolicyToProduct(StoreManager sm, PurchasePolicy policy, Product product) {
+	static boolean addPolicyToProduct(StoreManager sm, PurchasePolicy policy, Product product) {
 		return sm != null && sm.getPremisions()[BlMain.addPolicyToProduct] && BlPermissions.addPolicyToProduct(sm.getStore(), policy, product);
 	}
 
@@ -53,7 +53,7 @@ public class BlStoreManager {
 	 * @param product
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean addDiscountToProduct(StoreManager sm, DiscountPolicy discount, Product product) {
+	static boolean addDiscountToProduct(StoreManager sm, DiscountPolicy discount, Product product) {
 		return sm != null && sm.getPremisions()[BlMain.addDiscountToProduct] && BlPermissions.addDiscountToProduct(sm.getStore(), discount, product);
 	}
 
@@ -63,7 +63,7 @@ public class BlStoreManager {
 	 * @param owner
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean addNewStoreOwner(StoreManager sm, StoreOwner owner) {
+	static boolean addNewStoreOwner(StoreManager sm, StoreOwner owner) {
 		return sm != null && sm.getPremisions()[BlMain.addNewStoreOwner] && BlPermissions.addNewStoreOwner(sm.getStore(), owner);
 	}
 
@@ -73,37 +73,37 @@ public class BlStoreManager {
 	 * @param manager
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean addNewManager(StoreManager oldMan, StoreManager newMan) {
+	static boolean addNewManager(StoreManager oldMan, StoreManager newMan) {
 		return oldMan != null && oldMan.getPremisions()[BlMain.addNewManager] && BlPermissions.addNewManager(oldMan.getStore(), newMan);
 	}
 
 	/**
 	 * @return true if the store close false otherwise
 	 */
-	public static boolean closeStore(StoreManager sm) {
+	static boolean closeStore(StoreManager sm) {
 		return sm != null && sm.getPremisions()[BlMain.closeStore] && BlPermissions.closeStore(sm.getStore());
 	}
 
 	/**
 	 * @return true if the store reopen false otherwise
 	 */
-	public static boolean openStore(StoreManager sm) {
+	static boolean openStore(StoreManager sm) {
 		return sm != null && sm.getPremisions()[BlMain.openStore] && BlPermissions.openStore(sm.getStore());
 	}
 
 	/**
 	 * @return history of pruchase in the store
 	 */
-	public static List<Purchase> getPurchaseHistory(StoreManager sm) {
+	static List<Purchase> getPurchaseHistory(StoreManager sm) {
 		return sm != null && sm.getPremisions()[BlMain.getPurchaseHistory] ? BlPermissions.getPurchaseHistory(sm.getStore()) : null;
 	}
 	
-	public static void expiredProducts(StoreManager sm){
+	static void expiredProducts(StoreManager sm){
 		if(sm != null && sm.getPremisions()[BlMain.expiredProducts]) 
 			BlPermissions.expiredProducts(sm.getStore());
 	}
 	
-	public static boolean changeStorePurchasePolicy(StoreManager sm, PurchasePolicy pp){
+	static boolean changeStorePurchasePolicy(StoreManager sm, PurchasePolicy pp){
 		return sm != null && sm.getPremisions()[BlMain.changeStorePurchasePolicy] && BlPermissions.changeStorePurchasePolicy(sm.getStore(), pp);
 	}
 }

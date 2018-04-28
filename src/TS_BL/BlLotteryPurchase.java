@@ -1,7 +1,6 @@
 package TS_BL;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import TS_SharedClasses.*;
@@ -12,7 +11,7 @@ public class BlLotteryPurchase {
 	// participants.
 	// when the lottery will done, we will have the guests to continue the
 	// process.
-	public static boolean purchase(LotteryPurchase lp, Guest g, int price) {
+	static boolean purchase(LotteryPurchase lp, Guest g, int price) {
 		if (lp == null || g == null || price <= 0)
 			return false;
 		Map <Guest, Integer> guestPrice = lp.getParticipants();
@@ -21,7 +20,7 @@ public class BlLotteryPurchase {
 		return true;
 	}
 
-	public static boolean isLotteryDone(LotteryPurchase lp, int price) {
+	static boolean isLotteryDone(LotteryPurchase lp, int price) {
 		if(lp == null || price <= 0)
 			return false;
 		Date date =  new Date();
@@ -41,7 +40,7 @@ public class BlLotteryPurchase {
 
 	}
 
-	public static void closeCurrentLottery(LotteryPurchase lp) {
+	static void closeCurrentLottery(LotteryPurchase lp) {
 		Date date = new Date();
 		lp.setLotteryEndDate((java.util.Date) date);
 		for(Guest g : lp.getParticipants().keySet()){
@@ -51,7 +50,7 @@ public class BlLotteryPurchase {
 	}
 
 	//get new arg of new end date
-	public static void openNewLottery(LotteryPurchase lp, Date endDate) {
+	static void openNewLottery(LotteryPurchase lp, Date endDate) {
 		lp.setLotteryEndDate((java.sql.Date) endDate);
 	}
 }

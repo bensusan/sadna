@@ -12,7 +12,7 @@ public class BlSystemAdministrator {
 	 * @param s
 	 * @return true if succeed false otherwise
 	 */
-	public static boolean removeSubscriber(SystemAdministrator sa, Subscriber s) {
+	static boolean removeSubscriber(SystemAdministrator sa, Subscriber s) {
 		if(sa == null || s == null)
 			return false;
 
@@ -29,7 +29,7 @@ public class BlSystemAdministrator {
 	 * @param s
 	 * @return the purchase history that made by the subscriber
 	 */	
-	public static List<Purchase> viewSubscriberHistory(SystemAdministrator sa, Subscriber s) {
+	static List<Purchase> viewSubscriberHistory(SystemAdministrator sa, Subscriber s) {
 		if(sa == null || s == null)
 			return null;
 		
@@ -44,7 +44,7 @@ public class BlSystemAdministrator {
 	 * @param store
 	 * @return the purchase history that made in the store
 	 */
-	public static List<Purchase> viewStoreHistory(SystemAdministrator sa, Store store)
+	static List<Purchase> viewStoreHistory(SystemAdministrator sa, Store store)
 	{
 		if(sa == null || store == null)
 			return null;

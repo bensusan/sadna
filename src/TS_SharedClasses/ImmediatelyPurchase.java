@@ -1,6 +1,6 @@
 package TS_SharedClasses;
 
-import TS_BL.BlImmediatelyPurchase;
+import TS_BL.BlMain;
 
 public class ImmediatelyPurchase implements PurchaseType {
 
@@ -30,7 +30,7 @@ public class ImmediatelyPurchase implements PurchaseType {
 			return false;
 		boolean bool = true;
 		for (int i = 0; i < amount; i++){
-			bool = BlImmediatelyPurchase.purchase(this, g, price);
+			bool = BlMain.purchase(this, g, price);
 			if(!bool)
 				return bool;
 		}

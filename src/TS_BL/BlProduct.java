@@ -4,7 +4,7 @@ import TS_SharedClasses.*;
 
 public class BlProduct {
 
-	public static boolean purchase(Product p, Guest g, int price, int amount) {
+	static boolean purchase(Product p, Guest g, int price, int amount) {
 		if(p == null || g == null || price <= 0 || amount < 1)
 			return false;
 		PurchasePolicy policy = null;

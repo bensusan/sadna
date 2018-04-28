@@ -4,7 +4,7 @@ import TS_SharedClasses.*;
 
 public class BlPurchasePolicy {
 
-	public static boolean purchase(PurchasePolicy pp, Guest g, int price, int amount) {
+	static boolean purchase(PurchasePolicy pp, Guest g, int price, int amount) {
 		return canPurchase(pp, g) && BlMain.purchase(pp.getPurchaseType(), g, price, amount);
 	}
 	

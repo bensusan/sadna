@@ -11,14 +11,14 @@ public class BlStoreOwner {
 	 * @param amount
 	 * @return true if the add succseed false otherwise
 	 */
-	public static boolean addProductToStore(StoreOwner so, Product product, int amount) {
+	static boolean addProductToStore(StoreOwner so, Product product, int amount) {
 		return so != null && BlPermissions.addProductToStore(so.getStore(), product, amount);
 	}
 	/**
 	 * @param product
 	 * @return true if the delete succseed false otherwise
 	 */
-	public static boolean deleteProductFromStore(StoreOwner so, Product product) {
+	static boolean deleteProductFromStore(StoreOwner so, Product product) {
 		return so != null && BlPermissions.deleteProductFromStore(so.getStore(), product);
 	}
 	/**
@@ -27,7 +27,7 @@ public class BlStoreOwner {
 	 * @param amount
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean updateProductDetails(StoreOwner so, Product oldProduct, Product newProduct, int amount) {
+	static boolean updateProductDetails(StoreOwner so, Product oldProduct, Product newProduct, int amount) {
 		return so != null && BlPermissions.updateProductDetails(so.getStore(), oldProduct, newProduct, amount);
 	}
 	/**
@@ -36,7 +36,7 @@ public class BlStoreOwner {
 	 * @param product
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean addPolicyToProduct(StoreOwner so, PurchasePolicy policy, Product product)
+	static boolean addPolicyToProduct(StoreOwner so, PurchasePolicy policy, Product product)
 	{
 		return so != null && BlPermissions.addPolicyToProduct(so.getStore(), policy, product);
 	}
@@ -47,7 +47,7 @@ public class BlStoreOwner {
 	 * @param product
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean addDiscountToProduct(StoreOwner so, DiscountPolicy discount, Product product)
+	static boolean addDiscountToProduct(StoreOwner so, DiscountPolicy discount, Product product)
 	{
 		return so != null && BlPermissions.addDiscountToProduct(so.getStore(), discount, product);
 	}
@@ -56,7 +56,7 @@ public class BlStoreOwner {
 	 * @param owner
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean addNewStoreOwner(StoreOwner oldSo, StoreOwner newSo)
+	static boolean addNewStoreOwner(StoreOwner oldSo, StoreOwner newSo)
 	{
 		return (oldSo != null && newSo != null && oldSo.getStore() != null) && BlPermissions.addNewStoreOwner(oldSo.getStore(), newSo);
 	}
@@ -65,28 +65,28 @@ public class BlStoreOwner {
 	 * @param manager
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean addNewManager(StoreOwner so, StoreManager manager)
+	static boolean addNewManager(StoreOwner so, StoreManager manager)
 	{
 		return (so != null && manager != null && so.getStore() != null) && BlPermissions.addNewManager(so.getStore(), manager);
 	}
 	/**
 	 * @return true if the store close false otherwise
 	 */
-	public static boolean closeStore(StoreOwner so)
+	static boolean closeStore(StoreOwner so)
 	{
 		return so != null && BlPermissions.closeStore(so.getStore());
 	}
 	/**
 	 * @return true if the store reopen false otherwise
 	 */
-	public static boolean openStore(StoreOwner so)
+	static boolean openStore(StoreOwner so)
 	{
 		return so != null && BlPermissions.openStore(so.getStore());
 	}
 	/**
 	 * @return history of pruchase in the store
 	 */
-	public static List<Purchase> getPurchaseHistory(StoreOwner so)
+	static List<Purchase> getPurchaseHistory(StoreOwner so)
 	{
 		if(so == null || so.getStore() == null)
 			return null;
@@ -94,11 +94,11 @@ public class BlStoreOwner {
 		return so.getStore().getPurchaseHistory();
 	}
 	
-	public static void expiredProducts(StoreOwner so){
+	static void expiredProducts(StoreOwner so){
 		if(so != null) BlPermissions.expiredProducts(so.getStore());
 	}
 	
-	public static boolean changeStorePurchasePolicy(StoreOwner so, PurchasePolicy pp){
+	static boolean changeStorePurchasePolicy(StoreOwner so, PurchasePolicy pp){
 		return so != null && BlPermissions.changeStorePurchasePolicy(so.getStore(), pp);
 	}
 }

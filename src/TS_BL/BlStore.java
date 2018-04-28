@@ -12,7 +12,7 @@ public class BlStore {
 	 * @param amount
 	 * @return true if product in stock false otherwise
 	 */
-	public static boolean checkInStock(Store s, Product p, int amount) {
+	static boolean checkInStock(Store s, Product p, int amount) {
 		return s != null && p != null && s.getProducts().get(p) != null && s.getProducts().get(p) >= amount;
 	}
 
@@ -22,7 +22,7 @@ public class BlStore {
 	 * @param cart
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean addPurchaseToHistory(Store s, Purchase p) {
+	static boolean addPurchaseToHistory(Store s, Purchase p) {
 		List<Purchase> res = s.getPurchaseHistory();
 		if(!res.add(p))
 			return false;
@@ -37,7 +37,7 @@ public class BlStore {
 	 * @param amount
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean buyProduct(Store s, Product p, int amount) {
+	static boolean buyProduct(Store s, Product p, int amount) {
 		return BlMain.checkInStock(s, p, amount) && BlMain.stockUpdate(s, p, s.getProducts().get(p) - amount) ;  
 	}
 
@@ -48,7 +48,7 @@ public class BlStore {
 	 * @param amount
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean stockUpdate(Store s, Product p, int amount) {
+	static boolean stockUpdate(Store s, Product p, int amount) {
 		if(amount < 0 || !BlMain.checkInStock(s, p, amount))
 			return false;
 		Map<Product, Integer> products = s.getProducts();
@@ -58,7 +58,7 @@ public class BlStore {
 		return true;
 	}
 	
-	public static boolean payToStore(Store s, int price){
+	static boolean payToStore(Store s, int price){
 		//TODO maybe later this function will return false
 		s.setMoneyEarned(s.getMoneyEarned() + price);
 		return true;

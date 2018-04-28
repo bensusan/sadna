@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import TS_BL.BlImmediatelyPurchase;
-import TS_BL.BlLotteryPurchase;
 import TS_BL.BlMain;
 
 public class LotteryPurchase implements PurchaseType {
@@ -52,7 +50,7 @@ public class LotteryPurchase implements PurchaseType {
 			return false;
 		boolean bool = true;
 		for (int i = 0; i < amount; i++){
-			bool = BlLotteryPurchase.purchase(this, g, price);
+			bool = BlMain.purchase(this, g, price);
 			if(!bool)
 				return bool;
 		}
@@ -77,6 +75,5 @@ public class LotteryPurchase implements PurchaseType {
 			return false;
 		return true;
 	}
-	
 	
 }

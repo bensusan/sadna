@@ -2,7 +2,7 @@ package TS_SharedClasses;
 
 import java.sql.Date;
 
-import TS_BL.BlHiddenDiscount;
+import TS_BL.BlMain;
 
 public class HiddenDiscount extends DiscountPolicy{
 	private int code;
@@ -22,7 +22,7 @@ public class HiddenDiscount extends DiscountPolicy{
 
 	@Override
 	public int updatePrice(int price, int code) {
-		return BlHiddenDiscount.updatePrice(this, price, code);
+		return BlMain.updatePrice(this, price, code);
 	}
 
 	@Override

@@ -20,7 +20,7 @@ public class BlGuest {
 	 * @param amount
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean addProductToCart(Guest g, Product p, int amount) {
+	static boolean addProductToCart(Guest g, Product p, int amount) {
 		return g != null && BlCart.addProduct(g.getCart(), p, amount);
 	}
 
@@ -30,7 +30,7 @@ public class BlGuest {
 	 * @param p
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean removeProductFromCart(Guest g, Product p) {
+	static boolean removeProductFromCart(Guest g, Product p) {
 		return g != null && BlCart.removeProduct(g.getCart(), p);
 	}
 
@@ -41,7 +41,7 @@ public class BlGuest {
 	 * @param amount
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean editProductInCart(Guest g, Product p, int amount) {
+	static boolean editProductInCart(Guest g, Product p, int amount) {
 		return g != null && BlCart.editProduct(g.getCart(), p, amount);
 	}
 
@@ -51,7 +51,7 @@ public class BlGuest {
 	 * @param newCart
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean editCart(Guest g, Map<Product, Integer> newCart) {
+	static boolean editCart(Guest g, Map<Product, Integer> newCart) {
 		return g != null && BlCart.editCart(g.getCart(), newCart);
 	}
 
@@ -62,7 +62,7 @@ public class BlGuest {
 	 * @param buyerAddress
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean puchaseCart(Guest g, String creditCardNumber, String buyerAddress) {
+	static boolean puchaseCart(Guest g, String creditCardNumber, String buyerAddress) {
 		if(g == null || g.getCart().getProducts().isEmpty() || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.legalAddress(buyerAddress))
 			return false;
 		for (Product p : g.getCart().getProducts().keySet()) {
@@ -81,7 +81,7 @@ public class BlGuest {
 	 * @param buyerAddress
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean pruchaseProduct(Guest g, Product product, int amount, String creditCardNumber, String buyerAddress) {
+	static boolean pruchaseProduct(Guest g, Product product, int amount, String creditCardNumber, String buyerAddress) {
 		if(g == null || product == null || amount < 1 || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.legalAddress(buyerAddress))
 			return false;
 		BlMain.addCreditCartToMap(creditCardNumber, g);
@@ -98,7 +98,7 @@ public class BlGuest {
 		return false;
 	}
 	
-	public static Subscriber signUp(Guest g, String username, String password, String fullName, String address, String phone, String creditCardNumber){
+	static Subscriber signUp(Guest g, String username, String password, String fullName, String address, String phone, String creditCardNumber){
 		if(g == null)
 			return null;
 		if(!BlMain.correctSpelledLettersSpacesNumbers(username) || !BlMain.correctSpelledLettersSpaces(fullName) || !BlMain.correctSpelledLettersSpacesNumbers(address) || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.correctSpelledNumbers(phone))
@@ -114,7 +114,7 @@ public class BlGuest {
 		
 	}
 	
-	public static Subscriber signIn(Guest g, String username, String password){
+	static Subscriber signIn(Guest g, String username, String password){
 		if(g == null)
 			return null;
 		if(!BlMain.correctSpelledLettersSpacesNumbers(username))

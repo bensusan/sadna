@@ -19,7 +19,7 @@ public class BlSubscriber {
 	 * @param isOpen
 	 * @return new Store if succseed null otherwise
 	 */
-	public static Store openStore(Subscriber sub, int gradeing, Map<Product, Integer> products,
+	static Store openStore(Subscriber sub, int gradeing, Map<Product, Integer> products,
 			List<Purchase> purchaseHistory, boolean isOpen)
 	{
 		if(sub == null || gradeing < 0 || gradeing > 5)
@@ -38,7 +38,7 @@ public class BlSubscriber {
 	 * @param cart
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean addPurchaseToHistory(Subscriber sub, Purchase p)
+	static boolean addPurchaseToHistory(Subscriber sub, Purchase p)
 	{
 		if (p == null || sub == null)
 			return false;
@@ -56,7 +56,7 @@ public class BlSubscriber {
 	 * @param owner
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean addOwner(Subscriber sub, StoreOwner owner)
+	static boolean addOwner(Subscriber sub, StoreOwner owner)
 	{
 		if(sub == null || owner == null)
 			return false;
@@ -75,7 +75,7 @@ public class BlSubscriber {
 	 * @param manager
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean addManager(Subscriber sub, StoreManager manager)
+	static boolean addManager(Subscriber sub, StoreManager manager)
 	{
 		if(sub == null || manager == null)
 			return false;
@@ -94,7 +94,7 @@ public class BlSubscriber {
 	 * @param owner
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean deleteOwner(Subscriber sub, StoreOwner owner)
+	static boolean deleteOwner(Subscriber sub, StoreOwner owner)
 	{
 		if(sub == null || owner == null)
 			return false;
@@ -113,7 +113,7 @@ public class BlSubscriber {
 	 * @param manager
 	 * @return true if succseed false otherwise
 	 */
-	public static boolean deleteManager(Subscriber sub, StoreManager manager)
+	static boolean deleteManager(Subscriber sub, StoreManager manager)
 	{
 		if(sub == null || manager == null)
 			return false;

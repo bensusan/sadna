@@ -8,7 +8,7 @@ import TS_SharedClasses.*;
 public class BlPermissions {
 
 	//Here we will implement Store's owner and Store's manager permissions
-	public static boolean addProductToStore(Store s, Product product, int amount) {
+	static boolean addProductToStore(Store s, Product product, int amount) {
 		if(s == null || product == null || amount <= 0 || product.getStore() != null)
 			return false;
 		product.setStore(s);
@@ -18,7 +18,7 @@ public class BlPermissions {
 	}
 
 
-	public static boolean deleteProductFromStore(Store s, Product product) {
+	static boolean deleteProductFromStore(Store s, Product product) {
 		if(s == null || product == null || s.getProducts().remove(product) == null)
 			return false;
 		product.setStore(null);
@@ -26,12 +26,12 @@ public class BlPermissions {
 	}
 
 
-	public static boolean updateProductDetails(Store s, Product oldProduct, Product newProduct, int amount) {
+	static boolean updateProductDetails(Store s, Product oldProduct, Product newProduct, int amount) {
 		return s != null && oldProduct != null && newProduct != null && amount > 0 && deleteProductFromStore(s, oldProduct) && addProductToStore(s, newProduct, amount);
 	}
 
 
-	public static boolean addPolicyToProduct(Store s, PurchasePolicy policy, Product product) {
+	static boolean addPolicyToProduct(Store s, PurchasePolicy policy, Product product) {
 		if(s == null || policy == null || product == null ||s.getProducts().get(product) == null)
 			return false;
 		product.setPurchasePolicy(policy);
@@ -39,7 +39,7 @@ public class BlPermissions {
 	}
 
 
-	public static boolean addDiscountToProduct(Store s, DiscountPolicy discount, Product product) {
+	static boolean addDiscountToProduct(Store s, DiscountPolicy discount, Product product) {
 		if(s == null || discount == null || product == null || s.getProducts().get(product) == null)
 			return false;
 		PurchaseType pt = product.getPurchasePolicy().getPurchaseType(); 
@@ -51,7 +51,7 @@ public class BlPermissions {
 	}
 
 
-	public static boolean addNewStoreOwner(Store s, StoreOwner owner) {
+	static boolean addNewStoreOwner(Store s, StoreOwner owner) {
 		if(s == null || owner == null)
 			return false;
 		List<StoreOwner> owners = s.getMyOwners();
@@ -63,7 +63,7 @@ public class BlPermissions {
 	}
 
 
-	public static boolean addNewManager(Store s, StoreManager newMan) {
+	static boolean addNewManager(Store s, StoreManager newMan) {
 		if(s == null || newMan == null)
 			return false;
 		List<StoreManager> managers = s.getMyManagers();
@@ -74,7 +74,7 @@ public class BlPermissions {
 		return true;
 	}
 
-	public static boolean closeStore(Store s) {
+	static boolean closeStore(Store s) {
 		if(s != null && s.getIsOpen()){
 			s.setIsOpen(false);
 			return true;
@@ -84,7 +84,7 @@ public class BlPermissions {
 			return false;
 	}
 
-	public static boolean openStore(Store s) {
+	static boolean openStore(Store s) {
 		if(s != null && !s.getIsOpen()){
 			s.setIsOpen(true);
 			return true;
@@ -94,11 +94,11 @@ public class BlPermissions {
 			return false;
 	}
 
-	public static List<Purchase> getPurchaseHistory(Store s) {
+	static List<Purchase> getPurchaseHistory(Store s) {
 		return s != null ? s.getPurchaseHistory() : null;
 	}
 	
-	public static void expiredProducts(Store s){
+	static void expiredProducts(Store s){
 		if(s == null)
 			return;
 		for (Product product : s.getProducts().keySet()) {
@@ -114,7 +114,7 @@ public class BlPermissions {
 		}
 	}
 
-	public static boolean changeStorePurchasePolicy(Store s, PurchasePolicy pp){
+	static boolean changeStorePurchasePolicy(Store s, PurchasePolicy pp){
 		if(s == null || pp == null)
 			return false;
 		s.setStorePolicy(pp);

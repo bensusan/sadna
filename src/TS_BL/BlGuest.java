@@ -4,11 +4,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import TS_SharedClasses.*;
 
 public class BlGuest {
-
+	private final static String salt="DGE$5SGr@3VsHYUMas2323E4d57vfBfFSTRU@!DSH(*%FDSdfg13sgfsg";
+	
 	/**
 	 * add product to cart amount times
 	 * 
@@ -103,6 +107,7 @@ public class BlGuest {
 			return null; //password rules failed.
 		if(BlMain.checkIfSubscriberExists(username) != null)
 			return null; //user name exists
+		password = md5Hash(password);
 		Subscriber newSub = new Subscriber(g.getCart(), username, password, fullName, address, phone, creditCardNumber, new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>()); 
 		BlMain.allSubscribers.add(newSub);
 		return newSub;
@@ -116,6 +121,28 @@ public class BlGuest {
 			return null; //exception spell in user name
 		if(!BlMain.legalPassword(password))
 			return null; //password rules failed.
-		return BlMain.checkIfSubscriberExists(username);
+		Subscriber ans = BlMain.checkIfSubscriberExists(username);
+		if(ans != null && ans.getPassword() == md5Hash(password))
+			return ans;
+		
+		return null;
 	}
+	
+	//Takes a string, and converts it to md5 hashed string.
+    private static String md5Hash(String message) {
+        String md5 = "";
+        if(null == message) 
+            return null;
+      //adding a salt to the string before it gets hashed, to get better security
+        message = message + salt;
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");//Create MessageDigest object for MD5
+            digest.update(message.getBytes(), 0, message.length());//Update input string in message digest
+            md5 = new BigInteger(1, digest.digest()).toString(16);//Converts message digest value in base 16 (hex)
+  
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return md5;
+    }
 }

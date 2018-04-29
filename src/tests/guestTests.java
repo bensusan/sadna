@@ -12,8 +12,19 @@ import TS_SharedClasses.*;
 
 public class guestTests {
 
+	
 	@Test
-	public void testAddProductToCart() {
+	public void mainTest()
+	{
+		testAddProductToCart();
+		testRemoveProductFromCart();
+		testEditProductInCart();
+		testEditCart();
+		testPurchaseCart();
+		testSignUp();
+		testSignIn();
+	}
+	private void testAddProductToCart() {
 		Guest g=new Guest();
 		Product p=new Product("123", "ball", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase()));
 		assertFalse(BlMain.addProductToCart(null, p, 1));
@@ -24,9 +35,7 @@ public class guestTests {
 		assertTrue(g.getCart().getProducts().containsKey(p));
 		assertEquals(g.getCart().getProducts().get(p).intValue(),1);
 	}
-
-	@Test
-	public void testRemoveProductFromCart() {
+	private void testRemoveProductFromCart() {
 		Guest g=new Guest();
 		Product p=new Product("995", "apple", 5, 3, "fruits", new PurchasePolicy(new ImmediatelyPurchase()));
 		assertFalse(BlMain.removeProductFromCart(g, null));
@@ -37,9 +46,7 @@ public class guestTests {
 		assertFalse(g.getCart().getProducts().containsKey(p));
 		
 	}
-
-	@Test
-	public void testEditProductInCart() {
+	private void testEditProductInCart() {
 		Guest g=new Guest();
 		Product p=new Product("995", "apple", 5, 3, "fruits", new PurchasePolicy(new ImmediatelyPurchase()));
 		assertFalse(BlMain.editProductInCart(null, p, 1));
@@ -51,9 +58,7 @@ public class guestTests {
 		assertFalse(BlMain.editProductInCart(g, p, 0));
 		assertEquals(g.getCart().getProducts().get(p).intValue(),3);
 	}
-
-	@Test
-	public void testEditCart() {
+	private void testEditCart() {
 		Guest g=null;
 		assertFalse(BlMain.editCart(g, new HashMap<Product,Integer>()));
 		g=new Guest();
@@ -63,9 +68,7 @@ public class guestTests {
 		assertTrue(BlMain.editCart(g, new HashMap<Product,Integer>()));
 		assertTrue(g.getCart().getProducts().containsKey(p));
 	}
-
-	@Test
-	public void testPurchaseCart() {
+	private void testPurchaseCart() {
 		Guest g=new Guest();
 		
 		assertFalse(BlMain.purchaseCart(g, "1234567890123456", "herzel 23 tel aviv"));//empty cart
@@ -77,26 +80,8 @@ public class guestTests {
 		assertFalse(BlMain.purchaseCart(null, "1234567890123456", "herzel 23 tel aviv"));
 		assertTrue(BlMain.purchaseCart(g, "1234567890123456", "herzel 23 tel aviv"));
 	}
-
-	@Test
-	public void testPruchaseProduct() {
-		Guest g=new Guest();
-		Product p=new Product("995", "apple", 5, 3, "fruits", new PurchasePolicy(new ImmediatelyPurchase()));
-		assertFalse(BlMain.pruchaseProduct(null, p, 1, "1234567890123456", "herzel 23 tel aviv"));
-		assertFalse(BlMain.pruchaseProduct(g, null, 1, "1234567890123456", "herzel 23 tel aviv"));
-		assertFalse(BlMain.pruchaseProduct(g, p, -1, "1234567890123456", "herzel 23 tel aviv"));
-		assertFalse(BlMain.pruchaseProduct(g, p, 1, "1", "herzel 23 tel aviv"));
-		assertFalse(BlMain.pruchaseProduct(g, p, 1, null, "herzel 23 tel aviv"));
-		assertFalse(BlMain.pruchaseProduct(g, p, 1, "1234567890123456", null));
-		assertTrue(BlMain.pruchaseProduct(g, p, 1, "1234567890123456", "herzel 23 tel aviv"));
-		Product p1=new Product("995", "apple", 5, 3, "fruits", new PurchasePolicy(new LotteryPurchase(new Date(2017, 12, 12))));
-		assertFalse(BlMain.pruchaseProduct(g, p1, 1, "1234567890123456", "herzel 23 tel aviv"));//lottery end
-		((LotteryPurchase)p1.getPurchasePolicy().getPurchaseType()).setLotteryEndDate(new Date(2018,12,12));
-		assertTrue(BlMain.pruchaseProduct(g, p1, 1, "1234567890123456", "herzel 23 tel aviv"));
-	}
-
-	@Test
-	public void testSignUp() {
+	
+	private void testSignUp() {
 		Guest g=new Guest();
 		assertNull(BlMain.signUp(null, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
 		assertNull(BlMain.signUp(g, "**ghju%", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
@@ -128,9 +113,7 @@ public class guestTests {
 		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
 		
 	}
-
-	@Test
-	public void testSignIn() {
+	private void testSignIn() {
 		Guest g=new Guest();
 		assertNull(BlMain.signIn(g, null, "123"));
 		assertNull(BlMain.signIn(g, "abc", null));
@@ -147,7 +130,6 @@ public class guestTests {
 		assertEquals(s1.getFullName(),"oded menashe");
 		assertEquals(s1.getCreditCardNumber(),"1234567890123456");
 		assertEquals(s1.getAddress(),"herzel 23 herzelia");
-		assertNull(BlMain.signIn(g, "abc", "123"));//signIn twice
 		assertNotEquals(g.getCart(),s1.getCart());
 		
 		

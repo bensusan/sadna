@@ -21,7 +21,10 @@ public class purchasePolicyTest {
 	}
 	
 	@Test
-	public void testPurchase(){
+	public void mainTest(){
+		testPurchase();
+	}
+	private void testPurchase(){
 		Guest g = new Guest();
 		//Test Null Guest
 		assertFalse(BlMain.purchase(pp, null, 100, 3));

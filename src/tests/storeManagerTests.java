@@ -25,10 +25,22 @@ public class storeManagerTests {
 		for (int i=0;i<arr.length;i++)
 			arr[i]=false;
 		s=new Store(BlMain.getStoreId(), "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true);
-		sm=new StoreManager(arr, s);
+		sm=new StoreManager (s);
+		sm.setPremisions(arr);
 	}
 	@Test
-	public void testAddProductToStore() {
+	public void mainTest(){
+		testAddProductToStore();
+		testUpdateProductDetails();
+		testDeleteProductFromStore();
+		testAddPolicyToProduct();
+		testAddDiscountToProduct();
+		testAddNewManager();
+		testCloseStore();
+		testOpenStore();
+		testGetPurchaseHistory();
+	}
+	private void testAddProductToStore() {
 		Product product=new Product("569", "ball", 10, 7, "toys", null);
 		assertFalse(BlMain.addProductToStore(sm, product, 5));
 		arr[BlMain.addProductToStore]=true;
@@ -36,8 +48,7 @@ public class storeManagerTests {
 		assertTrue(BlMain.addProductToStore(sm, product, 5));
 	}
 
-	@Test
-	public void testUpdateProductDetails() {
+	private void testUpdateProductDetails() {
 		
 		Product oldProduct=new Product("569", "ball", 10, 7, "toys", null);
 		Product newProduct=new Product("569", "ball", 10, 7, "toys", null);
@@ -48,18 +59,15 @@ public class storeManagerTests {
 		assertTrue(BlMain.updateProductDetails(sm, oldProduct, newProduct, 5));
 	}
 	
-	@Test
-	public void testDeleteProductFromStore() {
+	private void testDeleteProductFromStore() {
 		Product product=new Product("569", "ball", 8, 7, "toys", null);
 		assertFalse(BlMain.deleteProductFromStore(sm, product));
 		arr[BlMain.deleteProductFromStore]=true;
 		sm.setPremisions(arr);
 		assertTrue(BlMain.deleteProductFromStore(sm, product));
 	}
-
-
-	@Test
-	public void testAddPolicyToProduct() {
+	
+	private void testAddPolicyToProduct() {
 		PurchasePolicy policy=new PurchasePolicy(new ImmediatelyPurchase());
 		Product product=new Product("569", "ball", 8, 7, "toys", null);
 		BlMain.addProductToStore(sm, product, 5);
@@ -69,8 +77,7 @@ public class storeManagerTests {
 		assertTrue(BlMain.addPolicyToProduct(sm, policy, product));
 	}
 
-	@Test
-	public void testAddDiscountToProduct() {
+	private void testAddDiscountToProduct() {
 		Product product=new Product("569", "ball", 8, 7, "toys", null);
 		DiscountPolicy discount=new OvertDiscount(null, 30);
 		assertFalse(BlMain.addDiscountToProduct(sm, discount, product));
@@ -79,34 +86,30 @@ public class storeManagerTests {
 		assertTrue(BlMain.addDiscountToProduct(sm, discount, product));
 	}
 
-
-	@Test
-	public void testAddNewManager() {
-		StoreManager nsm=new StoreManager(arr, sm.getStore());
+	private void testAddNewManager() {
+		StoreManager nsm=new StoreManager(sm.getStore());
+		nsm.setPremisions(arr);
 		assertFalse(BlMain.addNewManager(sm, nsm));
 		arr[BlMain.addNewManager]=true;
 		sm.setPremisions(arr);
 		assertTrue(BlMain.addNewManager(sm, nsm));
 	}
 
-	@Test
-	public void testCloseStore() {
+	private void testCloseStore() {
 		assertFalse(BlMain.closeStore(sm));
 		arr[BlMain.closeStore]=true;
 		sm.setPremisions(arr);
 		assertTrue(BlMain.closeStore(sm));
 	}
 
-	@Test
-	public void testOpenStore() {
+	private void testOpenStore() {
 		assertFalse(BlMain.openStore(sm));
 		arr[BlMain.openStore]=true;
 		sm.setPremisions(arr);
 		assertTrue(BlMain.openStore(sm));
 	}
 
-	@Test
-	public void testGetPurchaseHistory() {
+	private void testGetPurchaseHistory() {
 		assertTrue(BlMain.getPurchaseHistory(sm).isEmpty());
 	}
 

@@ -21,7 +21,11 @@ public class immediatelyPurchaseTest {
 	}
 	
 	@Test
-	public void testpPurchase(){
+	public void mainTest(){
+		testpPurchase();
+		testgGetDiscountedPrice();
+	}
+	private void testpPurchase(){
 		//costumer
 		Guest g = new Guest();
 		//initialize discount policy
@@ -40,9 +44,7 @@ public class immediatelyPurchaseTest {
 		//test good case
 		assertTrue(BlMain.purchase(ip, g, 100, 5));
 	}
-	
-	@Test
-	public void testgGetDiscountedPrice(){
+	private void testgGetDiscountedPrice(){
 		//test neg price
 		assertEquals(-1, BlMain.getDiscountedPrice(ip, -100));
 		//test zero price

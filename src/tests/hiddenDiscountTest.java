@@ -22,7 +22,11 @@ public class hiddenDiscountTest {
 	}
 	
 	@Test
-	public void testUpdatePrice(){
+	public void mainTest()
+	{
+		testUpdatePrice();
+	}
+	private void testUpdatePrice(){
 		//test negetive price
 		assertEquals(-1, BlMain.updatePrice(hd, -1, 123));
 		//test expired end date

@@ -39,7 +39,10 @@ public class productTests {
 	}
 	
 	@Test
-	public void testPurchase() {
+	public void mainTest(){
+		testPurchase();
+	}
+	private void testPurchase() {
 		// initiate Guest
 		Guest g = new Guest();
 		

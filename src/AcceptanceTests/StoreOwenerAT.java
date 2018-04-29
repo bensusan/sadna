@@ -44,10 +44,20 @@ public class StoreOwenerAT {
 		
 
 	}
+	@Test
+	public void mainTest(){
+		testAddProduct();
+		testRemoveProduct();
+		testEditProduct();
+		testDefinePurchasePolicy();
+		testDefineDiscountPolicy();
+		testAddStoreOwner();
+		testAddStoreManager();
+		testWatchPurchaseHistory();
+	}
 	
 	//3.1.3
-	@Test
-	public void testAddProduct(){
+	private void testAddProduct(){
 		//test incorret input
 		assertFalse(BlMain.addProductToStore(so, prod2, -1));
 		assertFalse(BlMain.addProductToStore(so, prod2, 0));
@@ -64,8 +74,7 @@ public class StoreOwenerAT {
 		
 	}
 	//3.1.2
-	@Test
-	public void testRemoveProduct(){
+	private void testRemoveProduct(){
 		BlMain.addProductToStore(so, prod4, 10);
 		//test incorret input
 		assertFalse(BlMain.deleteProductFromStore(so, null));
@@ -83,10 +92,8 @@ public class StoreOwenerAT {
 		assertFalse(BlMain.deleteProductFromStore(so, notExits));
 		
 	}
-	
 	//3.1.1
-	@Test
-	public void testEditProduct(){
+	private void testEditProduct(){
 		BlMain.addProductToStore(so, prod1, 10);
 		Product newProduct = new Product("111", "newProduct", 200, 4, "test cat 1", new PurchasePolicy(new ImmediatelyPurchase()));
 		
@@ -108,10 +115,8 @@ public class StoreOwenerAT {
 		assertFalse(s.getProducts().keySet().contains(prod1));
 		assertTrue(s.getProducts().keySet().contains(newProduct));
 	}
-	
 	//3.2.1
-	@Test
-	public void testDefinePurchasePolicy(){
+	private void testDefinePurchasePolicy(){
 		BlMain.addProductToStore(so, prod1, 10);
 		
 		//incorrect Input
@@ -129,10 +134,8 @@ public class StoreOwenerAT {
 		assertFalse(BlMain.addPolicyToProduct(so, new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))), notExits));
 		
 	}
-	
 	//3.2.2
-	@Test
-	public void testDefineDiscountPolicy(){
+	private void testDefineDiscountPolicy(){
 		BlMain.addProductToStore(so, prod1, 10);
 		
 		//incorrect Input
@@ -149,10 +152,8 @@ public class StoreOwenerAT {
 		BlMain.addProductToStore(so, prod2, 10);
 		assertTrue(BlMain.addDiscountToProduct(so, new HiddenDiscount(123, Date.valueOf("2019-01-01"), 20), prod2));
 	}
-	
 	//3.3
-	@Test
-	public void testAddStoreOwner(){
+	private void testAddStoreOwner(){
 		StoreOwner so2 = new StoreOwner(so.getStore());
 		
 		//incorrect Input
@@ -164,11 +165,9 @@ public class StoreOwenerAT {
 		assertTrue(BlMain.addNewStoreOwner(so, so2));
 		
 	}
-	
 	//3.4
-	@Test
-	public void testAddStoreManager(){
-		StoreManager sm = new StoreManager(new boolean[13], so.getStore());
+	private void testAddStoreManager(){
+		StoreManager sm = new StoreManager(so.getStore());
 		
 		//incorrect Input
 		assertFalse(BlMain.addNewManager(so, null));
@@ -179,10 +178,8 @@ public class StoreOwenerAT {
 		//need to add function add new man owner from subscriber
 		assertTrue(BlMain.addNewManager(so, sm));
 	}
-	
 	//3.7
-	@Test
-	public void testWatchPurchaseHistory(){
+	private void testWatchPurchaseHistory(){
 		assertTrue(BlMain.addProductToStore(so, prod2, 10));
 		assertTrue(BlMain.addProductToStore(so, prod1, 10));
 		assertTrue(BlMain.addProductToStore(so, prod3, 10));

@@ -71,10 +71,10 @@ public class BlMain {
 		return BlGuest.puchaseCart(g, creditCardNumber, buyerAddress);
 	}
 
-	public static boolean pruchaseProduct(Guest g, Product product, int amount, String creditCardNumber,
-			String buyerAddress) {
-		return BlGuest.pruchaseProduct(g, product, amount, creditCardNumber, buyerAddress);
-	}
+//	public static boolean pruchaseProduct(Guest g, Product product, int amount, String creditCardNumber,
+//			String buyerAddress) {
+//		return BlGuest.pruchaseProduct(g, product, amount, creditCardNumber, buyerAddress);
+//	}
 	
 	//do we need this function? already have update price with discount policy
 	public static int updatePrice(HiddenDiscount hd, int price, int code) {
@@ -91,43 +91,43 @@ public class BlMain {
 		return BlLotteryPurchase.purchase(lp, g, price);
 	}
 
-	public static int getDiscountedPrice(ImmediatelyPurchase ip, int price) {
+	static int getDiscountedPrice(ImmediatelyPurchase ip, int price) {
 		return BlImmediatelyPurchase.getDiscountedPrice(ip, price);
 	}
 
-	public static boolean isLotteryDone(LotteryPurchase lp, int price) {
+	static boolean isLotteryDone(LotteryPurchase lp, int price) {
 		return BlLotteryPurchase.isLotteryDone(lp, price);
 	}
 
-	public static void closeCurrentLottery(LotteryPurchase lp) {
+	static void closeCurrentLottery(LotteryPurchase lp) {
 		BlLotteryPurchase.closeCurrentLottery(lp);
 	}
 
-	public static void openNewLottery(LotteryPurchase lp, Date endDate) {
+	static void openNewLottery(LotteryPurchase lp, Date endDate) {
 		BlLotteryPurchase.openNewLottery(lp, endDate);
 	}
 
-	public static boolean purchase(Product p, Guest g, int price, int amount) {
+	static boolean purchase(Product p, Guest g, int price, int amount) {
 		return BlProduct.purchase(p, g, price, amount);
 	}
 
-	public static boolean purchase(PurchasePolicy pp, Guest g, int price, int amount) {
+	static boolean purchase(PurchasePolicy pp, Guest g, int price, int amount) {
 		return BlPurchasePolicy.purchase(pp, g, price, amount);
 	}
 
-	public static boolean checkInStock(Store s, Product p, int amount) {
+	static boolean checkInStock(Store s, Product p, int amount) {
 		return BlStore.checkInStock(s, p, amount);
 	}
 
-	public static boolean addPurchaseToHistory(Store s, Purchase p) {
+	static boolean addPurchaseToHistory(Store s, Purchase p) {
 		return BlStore.addPurchaseToHistory(s, p);
 	}
 
-	public static boolean buyProduct(Store s, Product p, int amount) {
+	static boolean buyProduct(Store s, Product p, int amount) {
 		return BlStore.buyProduct(s, p, amount);
 	}
 
-	public static boolean stockUpdate(Store s, Product p, int amount) {
+	static boolean stockUpdate(Store s, Product p, int amount) {
 		return BlStore.stockUpdate(s, p, amount);
 	}
 
@@ -216,7 +216,7 @@ public class BlMain {
 		return BlSubscriber.openStore(sub,gradeing,products,purchaseHistory,isOpen);
 	}
 
-	public static boolean addPurchaseToHistory(Subscriber sub, Purchase purchase) {
+	static boolean addPurchaseToHistory(Subscriber sub, Purchase purchase) {
 		return BlSubscriber.addPurchaseToHistory(sub, purchase);
 	}
 
@@ -228,11 +228,11 @@ public class BlMain {
 		return BlSubscriber.addManager(sub, manager);
 	}
 
-	public static boolean deleteOwner(Subscriber sub, StoreOwner owner) {
+	static boolean deleteOwner(Subscriber sub, StoreOwner owner) {
 		return BlSubscriber.deleteOwner(sub, owner);
 	}
 
-	public static boolean deleteManager(Subscriber sub, StoreManager manager) {
+	static boolean deleteManager(Subscriber sub, StoreManager manager) {
 		return BlSubscriber.deleteManager(sub, manager);
 	}
 
@@ -249,7 +249,7 @@ public class BlMain {
 	}
 
 	// More functions that are necessary.
-	public static boolean payToStore(Store s, int price) {
+	static boolean payToStore(Store s, int price) {
 		return BlStore.payToStore(s, price);
 	}
 
@@ -279,16 +279,16 @@ public class BlMain {
 	}
 
 	// return money if lottery is done and nobody won
-	public static boolean retMoney(Guest g, int amountToRet) {
+	static boolean retMoney(Guest g, int amountToRet) {
 		return true;
 	}
 
-	public static boolean payMoney(Guest g, int amountToPay) {
+	static boolean payMoney(Guest g, int amountToPay) {
 		return true;
 	}
 
 	////////////////////////////////////// Help functions for everyone
-	public static Subscriber checkIfSubscriberExists(String username) {
+	static Subscriber checkIfSubscriberExists(String username) {
 		for (Subscriber subscriber : allSubscribers) {
 			if (subscriber.getUsername().equals(username))
 				return subscriber;
@@ -296,25 +296,25 @@ public class BlMain {
 		return null;
 	}
 
-	public static boolean correctSpelledLettersSpacesNumbers(String str) {
+	static boolean correctSpelledLettersSpacesNumbers(String str) {
 		return str != null && str.matches("[0-9a-zA-Z\\s]+");
 	}
 	
-	public static boolean correctSpelledLettersSpaces(String str) {
+	static boolean correctSpelledLettersSpaces(String str) {
 		return str != null && str.matches("[a-zA-Z\\s]+");
 	}
 	
-	public static boolean correctSpelledNumbers(String str){
+	static boolean correctSpelledNumbers(String str){
 		return str != null && str.matches("[0-9]+");
 	}
 
-	public static boolean legalPassword(String pass) {
+	static boolean legalPassword(String pass) {
 		//may change in the future
 		return correctSpelledLettersSpacesNumbers(pass);
 	}
 
 	//credit card must have between 8 to 16 digits and digits only!
-	public static boolean legalCreditCard(String creditCardNumber){
+	static boolean legalCreditCard(String creditCardNumber){
 		if(creditCardNumber == null || creditCardNumber.length() < 8 || creditCardNumber.length() > 16)
 			return false;
 		String regex = "[0-9]+";
@@ -324,7 +324,7 @@ public class BlMain {
 	}
 	
 	//should be update in the future
-	public static boolean legalAddress(String buyerAddress){
+	static boolean legalAddress(String buyerAddress){
 		if(buyerAddress == null)
 			return false;
 		return true;
@@ -366,7 +366,7 @@ public class BlMain {
 		return findProductByCriterion("Category", category);
 	}
 
-	public static List<Product> findProductByCriterion(String criterion, String str) {
+	private static List<Product> findProductByCriterion(String criterion, String str) {
 		List<Product> res = new LinkedList<Product>();
 		Map<Store, Map<Product, Integer>> swithpanda = getAllStoresWithThierProductsAndAmounts();
 		for (Map<Product, Integer> panda : swithpanda.values()) {
@@ -378,7 +378,7 @@ public class BlMain {
 		return res;
 	}
 
-	public static boolean productInCriterion(String criterion, String str, Product p) {
+	private static boolean productInCriterion(String criterion, String str, Product p) {
 		if (criterion.equals("Name") && p.getName().equals(str))
 			return true;
 		if (criterion.equals("Category") && p.getCategory().equals(str))
@@ -386,7 +386,7 @@ public class BlMain {
 		return false;
 	}
 
-	public static void addCreditCartToMap(String creditCardNumber, Guest g) {
+	static void addCreditCartToMap(String creditCardNumber, Guest g) {
 		LinkedList<String> lst = allUsersWithTheirCreditCards.get(g);
 		if(lst==null){
 			lst = new LinkedList<String>();
@@ -395,15 +395,15 @@ public class BlMain {
 		allUsersWithTheirCreditCards.put(g, lst);
 	}
 	
-	public static void incrementPurchaseId(){
+	static void incrementPurchaseId(){
 		purchaseId++;
 	}
 	
-	public static int getPurchaseId(){
+	static int getPurchaseId(){
 		return purchaseId;
 	}
 	
-	public static int getStoreId(){
+	static int getStoreId(){
 		return storeId++;
 	}
 	

@@ -1,13 +1,14 @@
 package TS_SharedClasses;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import TS_BL.BlMain;
 
 public class Cart {
 
-	private Map<Product,Integer> products;
+	private List<ProductInCart> products;
 	
 	public Cart()
 	{

@@ -20,10 +20,6 @@ public class StoreManager{
 		return premisions;
 	}
 	
-	public void setPremisions(boolean[] premisions) {
-		this.premisions = premisions;
-	}
-	
 	public Store getStore() {
 		return store;
 	}
@@ -49,6 +45,10 @@ public class StoreManager{
 		} else if (!store.equals(other.store))
 			return false;
 		return true;
+	}
+	
+	public void setSpecificPermission(int perm, boolean flag){
+		this.premisions[perm] = flag;
 	}
 	
 	

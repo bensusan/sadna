@@ -20,8 +20,12 @@ public class BlGuest {
 	 * @param amount
 	 * @return true if succseed false otherwise
 	 */
-	static boolean addProductToCart(Guest g, Product p, int amount) {
-		return g != null && BlCart.addProduct(g.getCart(), p, amount);
+	static boolean addImmediatelyProduct(Guest g, Product p, int amount, int discountCode) {
+		return g != null && BlCart.addImmediatelyProduct(g.getCart(), p, amount, discountCode);
+	}
+	
+	static boolean addLotteryProduct(Guest g, Product p, int money) {
+		return g != null && BlCart.addLotteryProduct(g.getCart(), p, money);
 	}
 
 	/**
@@ -41,8 +45,16 @@ public class BlGuest {
 	 * @param amount
 	 * @return true if succseed false otherwise
 	 */
-	static boolean editProductInCart(Guest g, Product p, int amount) {
-		return g != null && BlCart.editProduct(g.getCart(), p, amount);
+	static boolean editProductAmount(Guest g, Product p, int amount) {
+		return g != null && BlCart.editProductAmount(g.getCart(), p, amount);
+	}
+	
+	static boolean editProductDiscount(Guest g, Product p, int discountCode) {
+		return g != null && BlCart.editProductDiscount(g.getCart(), p, discountCode);
+	}
+	
+	static boolean editProductPrice(Guest g, Product p, int money) {
+		return g != null && BlCart.editProductPrice(g.getCart(), p, money);
 	}
 
 	/**
@@ -51,7 +63,7 @@ public class BlGuest {
 	 * @param newCart
 	 * @return true if succseed false otherwise
 	 */
-	static boolean editCart(Guest g, Map<Product, Integer> newCart) {
+	static boolean editCart(Guest g, Cart newCart) {
 		return g != null && BlCart.editCart(g.getCart(), newCart);
 	}
 
@@ -81,7 +93,7 @@ public class BlGuest {
 	 * @param buyerAddress
 	 * @return true if succseed false otherwise
 	 */
-	static boolean pruchaseProduct(Guest g, Product product, int amount, String creditCardNumber, String buyerAddress) {
+	private static boolean pruchaseProduct(Guest g, Product product, int amount, String creditCardNumber, String buyerAddress) {
 		if(g == null || product == null || amount < 1 || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.legalAddress(buyerAddress))
 			return false;
 		BlMain.addCreditCartToMap(creditCardNumber, g);
@@ -145,4 +157,12 @@ public class BlGuest {
         }
         return md5;
     }
+    
+    static boolean retMoney(Guest g, int amountToRet) {
+		return true;
+	}
+    
+    static boolean payMoney(Guest g, int amountToPay) {
+		return true;
+	}
 }

@@ -12,14 +12,14 @@ public class BlHiddenDiscount {
 	 */
 	static int updatePrice(HiddenDiscount hd, int price) {
 		// TODO missing implementation
-		return 0;
+		return -1;
 	}
 
 	/**
 	 * @param price
 	 * @return the price after discount if the code correct
 	 */
-	static int updatePrice(HiddenDiscount hd, int price, int code) {
+	public static int updatePrice(HiddenDiscount hd, int price, int code) {
 		if(hd == null || price < 0)
 			return -1;
 		if (!checkCodeForDiscount(hd, code))

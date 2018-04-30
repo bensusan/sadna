@@ -1,6 +1,7 @@
 package TS_SharedClasses;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,21 +13,21 @@ public class Cart {
 	
 	public Cart()
 	{
-		this.products=new HashMap<Product,Integer>();
+		this.products=new LinkedList<ProductInCart>();
 	}
 	
-	public Cart(Map<Product, Integer> products) {
+	public Cart(List<ProductInCart> products) {
 		super();
 		this.products = products;
 		if(products == null)
-			this.products = new HashMap<Product, Integer>();
+			this.products = new LinkedList<ProductInCart>();
 	}
 	
-	public Map<Product,Integer> getProducts() {
-		return products;
+	public List<ProductInCart> getProducts() {
+		return this.products;
 	}
 	
-	public void setProducts(Map<Product,Integer> products) {
+	public void setProducts(List<ProductInCart> products) {
 		this.products = products;
 	}
 
@@ -39,10 +40,11 @@ public class Cart {
 		if (getClass() != obj.getClass())
 			return false;
 		Cart other = (Cart) obj;
-		if(!BlMain.equalsMaps(products, other.products))
+		if(!BlMain.equalsLists(products, other.products))
 			return false;
 		return true;
 	}
+	
 	
 	
 }

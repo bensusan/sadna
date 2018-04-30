@@ -8,7 +8,7 @@ public class BlImmediatelyPurchase{
 	//our responsibility to send here the price after the discount.
 	static boolean purchase(ImmediatelyPurchase ip, Guest g, int price)
 	{
-		return ip != null && g != null && price > 0 && BlMain.payMoney(g, getDiscountedPrice(ip, price));
+		return ip != null && g != null && price > 0 && BlGuest.payMoney(g, getDiscountedPrice(ip, price));
 	}
 	
 	//Gets the original price, calculate and return the price after the discount.

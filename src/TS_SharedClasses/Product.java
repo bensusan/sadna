@@ -64,6 +64,8 @@ public class Product {
 	}
 
 	public PurchasePolicy getPurchasePolicy() {
+		if(purchasePolicy == null && this.store != null)
+			return this.store.getStorePolicy();
 		return purchasePolicy;
 	}
 

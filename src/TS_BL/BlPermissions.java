@@ -108,7 +108,7 @@ public class BlPermissions {
 				today.set(Calendar.HOUR_OF_DAY, 0);
 				LotteryPurchase lpt = ((LotteryPurchase)pt); 
 				if(lpt.getLotteryEndDate().before(today.getTime())){
-					BlMain.closeCurrentLottery(lpt);
+					BlLotteryPurchase.closeCurrentLottery(lpt);
 				}
 			}
 		}

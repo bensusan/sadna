@@ -44,7 +44,7 @@ public class BlLotteryPurchase {
 		Date date = new Date();
 		lp.setLotteryEndDate((java.util.Date) date);
 		for(Guest g : lp.getParticipants().keySet()){
-			BlMain.retMoney(g, lp.getParticipants().get(g));
+			BlGuest.retMoney(g, lp.getParticipants().get(g));
 		}
 		
 	}

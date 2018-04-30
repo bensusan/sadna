@@ -3,6 +3,7 @@ package TS_SharedClasses;
 import java.sql.Date;
 
 import TS_BL.BlMain;
+import TS_BL.BlOvertDiscount;
 
 public class OvertDiscount extends DiscountPolicy {
 
@@ -19,12 +20,12 @@ public class OvertDiscount extends DiscountPolicy {
 	public int updatePrice(int price, int code) {
 		if(code < 0)
 			return -1;
-		return BlMain.updatePrice(this, price);
+		return BlOvertDiscount.updatePrice(this, price);
 	}
 
 	@Override
 	public int updatePrice(int price) {
-		return BlMain.updatePrice(this, price);
+		return -1;
 	}
 	
 	

@@ -38,7 +38,7 @@ public class BlStore {
 	 * @return true if succseed false otherwise
 	 */
 	static boolean buyProduct(Store s, Product p, int amount) {
-		return BlMain.checkInStock(s, p, amount) && BlMain.stockUpdate(s, p, s.getProducts().get(p) - amount) ;  
+		return checkInStock(s, p, amount) && stockUpdate(s, p, s.getProducts().get(p) - amount) ;  
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class BlStore {
 	 * @return true if succseed false otherwise
 	 */
 	static boolean stockUpdate(Store s, Product p, int amount) {
-		if(amount < 0 || !BlMain.checkInStock(s, p, amount))
+		if(amount < 0 || !checkInStock(s, p, amount))
 			return false;
 		Map<Product, Integer> products = s.getProducts();
 		products.put(p, products.get(p) - amount);

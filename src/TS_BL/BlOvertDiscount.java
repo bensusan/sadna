@@ -9,7 +9,7 @@ public class BlOvertDiscount {
 	 * @param price
 	 * @return the price after discount
 	 */
-	static int updatePrice(OvertDiscount od, int price) {
+	public static int updatePrice(OvertDiscount od, int price) {
 		if(od == null || price <= 0)
 			return -1;
 		Date date = new Date();

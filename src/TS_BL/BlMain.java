@@ -20,65 +20,41 @@ public class BlMain {
 	public static int purchaseId = -1;
 	public static int storeId = -1;
 	// need to insert to here all guests that payed with their credit card for pay back
-	
-	// public static boolean puchaseCart(Cart c, int creditCardNumber, String
-	// buyerAddress) {
-	//
-	// return BlCart.puchaseCart(c, creditCardNumber, buyerAddress);
-	// }
 
-	public static boolean addProduct(Cart c, Product p, int amount) {
-		return BlCart.addProduct(c, p, amount);
-	}
-
-	public static boolean removeProduct(Cart c, Product p) {
-		return BlCart.removeProduct(c, p);
-	}
-
-	public static boolean editProduct(Cart c, Product p, int amount) {
-		return BlCart.editProduct(c, p, amount);
-	}
-
-	public static boolean editCart(Cart c, Map<Product, Integer> newCart) {
-		return BlCart.editCart(c, newCart);
-	}
-
-	public static int updatePrice(DiscountPolicy dp, int price) {
-		return BlDiscountPolicy.updatePrice(dp, price);
+	public static boolean addImmediatelyProduct(Guest g, Product p, int amount) {
+		return BlGuest.addImmediatelyProduct(g, p, amount, -1);
 	}
 	
-	public static int updatePrice(DiscountPolicy dp, int price, int code) {
-		return BlDiscountPolicy.updatePrice(dp, price , code);
+	public static boolean addImmediatelyProduct(Guest g, Product p, int amount, int discountCode) {
+		return BlGuest.addImmediatelyProduct(g, p, amount, discountCode);
 	}
-
-	public static boolean addProductToCart(Guest g, Product p, int amount) {
-		return BlGuest.addProductToCart(g, p, amount);
+	
+	public static boolean addLotteryProduct(Guest g, Product p, int money) {
+		return BlGuest.addLotteryProduct(g, p, money);
 	}
 
 	public static boolean removeProductFromCart(Guest g, Product p) {
 		return BlGuest.removeProductFromCart(g, p);
 	}
 
-	public static boolean editProductInCart(Guest g, Product p, int amount) {
-		return BlGuest.editProductInCart(g, p, amount);
+	public static boolean editProductAmount(Guest g, Product p, int amount) {
+		return BlGuest.editProductAmount(g, p, amount);
 	}
-
-	public static boolean editCart(Guest g, Map<Product, Integer> newCart) {
+	
+	public static boolean editProductDiscount(Guest g, Product p, int discountCode) {
+		return BlGuest.editProductDiscount(g, p, discountCode);
+	}
+	
+	public static boolean editProductPrice(Guest g, Product p, int money) {
+		return BlGuest.editProductPrice(g, p, money);
+	}
+	
+	public static boolean editCart(Guest g, Cart newCart) {
 		return BlGuest.editCart(g, newCart);
 	}
 
 	public static boolean purchaseCart(Guest g, String creditCardNumber, String buyerAddress) {
 		return BlGuest.puchaseCart(g, creditCardNumber, buyerAddress);
-	}
-
-//	public static boolean pruchaseProduct(Guest g, Product product, int amount, String creditCardNumber,
-//			String buyerAddress) {
-//		return BlGuest.pruchaseProduct(g, product, amount, creditCardNumber, buyerAddress);
-//	}
-	
-	//do we need this function? already have update price with discount policy
-	public static int updatePrice(HiddenDiscount hd, int price, int code) {
-		return BlHiddenDiscount.updatePrice(hd, price, code);
 	}
 
 	public static boolean purchase(PurchaseType pt, Guest g, int price, int amount) {
@@ -91,45 +67,45 @@ public class BlMain {
 		return BlLotteryPurchase.purchase(lp, g, price);
 	}
 
-	static int getDiscountedPrice(ImmediatelyPurchase ip, int price) {
-		return BlImmediatelyPurchase.getDiscountedPrice(ip, price);
-	}
-
-	static boolean isLotteryDone(LotteryPurchase lp, int price) {
-		return BlLotteryPurchase.isLotteryDone(lp, price);
-	}
-
-	static void closeCurrentLottery(LotteryPurchase lp) {
-		BlLotteryPurchase.closeCurrentLottery(lp);
-	}
-
-	static void openNewLottery(LotteryPurchase lp, Date endDate) {
-		BlLotteryPurchase.openNewLottery(lp, endDate);
-	}
-
-	static boolean purchase(Product p, Guest g, int price, int amount) {
-		return BlProduct.purchase(p, g, price, amount);
-	}
-
-	static boolean purchase(PurchasePolicy pp, Guest g, int price, int amount) {
-		return BlPurchasePolicy.purchase(pp, g, price, amount);
-	}
-
-	static boolean checkInStock(Store s, Product p, int amount) {
-		return BlStore.checkInStock(s, p, amount);
-	}
-
-	static boolean addPurchaseToHistory(Store s, Purchase p) {
-		return BlStore.addPurchaseToHistory(s, p);
-	}
-
-	static boolean buyProduct(Store s, Product p, int amount) {
-		return BlStore.buyProduct(s, p, amount);
-	}
-
-	static boolean stockUpdate(Store s, Product p, int amount) {
-		return BlStore.stockUpdate(s, p, amount);
-	}
+//	static int getDiscountedPrice(ImmediatelyPurchase ip, int price) {
+//		return BlImmediatelyPurchase.getDiscountedPrice(ip, price);
+//	}
+//
+//	static boolean isLotteryDone(LotteryPurchase lp, int price) {
+//		return BlLotteryPurchase.isLotteryDone(lp, price);
+//	}
+//
+//	static void closeCurrentLottery(LotteryPurchase lp) {
+//		BlLotteryPurchase.closeCurrentLottery(lp);
+//	}
+//
+//	static void openNewLottery(LotteryPurchase lp, Date endDate) {
+//		BlLotteryPurchase.openNewLottery(lp, endDate);
+//	}
+//
+//	static boolean purchase(Product p, Guest g, int price, int amount) {
+//		return BlProduct.purchase(p, g, price, amount);
+//	}
+//
+//	static boolean purchase(PurchasePolicy pp, Guest g, int price, int amount) {
+//		return BlPurchasePolicy.purchase(pp, g, price, amount);
+//	}
+//
+//	static boolean checkInStock(Store s, Product p, int amount) {
+//		return BlStore.checkInStock(s, p, amount);
+//	}
+//
+//	static boolean addPurchaseToHistory(Store s, Purchase p) {
+//		return BlStore.addPurchaseToHistory(s, p);
+//	}
+//
+//	static boolean buyProduct(Store s, Product p, int amount) {
+//		return BlStore.buyProduct(s, p, amount);
+//	}
+//
+//	static boolean stockUpdate(Store s, Product p, int amount) {
+//		return BlStore.stockUpdate(s, p, amount);
+//	}
 
 	public static boolean addProductToStore(StoreManager sm, Product product, int amount) {
 		return BlStoreManager.addProductToStore(sm, product, amount);
@@ -227,14 +203,14 @@ public class BlMain {
 	public static boolean addManager(Subscriber sub, StoreManager manager) {
 		return BlSubscriber.addManager(sub, manager);
 	}
-
-	static boolean deleteOwner(Subscriber sub, StoreOwner owner) {
-		return BlSubscriber.deleteOwner(sub, owner);
-	}
-
-	static boolean deleteManager(Subscriber sub, StoreManager manager) {
-		return BlSubscriber.deleteManager(sub, manager);
-	}
+//
+//	static boolean deleteOwner(Subscriber sub, StoreOwner owner) {
+//		return BlSubscriber.deleteOwner(sub, owner);
+//	}
+//
+//	static boolean deleteManager(Subscriber sub, StoreManager manager) {
+//		return BlSubscriber.deleteManager(sub, manager);
+//	}
 
 	public static boolean removeSubscriber(SystemAdministrator sa, Subscriber s) {
 		return BlSystemAdministrator.removeSubscriber(sa, s);
@@ -249,9 +225,9 @@ public class BlMain {
 	}
 
 	// More functions that are necessary.
-	static boolean payToStore(Store s, int price) {
-		return BlStore.payToStore(s, price);
-	}
+//	static boolean payToStore(Store s, int price) {
+//		return BlStore.payToStore(s, price);
+//	}
 
 	public static Subscriber signUp(Guest g, String username, String password, String fullName, String address,
 			String phone, String creditCardNumber) {
@@ -276,15 +252,6 @@ public class BlMain {
 	
 	public static boolean changeStorePurchasePolicy(StoreManager sm, PurchasePolicy pp){
 		return BlStoreManager.changeStorePurchasePolicy(sm, pp);
-	}
-
-	// return money if lottery is done and nobody won
-	static boolean retMoney(Guest g, int amountToRet) {
-		return true;
-	}
-
-	static boolean payMoney(Guest g, int amountToPay) {
-		return true;
 	}
 
 	////////////////////////////////////// Help functions for everyone

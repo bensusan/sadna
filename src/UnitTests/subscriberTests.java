@@ -1,4 +1,4 @@
-package UnitTests;
+package unitTests;
 
 import static org.junit.Assert.*;
 
@@ -21,33 +21,46 @@ public class subscriberTests {
 	@BeforeClass
     public static void oneTimeSetUp() {
 		sub=new Subscriber(new Cart(), "abc123", "0987654", "moshe datz", "herzel 23 herzelia", "0541234567", "1234567890123456", new LinkedList(), new LinkedList(), new LinkedList());
-		owner=new StoreOwner(new Store(BlMain.getStoreId(), "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
-		manager=new StoreManager(new Store(BlMain.getStoreId(), "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
+		owner=new StoreOwner(new Store(333, "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
+		manager=new StoreManager(new Store(333, "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
 	}
 	
 
 	@Test
 	public void mainTest(){
 		testAddPurchaseToHistory();
+		testOpenStore();
 		testAddOwner();
 		testAddManager();
-		testDeleteOwner();
-		testDeleteManager();
 	}
 	private void testAddPurchaseToHistory() {
 		
-		Cart cart=new Cart();
-		Map<Product,Integer> products=new HashMap<Product,Integer>();
-		products.put(new Product("456", "ping pong ball", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase())), 3);
-		cart.setProducts(products);
-		Purchase purchase = new Purchase(new Date(System.currentTimeMillis()), BlMain.getPurchaseId(), cart);
+		Guest guest=new Guest();
+
+		Product p=new Product("456", "ping pong ball", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase()));
+		BlMain.addImmediatelyProduct(guest, p, 3);
+		
+		Purchase purchase = new Purchase(new Date(System.currentTimeMillis()), 111, guest.getCart());
 		Subscriber sub2 = null;
 		assertFalse(BlMain.addPurchaseToHistory(sub2, purchase));
-		sub.setCart(cart);
+		sub.setCart(guest.getCart());
 		assertFalse(BlMain.addPurchaseToHistory(sub, null));
 		assertTrue(BlMain.addPurchaseToHistory(sub, purchase));
 		assertTrue(sub.getPurchaseHistory().contains(purchase));
 	}
+	private void testOpenStore()
+	{
+		Subscriber ofir=BlMain.signUp(new Guest(), "ofir123", "ofir123", "ofir imas", "pach zevel 1 Ashdod", "0584792829", "2222222222222222");
+		assertNull(BlMain.openStore(null, 3, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true));
+		assertNull(BlMain.openStore(ofir, -1, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true));
+		assertNull(BlMain.openStore(ofir, 3, null, new LinkedList<Purchase>(), true));
+		assertNull(BlMain.openStore(ofir, 3, new HashMap<Product,Integer>(), null, true));
+		assertNotNull(BlMain.openStore(ofir, 3, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true));
+		
+		SystemAdministrator amit=new SystemAdministrator("amit123", "amit123", "amit kaplan", "hatamar 3 Modiin", "0545818680", "1111111111111111",new LinkedList<Purchase>(),new LinkedList<StoreManager>(),new LinkedList<StoreOwner>());
+		BlMain.removeSubscriber(amit, ofir);
+	}
+	
 	private void testAddOwner() {
 		Subscriber sub2=null;
 		assertFalse(BlMain.addOwner(sub2, owner));
@@ -62,21 +75,8 @@ public class subscriberTests {
 		assertTrue(BlMain.addManager(sub, manager));
 		assertTrue(sub.getManager().contains(manager));
 	}
-	private void testDeleteOwner() {
-		Subscriber sub2=null;
-		assertFalse(BlMain.deleteOwner(sub2, owner));
-		assertFalse(BlMain.deleteOwner(sub, null));
-		assertTrue(BlMain.deleteOwner(sub, owner));
-		assertFalse(sub.getOwner().contains(owner));
-		assertFalse(BlMain.deleteOwner(sub, owner));//does not exist
-	}
-	private void testDeleteManager() {
-		Subscriber sub2=null;
-		assertFalse(BlMain.deleteManager(sub2, manager));
-		assertFalse(BlMain.deleteManager(sub, null));
-		assertTrue(BlMain.deleteManager(sub, manager));
-		assertFalse(sub.getManager().contains(manager));
-		assertFalse(BlMain.deleteManager(sub, manager));//does not exist
-	}
+	
+	
+	
 
 }

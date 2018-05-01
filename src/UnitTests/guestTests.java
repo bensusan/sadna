@@ -1,9 +1,8 @@
-package UnitTests;
+package unitTests;
 
 import static org.junit.Assert.*;
 
 import java.sql.Date;
-import java.util.HashMap;
 
 import org.junit.Test;
 
@@ -16,64 +15,138 @@ public class guestTests {
 	@Test
 	public void mainTest()
 	{
-		testAddProductToCart();
+		testAddImmediatelyProduct();
+		testAddImmediatelyProductWithCode();
+		testAddLotteryProduct();
 		testRemoveProductFromCart();
-		testEditProductInCart();
+		editProductAmount();
 		testEditCart();
 		testPurchaseCart();
 		testSignUp();
 		testSignIn();
 	}
-	private void testAddProductToCart() {
+	
+	private void testAddImmediatelyProduct() {
 		Guest g=new Guest();
 		Product p=new Product("123", "ball", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase()));
-		assertFalse(BlMain.addProductToCart(null, p, 1));
-		assertFalse(BlMain.addProductToCart(g, null, 1));
-		assertFalse(BlMain.addProductToCart(g, p, -1));
-		assertFalse(BlMain.addProductToCart(g, p, 0));
-		assertTrue(BlMain.addProductToCart(g, p, 1));
-		assertTrue(g.getCart().getProducts().containsKey(p));
-		assertEquals(g.getCart().getProducts().get(p).intValue(),1);
+		assertFalse(BlMain.addImmediatelyProduct(null, p, 1));
+		assertFalse(BlMain.addImmediatelyProduct(g, null, 1));
+		assertFalse(BlMain.addImmediatelyProduct(g, p, -1));
+		assertFalse(BlMain.addImmediatelyProduct(g, p, 0));
+		assertTrue(BlMain.addImmediatelyProduct(g, p, 1));
+		for(ProductInCart p2:g.getCart().getProducts())
+		{
+			if(p2.getMyProduct().equals(p))
+			{
+				assertEquals(p2.getAmount(),1);
+				assertEquals(p2.getPrice(),5);
+			}
+		}
 	}
+	private void testAddImmediatelyProductWithCode() {
+		Guest g=new Guest();
+		Product p=new Product("123", "ball", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase(new HiddenDiscount(1212, new Date(12,12,2018), 20))));
+		assertFalse(BlMain.addImmediatelyProduct(null, p, 1,1212));
+		assertFalse(BlMain.addImmediatelyProduct(g, null, 1,1212));
+		assertFalse(BlMain.addImmediatelyProduct(g, p, -1,1212));
+		assertFalse(BlMain.addImmediatelyProduct(g, p, 0,1212));
+		
+		assertTrue(BlMain.addImmediatelyProduct(g, p, 1,1212));
+		for(ProductInCart p2:g.getCart().getProducts())
+		{
+			if(p2.getMyProduct().equals(p))
+			{
+				assertEquals(p2.getAmount(),1);
+				assertEquals(p2.getPrice(),4);
+			}
+		}
+		p=new Product("132", "balls", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase(new HiddenDiscount(1212, new Date(12,12,2018), 20))));
+		assertTrue(BlMain.addImmediatelyProduct(g, p, 1,9999));
+		for(ProductInCart p2:g.getCart().getProducts())
+		{
+			if(p2.getMyProduct().equals(p))
+			{
+				assertEquals(p2.getAmount(),1);
+				assertEquals(p2.getPrice(),5);
+			}
+		}
+	}
+	private void testAddLotteryProduct() {
+		Guest g=new Guest();
+		Product p=new Product("132", "balls", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase(new HiddenDiscount(1212, new Date(12,12,2018), 20))));
+		assertFalse(BlMain.addLotteryProduct(g, p, 1));//not lottery
+		p=new Product("123", "ball", 5, 3, "toyes", new PurchasePolicy(new LotteryPurchase(new Date(12,12,2018))));
+		assertFalse(BlMain.addLotteryProduct(null, p, 1));
+		assertFalse(BlMain.addLotteryProduct(g, null, 1));
+		assertFalse(BlMain.addLotteryProduct(g, p, -1));
+		assertFalse(BlMain.addLotteryProduct(g, p, 0));
+		assertTrue(BlMain.addLotteryProduct(g, p, 1));
+		assertEquals(((LotteryPurchase)p.getPurchasePolicy().getPurchaseType()).getParticipants().get(g).intValue(),1);
+	}
+	
+	
 	private void testRemoveProductFromCart() {
 		Guest g=new Guest();
 		Product p=new Product("995", "apple", 5, 3, "fruits", new PurchasePolicy(new ImmediatelyPurchase()));
 		assertFalse(BlMain.removeProductFromCart(g, null));
 		assertFalse(BlMain.removeProductFromCart(null, p));
 		assertFalse(BlMain.removeProductFromCart(g, p));
-		BlMain.addProductToCart(g, p, 1);
+		BlMain.addImmediatelyProduct(g, p, 1);
 		assertTrue(BlMain.removeProductFromCart(g, p));
-		assertFalse(g.getCart().getProducts().containsKey(p));
+		boolean containP=false;
+		for(ProductInCart p2 :g.getCart().getProducts())
+		{
+			if(p2.getMyProduct().equals(p)){
+				containP=true;
+			}
+		}
+		assertFalse(containP);
 		
 	}
-	private void testEditProductInCart() {
+	
+	private void editProductAmount(){
 		Guest g=new Guest();
 		Product p=new Product("995", "apple", 5, 3, "fruits", new PurchasePolicy(new ImmediatelyPurchase()));
-		assertFalse(BlMain.editProductInCart(null, p, 1));
-		assertFalse(BlMain.editProductInCart(g, null, 1));
-		assertFalse(BlMain.editProductInCart(g, p, 1));
-		BlMain.addProductToCart(g, p, 1);
-		assertFalse(BlMain.editProductInCart(g, p, -2));
-		assertTrue(BlMain.editProductInCart(g, p, 3));
-		assertFalse(BlMain.editProductInCart(g, p, 0));
-		assertEquals(g.getCart().getProducts().get(p).intValue(),3);
+		BlMain.addImmediatelyProduct(g, p, 1);
+
+		assertFalse(BlMain.editProductAmount(null, p, 2));
+		assertFalse(BlMain.editProductAmount(g, null, 2));
+		assertFalse(BlMain.editProductAmount(g, p, -1));
+		assertFalse(BlMain.editProductAmount(g, p, 0));
+		assertFalse(BlMain.editProductAmount(g, new Product("9999", "banana", 6, 3, "fruits", new PurchasePolicy(new ImmediatelyPurchase())), 2));
+		assertFalse(BlMain.editProductAmount(g, p, 2));
+		for(ProductInCart p2:g.getCart().getProducts())
+		{
+			if(p2.getMyProduct().equals(p)){
+				assertEquals(p2.getAmount(),2);
+				assertEquals(p2.getPrice(),10);
+			}
+		}
 	}
+	
 	private void testEditCart() {
 		Guest g=null;
-		assertFalse(BlMain.editCart(g, new HashMap<Product,Integer>()));
+		assertFalse(BlMain.editCart(g, new Cart()));
 		g=new Guest();
 		assertFalse(BlMain.editCart(g, null));
 		Product p=new Product("995", "apple", 5, 3, "fruits", new PurchasePolicy(new ImmediatelyPurchase()));
-		BlMain.addProductToCart(g, p, 1);
-		assertTrue(BlMain.editCart(g, new HashMap<Product,Integer>()));
-		assertTrue(g.getCart().getProducts().containsKey(p));
+		BlMain.addImmediatelyProduct(g, p, 1);
+		assertTrue(BlMain.editCart(g, new Cart()));
+		boolean containP=false;
+		for(ProductInCart p2 :g.getCart().getProducts())
+		{
+			if(p2.getMyProduct().equals(p)){
+				containP=true;
+			}
+		}
+		assertTrue(containP);
 	}
 	private void testPurchaseCart() {
 		Guest g=new Guest();
 		
 		assertFalse(BlMain.purchaseCart(g, "1234567890123456", "herzel 23 tel aviv"));//empty cart
 		Product p=new Product("995", "apple", 5, 3, "fruits", new PurchasePolicy(new ImmediatelyPurchase()));
-		BlMain.addProductToCart(g, p, 1);
+		BlMain.addImmediatelyProduct(g, p, 1);
 		assertFalse(BlMain.purchaseCart(g, "1", "herzel 23 tel aviv"));
 		assertFalse(BlMain.purchaseCart(g, null, "herzel 23 tel aviv"));
 		assertFalse(BlMain.purchaseCart(g, "1234567890123456", null));
@@ -121,7 +194,7 @@ public class guestTests {
 		assertNull(BlMain.signIn(g, "abc", "%Ffbf@{/"));
 		assertNull(BlMain.signIn(g, "abc", "123"));//user does not exist
 		
-		BlMain.addProductToCart(g, new Product("995", "apple", 5, 3, "fruits", null), 1);
+		BlMain.addImmediatelyProduct(g, new Product("995", "apple", 5, 3, "fruits", new PurchasePolicy(new ImmediatelyPurchase())), 1);
 		Subscriber s1=BlMain.signIn(g, "abc", "123");
 		
 		assertEquals(s1.getUsername(),"abc");
@@ -134,5 +207,11 @@ public class guestTests {
 		
 		
 	}
+	
+
+
+	
+
+
 
 }

@@ -1,10 +1,9 @@
-package UnitTests;
+package unitTests;
 
 import static org.junit.Assert.*;
 
 import java.util.*;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -36,7 +35,7 @@ public class storeOwnerTests {
 		testCloseStore();
 		testOpenStore();
 		testGetPurchaseHistory();
-		testExpiredProducts();
+		testChangeStorePurchasePolicy();
 	}
 	private void testAddProductToStore() {
 		Product product=new Product("234", "ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
@@ -116,7 +115,7 @@ public class storeOwnerTests {
 		assertFalse(BlMain.addNewStoreOwner(so, null));
 		StoreOwner so2=null;
 		assertFalse(BlMain.addNewStoreOwner(so2, so));
-		so2=new StoreOwner(new Store(BlMain.getStoreId(), "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
+		so2=new StoreOwner(new Store(222, "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
 		assertFalse(BlMain.addNewStoreOwner(so, so2));//not same store
 		so2.setStore(so.getStore());
 		assertTrue(BlMain.addNewStoreOwner(so, so2));
@@ -127,7 +126,7 @@ public class storeOwnerTests {
 		StoreOwner so2=null;
 		StoreManager sm=new StoreManager(so.getStore());
 		assertFalse(BlMain.addNewManager(so2, sm));
-		sm.setStore(new Store(BlMain.getStoreId(), "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
+		sm.setStore(new Store(333, "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
 		assertFalse(BlMain.addNewManager(so, sm));//not same store
 		sm.setStore(so.getStore());
 		assertTrue(BlMain.addNewManager(so, sm));
@@ -160,8 +159,16 @@ public class storeOwnerTests {
 		assertTrue(BlMain.getPurchaseHistory(so).isEmpty());
 
 	}
-	private void testExpiredProducts() {
-		fail("Not yet implemented");
+	private void testChangeStorePurchasePolicy()
+	{
+		StoreOwner so2=null;
+		assertFalse(BlMain.changeStorePurchasePolicy(so2, new PurchasePolicy(new ImmediatelyPurchase())));
+		Store tempStore=so.getStore();
+		so.setStore(null);
+		assertFalse(BlMain.changeStorePurchasePolicy(so, new PurchasePolicy(new ImmediatelyPurchase())));
+		so.setStore(tempStore);
+		assertFalse(BlMain.changeStorePurchasePolicy(so, null));
+		assertTrue(BlMain.changeStorePurchasePolicy(so, new PurchasePolicy(new ImmediatelyPurchase())));
 	}
 
 }

@@ -42,6 +42,8 @@ public class GuestRegTests {
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		SystemAdministrator amit=new SystemAdministrator("amit123", "amit123", "amit kaplan", "hatamar 3 Modiin", "0545818680", "1111111111111111",new LinkedList<Purchase>(),new LinkedList<StoreManager>(),new LinkedList<StoreOwner>());
+		BlMain.removeSubscriber(amit, (Subscriber)ofir);
 	}
 	@Test
 	public void testSignUp() {

@@ -10,13 +10,14 @@ public class Product {
 	private PurchasePolicy purchasePolicy;
 	private Store store;
 		
-	public Product(String id, String name, int price, int grading, String category, PurchasePolicy purchasePolicy) {
+	public Product(String id, String name, int price, int grading, String category, PurchasePolicy purchasePolicy, Store store) {
 		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.grading = grading;
 		this.category = category;
 		this.purchasePolicy = purchasePolicy;
+		this.store = store;
 	}
 
 	public String getId() {

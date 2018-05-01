@@ -18,7 +18,7 @@ public class storeOwnerTests {
 	@BeforeClass
     public static void oneTimeSetUp() {
 		
-		s=new Store(123, "hadekel 72 Ranana", "1542365985", 3, new HashMap<Product,Integer>(),new LinkedList<Purchase> (), true);
+		s=new Store("new Store", "hadekel 72 Ranana", "1542365985", 3, new HashMap<Product,Integer>(),new LinkedList<Purchase> (), true);
 		so=new StoreOwner(s);
 	}
 	
@@ -115,7 +115,7 @@ public class storeOwnerTests {
 		assertFalse(BlMain.addNewStoreOwner(so, null));
 		StoreOwner so2=null;
 		assertFalse(BlMain.addNewStoreOwner(so2, so));
-		so2=new StoreOwner(new Store(222, "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
+		so2=new StoreOwner(new Store("new Store2", "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
 		assertFalse(BlMain.addNewStoreOwner(so, so2));//not same store
 		so2.setStore(so.getStore());
 		assertTrue(BlMain.addNewStoreOwner(so, so2));
@@ -126,7 +126,7 @@ public class storeOwnerTests {
 		StoreOwner so2=null;
 		StoreManager sm=new StoreManager(so.getStore());
 		assertFalse(BlMain.addNewManager(so2, sm));
-		sm.setStore(new Store(333, "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
+		sm.setStore(new Store("new Store3", "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
 		assertFalse(BlMain.addNewManager(so, sm));//not same store
 		sm.setStore(so.getStore());
 		assertTrue(BlMain.addNewManager(so, sm));

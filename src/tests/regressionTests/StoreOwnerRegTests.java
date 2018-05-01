@@ -15,6 +15,7 @@ import TS_SharedClasses.Guest;
 import TS_SharedClasses.ImmediatelyPurchase;
 import TS_SharedClasses.OvertDiscount;
 import TS_SharedClasses.Product;
+import TS_SharedClasses.ProductInCart;
 import TS_SharedClasses.Purchase;
 import TS_SharedClasses.PurchasePolicy;
 import TS_SharedClasses.Store;
@@ -60,7 +61,7 @@ public class StoreOwnerRegTests {
 	}
 	private void testUpdateProductDetails() {
 		Guest g=new Guest();
-		BlMain.addProductToCart(g, tennisProduct, 10);
+		BlMain.addImmediatelyProduct(g, tennisProduct, 10);
 		Product newTennisProduct =new Product("111", "new tennis ball", 10, 1, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
 		
 		BlMain.updateProductDetails(ofirOwnership, tennisProduct, newTennisProduct, 30);
@@ -77,10 +78,18 @@ public class StoreOwnerRegTests {
 	}
 	private void testDeleteProductFromStore() {
 		Guest g=new Guest();
-		BlMain.addProductToCart(g, tennisProduct, 10);
+		BlMain.addImmediatelyProduct(g, tennisProduct, 10);
 		BlMain.deleteProductFromStore(ofirOwnership, tennisProduct);
 		assertFalse(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).containsKey(tennisProduct));
-		assertTrue(g.getCart().getProducts().containsKey(tennisProduct));
+		boolean productdelete=true;
+		for(ProductInCart p2 :g.getCart().getProducts())
+		{
+			if(p2.getMyProduct().equals(tennisProduct))
+			{
+				productdelete=false;
+			}
+		}
+		assertTrue(productdelete);
 	}
 	private void testAddPolicyToProduct() {
 		BlMain.addPolicyToProduct(ofirOwnership, new PurchasePolicy(new ImmediatelyPurchase()), tennisProduct);

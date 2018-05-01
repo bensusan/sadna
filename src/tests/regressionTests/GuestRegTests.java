@@ -15,6 +15,7 @@ import TS_BL.BlMain;
 import TS_SharedClasses.Guest;
 import TS_SharedClasses.ImmediatelyPurchase;
 import TS_SharedClasses.Product;
+import TS_SharedClasses.ProductInCart;
 import TS_SharedClasses.Purchase;
 import TS_SharedClasses.PurchasePolicy;
 import TS_SharedClasses.Store;
@@ -50,8 +51,14 @@ public class GuestRegTests {
 	}
 	@Test
 	public void testAddProductToCart() {
-		BlMain.addProductToCart(alex, tennisProduct, 10);
-		assertEquals(alex.getCart().getProducts().get(tennisProduct).intValue(),10);
+		BlMain.addImmediatelyProduct(alex, tennisProduct, 10);
+		for(ProductInCart p :alex.getCart().getProducts())
+		{
+			if(p.getMyProduct().equals(tennisProduct))
+			{
+				assertEquals(p.getAmount(),10);
+			}
+		}
 		assertEquals(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).get(tennisProduct).intValue(),50);
 		BlMain.removeProductFromCart(alex, tennisProduct);
 	}
@@ -59,10 +66,17 @@ public class GuestRegTests {
 	@Test
 	public void testLogIn() {
 		alex=new Guest();
-		BlMain.addProductToCart(alex, tennisProduct, 20);
+		BlMain.addImmediatelyProduct(alex, tennisProduct, 20);
 		alex=BlMain.signIn(alex, "alexuser", "alexpass");
-		assertTrue(alex.getCart().getProducts().containsKey(tennisProduct));
-		assertEquals(alex.getCart().getProducts().get(tennisProduct).intValue(),20);
+		boolean containProduct= false;
+		for(ProductInCart p :alex.getCart().getProducts())
+		{
+			if(p.getMyProduct().equals(tennisProduct)){
+				containProduct=true;
+				assertEquals(p.getAmount(),20);
+			}
+		}
+		assertTrue(containProduct);
 	}
 	
 
@@ -76,12 +90,22 @@ public class GuestRegTests {
 		List<Purchase>l=BlMain.viewStoreHistory(amit, ofirStore);
 		for (Purchase p:l)
 		{
-			assertEquals(p.getPurchased().getProducts().get(tennisProduct).intValue(),20);
+			for(ProductInCart p2 :p.getPurchased().getProducts())
+			{
+				if(p2.getMyProduct().equals(tennisProduct)){
+					assertEquals(p2.getAmount(),20);
+				}
+			}
 		}
 		l=BlMain.viewSubscriberHistory(amit, (Subscriber)alex);
 		for(Purchase p:l)
 		{
-			assertEquals(p.getPurchased().getProducts().get(tennisProduct).intValue(),20);
+			for(ProductInCart p2 :p.getPurchased().getProducts())
+			{
+				if(p2.getMyProduct().equals(tennisProduct)){
+					assertEquals(p2.getAmount(),20);
+				}
+			}
 		}
 	}
 

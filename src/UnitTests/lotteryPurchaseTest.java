@@ -1,4 +1,4 @@
-package tests;
+package UnitTests;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -19,7 +19,12 @@ public class lotteryPurchaseTest {
 	}
 	
 	@Test
-	public void testPurchase(){
+	public void mainTest(){
+		testPurchase();
+		testIsLotteryDone();
+		testOpenNewLottery();
+	}
+	private void testPurchase(){
 		Guest g = new Guest();
 		//test guest null
 		assertFalse(BlMain.purchase(lp, null, 100, 5));
@@ -35,8 +40,7 @@ public class lotteryPurchaseTest {
 		assertTrue(BlMain.purchase(lp, g, 100, 5));
 	}
 	
-	@Test
-	public void testIsLotteryDone(){
+	private void testIsLotteryDone(){
 		//test neg price
 		assertFalse(BlMain.isLotteryDone(lp, -100));
 		//test zero price
@@ -59,8 +63,7 @@ public class lotteryPurchaseTest {
 		assertTrue(BlMain.isLotteryDone(lp, 100));
 	}
 	
-	@Test
-	public void testOpenNewLottery(){
+	private void testOpenNewLottery(){
 		Date d = Date.valueOf("2020-01-01");
 		BlMain.openNewLottery(lp, d);
 		assertEquals(d.getTime(), lp.getLotteryEndDate().getTime());

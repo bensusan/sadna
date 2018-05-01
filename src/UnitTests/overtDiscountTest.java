@@ -1,4 +1,4 @@
-package tests;
+package UnitTests;
 import static org.junit.Assert.*;
 
 import java.sql.Date;
@@ -22,7 +22,11 @@ public class overtDiscountTest {
 	}
 	
 	@Test
-	public void testUpdatePrice(){
+	public void mainTest(){
+		testUpdatePrice();
+	}
+	
+	private void testUpdatePrice(){
 		//test negetive price
 		assertEquals(-1, BlMain.updatePrice(od, -10, 10));
 		//test zero price

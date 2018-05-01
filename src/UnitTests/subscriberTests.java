@@ -1,4 +1,4 @@
-package tests;
+package UnitTests;
 
 import static org.junit.Assert.*;
 
@@ -22,12 +22,19 @@ public class subscriberTests {
     public static void oneTimeSetUp() {
 		sub=new Subscriber(new Cart(), "abc123", "0987654", "moshe datz", "herzel 23 herzelia", "0541234567", "1234567890123456", new LinkedList(), new LinkedList(), new LinkedList());
 		owner=new StoreOwner(new Store(BlMain.getStoreId(), "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
-		manager=new StoreManager(null,new Store(BlMain.getStoreId(), "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
+		manager=new StoreManager(new Store(BlMain.getStoreId(), "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
 	}
 	
 
 	@Test
-	public void testAddPurchaseToHistory() {
+	public void mainTest(){
+		testAddPurchaseToHistory();
+		testAddOwner();
+		testAddManager();
+		testDeleteOwner();
+		testDeleteManager();
+	}
+	private void testAddPurchaseToHistory() {
 		
 		Cart cart=new Cart();
 		Map<Product,Integer> products=new HashMap<Product,Integer>();
@@ -41,27 +48,21 @@ public class subscriberTests {
 		assertTrue(BlMain.addPurchaseToHistory(sub, purchase));
 		assertTrue(sub.getPurchaseHistory().contains(purchase));
 	}
-
-	@Test
-	public void testAddOwner() {
+	private void testAddOwner() {
 		Subscriber sub2=null;
 		assertFalse(BlMain.addOwner(sub2, owner));
 		assertFalse(BlMain.addOwner(sub, null));
 		assertTrue(BlMain.addOwner(sub, owner));
 		assertTrue(sub.getOwner().contains(owner));
 	}
-
-	@Test
-	public void testAddManager() {
+	private void testAddManager() {
 		Subscriber sub2=null;
 		assertFalse(BlMain.addManager(sub2, manager));
 		assertFalse(BlMain.addManager(sub, null));
 		assertTrue(BlMain.addManager(sub, manager));
 		assertTrue(sub.getManager().contains(manager));
 	}
-
-	@Test
-	public void testDeleteOwner() {
+	private void testDeleteOwner() {
 		Subscriber sub2=null;
 		assertFalse(BlMain.deleteOwner(sub2, owner));
 		assertFalse(BlMain.deleteOwner(sub, null));
@@ -69,9 +70,7 @@ public class subscriberTests {
 		assertFalse(sub.getOwner().contains(owner));
 		assertFalse(BlMain.deleteOwner(sub, owner));//does not exist
 	}
-
-	@Test
-	public void testDeleteManager() {
+	private void testDeleteManager() {
 		Subscriber sub2=null;
 		assertFalse(BlMain.deleteManager(sub2, manager));
 		assertFalse(BlMain.deleteManager(sub, null));

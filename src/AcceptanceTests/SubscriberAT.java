@@ -24,9 +24,13 @@ public class SubscriberAT {
 		signed = new Guest();
 		sub = BlMain.signUp(signed, "usr", "pass", "name", "address", "132412356", "1234567891011");
 	}
-	//2.1
 	@Test
-	public void testSignIn(){
+	public void mainTest(){
+		testSignIn();
+		testOpenStore();
+	}
+	//2.1
+	private void testSignIn(){
 		
 		//incorrect usrname
 		assertNull(BlMain.signIn(signed, "notExist", "pass"));
@@ -37,10 +41,8 @@ public class SubscriberAT {
 		assertEquals(sub, BlMain.signIn(signed, "usr", "pass"));
 		
 	}
-	
 	//2.2
-	@Test
-	public void testOpenStore(){
+	private void testOpenStore(){
 		// incorrect inputs
 		assertNull(BlMain.openStore(sub, -5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true));
 		assertNull(BlMain.openStore(null,  5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), false));

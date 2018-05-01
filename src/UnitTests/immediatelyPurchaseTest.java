@@ -1,14 +1,11 @@
-package tests;
+package unitTests;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import TS_BL.BlMain;
 import TS_SharedClasses.*;
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
 
 
 public class immediatelyPurchaseTest {
@@ -21,7 +18,10 @@ public class immediatelyPurchaseTest {
 	}
 	
 	@Test
-	public void testpPurchase(){
+	public void mainTest(){
+		testpPurchase();
+	}
+	private void testpPurchase(){
 		//costumer
 		Guest g = new Guest();
 		//initialize discount policy
@@ -41,17 +41,5 @@ public class immediatelyPurchaseTest {
 		assertTrue(BlMain.purchase(ip, g, 100, 5));
 	}
 	
-	@Test
-	public void testgGetDiscountedPrice(){
-		//test neg price
-		assertEquals(-1, BlMain.getDiscountedPrice(ip, -100));
-		//test zero price
-		assertEquals(-1, BlMain.getDiscountedPrice(ip, 0));
-		//test null immidietly purchase
-		assertEquals(-1, BlMain.getDiscountedPrice(null, 100));
-		//test good case
-		OvertDiscount od = new OvertDiscount(Date.valueOf("2019-01-01"), 50);
-		this.ip.setDiscountPolicy(od);
-		assertEquals(75, BlMain.getDiscountedPrice(ip, 150));
-	}
+
 }

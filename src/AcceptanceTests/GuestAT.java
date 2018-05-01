@@ -48,12 +48,23 @@ public class GuestAT {
 		BlMain.addProductToStore(so, lotteryProduct, 10);
 		BlMain.addProductToStore(so, zeroAmountProduct, 0);
 	}
+	@Test
+	public void mainTest()
+	{
+		testGuestToSubscriber();
+		testGetInfoOnStoreAndProduct();
+		testKeepProductsInCart();
+		testRemoveFromCart();
+		testEditCart();
+		testLotteryPurchase();
+		testSinglePurchase();
+		testCartPurchase();
+	}
 	//1.1
 	//could not test specificlly entry to system there is no entry to system yet
 	
 	//1.2
-	@Test
-	public void testGuestToSubscriber(){
+	private void testGuestToSubscriber(){
 		Guest g = new Guest();
 		//good case - add new sub
 		Subscriber s1 = BlMain.signUp(g, "sagivmap", "123123", "Sagiv Map", "Jerusalem", "132412356", "123451324656");
@@ -86,10 +97,8 @@ public class GuestAT {
 		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", "132412356", null));
 		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", "132412356", ""));
 	}
-	
 	//1.3
-	@Test
-	public void testGetInfoOnStoreAndProduct(){
+	private void testGetInfoOnStoreAndProduct(){
 
 		//sad case - no stores in the system
 		//Map<Store, Map<Product, Integer>> info = BlMain.getAllStoresWithThierProductsAndAmounts();
@@ -140,10 +149,8 @@ public class GuestAT {
 		
 		
 	}
-	
 	//1.5
-	@Test
-	public void testKeepProductsInCart(){
+	private void testKeepProductsInCart(){
 		Guest g = new Guest();
 		Product p1 = new Product("111", "prod1", 100, 4, "test cat 1", new PurchasePolicy(new ImmediatelyPurchase()));
 		Product p2 = new Product("222", "prod2", 100, 4, "test cat 2", new PurchasePolicy(new ImmediatelyPurchase()));
@@ -157,10 +164,8 @@ public class GuestAT {
 		assertTrue(cartContent.containsKey(p2));
 		assertTrue(cartContent.get(p2) == 3);
 	}
-	
 	//1.6.1
-	@Test
-	public void testRemoveFromCart(){
+	private void testRemoveFromCart(){
 		Guest g = new Guest();
 		Product p1 = new Product("111", "prod1", 100, 4, "test cat 1", new PurchasePolicy(new ImmediatelyPurchase()));
 		Product p2 = new Product("222", "prod2", 100, 4, "test cat 2", new PurchasePolicy(new ImmediatelyPurchase()));
@@ -182,10 +187,8 @@ public class GuestAT {
 		assertFalse(g.getCart().getProducts().containsKey(p1));
 		assertTrue(g.getCart().getProducts().containsKey(p2));
 	}
-	
 	//1.6.2
-	@Test
-	public void testEditCart(){
+	private void testEditCart(){
 		Guest g = new Guest();
 		Product p1 = new Product("111", "prod1", 100, 4, "test cat 1", new PurchasePolicy(new ImmediatelyPurchase()));
 		Product p2 = new Product("222", "prod2", 100, 4, "test cat 2", new PurchasePolicy(new ImmediatelyPurchase()));
@@ -213,16 +216,12 @@ public class GuestAT {
 		assertTrue(g.getCart().getProducts().get(p1) == 10);
 		assertTrue(g.getCart().getProducts().get(p2) == 20);
 	}
-	
 	//1.7.1
-	@Test
-	public void testLotteryPurchase(){
+	private void testLotteryPurchase(){
 		fail("need to implement");
 	}
-	
 	//1.7.2
-	@Test
-	public void testSinglePurchase(){
+	private void testSinglePurchase(){
 		//notice the store in @Before function
 		//purchase zero amount of product in store
 		Guest g1 = new Guest();
@@ -243,10 +242,8 @@ public class GuestAT {
 		assertEquals(6, prods.get(immediateOvertProduct).intValue());
 		
 	}
-		
 	//1.7.3
-	@Test
-	public void testCartPurchase(){
+	private void testCartPurchase(){
 		//purchase zero amount of product in store
 		Guest g1 = new Guest();
 		BlMain.addProductToCart(g1,zeroAmountProduct, 1);

@@ -50,9 +50,14 @@ public class PurchaseTypeAT {
 
 	}
 	
-	//7.1 
 	@Test
-	public void testOvertPurchase(){
+	public void mainTest()
+	{
+		testOvertPurchase();
+		testLottryPurchase();
+	}
+	//7.1 
+	private void testOvertPurchase(){
 		Guest buyer = new Guest();
 		
 		//test buy all products
@@ -62,10 +67,8 @@ public class PurchaseTypeAT {
 		assertTrue(BlMain.pruchaseProduct(buyer, prod1, 2, "132456789123", "Ashdod"));
 		
 	}
-	
 	//7.2 
-	@Test
-	public void testLottryPurchase(){
+	private void testLottryPurchase(){
 		Guest buyer = new Guest();
 		
 		//test buy all products
@@ -75,5 +78,4 @@ public class PurchaseTypeAT {
 		assertTrue(BlMain.pruchaseProduct(buyer, prod3, 2, "132456789123", "Ashdod"));
 		
 	}
-
 }

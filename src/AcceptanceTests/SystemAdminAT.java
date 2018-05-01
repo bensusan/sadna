@@ -29,12 +29,14 @@ public class SystemAdminAT {
 		s1 = BlMain.signUp(new Guest(), "first", "first", "nameA", "add1" , "012345678945", "987564321123");
 		s2 = BlMain.signUp(new Guest(), "second", "second", "nameB", "add2" , "012345678945", "987564321123");
 		s3 = BlMain.signUp(new Guest(), "third", "third", "nameC", "add3" , "012345678945", "987564321123");
-		System.out.println(s1);
 	}
-	
-	//5.2
 	@Test
-	public void testRemoveSubscriber(){
+	public void mainTest(){
+		testRemoveSubscriber();
+		testViewPurchaseHistory();
+	}
+	//5.2
+	private void testRemoveSubscriber(){
 		//incorrect input
 		assertFalse(BlMain.removeSubscriber(sa, null));
 		SystemAdministrator sa2 = null;
@@ -47,10 +49,8 @@ public class SystemAdminAT {
 		
 		assertFalse(BlMain.allSubscribers.contains(s1));
 	}
-	
 	//5.4
-	@Test
-	public void testViewPurchaseHistory(){
+	private void testViewPurchaseHistory(){
 		fail("need to change implement to retrun list of Purchase");
 	}
 }

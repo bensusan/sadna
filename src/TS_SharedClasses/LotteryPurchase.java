@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import TS_BL.BlLotteryPurchase;
 import TS_BL.BlMain;
 
 public class LotteryPurchase implements PurchaseType {
@@ -39,22 +40,15 @@ public class LotteryPurchase implements PurchaseType {
 		return participants;
 	}
 
-	
-	public void setParticipants(Map<Guest, Integer> participants) {
-		this.participants = participants;
+	public void removeAllParticipants(){
+		this.participants = new HashMap<Guest, Integer>();
 	}
 
 	@Override
-	public boolean purchase(Guest g, int price, int amount) {
-		if(amount <= 0)
+	public boolean purchase(Guest g, ProductInCart pic) {
+		if(pic.getAmount() != 1)
 			return false;
-		boolean bool = true;
-		for (int i = 0; i < amount; i++){
-			bool = BlMain.purchase(this, g, price);
-			if(!bool)
-				return bool;
-		}
-		return bool;
+		return BlLotteryPurchase.purchase(this, g, pic.getPrice(), pic.getMyProduct().getPrice());
 	}
 
 	@Override
@@ -76,4 +70,8 @@ public class LotteryPurchase implements PurchaseType {
 		return true;
 	}
 	
+	
+	public boolean addParticipant(Guest g, int price){
+		return this.participants.put(g, price) == null;
+	}
 }

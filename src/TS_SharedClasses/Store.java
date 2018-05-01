@@ -8,7 +8,11 @@ import java.util.Map;
 import TS_BL.BlMain;
 
 public class Store {
+	
+	private static int nextID = 0;
+	
 	private int storeId;
+	private String name;
 	private String address;
 	private String phone;
 	private int gradeing;
@@ -20,10 +24,11 @@ public class Store {
 	private int moneyEarned;
 	private PurchasePolicy storePolicy;
 
-	public Store(int storeId, String address, String phone, int gradeing, Map<Product, Integer> products,
+	public Store(String name, String address, String phone, int gradeing, Map<Product, Integer> products,
 			List<Purchase> purchaseHistory, boolean isOpen) {
 		super();
-		this.storeId = storeId;
+		this.storeId = nextID++;
+		this.name = name;
 		this.address = address;
 		this.phone = phone;
 		this.gradeing = gradeing;
@@ -40,18 +45,22 @@ public class Store {
 		this.setStorePolicy(null);
 	}
 	
-	public Store(int storeId, String address, String phone, int gradeing, Map<Product, Integer> products,
+	public Store(String name, String address, String phone, int gradeing, Map<Product, Integer> products,
 			List<Purchase> purchaseHistory, boolean isOpen, PurchasePolicy storePolicy) {
-		this(storeId, address, phone, gradeing, products, purchaseHistory, isOpen);
+		this(name, address, phone, gradeing, products, purchaseHistory, isOpen);
 		this.setStorePolicy(storePolicy);
 	}
 
 	public int getStoreId() {
 		return storeId;
 	}
-
-	public void setStoreId(int storeId) {
-		this.storeId = storeId;
+	
+	public String getStoreName(){
+		return name;
+	}
+	
+	public void setStoreName(String name){
+		this.name = name;
 	}
 
 	public String getAddress() {
@@ -135,24 +144,6 @@ public class Store {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((address == null) ? 0 : address.hashCode());
-		result = prime * result + gradeing;
-		result = prime * result + (isOpen ? 1231 : 1237);
-		result = prime * result + moneyEarned;
-		result = prime * result + ((myManagers == null) ? 0 : myManagers.hashCode());
-		result = prime * result + ((myOwners == null) ? 0 : myOwners.hashCode());
-		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
-		result = prime * result + ((products == null) ? 0 : products.hashCode());
-		result = prime * result + ((purchaseHistory == null) ? 0 : purchaseHistory.hashCode());
-		result = prime * result + storeId;
-		result = prime * result + ((storePolicy == null) ? 0 : storePolicy.hashCode());
-		return result;
-	}
-
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -161,38 +152,39 @@ public class Store {
 		if (getClass() != obj.getClass())
 			return false;
 		Store other = (Store) obj;
-		if (address == null) {
-			if (other.address != null)
-				return false;
-		} else if (!address.equals(other.address))
-			return false;
-		if (gradeing != other.gradeing)
-			return false;
-		if (isOpen != other.isOpen)
-			return false;
-		if (moneyEarned != other.moneyEarned)
-			return false;
-		if(!BlMain.equalsLists(myManagers, other.myManagers))
-			return false;
-		if(!BlMain.equalsLists(myOwners, other.myOwners))
-			return false;
-		if (phone == null) {
-			if (other.phone != null)
-				return false;
-		} else if (!phone.equals(other.phone))
-			return false;
-		if(!BlMain.equalsMaps(products, other.products))
-			return false;
-		if(!BlMain.equalsLists(this.purchaseHistory, other.purchaseHistory))
-				return false;
-		if (storeId != other.storeId)
-			return false;
-		if (storePolicy == null) {
-			if (other.storePolicy != null)
-				return false;
-		} else if (!storePolicy.equals(other.storePolicy))
-			return false;
-		return true;
+		return this.storeId == other.storeId;
+//		if (address == null) {
+//			if (other.address != null)
+//				return false;
+//		} else if (!address.equals(other.address))
+//			return false;
+//		if (gradeing != other.gradeing)
+//			return false;
+//		if (isOpen != other.isOpen)
+//			return false;
+//		if (moneyEarned != other.moneyEarned)
+//			return false;
+//		if(!BlMain.equalsLists(myManagers, other.myManagers))
+//			return false;
+//		if(!BlMain.equalsLists(myOwners, other.myOwners))
+//			return false;
+//		if (phone == null) {
+//			if (other.phone != null)
+//				return false;
+//		} else if (!phone.equals(other.phone))
+//			return false;
+//		if(!BlMain.equalsMaps(products, other.products))
+//			return false;
+//		if(!BlMain.equalsLists(this.purchaseHistory, other.purchaseHistory))
+//				return false;
+//		if (storeId != other.storeId)
+//			return false;
+//		if (storePolicy == null) {
+//			if (other.storePolicy != null)
+//				return false;
+//		} else if (!storePolicy.equals(other.storePolicy))
+//			return false;
+//		return true;
 	}
 	
 	

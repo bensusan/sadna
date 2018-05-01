@@ -2,6 +2,6 @@ package TS_SharedClasses;
 
 public interface PurchaseType {
 
-	boolean purchase(Guest g, int price, int amount);
+	boolean purchase(Guest g, ProductInCart pic);
 	
 }

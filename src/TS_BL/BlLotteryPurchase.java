@@ -1,7 +1,6 @@
 package TS_BL;
 
 import java.util.Date;
-import java.util.Map;
 
 import TS_SharedClasses.*;
 
@@ -11,40 +10,44 @@ public class BlLotteryPurchase {
 	// participants.
 	// when the lottery will done, we will have the guests to continue the
 	// process.
-	static boolean purchase(LotteryPurchase lp, Guest g, int price) {
-		if (lp == null || g == null || price <= 0)
+	public static boolean purchase(LotteryPurchase lp, Guest g, int price, int productPrice) {
+		Date date = new Date(); 
+		if(date.after(lp.getLotteryEndDate()) || lp.getParticipants().keySet().contains(g))
 			return false;
-		Map <Guest, Integer> guestPrice = lp.getParticipants();
-		guestPrice.put(g, price);
-		lp.setParticipants(guestPrice);
+		if(getSumOfMoney(lp) + price > productPrice)
+			return false;
+		lp.addParticipant(g, price);
+		if(getSumOfMoney(lp) == productPrice){
+			lp.setLotteryEndDate(date);
+			startLottery(lp);
+		}
 		return true;
 	}
 
-	static boolean isLotteryDone(LotteryPurchase lp, int price) {
-		if(lp == null || price <= 0)
+	private static int getSumOfMoney(LotteryPurchase lp){
+		int sumOfMoney = 0;
+		for (Integer num : lp.getParticipants().values()) {
+			sumOfMoney += num;
+		}
+		return sumOfMoney;
+	}
+
+	static boolean tryMakeLotteryDone(LotteryPurchase lp, int productPrice) {
+		if(lp == null || productPrice <= 0)
 			return false;
 		Date date =  new Date();
 		if(date.after(lp.getLotteryEndDate())){
 			closeCurrentLottery(lp);
 			return true;
 		}
-		int sumOfMoney = 0;
-		for (Integer num : lp.getParticipants().values()) {
-			sumOfMoney += num;
-		}
-		if(sumOfMoney >= price){
-			lp.setLotteryEndDate(date);
-			return true;
-		}
 		return false;
-
 	}
 
 	static void closeCurrentLottery(LotteryPurchase lp) {
 		Date date = new Date();
 		lp.setLotteryEndDate((java.util.Date) date);
 		for(Guest g : lp.getParticipants().keySet()){
-			BlGuest.retMoney(g, lp.getParticipants().get(g));
+			BlStore.retMoney(BlMain.getCreditCard(g), lp.getParticipants().get(g));
 		}
 		
 	}
@@ -52,5 +55,9 @@ public class BlLotteryPurchase {
 	//get new arg of new end date
 	static void openNewLottery(LotteryPurchase lp, Date endDate) {
 		lp.setLotteryEndDate((java.sql.Date) endDate);
+	}
+	
+	static void startLottery(LotteryPurchase lp){
+		//TODO - here will be the random method
 	}
 }

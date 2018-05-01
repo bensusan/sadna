@@ -28,7 +28,7 @@ public class BlCart {
 	static boolean addImmediatelyProduct(Cart c, Product p, int amount, int discountCode) {
 		if (c == null || p == null || amount < 1 || p.getStore() == null)
 			return false;
-		if(!isImmediatelyPurchase(p))
+		if(!BlMain.isImmediatelyPurchase(p))
 			return false;
 		if(isProductExistInCart(c, p) != -1)
 			return false;
@@ -37,17 +37,7 @@ public class BlCart {
 		return c.getProducts().add(new ProductInCart(p, updatedPrice, amount));
 	}
 	
-	private static boolean isImmediatelyPurchase(Product p){
-		if(p.getPurchasePolicy() == null || !(p.getPurchasePolicy().getPurchaseType() instanceof ImmediatelyPurchase))
-			return false;
-		return true;
-	}
 	
-	private static boolean isLotteryPurchase(Product p){
-		if(p.getPurchasePolicy() == null || !(p.getPurchasePolicy().getPurchaseType() instanceof LotteryPurchase))
-			return false;
-		return true;
-	}
 	
 	//return the index of the product if exists else return -1;
 	private static int isProductExistInCart(Cart c, Product p){
@@ -81,7 +71,7 @@ public class BlCart {
 	 * @return true if succseed false otherwise
 	 */
 	static boolean editProductAmount(Cart c, Product p, int amount) {
-		if (c == null || p == null || amount < 1 || !isImmediatelyPurchase(p))
+		if (c == null || p == null || amount < 1 || !BlMain.isImmediatelyPurchase(p))
 			return false;
 		int index = isProductExistInCart(c, p);
 		if (index != -1) {
@@ -93,7 +83,7 @@ public class BlCart {
 	}
 	
 	static boolean editProductDiscount(Cart c, Product p, int discountCode){
-		if (c == null || p == null || !isImmediatelyPurchase(p))
+		if (c == null || p == null || !BlMain.isImmediatelyPurchase(p))
 			return false;
 		int index = isProductExistInCart(c, p);
 		if (index != -1) {
@@ -106,7 +96,7 @@ public class BlCart {
 	}
 	
 	static boolean editProductPrice(Cart c, Product p, int money){
-		if (c == null || p == null || money < 0 || !isLotteryPurchase(p))
+		if (c == null || p == null || money < 0 || !BlMain.isLotteryPurchase(p))
 			return false;
 		int index = isProductExistInCart(c, p);
 		if (index != -1) {
@@ -149,7 +139,7 @@ public class BlCart {
 	public static boolean addLotteryProduct(Cart c, Product lotteryProduct, int money) {
 		if (c == null || lotteryProduct == null || money < 0 || lotteryProduct.getStore() == null)
 			return false;
-		if(!isLotteryPurchase(lotteryProduct))
+		if(!BlMain.isLotteryPurchase(lotteryProduct))
 			return false;
 		if(isProductExistInCart(c, lotteryProduct) != -1)
 			return false;

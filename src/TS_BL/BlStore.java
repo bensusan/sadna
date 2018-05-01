@@ -1,6 +1,6 @@
 package TS_BL;
 
-import java.util.List;
+import java.util.Date;
 import java.util.Map;
 
 import TS_SharedClasses.*;
@@ -22,12 +22,8 @@ public class BlStore {
 	 * @param cart
 	 * @return true if succseed false otherwise
 	 */
-	static boolean addPurchaseToHistory(Store s, Purchase p) {
-		List<Purchase> res = s.getPurchaseHistory();
-		if(!res.add(p))
-			return false;
-		s.setPurchaseHistory(res);
-		return true;
+	static boolean addProductToHistory(ProductInCart pic) {
+		return pic.getMyProduct().getStore().getPurchaseHistory().add(new Purchase(new Date(), pic));
 	}
 
 	/**
@@ -37,8 +33,13 @@ public class BlStore {
 	 * @param amount
 	 * @return true if succseed false otherwise
 	 */
-	static boolean buyProduct(Store s, Product p, int amount) {
-		return checkInStock(s, p, amount) && stockUpdate(s, p, s.getProducts().get(p) - amount) ;  
+	static boolean buyProduct(ProductInCart pic, String creditCardNumber) {
+		Product p = pic.getMyProduct();
+		Store s = p.getStore();
+		int amount = pic.getAmount();
+		int price = pic.getPrice();
+		//TODO ASSUME stockUpdate + payment + add to history are atomic. 
+		return checkInStock(s, p, amount) && stockUpdate(s, p, s.getProducts().get(p) - amount) && payToStore(s, price, creditCardNumber) && addProductToHistory(pic);  
 	}
 
 	/**
@@ -58,9 +59,13 @@ public class BlStore {
 		return true;
 	}
 	
-	static boolean payToStore(Store s, int price){
+	static boolean payToStore(Store s, int price, String creditCard){
 		//TODO maybe later this function will return false
 		s.setMoneyEarned(s.getMoneyEarned() + price);
+		return true;
+	}
+	
+	static boolean retMoney(String creditCard, int price){
 		return true;
 	}
 }

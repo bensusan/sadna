@@ -74,14 +74,41 @@ public class BlGuest {
 	 * @param buyerAddress
 	 * @return true if succseed false otherwise
 	 */
+	
+	//TODO - CreditCard
 	static boolean puchaseCart(Guest g, String creditCardNumber, String buyerAddress) {
 		if(g == null || g.getCart().getProducts().isEmpty() || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.legalAddress(buyerAddress))
 			return false;
-		for (Product p : g.getCart().getProducts().keySet()) {
-			pruchaseProduct(g, p, g.getCart().getProducts().get(p), creditCardNumber, buyerAddress);
+//		boolean isExistLotteryPurchase = false;
+		Cart notPurchased = new Cart();
+		for (ProductInCart pic : g.getCart().getProducts()) {
+			if(!BlProduct.purchase(pic, g) && BlStore.buyProduct(pic, creditCardNumber))
+				notPurchased.getProducts().add(pic);
+//			else if(BlMain.isLotteryPurchase(pic.getMyProduct()))
+//					isExistLotteryPurchase = true;
 		}
-		BlMain.addCreditCartToMap(creditCardNumber, g);
+		g.getCart().getProducts().removeAll(notPurchased.getProducts());
+		//g.getCart() now has all the products that purchased.
+		if(!sendTheProducts(g, buyerAddress))
+			return false;
+		g.setCart(notPurchased);
+		//TODO
+//		if(isExistLotteryPurchase)
+//			BlMain.addCreditCardToMap(creditCardNumber, g);
 		return true;
+	}
+
+	
+	/**
+	 * g has in cart all products that purchased already.
+	 * need to find all products that can be send to the customer - i.e. ImmediatelyPurchase and may be more.
+	 * then need to send all those products to the buyerAddress
+	 * @param g - Guest, buyerAddress - destination address.
+	 * @return true for success. false for fail.
+	 */
+	static boolean sendTheProducts(Guest g, String buyerAddress) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	/**
@@ -93,22 +120,6 @@ public class BlGuest {
 	 * @param buyerAddress
 	 * @return true if succseed false otherwise
 	 */
-	private static boolean pruchaseProduct(Guest g, Product product, int amount, String creditCardNumber, String buyerAddress) {
-		if(g == null || product == null || amount < 1 || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.legalAddress(buyerAddress))
-			return false;
-		BlMain.addCreditCartToMap(creditCardNumber, g);
-		if(BlMain.purchase(product, g, product.getPrice(), amount)){
-			Date date = new Date();
-			Map<Product, Integer> purchased = new HashMap<Product, Integer>();
-			purchased.put(product, amount);
-			Cart c = new Cart();
-			c.setProducts(purchased);
-			Purchase purchase = new Purchase(date, BlMain.getPurchaseId(), c);
-			BlMain.incrementPurchaseId();
-			return BlMain.addPurchaseToHistory(product.getStore(), purchase);
-		}
-		return false;
-	}
 	
 	static Subscriber signUp(Guest g, String username, String password, String fullName, String address, String phone, String creditCardNumber){
 		if(g == null)
@@ -158,11 +169,4 @@ public class BlGuest {
         return md5;
     }
     
-    static boolean retMoney(Guest g, int amountToRet) {
-		return true;
-	}
-    
-    static boolean payMoney(Guest g, int amountToPay) {
-		return true;
-	}
 }

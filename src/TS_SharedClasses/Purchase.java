@@ -4,14 +4,15 @@ import java.util.Date;
 
 public class Purchase {
 
+	private static int nextID = 0;
 	//the purchase object
 	private Date whenPurchased;
 	private int purchaseID;
-	private Cart purchased;
+	private ProductInCart purchased;
 
-	public Purchase(Date date, int purchaseID, Cart purchased){
+	public Purchase(Date date, ProductInCart purchased){
 		this.whenPurchased = date;
-		this.purchaseID = purchaseID;
+		this.purchaseID = nextID++;
 		this.purchased = purchased;
 	}
 
@@ -32,11 +33,11 @@ public class Purchase {
 		this.whenPurchased = whenPurchased;
 	}
 
-	public Cart getPurchased() {
+	public ProductInCart getPurchased() {
 		return purchased;
 	}
 
-	public void setPurchased(Cart purchased) {
+	public void setPurchased(ProductInCart purchased) {
 		this.purchased = purchased;
 	}
 
@@ -49,19 +50,20 @@ public class Purchase {
 		if (getClass() != obj.getClass())
 			return false;
 		Purchase other = (Purchase) obj;
-		if (purchaseID != other.purchaseID)
-			return false;
-		if (purchased == null) {
-			if (other.purchased != null)
-				return false;
-		} else if (!purchased.equals(other.purchased))
-			return false;
-		if (whenPurchased == null) {
-			if (other.whenPurchased != null)
-				return false;
-		} else if (!whenPurchased.equals(other.whenPurchased))
-			return false;
-		return true;
+		return this.purchaseID == other.purchaseID;
+//		if (purchaseID != other.purchaseID)
+//			return false;
+//		if (purchased == null) {
+//			if (other.purchased != null)
+//				return false;
+//		} else if (!purchased.equals(other.purchased))
+//			return false;
+//		if (whenPurchased == null) {
+//			if (other.whenPurchased != null)
+//				return false;
+//		} else if (!whenPurchased.equals(other.whenPurchased))
+//			return false;
+//		return true;
 	}
 
 	

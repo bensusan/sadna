@@ -17,7 +17,7 @@ public class BlMain {
 
 	public static List<Subscriber> allSubscribers = new LinkedList<Subscriber>();
 	public static Map<Guest, LinkedList<String>> allUsersWithTheirCreditCards = new HashMap<Guest, LinkedList<String>>(); // TODO
-	public static int purchaseId = -1;
+//	public static int purchaseId = -1;
 	public static int storeId = -1;
 	// need to insert to here all guests that payed with their credit card for pay back
 
@@ -57,15 +57,15 @@ public class BlMain {
 		return BlGuest.puchaseCart(g, creditCardNumber, buyerAddress);
 	}
 
-	public static boolean purchase(PurchaseType pt, Guest g, int price, int amount) {
-		return BlPurchaseType.purchase(pt, g, price, amount);
-	}
-	public static boolean purchase(ImmediatelyPurchase ip, Guest g, int price){
-		return BlImmediatelyPurchase.purchase(ip, g, price);
-	}
-	public static boolean purchase(LotteryPurchase lp, Guest g, int price) {
-		return BlLotteryPurchase.purchase(lp, g, price);
-	}
+//	public static boolean purchase(PurchaseType pt, Guest g, int price, int amount) {
+//		return BlPurchaseType.purchase(pt, g, price, amount);
+//	}
+//	public static boolean purchase(ImmediatelyPurchase ip, Guest g, int price){
+//		return BlImmediatelyPurchase.purchase(ip, g, price);
+//	}
+//	public static boolean purchase(LotteryPurchase lp, Guest g, int price) {
+//		return BlLotteryPurchase.purchase(lp, g, price);
+//	}
 
 //	static int getDiscountedPrice(ImmediatelyPurchase ip, int price) {
 //		return BlImmediatelyPurchase.getDiscountedPrice(ip, price);
@@ -187,9 +187,9 @@ public class BlMain {
 		return BlStoreOwner.getPurchaseHistory(so);
 	}
 
-	public static Store openStore(Subscriber sub, int gradeing, Map<Product, Integer> products,
+	public static Store openStore(Subscriber sub, String storeName,  int gradeing, Map<Product, Integer> products,
 			List<Purchase> purchaseHistory, boolean isOpen) {
-		return BlSubscriber.openStore(sub,gradeing,products,purchaseHistory,isOpen);
+		return BlSubscriber.openStore(sub,storeName,gradeing,products,purchaseHistory,isOpen);
 	}
 
 	static boolean addPurchaseToHistory(Subscriber sub, Purchase purchase) {
@@ -353,21 +353,13 @@ public class BlMain {
 		return false;
 	}
 
-	static void addCreditCartToMap(String creditCardNumber, Guest g) {
+	static void addCreditCardToMap(String creditCardNumber, Guest g) {
 		LinkedList<String> lst = allUsersWithTheirCreditCards.get(g);
 		if(lst==null){
 			lst = new LinkedList<String>();
 		}
 		lst.add(creditCardNumber);
 		allUsersWithTheirCreditCards.put(g, lst);
-	}
-	
-	static void incrementPurchaseId(){
-		purchaseId++;
-	}
-	
-	static int getPurchaseId(){
-		return purchaseId;
 	}
 	
 	static int getStoreId(){
@@ -406,5 +398,21 @@ public class BlMain {
 				return false;
 		}
 		return true;
+	}
+	
+	static boolean isImmediatelyPurchase(Product p){
+		if(p.getPurchasePolicy() == null || !(p.getPurchasePolicy().getPurchaseType() instanceof ImmediatelyPurchase))
+			return false;
+		return true;
+	}
+	
+	static boolean isLotteryPurchase(Product p){
+		if(p.getPurchasePolicy() == null || !(p.getPurchasePolicy().getPurchaseType() instanceof LotteryPurchase))
+			return false;
+		return true;
+	}
+	
+	static String getCreditCard(Guest g){
+		return allUsersWithTheirCreditCards.get(g).get(0);
 	}
 }

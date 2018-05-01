@@ -4,7 +4,7 @@ import TS_SharedClasses.*;
 
 public class BlPurchaseType {
 
-	static boolean purchase(PurchaseType pt, Guest g, int price, int amount){
-		return pt != null && pt.purchase(g, price, amount);
+	static boolean purchase(ProductInCart pic, Guest g){
+		return pic.getMyProduct().getPurchasePolicy().getPurchaseType().purchase(g, pic);
 	}
 }

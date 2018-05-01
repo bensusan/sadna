@@ -30,7 +30,7 @@ public class SubscriberRegTests {
 	@Test
 	public void openStore() {
 		Subscriber s=BlMain.signUp(new Guest (), "newUser", "newPass", "newName", "newAddress", "0948376767", "1234567890987654");
-		Store newStore =BlMain.openStore(s, 5, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true);
+		Store newStore =BlMain.openStore(s,"ofir's store", 5, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true);
 		
 		assertTrue(BlMain.getAllStores().contains(newStore));
 		assertTrue(s.getOwner().size()>0);

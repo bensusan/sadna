@@ -23,7 +23,7 @@ public class storeManagerTests {
 		arr=new boolean[11];
 		for (int i=0;i<arr.length;i++)
 			arr[i]=false;
-		s=new Store(1111, "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true);
+		s=new Store("newStore", "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true);
 		sm=new StoreManager (s);
 	}
 	@Test

@@ -2,28 +2,16 @@ package tests.regressionTests;
 
 import static org.junit.Assert.*;
 
-import java.sql.Date;
+
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import TS_BL.BlMain;
-import TS_SharedClasses.Guest;
-import TS_SharedClasses.HiddenDiscount;
-import TS_SharedClasses.ImmediatelyPurchase;
-import TS_SharedClasses.LotteryPurchase;
-import TS_SharedClasses.OvertDiscount;
-import TS_SharedClasses.Product;
-import TS_SharedClasses.Purchase;
-import TS_SharedClasses.PurchasePolicy;
-import TS_SharedClasses.Store;
-import TS_SharedClasses.StoreManager;
-import TS_SharedClasses.StoreOwner;
-import TS_SharedClasses.Subscriber;
-import TS_SharedClasses.SystemAdministrator;
+import TS_SharedClasses.*;
+
 
 public class systemAdministratorRegTests {
 
@@ -37,7 +25,7 @@ public class systemAdministratorRegTests {
 	@Test
 	public void testRemoveSubscriber() {
 		Subscriber s=BlMain.signUp(new Guest (), "newUser", "newPass", "newName", "newAddress", "0948376767", "1234567890987654");
-		Store newStore =BlMain.openStore(s, 5, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true);
+		Store newStore =BlMain.openStore(s,"ofir's store", 5, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true);
 		
 		StoreOwner owner=new StoreOwner(newStore);
 		Subscriber s2=BlMain.signUp(new Guest(), "newUser2", "newPass2", "new Name", "newAddress2", "0948376767", "1234567890987654");

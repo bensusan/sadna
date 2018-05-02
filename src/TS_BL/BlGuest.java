@@ -1,10 +1,11 @@
 package TS_BL;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
+<<<<<<< HEAD
 import java.util.Map;
 import java.lang.management.GarbageCollectorMXBean;
+=======
+>>>>>>> Alex
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -83,6 +84,7 @@ public class BlGuest {
 //		boolean isExistLotteryPurchase = false;
 		Cart notPurchased = new Cart();
 		for (ProductInCart pic : g.getCart().getProducts()) {
+<<<<<<< HEAD
 			boolean purchase = BlPurchaseType.purchase(pic, g);
 			if(purchase){
 				boolean payMoney = BlStore.payToStore(pic.getMyProduct().getStore(), pic.getPrice(), creditCardNumber);
@@ -92,6 +94,9 @@ public class BlGuest {
 				}	
 			}
 			else
+=======
+			if(!(BlPurchaseType.purchase(pic, g, buyerAddress) && BlStore.payToStore(pic.getMyProduct().getStore(), pic.getPrice(), creditCardNumber)))
+>>>>>>> Alex
 				notPurchased.getProducts().add(pic);
 //			else if(BlMain.isLotteryPurchase(pic.getMyProduct()))
 //					isExistLotteryPurchase = true;

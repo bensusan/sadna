@@ -1,7 +1,6 @@
 package TS_SharedClasses;
 
 import TS_BL.BlImmediatelyPurchase;
-import TS_BL.BlMain;
 
 public class ImmediatelyPurchase implements PurchaseType {
 
@@ -26,7 +25,7 @@ public class ImmediatelyPurchase implements PurchaseType {
 	}
 
 	@Override
-	public boolean purchase(Guest g, ProductInCart pic) {
+	public boolean purchase(Guest g, ProductInCart pic,String buyerAddress) {
 		return BlImmediatelyPurchase.purchase(this, g, pic);
 	}
 	

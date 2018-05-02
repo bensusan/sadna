@@ -4,19 +4,6 @@ import TS_SharedClasses.*;
 
 public class BlCart {
 
-	// /**
-	// * customer try to puchase this cart with given details
-	// *
-	// * @param creditCardNumber
-	// * @param buyerAddress
-	// * @return true if succseed false otherwise
-	// */
-	// public static boolean puchaseCart(Cart c, int creditCardNumber, String
-	// buyerAddress) {
-	// // TODO missing implementation
-	// return true;
-	// }
-
 	/**
 	 * add <p,amount> to products
 	 * 

@@ -46,9 +46,7 @@ public class LotteryPurchase implements PurchaseType {
 
 	@Override
 	public boolean purchase(Guest g, ProductInCart pic) {
-		if(pic.getAmount() != 1)
-			return false;
-		return BlLotteryPurchase.purchase(this, g, pic.getPrice(), pic.getMyProduct().getPrice());
+		return BlLotteryPurchase.purchase(this, g, pic);
 	}
 
 	@Override

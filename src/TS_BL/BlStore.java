@@ -12,8 +12,9 @@ public class BlStore {
 	 * @param amount
 	 * @return true if product in stock false otherwise
 	 */
-	static boolean checkInStock(Store s, Product p, int amount) {
-		return s != null && p != null && s.getProducts().get(p) != null && s.getProducts().get(p) >= amount;
+	static boolean checkInStock(Product p, int amount) {
+		Store s = p.getStore();
+		return s.getProducts().get(p) != null && s.getProducts().get(p) >= amount;
 	}
 
 	/**
@@ -27,30 +28,15 @@ public class BlStore {
 	}
 
 	/**
-	 * reduce product amount from stock
-	 * 
-	 * @param p
-	 * @param amount
-	 * @return true if succseed false otherwise
-	 */
-	static boolean buyProduct(ProductInCart pic, String creditCardNumber) {
-		Product p = pic.getMyProduct();
-		Store s = p.getStore();
-		int amount = pic.getAmount();
-		int price = pic.getPrice();
-		//TODO ASSUME stockUpdate + payment + add to history are atomic. 
-		return checkInStock(s, p, amount) && stockUpdate(s, p, s.getProducts().get(p) - amount) && payToStore(s, price, creditCardNumber) && addProductToHistory(pic);  
-	}
-
-	/**
 	 * add product to stock
 	 * 
 	 * @param p
 	 * @param amount
 	 * @return true if succseed false otherwise
 	 */
-	static boolean stockUpdate(Store s, Product p, int amount) {
-		if(amount < 0 || !checkInStock(s, p, amount))
+	static boolean stockUpdate(Product p, int amount) {
+		Store s = p.getStore();
+		if(amount < 0 || !checkInStock(p, amount))
 			return false;
 		Map<Product, Integer> products = s.getProducts();
 		products.put(p, products.get(p) - amount);

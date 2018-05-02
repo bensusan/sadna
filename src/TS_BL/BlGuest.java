@@ -82,7 +82,7 @@ public class BlGuest {
 //		boolean isExistLotteryPurchase = false;
 		Cart notPurchased = new Cart();
 		for (ProductInCart pic : g.getCart().getProducts()) {
-			if(!BlProduct.purchase(pic, g) && BlStore.buyProduct(pic, creditCardNumber))
+			if(BlPurchaseType.purchase(pic, g) && BlStore.payToStore(pic.getMyProduct().getStore(), pic.getPrice(), creditCardNumber))
 				notPurchased.getProducts().add(pic);
 //			else if(BlMain.isLotteryPurchase(pic.getMyProduct()))
 //					isExistLotteryPurchase = true;

@@ -16,13 +16,8 @@ public class Purchase {
 		this.purchased = purchased;
 	}
 
-
 	public int getPurchaseID() {
 		return purchaseID;
-	}
-
-	public void setPurchaseID(int purchaseID) {
-		this.purchaseID = purchaseID;
 	}
 
 	public Date getWhenPurchased() {

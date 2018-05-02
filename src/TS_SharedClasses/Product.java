@@ -2,7 +2,8 @@ package TS_SharedClasses;
 
 public class Product {
 
-	private String id;
+	private static int nextID = 0;
+	private int id;
 	private String name;
 	private int price;
 	private int grading;
@@ -10,22 +11,17 @@ public class Product {
 	private PurchasePolicy purchasePolicy;
 	private Store store;
 		
-	public Product(String id, String name, int price, int grading, String category, PurchasePolicy purchasePolicy, Store store) {
-		this.id = id;
+	public Product(String name, int price, int grading, String category, PurchasePolicy purchasePolicy) {
+		this.id = nextID++;
 		this.name = name;
 		this.price = price;
 		this.grading = grading;
 		this.category = category;
 		this.purchasePolicy = purchasePolicy;
-		this.store = store;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -87,36 +83,37 @@ public class Product {
 		if (getClass() != obj.getClass())
 			return false;
 		Product other = (Product) obj;
-		if (category == null) {
-			if (other.category != null)
-				return false;
-		} else if (!category.equals(other.category))
-			return false;
-		if (grading != other.grading)
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (price != other.price)
-			return false;
-		if (purchasePolicy == null) {
-			if (other.purchasePolicy != null)
-				return false;
-		} else if (!purchasePolicy.equals(other.purchasePolicy))
-			return false;
-		if (store == null) {
-			if (other.store != null)
-				return false;
-		} else if (!store.equals(other.store))
-			return false;
-		return true;
+		return this.id == other.id;
+//		if (category == null) {
+//			if (other.category != null)
+//				return false;
+//		} else if (!category.equals(other.category))
+//			return false;
+//		if (grading != other.grading)
+//			return false;
+//		if (id == null) {
+//			if (other.id != null)
+//				return false;
+//		} else if (!id.equals(other.id))
+//			return false;
+//		if (name == null) {
+//			if (other.name != null)
+//				return false;
+//		} else if (!name.equals(other.name))
+//			return false;
+//		if (price != other.price)
+//			return false;
+//		if (purchasePolicy == null) {
+//			if (other.purchasePolicy != null)
+//				return false;
+//		} else if (!purchasePolicy.equals(other.purchasePolicy))
+//			return false;
+//		if (store == null) {
+//			if (other.store != null)
+//				return false;
+//		} else if (!store.equals(other.store))
+//			return false;
+//		return true;
 	}
 	
 	

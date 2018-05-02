@@ -5,6 +5,9 @@ import TS_SharedClasses.*;
 public class BlPurchaseType {
 
 	static boolean purchase(ProductInCart pic, Guest g){
-		return pic.getMyProduct().getPurchasePolicy().getPurchaseType().purchase(g, pic);
+		PurchaseType pt = pic.getMyProduct().getPurchasePolicy().getPurchaseType();
+		Product p = pic.getMyProduct();
+		int amount = pic.getAmount();
+		return BlStore.checkInStock(p, amount) && pt.purchase(g, pic);
 	}
 }

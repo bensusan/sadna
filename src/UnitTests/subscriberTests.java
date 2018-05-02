@@ -1,4 +1,4 @@
-package unitTests;
+package UnitTests;
 
 import static org.junit.Assert.*;
 
@@ -37,7 +37,7 @@ public class subscriberTests {
 		
 		Guest guest=new Guest();
 
-		Product p=new Product("456", "ping pong ball", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase()));
+		Product p=new Product( "ping pong ball", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase()));
 		BlMain.addImmediatelyProduct(guest, p, 3);
 		
 		ProductInCart pic=new ProductInCart(p, 5, 1);

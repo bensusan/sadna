@@ -36,7 +36,7 @@ public class GuestRegTests {
 	public static void setUpBeforeClass() throws Exception {
 		ofir=BlMain.signUp(new Guest(), "ofir123", "ofir123", "ofir imas", "pach zevel 1 Ashdod", "0584792829", "2222222222222222");
 		ofirStore=BlMain.openStore((Subscriber) ofir,"ofir's store",5, new HashMap<Product, Integer>(), new LinkedList<Purchase>(),true);
-		tennisProduct=new Product("111", "tennis ball", 5, 1, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
+		tennisProduct=new Product("tennis ball", 5, 1, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
 		ofirOwnership=((Subscriber)ofir).getOwner().get(0);
 		BlMain.addProductToStore(ofirOwnership, tennisProduct, 50);
 	}
@@ -93,21 +93,15 @@ public class GuestRegTests {
 		List<Purchase>l=BlMain.viewStoreHistory(amit, ofirStore);
 		for (Purchase p:l)
 		{
-			for(ProductInCart p2 :p.getPurchased().getProducts())
-			{
-				if(p2.getMyProduct().equals(tennisProduct)){
-					assertEquals(p2.getAmount(),20);
-				}
+			if(p.getPurchased().getMyProduct().equals(tennisProduct)){
+				assertEquals(p.getPurchased().getAmount(),20);
 			}
 		}
 		l=BlMain.viewSubscriberHistory(amit, (Subscriber)alex);
 		for(Purchase p:l)
 		{
-			for(ProductInCart p2 :p.getPurchased().getProducts())
-			{
-				if(p2.getMyProduct().equals(tennisProduct)){
-					assertEquals(p2.getAmount(),20);
-				}
+			if(p.getPurchased().getMyProduct().equals(tennisProduct)){
+				assertEquals(p.getPurchased().getAmount(),20);
 			}
 		}
 	}

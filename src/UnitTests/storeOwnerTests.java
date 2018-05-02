@@ -1,4 +1,4 @@
-package unitTests;
+package UnitTests;
 
 import static org.junit.Assert.*;
 
@@ -38,7 +38,7 @@ public class storeOwnerTests {
 		testChangeStorePurchasePolicy();
 	}
 	private void testAddProductToStore() {
-		Product product=new Product("234", "ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
+		Product product=new Product( "ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
 		assertFalse(BlMain.addProductToStore(so, product, -1));
 		assertFalse(BlMain.addProductToStore(so, null, 1));
 		StoreOwner so2=null;
@@ -52,40 +52,35 @@ public class storeOwnerTests {
 		assertFalse(BlMain.addProductToStore(so, product, 0));
 		assertTrue(BlMain.addProductToStore(so, product, -1));
 		assertFalse(BlMain.addProductToStore(so, product, -2));//there is only one product in stock
-		Product product2=new Product("234", "iphone x", 250, 6, "cell phones", new PurchasePolicy(new ImmediatelyPurchase()));
+		Product product2=new Product( "iphone x", 250, 6, "cell phones", new PurchasePolicy(new ImmediatelyPurchase()));
 		assertFalse(BlMain.addProductToStore(so, product2, 1));//same id
 		
 	}
 	private void testUpdateProductDetails() {
-		Product oldProduct=new Product("234", "ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
-		Product newProduct=new Product("234", "ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
+		Product oldProduct=new Product("ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
+		Product newProduct=new Product("ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
 		
 		assertFalse(BlMain.updateProductDetails(so, oldProduct, newProduct, -1));
 		assertFalse(BlMain.updateProductDetails(so, oldProduct, null, 1));
 		assertFalse(BlMain.updateProductDetails(so, null, newProduct, 1));
 		StoreOwner so2=null;
 		assertFalse(BlMain.updateProductDetails(so2, oldProduct, newProduct, 1));
-		newProduct.setId("678");
-		assertFalse(BlMain.updateProductDetails(so, oldProduct, newProduct, 1));//not same id
+		
 		assertFalse(BlMain.updateProductDetails(so, newProduct, oldProduct, 1));//product does not exist
-		newProduct.setId("234");
 		newProduct.setName("ping pong ball");
 		assertTrue(BlMain.updateProductDetails(so, oldProduct, newProduct, 1));
 		
 	}
 	private void testAddPolicyToProduct() {
-		Product product=new Product("234", "ping pong ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
+		Product product=new Product("ping pong ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
 		assertFalse(BlMain.addPolicyToProduct(so, null, product));
 		assertFalse(BlMain.addPolicyToProduct(so, new PurchasePolicy(new LotteryPurchase(new java.sql.Date(0))), null));
 		StoreOwner so2=null;
 		assertFalse(BlMain.addPolicyToProduct(so2, new PurchasePolicy(new LotteryPurchase(new java.sql.Date(0))), product));
-		product.setId("567");
-		assertFalse(BlMain.addPolicyToProduct(so, new PurchasePolicy(new LotteryPurchase(new java.sql.Date(0))), product));//product does not exist 
-		product.setId("234");
 		assertTrue(BlMain.addPolicyToProduct(so, new PurchasePolicy(new LotteryPurchase(new java.sql.Date(0))), product));
 	}
 	private void testAddDiscountToProduct() {
-		Product product=new Product("234", "ping pong ball", 5, 5, "toys", new PurchasePolicy(new LotteryPurchase(new java.sql.Date(0))));
+		Product product=new Product("ping pong ball", 5, 5, "toys", new PurchasePolicy(new LotteryPurchase(new java.sql.Date(0))));
 		assertFalse(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 30), product));
 		BlMain.addPolicyToProduct(so, new PurchasePolicy(new ImmediatelyPurchase()), product);
 		assertFalse(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), -10), product));
@@ -98,14 +93,14 @@ public class storeOwnerTests {
 		assertTrue(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 30), product));
 	}
 	private void testDeleteProductFromStore() {
-		Product product2=new Product("234", "iphone x", 250, 6, "cell phones", new PurchasePolicy(new ImmediatelyPurchase()));
+		Product product2=new Product("iphone x", 250, 6, "cell phones", new PurchasePolicy(new ImmediatelyPurchase()));
 		assertFalse(BlMain.deleteProductFromStore(so, product2));
 		assertFalse(BlMain.deleteProductFromStore(so, null));
 		StoreOwner so2=null;
 		assertFalse(BlMain.deleteProductFromStore(so2, product2));
 		Store store=so.getStore();
 		so.setStore(null);
-		Product product=new Product("234", "ping pong ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
+		Product product=new Product("ping pong ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
 		assertFalse(BlMain.deleteProductFromStore(so, product));
 		so.setStore(store);
 		assertTrue(BlMain.deleteProductFromStore(so, product));

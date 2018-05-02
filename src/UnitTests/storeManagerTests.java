@@ -1,4 +1,4 @@
-package unitTests;
+package UnitTests;
 
 import static org.junit.Assert.*;
 
@@ -40,7 +40,7 @@ public class storeManagerTests {
 		testChangeStorePurchasePolicy();
 	}
 	private void testAddProductToStore() {
-		Product product=new Product("569", "ball", 10, 7, "toys", null);
+		Product product=new Product( "ball", 10, 7, "toys", null);
 		assertFalse(BlMain.addProductToStore(sm, product, 5));
 		sm.setSpecificPermission(BlMain.addProductToStore, true);
 		assertTrue(BlMain.addProductToStore(sm, product, 5));
@@ -48,8 +48,8 @@ public class storeManagerTests {
 
 	private void testUpdateProductDetails() {
 		
-		Product oldProduct=new Product("569", "ball", 10, 7, "toys", null);
-		Product newProduct=new Product("569", "ball", 10, 7, "toys", null);
+		Product oldProduct=new Product("ball", 10, 7, "toys", null);
+		Product newProduct=new Product("ball", 10, 7, "toys", null);
 		newProduct.setPrice(8);
 		assertFalse(BlMain.updateProductDetails(sm, oldProduct, newProduct, 5));
 		sm.setSpecificPermission(BlMain.updateProductDetails, true);
@@ -57,7 +57,7 @@ public class storeManagerTests {
 	}
 	
 	private void testDeleteProductFromStore() {
-		Product product=new Product("569", "ball", 8, 7, "toys", null);
+		Product product=new Product("ball", 8, 7, "toys", null);
 		assertFalse(BlMain.deleteProductFromStore(sm, product));
 		sm.setSpecificPermission(BlMain.deleteProductFromStore, true);
 		assertTrue(BlMain.deleteProductFromStore(sm, product));
@@ -65,7 +65,7 @@ public class storeManagerTests {
 	
 	private void testAddPolicyToProduct() {
 		PurchasePolicy policy=new PurchasePolicy(new ImmediatelyPurchase());
-		Product product=new Product("569", "ball", 8, 7, "toys", null);
+		Product product=new Product("ball", 8, 7, "toys", null);
 		BlMain.addProductToStore(sm, product, 5);
 		assertFalse(BlMain.addPolicyToProduct(sm, policy, product));
 		sm.setSpecificPermission(BlMain.addPolicyToProduct, true);
@@ -73,7 +73,7 @@ public class storeManagerTests {
 	}
 
 	private void testAddDiscountToProduct() {
-		Product product=new Product("569", "ball", 8, 7, "toys", null);
+		Product product=new Product("ball", 8, 7, "toys", null);
 		DiscountPolicy discount=new OvertDiscount(null, 30);
 		assertFalse(BlMain.addDiscountToProduct(sm, discount, product));
 		sm.setSpecificPermission(BlMain.addDiscountToProduct, true);

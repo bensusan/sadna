@@ -1,4 +1,4 @@
-package unitTests;
+package UnitTests;
 
 import static org.junit.Assert.*;
 
@@ -26,9 +26,9 @@ public class guestTests {
 	public static void setUpBeforeClass() throws Exception {
 		ofir=BlMain.signUp(new Guest(), "ofir123", "ofir123", "ofir imas", "pach zevel 1 Ashdod", "0584792829", "2222222222222222");
 		ofirStore=BlMain.openStore((Subscriber) ofir,"ofir store",5, new HashMap<Product, Integer>(), new LinkedList<Purchase>(),true);
-		ball=new Product("123", "ball", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase()));
-		ballwithDiscount=new Product("1234", "ball with Discount", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase(new HiddenDiscount(1212, new Date(12,12,2018), 20))));
-		ballwithLottery=new Product("123", "ball", 5, 3, "toyes", new PurchasePolicy(new LotteryPurchase(new Date(12,12,2018))));
+		ball=new Product("ball", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase()));
+		ballwithDiscount=new Product("ball with Discount", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase(new HiddenDiscount(1212, new Date(12,12,2018), 20))));
+		ballwithLottery=new Product("ball", 5, 3, "toyes", new PurchasePolicy(new LotteryPurchase(new Date(12,12,2018))));
 		BlMain.addProductToStore(ofirOwnership, ball, 10);
 		BlMain.addProductToStore(ofirOwnership, ballwithDiscount, 10);
 		BlMain.addProductToStore(ofirOwnership, ballwithLottery, 10);
@@ -135,7 +135,7 @@ public class guestTests {
 		assertFalse(BlMain.editProductAmount(g, null, 2));
 		assertFalse(BlMain.editProductAmount(g, ball, -1));
 		assertFalse(BlMain.editProductAmount(g, ball, 0));
-		assertFalse(BlMain.editProductAmount(g, new Product("9999", "banana", 6, 3, "fruits", new PurchasePolicy(new ImmediatelyPurchase())), 2));//product not in cart
+		assertFalse(BlMain.editProductAmount(g, new Product("banana", 6, 3, "fruits", new PurchasePolicy(new ImmediatelyPurchase())), 2));//product not in cart
 		assertFalse(BlMain.editProductAmount(g, ball, 2));
 		for(ProductInCart p2:g.getCart().getProducts())
 		{

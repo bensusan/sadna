@@ -56,4 +56,16 @@ public class BlSystemAdministrator {
 		else
 			return null;
 	}
+
+	public static boolean createAdmin(SystemAdministrator admin) {
+		if(BlMain.allAdmins.contains(admin))
+			return false; //admin already exists
+		return BlMain.allAdmins.add(admin);
+	}
+
+	public static boolean removeAdmin(SystemAdministrator admin) {
+		if(BlMain.allAdmins.size() <= 1)
+			return false; //must be at least one admin
+		return BlMain.allAdmins.remove(admin);
+	}
 }

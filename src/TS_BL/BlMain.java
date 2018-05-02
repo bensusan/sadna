@@ -1,5 +1,7 @@
 package TS_BL;
 
+import java.sql.Array;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -19,16 +21,20 @@ public class BlMain {
 	public static Map<Guest, LinkedList<String>> allUsersWithTheirCreditCards = new HashMap<Guest, LinkedList<String>>(); // TODO
 	public static int purchaseId = -1;
 	public static int storeId = -1;
+	public static SystemAdministrator admin = new SystemAdministrator("itzik", "11111111", "shmulik", "bait shel or", "0522222222", "111111111111",
+			new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>());
+	public static List<SystemAdministrator> allAdmins = new LinkedList<SystemAdministrator>(Arrays.asList(admin));
+
 	// need to insert to here all guests that payed with their credit card for pay back
 
 	public static boolean addImmediatelyProduct(Guest g, Product p, int amount) {
 		return BlGuest.addImmediatelyProduct(g, p, amount, -1);
 	}
-	
+
 	public static boolean addImmediatelyProduct(Guest g, Product p, int amount, int discountCode) {
 		return BlGuest.addImmediatelyProduct(g, p, amount, discountCode);
 	}
-	
+
 	public static boolean addLotteryProduct(Guest g, Product p, int money) {
 		return BlGuest.addLotteryProduct(g, p, money);
 	}
@@ -40,15 +46,15 @@ public class BlMain {
 	public static boolean editProductAmount(Guest g, Product p, int amount) {
 		return BlGuest.editProductAmount(g, p, amount);
 	}
-	
+
 	public static boolean editProductDiscount(Guest g, Product p, int discountCode) {
 		return BlGuest.editProductDiscount(g, p, discountCode);
 	}
-	
+
 	public static boolean editProductPrice(Guest g, Product p, int money) {
 		return BlGuest.editProductPrice(g, p, money);
 	}
-	
+
 	public static boolean editCart(Guest g, Cart newCart) {
 		return BlGuest.editCart(g, newCart);
 	}
@@ -67,45 +73,45 @@ public class BlMain {
 		return BlLotteryPurchase.purchase(lp, g, price);
 	}
 
-//	static int getDiscountedPrice(ImmediatelyPurchase ip, int price) {
-//		return BlImmediatelyPurchase.getDiscountedPrice(ip, price);
-//	}
-//
-//	static boolean isLotteryDone(LotteryPurchase lp, int price) {
-//		return BlLotteryPurchase.isLotteryDone(lp, price);
-//	}
-//
-//	static void closeCurrentLottery(LotteryPurchase lp) {
-//		BlLotteryPurchase.closeCurrentLottery(lp);
-//	}
-//
-//	static void openNewLottery(LotteryPurchase lp, Date endDate) {
-//		BlLotteryPurchase.openNewLottery(lp, endDate);
-//	}
-//
-//	static boolean purchase(Product p, Guest g, int price, int amount) {
-//		return BlProduct.purchase(p, g, price, amount);
-//	}
-//
-//	static boolean purchase(PurchasePolicy pp, Guest g, int price, int amount) {
-//		return BlPurchasePolicy.purchase(pp, g, price, amount);
-//	}
-//
-//	static boolean checkInStock(Store s, Product p, int amount) {
-//		return BlStore.checkInStock(s, p, amount);
-//	}
-//
-//	static boolean addPurchaseToHistory(Store s, Purchase p) {
-//		return BlStore.addPurchaseToHistory(s, p);
-//	}
-//
-//	static boolean buyProduct(Store s, Product p, int amount) {
-//		return BlStore.buyProduct(s, p, amount);
-//	}
-//
-//	static boolean stockUpdate(Store s, Product p, int amount) {
-//		return BlStore.stockUpdate(s, p, amount);
-//	}
+	//	static int getDiscountedPrice(ImmediatelyPurchase ip, int price) {
+	//		return BlImmediatelyPurchase.getDiscountedPrice(ip, price);
+	//	}
+	//
+	//	static boolean isLotteryDone(LotteryPurchase lp, int price) {
+	//		return BlLotteryPurchase.isLotteryDone(lp, price);
+	//	}
+	//
+	//	static void closeCurrentLottery(LotteryPurchase lp) {
+	//		BlLotteryPurchase.closeCurrentLottery(lp);
+	//	}
+	//
+	//	static void openNewLottery(LotteryPurchase lp, Date endDate) {
+	//		BlLotteryPurchase.openNewLottery(lp, endDate);
+	//	}
+	//
+	//	static boolean purchase(Product p, Guest g, int price, int amount) {
+	//		return BlProduct.purchase(p, g, price, amount);
+	//	}
+	//
+	//	static boolean purchase(PurchasePolicy pp, Guest g, int price, int amount) {
+	//		return BlPurchasePolicy.purchase(pp, g, price, amount);
+	//	}
+	//
+	//	static boolean checkInStock(Store s, Product p, int amount) {
+	//		return BlStore.checkInStock(s, p, amount);
+	//	}
+	//
+	//	static boolean addPurchaseToHistory(Store s, Purchase p) {
+	//		return BlStore.addPurchaseToHistory(s, p);
+	//	}
+	//
+	//	static boolean buyProduct(Store s, Product p, int amount) {
+	//		return BlStore.buyProduct(s, p, amount);
+	//	}
+	//
+	//	static boolean stockUpdate(Store s, Product p, int amount) {
+	//		return BlStore.stockUpdate(s, p, amount);
+	//	}
 
 	public static boolean addProductToStore(StoreManager sm, Product product, int amount) {
 		return BlStoreManager.addProductToStore(sm, product, amount);
@@ -128,7 +134,7 @@ public class BlMain {
 	}
 
 	public static boolean addNewStoreOwner(StoreManager sm, StoreOwner owner) {
-	return BlStoreManager.addNewStoreOwner(sm, owner);
+		return BlStoreManager.addNewStoreOwner(sm, owner);
 	}
 
 	public static boolean addNewManager(StoreManager oldMan, StoreManager newMan) {
@@ -203,14 +209,14 @@ public class BlMain {
 	public static boolean addManager(Subscriber sub, StoreManager manager) {
 		return BlSubscriber.addManager(sub, manager);
 	}
-//
-//	static boolean deleteOwner(Subscriber sub, StoreOwner owner) {
-//		return BlSubscriber.deleteOwner(sub, owner);
-//	}
-//
-//	static boolean deleteManager(Subscriber sub, StoreManager manager) {
-//		return BlSubscriber.deleteManager(sub, manager);
-//	}
+	//
+	//	static boolean deleteOwner(Subscriber sub, StoreOwner owner) {
+	//		return BlSubscriber.deleteOwner(sub, owner);
+	//	}
+	//
+	//	static boolean deleteManager(Subscriber sub, StoreManager manager) {
+	//		return BlSubscriber.deleteManager(sub, manager);
+	//	}
 
 	public static boolean removeSubscriber(SystemAdministrator sa, Subscriber s) {
 		return BlSystemAdministrator.removeSubscriber(sa, s);
@@ -225,9 +231,9 @@ public class BlMain {
 	}
 
 	// More functions that are necessary.
-//	static boolean payToStore(Store s, int price) {
-//		return BlStore.payToStore(s, price);
-//	}
+	//	static boolean payToStore(Store s, int price) {
+	//		return BlStore.payToStore(s, price);
+	//	}
 
 	public static Subscriber signUp(Guest g, String username, String password, String fullName, String address,
 			String phone, String creditCardNumber) {
@@ -245,13 +251,21 @@ public class BlMain {
 	public static void expiredProducts(StoreManager sm) {
 		BlStoreManager.expiredProducts(sm);
 	}
-	
+
 	public static boolean changeStorePurchasePolicy(StoreOwner so, PurchasePolicy pp){
 		return BlStoreOwner.changeStorePurchasePolicy(so, pp);
 	}
-	
+
 	public static boolean changeStorePurchasePolicy(StoreManager sm, PurchasePolicy pp){
 		return BlStoreManager.changeStorePurchasePolicy(sm, pp);
+	}
+
+	public static boolean createAdmin(SystemAdministrator admin){
+		return BlSystemAdministrator.createAdmin(admin);
+	}
+
+	public static boolean removeAdmin(SystemAdministrator admin){
+		return BlSystemAdministrator.removeAdmin(admin);
 	}
 
 	////////////////////////////////////// Help functions for everyone
@@ -266,11 +280,11 @@ public class BlMain {
 	static boolean correctSpelledLettersSpacesNumbers(String str) {
 		return str != null && str.matches("[0-9a-zA-Z\\s]+");
 	}
-	
+
 	static boolean correctSpelledLettersSpaces(String str) {
 		return str != null && str.matches("[a-zA-Z\\s]+");
 	}
-	
+
 	static boolean correctSpelledNumbers(String str){
 		return str != null && str.matches("[0-9]+");
 	}
@@ -289,14 +303,14 @@ public class BlMain {
 			return true;
 		return false;
 	}
-	
+
 	//should be update in the future
 	static boolean legalAddress(String buyerAddress){
 		if(buyerAddress == null)
 			return false;
 		return true;
 	}
-	
+
 	public static Map<Store, Map<Product, Integer>> getAllStoresWithThierProductsAndAmounts() {
 		Map<Store, Map<Product, Integer>> res = new HashMap<Store, Map<Product, Integer>>();
 		List<Store> stores = getAllStores();
@@ -361,23 +375,23 @@ public class BlMain {
 		lst.add(creditCardNumber);
 		allUsersWithTheirCreditCards.put(g, lst);
 	}
-	
+
 	static void incrementPurchaseId(){
 		purchaseId++;
 	}
-	
+
 	static int getPurchaseId(){
 		return purchaseId;
 	}
-	
+
 	static int getStoreId(){
 		return storeId++;
 	}
-	
+
 	public static boolean equalsLists(List<?> a, List<?> b){
 		return (a==null && b==null) || (a!=null && b!=null && equalsLeftListToRightList(a, b) && equalsLeftListToRightList(b, a));
 	}
-	
+
 	private static boolean equalsLeftListToRightList(List<?> a, List<?> b){
 		boolean found = false;
 		for (Object key : a) {
@@ -391,11 +405,11 @@ public class BlMain {
 		}
 		return found;
 	}
-	
+
 	public static boolean equalsMaps(Map<?, ?> a, Map<?, ?> b){
 		return (a==null && b==null) || (a!=null && b!=null && equalsLeftMapToRightMap(a, b) && equalsLeftMapToRightMap(b, a));
 	}
-	
+
 	private static boolean equalsLeftMapToRightMap(Map<?, ?> a, Map<?, ?> b){
 		for (Object key : a.keySet()) {
 			if(a.get(key) != b.get(key))

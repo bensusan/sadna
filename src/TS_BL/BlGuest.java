@@ -82,33 +82,20 @@ public class BlGuest {
 //		boolean isExistLotteryPurchase = false;
 		Cart notPurchased = new Cart();
 		for (ProductInCart pic : g.getCart().getProducts()) {
-			if(BlPurchaseType.purchase(pic, g) && BlStore.payToStore(pic.getMyProduct().getStore(), pic.getPrice(), creditCardNumber))
+			if(!(BlPurchaseType.purchase(pic, g) && BlStore.payToStore(pic.getMyProduct().getStore(), pic.getPrice(), creditCardNumber)))
 				notPurchased.getProducts().add(pic);
 //			else if(BlMain.isLotteryPurchase(pic.getMyProduct()))
 //					isExistLotteryPurchase = true;
 		}
 		g.getCart().getProducts().removeAll(notPurchased.getProducts());
 		//g.getCart() now has all the products that purchased.
-		if(!sendTheProducts(g, buyerAddress))
+		if(!BlStore.sendTheProducts(g, buyerAddress))
 			return false;
 		g.setCart(notPurchased);
 		//TODO
 //		if(isExistLotteryPurchase)
 //			BlMain.addCreditCardToMap(creditCardNumber, g);
 		return true;
-	}
-
-	
-	/**
-	 * g has in cart all products that purchased already.
-	 * need to find all products that can be send to the customer - i.e. ImmediatelyPurchase and may be more.
-	 * then need to send all those products to the buyerAddress
-	 * @param g - Guest, buyerAddress - destination address.
-	 * @return true for success. false for fail.
-	 */
-	static boolean sendTheProducts(Guest g, String buyerAddress) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	/**

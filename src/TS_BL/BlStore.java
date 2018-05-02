@@ -54,4 +54,16 @@ public class BlStore {
 	static boolean retMoney(String creditCard, int price){
 		return true;
 	}
+	
+	/**
+	 * g has in cart all products that purchased already.
+	 * need to find all products that can be send to the customer - i.e. ImmediatelyPurchase and may be more.
+	 * then need to send all those products to the buyerAddress
+	 * @param g - Guest, buyerAddress - destination address.
+	 * @return true for success. false for fail.
+	 */
+	static boolean sendTheProducts(Guest g, String buyerAddress) {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }

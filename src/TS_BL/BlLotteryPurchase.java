@@ -1,16 +1,23 @@
 package TS_BL;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import TS_SharedClasses.*;
 
 public class BlLotteryPurchase {
 
-	public static boolean purchase(LotteryPurchase lp, Guest g, ProductInCart pic) {
+	public static boolean purchase(LotteryPurchase lp, Guest g, ProductInCart pic,String buyerAddress) {
 		int price = pic.getPrice();
 		int productPrice = pic.getMyProduct().getPrice();
 		Date date = new Date(); 
 		if(date.after(lp.getLotteryEndDate()) || lp.getParticipants().keySet().contains(g))
+			return false;
+		if(lp.gethasEnded())
 			return false;
 		if(getSumOfMoney(lp) + price > productPrice)
 			return false;
@@ -18,6 +25,9 @@ public class BlLotteryPurchase {
 		if(getSumOfMoney(lp) == productPrice){
 			lp.setLotteryEndDate(date);
 			startLottery(lp);
+			lp.endLottery(true);
+			BlStore.sendTheProducts(lp.getWinner(), buyerAddress);
+			
 		}
 		return true;
 	}
@@ -48,6 +58,7 @@ public class BlLotteryPurchase {
 			BlStore.retMoney(BlMain.getCreditCard(g), lp.getParticipants().get(g));
 		}
 		
+		
 	}
 
 	//get new arg of new end date
@@ -56,6 +67,18 @@ public class BlLotteryPurchase {
 	}
 	
 	static void startLottery(LotteryPurchase lp){
-		//TODO - here will be the random method
+
+		Map<Guest,Integer> parti = lp.getParticipants();
+		List<Guest> lotto = new ArrayList<Guest>();
+		for (Guest g : parti.keySet()) {
+			int amount = parti.get(g);
+			for(int i = 0; i < amount; i++)
+				lotto.add(g);
+		}
+		
+		Collections.shuffle(lotto);
+		Random rand = new Random();
+		
+		 lp.setWinner(lotto.get(rand.nextInt(lotto.size())));
 	}
 }

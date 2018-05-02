@@ -1,9 +1,6 @@
 package TS_BL;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -82,7 +79,7 @@ public class BlGuest {
 //		boolean isExistLotteryPurchase = false;
 		Cart notPurchased = new Cart();
 		for (ProductInCart pic : g.getCart().getProducts()) {
-			if(!(BlPurchaseType.purchase(pic, g) && BlStore.payToStore(pic.getMyProduct().getStore(), pic.getPrice(), creditCardNumber)))
+			if(!(BlPurchaseType.purchase(pic, g, buyerAddress) && BlStore.payToStore(pic.getMyProduct().getStore(), pic.getPrice(), creditCardNumber)))
 				notPurchased.getProducts().add(pic);
 //			else if(BlMain.isLotteryPurchase(pic.getMyProduct()))
 //					isExistLotteryPurchase = true;

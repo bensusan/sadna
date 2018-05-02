@@ -12,6 +12,8 @@ public class LotteryPurchase implements PurchaseType {
 	
 	private Date lotteryEndDate;
 	private Map<Guest, Integer> participants;
+	private Guest winner = null;
+	private boolean hasEnded = false;
 	
 	public LotteryPurchase(Date lotteryEndDate) {
 		this.lotteryEndDate = lotteryEndDate;
@@ -45,8 +47,8 @@ public class LotteryPurchase implements PurchaseType {
 	}
 
 	@Override
-	public boolean purchase(Guest g, ProductInCart pic) {
-		return BlLotteryPurchase.purchase(this, g, pic);
+	public boolean purchase(Guest g, ProductInCart pic,String buyerAddress) {
+		return BlLotteryPurchase.purchase(this, g, pic,buyerAddress);
 	}
 
 	@Override
@@ -71,5 +73,23 @@ public class LotteryPurchase implements PurchaseType {
 	
 	public boolean addParticipant(Guest g, int price){
 		return this.participants.put(g, price) == null;
+	}
+	
+	public void setWinner(Guest winner){
+		if(this.winner == null)
+			this.winner = winner;
+	}
+	
+	public void endLottery(boolean hasEnded){
+		if(!this.hasEnded)
+			this.hasEnded = hasEnded;
+	}
+	
+	public boolean gethasEnded(){
+		return this.hasEnded;
+	}
+	
+	public Guest getWinner(){
+		return this.winner;
 	}
 }

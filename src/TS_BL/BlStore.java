@@ -23,8 +23,10 @@ public class BlStore {
 	 * @param cart
 	 * @return true if succseed false otherwise
 	 */
-	static boolean addProductToHistory(ProductInCart pic) {
-		return pic.getMyProduct().getStore().getPurchaseHistory().add(new Purchase(new Date(), pic));
+	static Purchase addProductToHistory(ProductInCart pic) {
+		Purchase newPur = new Purchase(new Date(), pic);
+		pic.getMyProduct().getStore().getPurchaseHistory().add(newPur);
+		return newPur;
 	}
 
 	/**
@@ -65,5 +67,9 @@ public class BlStore {
 	static boolean sendTheProducts(Guest g, String buyerAddress) {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	public static void undoPayToStore(Store s, int price, String creditCardNumber) {
+		s.setMoneyEarned(s.getMoneyEarned() - price);
 	}
 }

@@ -10,19 +10,20 @@ import TS_BL.BlMain;
 
 public class LotteryPurchase implements PurchaseType {
 	
+	private Date actualEndDate;
 	private Date lotteryEndDate;
 	private Map<Guest, Integer> participants;
 	
 	public LotteryPurchase(Date lotteryEndDate) {
+		this.actualEndDate = lotteryEndDate;
 		this.lotteryEndDate = lotteryEndDate;
 		this.participants = new HashMap<Guest, Integer>();
 	}
 	
 	public LotteryPurchase(Date lotteryEndDate, Map<Guest,Integer> participants) {
-		this.lotteryEndDate = lotteryEndDate;
-		this.participants = participants;
-		if(participants == null)
-			this.participants = new HashMap<Guest, Integer>();
+		this(lotteryEndDate);
+		if(participants != null)
+			this.participants = participants;
 	}
 
 	
@@ -48,6 +49,11 @@ public class LotteryPurchase implements PurchaseType {
 	public boolean purchase(Guest g, ProductInCart pic) {
 		return BlLotteryPurchase.purchase(this, g, pic);
 	}
+	
+	@Override
+	public void undoPurchase(ProductInCart pic, Guest g) {
+		BlLotteryPurchase.undoPurchase(this, g);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -72,4 +78,19 @@ public class LotteryPurchase implements PurchaseType {
 	public boolean addParticipant(Guest g, int price){
 		return this.participants.put(g, price) == null;
 	}
+
+	public Date getActualEndDate() {
+		return actualEndDate;
+	}
+
+	public void setActualEndDate(Date actualEndDate) {
+		this.actualEndDate = actualEndDate;
+	}
+
+	public void removeParticipant(Guest g) {
+		this.participants.remove(g);
+	}
+	
+	
+	
 }

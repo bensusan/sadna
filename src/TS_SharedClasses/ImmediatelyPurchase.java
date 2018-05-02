@@ -29,6 +29,11 @@ public class ImmediatelyPurchase implements PurchaseType {
 	public boolean purchase(Guest g, ProductInCart pic) {
 		return BlImmediatelyPurchase.purchase(this, g, pic);
 	}
+	
+	@Override
+	public void undoPurchase(ProductInCart pic, Guest g) {
+		BlImmediatelyPurchase.undoPurchase(this, g, pic);
+	}
 
 	@Override
 	public boolean equals(Object obj) {

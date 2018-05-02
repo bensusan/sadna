@@ -10,15 +10,13 @@ public class BlLotteryPurchase {
 		int price = pic.getPrice();
 		int productPrice = pic.getMyProduct().getPrice();
 		Date date = new Date(); 
-		if(date.after(lp.getLotteryEndDate()) || lp.getParticipants().keySet().contains(g))
+		if(date.after(lp.getActualEndDate()) || lp.getParticipants().keySet().contains(g))
 			return false;
 		if(getSumOfMoney(lp) + price > productPrice)
 			return false;
 		lp.addParticipant(g, price);
-		if(getSumOfMoney(lp) == productPrice){
-			lp.setLotteryEndDate(date);
-			startLottery(lp);
-		}
+		if(getSumOfMoney(lp) == productPrice)
+			lp.setActualEndDate(date);;
 		return true;
 	}
 
@@ -34,7 +32,7 @@ public class BlLotteryPurchase {
 		if(lp == null || productPrice <= 0)
 			return false;
 		Date date =  new Date();
-		if(date.after(lp.getLotteryEndDate())){
+		if(date.after(lp.getActualEndDate())){
 			closeCurrentLottery(lp);
 			return true;
 		}
@@ -43,7 +41,7 @@ public class BlLotteryPurchase {
 
 	static void closeCurrentLottery(LotteryPurchase lp) {
 		Date date = new Date();
-		lp.setLotteryEndDate((java.util.Date) date);
+		lp.setActualEndDate((java.util.Date) date);
 		for(Guest g : lp.getParticipants().keySet()){
 			BlStore.retMoney(BlMain.getCreditCard(g), lp.getParticipants().get(g));
 		}
@@ -57,5 +55,10 @@ public class BlLotteryPurchase {
 	
 	static void startLottery(LotteryPurchase lp){
 		//TODO - here will be the random method
+	}
+
+	public static void undoPurchase(LotteryPurchase lotteryPurchase, Guest g) {
+		lotteryPurchase.setActualEndDate(lotteryPurchase.getLotteryEndDate());
+		lotteryPurchase.removeParticipant(g);
 	}
 }

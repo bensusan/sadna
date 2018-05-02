@@ -9,5 +9,11 @@ public class BlImmediatelyPurchase{
 		int currentAmount = p.getStore().getProducts().get(p);
 		return BlStore.stockUpdate(p, currentAmount - pic.getAmount());
 	}
+
+	public static void undoPurchase(ImmediatelyPurchase ip, Guest g, ProductInCart pic) {
+		Product p = pic.getMyProduct();
+		int currentAmount = p.getStore().getProducts().get(p);
+		BlStore.stockUpdate(p, currentAmount + pic.getAmount());
+	}
 	
 }

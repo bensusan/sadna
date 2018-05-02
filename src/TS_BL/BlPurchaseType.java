@@ -10,4 +10,9 @@ public class BlPurchaseType {
 		int amount = pic.getAmount();
 		return BlStore.checkInStock(p, amount) && pt.purchase(g, pic);
 	}
+
+	public static void undoPurchase(ProductInCart pic, Guest g) {
+		pic.getMyProduct().getPurchasePolicy().getPurchaseType().undoPurchase(pic, g);
+		
+	}
 }

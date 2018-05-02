@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.lang.management.GarbageCollectorMXBean;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -82,15 +83,38 @@ public class BlGuest {
 //		boolean isExistLotteryPurchase = false;
 		Cart notPurchased = new Cart();
 		for (ProductInCart pic : g.getCart().getProducts()) {
-			if(!(BlPurchaseType.purchase(pic, g) && BlStore.payToStore(pic.getMyProduct().getStore(), pic.getPrice(), creditCardNumber)))
+			boolean purchase = BlPurchaseType.purchase(pic, g);
+			if(purchase){
+				boolean payMoney = BlStore.payToStore(pic.getMyProduct().getStore(), pic.getPrice(), creditCardNumber);
+				if(!payMoney){
+					BlPurchaseType.undoPurchase(pic, g);
+					notPurchased.getProducts().add(pic);
+				}	
+			}
+			else
 				notPurchased.getProducts().add(pic);
 //			else if(BlMain.isLotteryPurchase(pic.getMyProduct()))
 //					isExistLotteryPurchase = true;
 		}
+		if(notPurchased.getProducts().size() == g.getCart().getProducts().size())
+			return false;
 		g.getCart().getProducts().removeAll(notPurchased.getProducts());
 		//g.getCart() now has all the products that purchased.
-		if(!BlStore.sendTheProducts(g, buyerAddress))
+		if(!BlStore.sendTheProducts(g, buyerAddress)){
+			for(ProductInCart pic : g.getCart().getProducts()){
+				BlPurchaseType.undoPurchase(pic, g);
+				BlStore.undoPayToStore(pic.getMyProduct().getStore(), pic.getPrice(), creditCardNumber);
+			}
 			return false;
+		}
+		for (ProductInCart pic : g.getCart().getProducts()) {
+			PurchaseType pt = pic.getMyProduct().getPurchasePolicy().getPurchaseType(); 
+			if(pt instanceof LotteryPurchase)
+				BlLotteryPurchase.startLottery(((LotteryPurchase)pt));
+			Purchase pur = BlStore.addProductToHistory(pic);
+			if(g instanceof Subscriber)
+				BlSubscriber.addPurchaseToHistory((Subscriber)g, pur);
+		}
 		g.setCart(notPurchased);
 		//TODO
 //		if(isExistLotteryPurchase)

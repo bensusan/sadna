@@ -42,12 +42,7 @@ public class BlSubscriber {
 	{
 		if (p == null || sub == null)
 			return false;
-	
-		List<Purchase> allCarts = sub.getPurchaseHistory();
-		allCarts.add(p);
-		sub.setPurchaseHistory(allCarts);
-		
-		return true;
+		return sub.getPurchaseHistory().add(p);
 	}
 	
 	/**

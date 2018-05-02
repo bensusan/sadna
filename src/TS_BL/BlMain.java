@@ -1,6 +1,5 @@
 package TS_BL;
 
-import java.sql.Array;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -62,61 +61,7 @@ public class BlMain {
 	public static boolean purchaseCart(Guest g, String creditCardNumber, String buyerAddress) {
 		return BlGuest.puchaseCart(g, creditCardNumber, buyerAddress);
 	}
-<<<<<<< HEAD
-	
-=======
 
-	public static boolean purchase(PurchaseType pt, Guest g, int price, int amount) {
-		return BlPurchaseType.purchase(pt, g, price, amount);
-	}
-	public static boolean purchase(ImmediatelyPurchase ip, Guest g, int price){
-		return BlImmediatelyPurchase.purchase(ip, g, price);
-	}
-	public static boolean purchase(LotteryPurchase lp, Guest g, int price) {
-		return BlLotteryPurchase.purchase(lp, g, price);
-	}
-
-	//	static int getDiscountedPrice(ImmediatelyPurchase ip, int price) {
-	//		return BlImmediatelyPurchase.getDiscountedPrice(ip, price);
-	//	}
-	//
-	//	static boolean isLotteryDone(LotteryPurchase lp, int price) {
-	//		return BlLotteryPurchase.isLotteryDone(lp, price);
-	//	}
-	//
-	//	static void closeCurrentLottery(LotteryPurchase lp) {
-	//		BlLotteryPurchase.closeCurrentLottery(lp);
-	//	}
-	//
-	//	static void openNewLottery(LotteryPurchase lp, Date endDate) {
-	//		BlLotteryPurchase.openNewLottery(lp, endDate);
-	//	}
-	//
-	//	static boolean purchase(Product p, Guest g, int price, int amount) {
-	//		return BlProduct.purchase(p, g, price, amount);
-	//	}
-	//
-	//	static boolean purchase(PurchasePolicy pp, Guest g, int price, int amount) {
-	//		return BlPurchasePolicy.purchase(pp, g, price, amount);
-	//	}
-	//
-	//	static boolean checkInStock(Store s, Product p, int amount) {
-	//		return BlStore.checkInStock(s, p, amount);
-	//	}
-	//
-	//	static boolean addPurchaseToHistory(Store s, Purchase p) {
-	//		return BlStore.addPurchaseToHistory(s, p);
-	//	}
-	//
-	//	static boolean buyProduct(Store s, Product p, int amount) {
-	//		return BlStore.buyProduct(s, p, amount);
-	//	}
-	//
-	//	static boolean stockUpdate(Store s, Product p, int amount) {
-	//		return BlStore.stockUpdate(s, p, amount);
-	//	}
-
->>>>>>> Ofir
 	public static boolean addProductToStore(StoreManager sm, Product product, int amount) {
 		return BlStoreManager.addProductToStore(sm, product, amount);
 	}
@@ -379,23 +324,7 @@ public class BlMain {
 		lst.add(creditCardNumber);
 		allUsersWithTheirCreditCards.put(g, lst);
 	}
-<<<<<<< HEAD
 	
-=======
-
-	static void incrementPurchaseId(){
-		purchaseId++;
-	}
-
-	static int getPurchaseId(){
-		return purchaseId;
-	}
-
->>>>>>> Ofir
-	static int getStoreId(){
-		return storeId++;
-	}
-
 	public static boolean equalsLists(List<?> a, List<?> b){
 		return (a==null && b==null) || (a!=null && b!=null && equalsLeftListToRightList(a, b) && equalsLeftListToRightList(b, a));
 	}

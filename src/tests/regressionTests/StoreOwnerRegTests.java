@@ -41,7 +41,7 @@ public class StoreOwnerRegTests {
 		ofir=BlMain.signUp(new Guest(), "ofir123", "ofir123", "ofir imas", "pach zevel 1 Ashdod", "0584792829", "2222222222222222");
 		ofirStore=BlMain.openStore((Subscriber) ofir,"ofir's store",5, new HashMap<Product, Integer>(), new LinkedList<Purchase>(),true);
 		ofirOwnership=((Subscriber)ofir).getOwner().get(0);
-		tennisProduct=new Product("111", "tennis ball", 5, 1, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
+		tennisProduct=new Product("tennis ball", 5, 1, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
 		
 	}
 	@Test
@@ -62,14 +62,13 @@ public class StoreOwnerRegTests {
 	private void testUpdateProductDetails() {
 		Guest g=new Guest();
 		BlMain.addImmediatelyProduct(g, tennisProduct, 10);
-		Product newTennisProduct =new Product("111", "new tennis ball", 10, 1, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
+		Product newTennisProduct =new Product("new tennis ball", 10, 1, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
 		
 		BlMain.updateProductDetails(ofirOwnership, tennisProduct, newTennisProduct, 30);
 		assertTrue(g.getCart().getProducts().size()>0);
 		for (Product p:BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).keySet()){
-			if (p.getId().equals("111"))
+			if (p.getName().equals("new tennis ball"))
 			{
-				assertTrue(p.getName().equals("new tennis ball"));
 				assertEquals(p.getPrice(),10);
 				assertEquals(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).get(p).intValue(),30);
 			}
@@ -95,7 +94,7 @@ public class StoreOwnerRegTests {
 		BlMain.addPolicyToProduct(ofirOwnership, new PurchasePolicy(new ImmediatelyPurchase()), tennisProduct);
 		for(Product p:BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).keySet())
 		{
-			if(p.getId().equals("111")){
+			if (p.getName().equals("new tennis ball")){
 				assertTrue(p.getPurchasePolicy().getPurchaseType() instanceof ImmediatelyPurchase);
 			}
 		}
@@ -104,7 +103,7 @@ public class StoreOwnerRegTests {
 		BlMain.addDiscountToProduct(ofirOwnership, new OvertDiscount(new Date(2019,10,3), 20), tennisProduct);
 		for(Product p:BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).keySet())
 		{
-			if(p.getId().equals("111")){
+			if (p.getName().equals("new tennis ball")){
 				assertEquals(((ImmediatelyPurchase)p.getPurchasePolicy().getPurchaseType()).getDiscountPolicy().getDiscountPrecentage(),20);
 			}
 		}

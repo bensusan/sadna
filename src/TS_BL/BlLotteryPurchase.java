@@ -22,10 +22,7 @@ public class BlLotteryPurchase {
 		if(getSumOfMoney(lp) + price > productPrice)
 			return false;
 		lp.addParticipant(g, price);
-<<<<<<< HEAD
-		if(getSumOfMoney(lp) == productPrice)
-			lp.setActualEndDate(date);;
-=======
+
 		if(getSumOfMoney(lp) == productPrice){
 			lp.setLotteryEndDate(date);
 			startLottery(lp);
@@ -33,7 +30,7 @@ public class BlLotteryPurchase {
 			BlStore.sendTheProducts(lp.getWinner(), buyerAddress);
 			
 		}
->>>>>>> Alex
+
 		return true;
 	}
 
@@ -62,7 +59,6 @@ public class BlLotteryPurchase {
 		for(Guest g : lp.getParticipants().keySet()){
 			BlStore.retMoney(BlMain.getCreditCard(g), lp.getParticipants().get(g));
 		}
-		
 		
 	}
 

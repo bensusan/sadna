@@ -80,7 +80,6 @@ public class LotteryPurchase implements PurchaseType {
 	public boolean addParticipant(Guest g, int price){
 		return this.participants.put(g, price) == null;
 	}
-<<<<<<< HEAD
 
 	public Date getActualEndDate() {
 		return actualEndDate;
@@ -93,10 +92,6 @@ public class LotteryPurchase implements PurchaseType {
 	public void removeParticipant(Guest g) {
 		this.participants.remove(g);
 	}
-	
-	
-	
-=======
 	
 	public void setWinner(Guest winner){
 		if(this.winner == null)
@@ -115,5 +110,5 @@ public class LotteryPurchase implements PurchaseType {
 	public Guest getWinner(){
 		return this.winner;
 	}
->>>>>>> Alex
+
 }

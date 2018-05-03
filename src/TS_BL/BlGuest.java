@@ -1,11 +1,7 @@
 package TS_BL;
 
 import java.util.LinkedList;
-<<<<<<< HEAD
-import java.util.Map;
-import java.lang.management.GarbageCollectorMXBean;
-=======
->>>>>>> Alex
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -84,8 +80,8 @@ public class BlGuest {
 //		boolean isExistLotteryPurchase = false;
 		Cart notPurchased = new Cart();
 		for (ProductInCart pic : g.getCart().getProducts()) {
-<<<<<<< HEAD
-			boolean purchase = BlPurchaseType.purchase(pic, g);
+
+			boolean purchase = BlPurchaseType.purchase(pic, g,buyerAddress);
 			if(purchase){
 				boolean payMoney = BlStore.payToStore(pic.getMyProduct().getStore(), pic.getPrice(), creditCardNumber);
 				if(!payMoney){
@@ -93,16 +89,13 @@ public class BlGuest {
 					notPurchased.getProducts().add(pic);
 				}	
 			}
-			else
-=======
-			if(!(BlPurchaseType.purchase(pic, g, buyerAddress) && BlStore.payToStore(pic.getMyProduct().getStore(), pic.getPrice(), creditCardNumber)))
->>>>>>> Alex
+			else if(!(BlPurchaseType.purchase(pic, g, buyerAddress) && BlStore.payToStore(pic.getMyProduct().getStore(), pic.getPrice(), creditCardNumber)))
 				notPurchased.getProducts().add(pic);
-//			else if(BlMain.isLotteryPurchase(pic.getMyProduct()))
-//					isExistLotteryPurchase = true;
 		}
+		
 		if(notPurchased.getProducts().size() == g.getCart().getProducts().size())
 			return false;
+		
 		g.getCart().getProducts().removeAll(notPurchased.getProducts());
 		//g.getCart() now has all the products that purchased.
 		if(!BlStore.sendTheProducts(g, buyerAddress)){
@@ -112,11 +105,14 @@ public class BlGuest {
 			}
 			return false;
 		}
+		
 		for (ProductInCart pic : g.getCart().getProducts()) {
 			PurchaseType pt = pic.getMyProduct().getPurchasePolicy().getPurchaseType(); 
 			if(pt instanceof LotteryPurchase)
 				BlLotteryPurchase.startLottery(((LotteryPurchase)pt));
+			
 			Purchase pur = BlStore.addProductToHistory(pic);
+			
 			if(g instanceof Subscriber)
 				BlSubscriber.addPurchaseToHistory((Subscriber)g, pur);
 		}

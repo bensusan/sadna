@@ -16,13 +16,14 @@ public class BlMain {
 			addPolicyToProduct = 3, addDiscountToProduct = 4, addNewStoreOwner = 5, addNewManager = 6, closeStore = 7,
 			openStore = 8, getPurchaseHistory = 9, expiredProducts = 10, changeStorePurchasePolicy = 11;
 
+	public static Subscriber admin = new SystemAdministrator("itzik", "11111111", "shmulik", "bait shel or", "0522222222", "111111111111",
+			new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>()); //or add this to allSubscribers
 	public static List<Subscriber> allSubscribers = new LinkedList<Subscriber>();
+	
 	public static Map<Guest, LinkedList<String>> allUsersWithTheirCreditCards = new HashMap<Guest, LinkedList<String>>(); // TODO
 //	public static int purchaseId = -1;
 	public static int storeId = -1;
-	public static SystemAdministrator admin = new SystemAdministrator("itzik", "11111111", "shmulik", "bait shel or", "0522222222", "111111111111",
-			new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>());
-	public static List<SystemAdministrator> allAdmins = new LinkedList<SystemAdministrator>(Arrays.asList(admin));
+	
 
 	// need to insert to here all guests that payed with their credit card for pay back
 
@@ -209,13 +210,6 @@ public class BlMain {
 		return BlStoreManager.changeStorePurchasePolicy(sm, pp);
 	}
 
-	public static boolean createAdmin(SystemAdministrator admin){
-		return BlSystemAdministrator.createAdmin(admin);
-	}
-
-	public static boolean removeAdmin(SystemAdministrator admin){
-		return BlSystemAdministrator.removeAdmin(admin);
-	}
 
 	////////////////////////////////////// Help functions for everyone
 	static Subscriber checkIfSubscriberExists(String username) {

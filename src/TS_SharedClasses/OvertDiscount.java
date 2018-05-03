@@ -18,15 +18,10 @@ public class OvertDiscount extends DiscountPolicy {
 	//the code here doesn't mean anything
 	@Override
 	public int updatePrice(int price, int code) {
-		if(code < 0)
-			return -1;
 		return BlOvertDiscount.updatePrice(this, price);
 	}
 
-	@Override
-	public int updatePrice(int price) {
-		return -1;
-	}
+	
 	
 	
 }

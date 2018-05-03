@@ -4,9 +4,10 @@ package TS_BL;
 import java.util.List;
 
 import TS_SharedClasses.*;
+import tests.regressionTests.systemAdministratorRegTests;
 
 public class BlSystemAdministrator {
-	
+
 	/**
 	 * remove subscriber from the system
 	 * @param s
@@ -19,12 +20,22 @@ public class BlSystemAdministrator {
 		List<Subscriber> subList = BlMain.allSubscribers;
 		if (!subList.contains(s))
 			return false;
-
+		if (s instanceof SystemAdministrator){
+			boolean canRemoveAdmin = false;
+			for (Subscriber subs : BlMain.allSubscribers){
+				if(!subs.equals(s) && subs instanceof SystemAdministrator){
+					canRemoveAdmin = true;
+					break;
+				}
+			}
+			if(!canRemoveAdmin)
+				return false;
+		}
 		subList.remove(s);
 		BlMain.allSubscribers = subList;
 		return true;
 	}
-	
+
 	/**
 	 * @param s
 	 * @return the purchase history that made by the subscriber
@@ -32,14 +43,14 @@ public class BlSystemAdministrator {
 	static List<Purchase> viewSubscriberHistory(SystemAdministrator sa, Subscriber s) {
 		if(sa == null || s == null)
 			return null;
-		
+
 		List<Subscriber> subList = BlMain.allSubscribers;
 		if (!subList.contains(s))
 			return null;
 
 		return subList.get(subList.indexOf(s)).getPurchaseHistory();
 	}
-	
+
 	/**
 	 * @param store
 	 * @return the purchase history that made in the store
@@ -48,7 +59,7 @@ public class BlSystemAdministrator {
 	{
 		if(sa == null || store == null)
 			return null;
-		
+
 		List<Store> stores = sa.getStores();
 		if(stores.contains(store)){
 			return store.getPurchaseHistory();
@@ -57,15 +68,4 @@ public class BlSystemAdministrator {
 			return null;
 	}
 
-	public static boolean createAdmin(SystemAdministrator admin) {
-		if(BlMain.allAdmins.contains(admin))
-			return false; //admin already exists
-		return BlMain.allAdmins.add(admin);
-	}
-
-	public static boolean removeAdmin(SystemAdministrator admin) {
-		if(BlMain.allAdmins.size() <= 1)
-			return false; //must be at least one admin
-		return BlMain.allAdmins.remove(admin);
-	}
 }

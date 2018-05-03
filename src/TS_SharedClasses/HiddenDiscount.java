@@ -26,10 +26,6 @@ public class HiddenDiscount extends DiscountPolicy{
 		return BlHiddenDiscount.updatePrice(this, price, code);
 	}
 
-	@Override
-	public int updatePrice(int price) {
-		return -1; //can't update price in hidden discount without any code
-	}
 	
 	@Override
 	public boolean equals(Object obj) {

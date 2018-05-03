@@ -6,14 +6,6 @@ import TS_SharedClasses.*;
 
 public class BlHiddenDiscount {
 
-	/**
-	 * @param price
-	 * @return the price
-	 */
-	static int updatePrice(HiddenDiscount hd, int price) {
-		// TODO missing implementation
-		return -1;
-	}
 
 	/**
 	 * @param price

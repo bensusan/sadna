@@ -28,7 +28,6 @@ public abstract class DiscountPolicy {
 		this.discountPrecentage = discountPrecentage;
 	}
 	
-	public abstract int updatePrice(int price);
 	public abstract int updatePrice(int price, int code);
 
 	@Override

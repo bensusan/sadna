@@ -79,23 +79,28 @@ public class GuestAT {
 		assertEquals("123451324656", s1.getCreditCardNumber());
 		
 		//sad case - existing username
-		Subscriber s2 = BlMain.signUp(g, "sagivmap", "45678999", "Sagiv Mag", "Be'er Sheva", "132412356", "123451324656");
-		assertNull(s2);
+		try{
+			Subscriber s2 = BlMain.signUp(g, "sagivmap", "45678999", "Sagiv Mag", "Be'er Sheva", "132412356", "123451324656");
+			fail();
+		}catch (Exception e) {}
 		
 		//bad case - corrupt input
 		Subscriber s3 = BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", "132412356", "1234567891011");
-		assertNull(BlMain.signUp(null, "advasan", "789789", "Adva San", "Be'er Sheva", "132412356", "1234567891011"));
-		assertNull(BlMain.signUp(g, null, "789789", "Adva San", "Be'er Sheva", "132412356", "1234567891011"));
-		assertNull(BlMain.signUp(g, "advasan", null, "Adva San", "Be'er Sheva", "132412356", "1234567891011"));
-		assertNull(BlMain.signUp(g, "advasan", "", "Adva San", "Be'er Sheva", "132412356", "1234567891011"));
-		assertNull(BlMain.signUp(g, "advasan", "789789", null, "Be'er Sheva", "132412356", "1234567891011"));
-		assertNull(BlMain.signUp(g, "advasan", "789789", "", "Be'er Sheva", "132412356", "1234567891011"));
-		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", "", "132412356", "1234567891011"));
-		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", null, "132412356", "1234567891011"));
-		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", "dsa541a", "1234567891011"));
-		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", "", "1234567891011"));
-		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", "132412356", null));
-		assertNull(BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", "132412356", ""));
+		try{
+			BlMain.signUp(null, "advasan", "789789", "Adva San", "Be'er Sheva", "132412356", "1234567891011");
+			BlMain.signUp(g, null, "789789", "Adva San", "Be'er Sheva", "132412356", "1234567891011");
+			BlMain.signUp(g, "advasan", null, "Adva San", "Be'er Sheva", "132412356", "1234567891011");
+			BlMain.signUp(g, "advasan", "", "Adva San", "Be'er Sheva", "132412356", "1234567891011");
+			BlMain.signUp(g, "advasan", "789789", null, "Be'er Sheva", "132412356", "1234567891011");
+			BlMain.signUp(g, "advasan", "789789", "", "Be'er Sheva", "132412356", "1234567891011");
+			BlMain.signUp(g, "advasan", "789789", "Adva San", "", "132412356", "1234567891011");
+			BlMain.signUp(g, "advasan", "789789", "Adva San", null, "132412356", "1234567891011");
+			BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", "dsa541a", "1234567891011");
+			BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", "", "1234567891011");
+			BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", "132412356", null);
+			BlMain.signUp(g, "advasan", "789789", "Adva San", "Be'er Sheva", "132412356", "");
+			fail();
+		}catch (Exception e) {}
 	}
 	//1.3
 	private void testGetInfoOnStoreAndProduct(){

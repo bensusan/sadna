@@ -32,11 +32,14 @@ public class SubscriberAT {
 	//2.1
 	private void testSignIn(){
 		
-		//incorrect usrname
-		assertNull(BlMain.signIn(signed, "notExist", "pass"));
-		//incorrect pass
-		assertNull(BlMain.signIn(signed, "usr", "notExist"));
-		
+		try{
+			//incorrect usrname
+			BlMain.signIn(signed, "notExist", "pass");
+			//incorrect pass
+			BlMain.signIn(signed, "usr", "notExist");
+			fail();
+		}
+		catch (Exception e) {}
 		//exists usr
 		assertEquals(sub, BlMain.signIn(signed, "usr", "pass"));
 		
@@ -44,9 +47,11 @@ public class SubscriberAT {
 	//2.2
 	private void testOpenStore(){
 		// incorrect inputs
-		assertNull(BlMain.openStore(sub, -5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true));
-		assertNull(BlMain.openStore(null,  5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), false));
-		
+		try{
+			BlMain.openStore(sub, -5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
+			BlMain.openStore(null,  5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), false);
+			fail();
+		}catch (Exception e) {}
 		//good case
 		Store toCheck = BlMain.openStore(sub, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
 		

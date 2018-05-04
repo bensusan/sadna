@@ -39,12 +39,18 @@ public class systemAdministratorRegTests {
 		
 		BlMain.removeSubscriber(amit, s);
 		assertFalse(BlMain.allSubscribers.contains(s));
-		assertNull(BlMain.signIn(s, "newUser", "newPass"));
+		try{
+			BlMain.signIn(s, "newUser", "newPass");
+			fail();
+		}catch (Exception e) {}
 		assertTrue(BlMain.getAllStores().contains(newStore));
 		
 		BlMain.removeSubscriber(amit, s2);
 		assertFalse(BlMain.allSubscribers.contains(s2));
-		assertNull(BlMain.signIn(s2, "newUser2", "newPass2"));
+		try{
+			BlMain.signIn(s2, "newUser2", "newPass2");
+			fail();
+		}catch (Exception e) {}
 		assertFalse(BlMain.getAllStores().contains(newStore));//we remove last owner
 		assertFalse(s3.getManager().contains(manager));
 		

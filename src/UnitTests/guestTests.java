@@ -177,21 +177,24 @@ public class guestTests {
 	
 	private void testSignUp() {
 		Guest g=new Guest();
-		assertNull(BlMain.signUp(null, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
-		assertNull(BlMain.signUp(g, "**ghju%", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
-		assertNull(BlMain.signUp(g, null, "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", "(T#ghn526?.<~", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", null, "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", "123", "oded 55menashe89", "herzel 23 herzelia", "0541234567", "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", "123", null, "herzel 23 herzelia", "0541234567", "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "&&JKGjhg64?.}", "0541234567", "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", null, "0541234567", "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "-5", "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "1", "1234567890123456"));
-		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1"));
-		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "123456789o123456"));
-		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", null));
-
+		try{
+			BlMain.signUp(null, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456");
+			BlMain.signUp(g, "**ghju%", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456");
+			BlMain.signUp(g, null, "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456");
+			BlMain.signUp(g, "abc", "(T#ghn526?.<~", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456");
+			BlMain.signUp(g, "abc", null, "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456");
+			BlMain.signUp(g, "abc", "123", "oded 55menashe89", "herzel 23 herzelia", "0541234567", "1234567890123456");
+			BlMain.signUp(g, "abc", "123", null, "herzel 23 herzelia", "0541234567", "1234567890123456");
+			BlMain.signUp(g, "abc", "123", "oded menashe", "&&JKGjhg64?.}", "0541234567", "1234567890123456");
+			BlMain.signUp(g, "abc", "123", "oded menashe", null, "0541234567", "1234567890123456");
+			BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "-5", "1234567890123456");
+			BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "1", "1234567890123456");
+			BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1");
+			BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "123456789o123456");
+			BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", null);
+			fail();
+		}
+		catch (Exception e) {}
 		Subscriber s=BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456");
 		assertEquals(g.getCart(),s.getCart());
 		assertEquals(s.getAddress(),"herzel 23 herzelia");
@@ -204,17 +207,21 @@ public class guestTests {
 		assertTrue(s.getPurchaseHistory().isEmpty());
 		assertEquals(s.getUsername(),"abc");
 		//exsist user
-		assertNull(BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456"));
-		
+		try{
+			BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456");
+			fail();
+		}catch (Exception e) {}
 	}
 	private void testSignIn() {
 		Guest g=new Guest();
-		assertNull(BlMain.signIn(g, null, "123"));
-		assertNull(BlMain.signIn(g, "abc", null));
-		assertNull(BlMain.signIn(g, "%^Gsd{", "123"));
-		assertNull(BlMain.signIn(g, "abc", "%Ffbf@{/"));
-		assertNull(BlMain.signIn(g, "abc", "123"));//user does not exist
-		
+		try{
+			BlMain.signIn(g, null, "123");
+			BlMain.signIn(g, "abc", null);
+			BlMain.signIn(g, "%^Gsd{", "123");
+			BlMain.signIn(g, "abc", "%Ffbf@{/");
+			BlMain.signIn(g, "abc", "123");//user does not exist
+			fail();
+		}catch (Exception e) {}
 		BlMain.addImmediatelyProduct(g, ball, 1);
 		Subscriber s1=BlMain.signIn(g, "abc", "123");
 		

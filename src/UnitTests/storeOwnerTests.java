@@ -104,25 +104,21 @@ public class storeOwnerTests {
 		assertFalse(BlMain.deleteProductFromStore(so, product));
 	}
 	private void testAddNewStoreOwner() {
+		Subscriber newSub=BlMain.signUp(new Guest(), "newSub", "newPass", "newName", "newAdd", "0547878987", "7876543212345678");
 		assertFalse(BlMain.addNewStoreOwner(so, null));
 		StoreOwner so2=null;
-		assertFalse(BlMain.addNewStoreOwner(so2, so));
-		so2=new StoreOwner(new Store("new Store2", "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
-		assertFalse(BlMain.addNewStoreOwner(so, so2));//not same store
-		so2.setStore(so.getStore());
-		assertTrue(BlMain.addNewStoreOwner(so, so2));
-		assertTrue(so.getStore().getMyOwners().contains(so2));
+		assertFalse(BlMain.addNewStoreOwner(so2, newSub));
+		assertTrue(BlMain.addNewStoreOwner(so, newSub));
+		BlMain.removeSubscriber(new SystemAdministrator(null, null, null, null, null, null, null, null, null), newSub);
 	}
 	private void testAddNewManager() {
+		Subscriber newSub=BlMain.signUp(new Guest(), "newSub", "newPass", "newName", "newAdd", "0547878987", "7876543212345678");
+		
 		assertFalse(BlMain.addNewManager(so, null));
 		StoreOwner so2=null;
-		StoreManager sm=new StoreManager(so.getStore());
-		assertFalse(BlMain.addNewManager(so2, sm));
-		sm.setStore(new Store("new Store3", "4444", "0548787878", 1, new HashMap<>(), new LinkedList<>(), true));
-		assertFalse(BlMain.addNewManager(so, sm));//not same store
-		sm.setStore(so.getStore());
-		assertTrue(BlMain.addNewManager(so, sm));
-		assertTrue(so.getStore().getMyManagers().contains(sm));
+		assertFalse(BlMain.addNewManager(so2, newSub));
+		assertTrue(BlMain.addNewManager(so, newSub));
+		BlMain.removeSubscriber(new SystemAdministrator(null, null, null, null, null, null, null, null, null), newSub);
 	}
 	private void testCloseStore() {
 		StoreOwner so2=null;

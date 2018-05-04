@@ -84,10 +84,11 @@ public class storeManagerTests {
 	}
 
 	private void testAddNewManager() {
-		StoreManager nsm=new StoreManager(sm.getStore());
-		assertFalse(BlMain.addNewManager(sm, nsm));
+		Subscriber newSub=BlMain.signUp(new Guest(), "newSub", "newPass", "newName", "newAdd", "0547878987", "7876543212345678");
+		assertFalse(BlMain.addNewManager(sm, newSub));
 		sm.setSpecificPermission(BlMain.addNewManager, true);
-		assertTrue(BlMain.addNewManager(sm, nsm));
+		assertTrue(BlMain.addNewManager(sm, newSub));
+		BlMain.removeSubscriber(new SystemAdministrator(null, null, null, null, null, null, null, null, null), newSub);
 	}
 
 	private void testCloseStore() {

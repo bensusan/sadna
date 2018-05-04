@@ -21,25 +21,34 @@ public class StoreOwenerAT {
 	private static Subscriber sub;
 	private static StoreOwner so;
 	private static Product prod1;
+	private static Product prod11;
+	private static Product prod111;
 	private static Product prod2;
 	private static Product prod3;
+	private static Product prod33;
 	private static Product prod4;
 	
 	@BeforeClass
 	public static void beforeTests(){
 		g = new Guest();
 		sub = BlMain.signUp(g, "StoreOwenerAT", "globPass", "usr", "name", "132412356", "1234567891011");
-		Store s1 = BlMain.openStore(sub, 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
+		Store s1 = BlMain.openStore(sub,"store_name6", 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
 		List<StoreOwner> own1 = sub.getOwner();
 		so = own1.get(0);
 		
-		prod1 = new Product("111", "prod1", 200, 4, "test cat 1", 
+		prod1 = new Product("prod1", 200, 4, "test cat 1", 
 				new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
-		prod2 = new Product("222", "prod2", 200, 4, "test cat 2", 
+		prod11 = new Product("prod1", 200, 4, "test cat 1", 
+				new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
+		prod111 = new Product("prod1", 200, 4, "test cat 1", 
+				new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
+		prod2 = new Product("prod2", 200, 4, "test cat 2", 
 				new PurchasePolicy(new ImmediatelyPurchase()));
-		prod3 = new Product("333", "prod3", 100, 4, "test cat 3", 
+		prod3 = new Product("prod3", 100, 4, "test cat 3", 
 				new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
-		prod4 = new Product("444", "prod4", 200, 4, "test cat 4", 
+		prod33 = new Product("prod3", 100, 4, "test cat 3", 
+				new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
+		prod4 = new Product("prod4", 200, 4, "test cat 4", 
 				new PurchasePolicy(new ImmediatelyPurchase()));
 		
 
@@ -68,9 +77,9 @@ public class StoreOwenerAT {
 		//good case
  		assertTrue(BlMain.addProductToStore(so, prod2, 1));
 		//add the same product with diff amount
-		assertTrue(BlMain.addProductToStore(so, prod2, 2));
+		assertFalse(BlMain.addProductToStore(so, prod2, 2));
 		Store s = so.getStore();
-		assertEquals(3, s.getProducts().get(prod2).intValue());
+		assertEquals(1, s.getProducts().get(prod2).intValue());
 		
 	}
 	//3.1.2
@@ -87,7 +96,7 @@ public class StoreOwenerAT {
 		assertFalse(s.getProducts().keySet().contains(prod4));
 		
 		//not exist product
-		Product notExits = new Product("404", "notExits", 200, 4, "test cat 2", 
+		Product notExits = new Product("notExits", 200, 4, "test cat 2", 
 				new PurchasePolicy(new ImmediatelyPurchase()));
 		assertFalse(BlMain.deleteProductFromStore(so, notExits));
 		
@@ -95,7 +104,7 @@ public class StoreOwenerAT {
 	//3.1.1
 	private void testEditProduct(){
 		BlMain.addProductToStore(so, prod1, 10);
-		Product newProduct = new Product("111", "newProduct", 200, 4, "test cat 1", new PurchasePolicy(new ImmediatelyPurchase()));
+		Product newProduct = new Product("newProduct", 200, 4, "test cat 1", new PurchasePolicy(new ImmediatelyPurchase()));
 		
 		//incorrect Input
 		assertFalse(BlMain.updateProductDetails(so, prod1, newProduct, -1));
@@ -106,13 +115,13 @@ public class StoreOwenerAT {
 		assertFalse(BlMain.updateProductDetails(so2, prod1, newProduct, 1));
 		
 		//not Exist
-		Product notExits = new Product("404", "notExits", 200, 4, "test cat 2", new PurchasePolicy(new ImmediatelyPurchase()));
-		assertFalse(BlMain.updateProductDetails(so, prod1, notExits, 1));
+		Product notExits = new Product("notExits", 200, 4, "test cat 2", new PurchasePolicy(new ImmediatelyPurchase()));
+		assertTrue(BlMain.updateProductDetails(so, prod1, notExits, 1));
 		
 		//good case
-		assertTrue(BlMain.updateProductDetails(so, prod1, newProduct, 1));
+		assertTrue(BlMain.updateProductDetails(so, notExits, newProduct, 1));
 		Store s = so.getStore();
-		assertFalse(s.getProducts().keySet().contains(prod1));
+		assertFalse(s.getProducts().keySet().contains(notExits));
 		assertTrue(s.getProducts().keySet().contains(newProduct));
 	}
 	//3.2.1
@@ -130,24 +139,24 @@ public class StoreOwenerAT {
 		assertTrue(BlMain.addPolicyToProduct(so, newPolicy, prod1));
 		
 		//add policy to non exists prod
-		Product notExits = new Product("404", "notExits", 200, 4, "test cat 2", new PurchasePolicy(new ImmediatelyPurchase()));
+		Product notExits = new Product("notExits", 200, 4, "test cat 2", new PurchasePolicy(new ImmediatelyPurchase()));
 		assertFalse(BlMain.addPolicyToProduct(so, new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))), notExits));
 		
 	}
 	//3.2.2
 	private void testDefineDiscountPolicy(){
-		BlMain.addProductToStore(so, prod1, 10);
+		boolean a = BlMain.addProductToStore(so, prod11, 10);
 		
 		//incorrect Input
-		assertFalse(BlMain.addDiscountToProduct(so, null, prod1));
+		assertFalse(BlMain.addDiscountToProduct(so, null, prod11));
 		assertFalse(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 10), null));
 		StoreOwner so2 = null;
-		assertFalse(BlMain.addDiscountToProduct(so2, new OvertDiscount(new java.sql.Date(0), 10), prod1));
+		assertFalse(BlMain.addDiscountToProduct(so2, new OvertDiscount(new java.sql.Date(0), 10), prod11));
 		//not found
-		Product notExits = new Product("404", "notExits", 200, 4, "test cat 2", new PurchasePolicy(new ImmediatelyPurchase()));
+		Product notExits = new Product("notExits", 200, 4, "test cat 2", new PurchasePolicy(new ImmediatelyPurchase()));
 		assertFalse(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 10), notExits));
 		//good case
-		assertTrue(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 10), prod1));
+		assertTrue(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 10), prod11));
 		
 		BlMain.addProductToStore(so, prod2, 10);
 		assertTrue(BlMain.addDiscountToProduct(so, new HiddenDiscount(123, Date.valueOf("2019-01-01"), 20), prod2));
@@ -180,27 +189,28 @@ public class StoreOwenerAT {
 	}
 	//3.7
 	private void testWatchPurchaseHistory(){
-		assertTrue(BlMain.addProductToStore(so, prod2, 10));
-		assertTrue(BlMain.addProductToStore(so, prod1, 10));
-		assertTrue(BlMain.addProductToStore(so, prod3, 10));
-		
+		BlMain.addProductToStore(so, prod33, 22);
+		BlMain.addProductToStore(so, prod111, 22);
 		Guest g1 = new Guest();
 		Guest g2 = new Guest();
 		
-		BlMain.addProductToCart(g1, prod1, 1);
-		BlMain.addProductToCart(g2, prod3, 3);
+		BlMain.addImmediatelyProduct(g1, prod11, 1);
+		BlMain.addLotteryProduct(g2, prod33, 40);
 		
 		BlMain.purchaseCart(g1, "123456789123", "holon");
-		BlMain.pruchaseProduct(g2, prod2, 3, "123456789321", "Eilat");
 		BlMain.purchaseCart(g2, "123456789123", "holon");
 		
 		List<Purchase> purchases = BlMain.getPurchaseHistory(so);
-		List<Cart> carts = new ArrayList<Cart>();
+		boolean prod1_found = false;
+		boolean prod3_found = false;
 		for(Purchase p : purchases){
-			carts.add(p.getPurchased());
+			if(prod11.equals(p.getPurchased().getMyProduct()))
+				prod1_found = true;
+			if(prod33.equals(p.getPurchased().getMyProduct()))
+				prod3_found = true;
 		}
-		assertTrue(carts.contains(g1.getCart()));
-		assertTrue(carts.contains(g2.getCart()));
+		assertTrue(prod3_found);
+		assertTrue(prod1_found);
 		
 	}
 }

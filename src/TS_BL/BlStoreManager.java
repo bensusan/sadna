@@ -3,6 +3,7 @@ package TS_BL;
 import java.util.List;
 
 import TS_SharedClasses.*;
+import UnitTests.subscriberTests;
 
 public class BlStoreManager {
 
@@ -63,7 +64,7 @@ public class BlStoreManager {
 	 * @param owner
 	 * @return true if succseed false otherwise
 	 */
-	static boolean addNewStoreOwner(StoreManager sm, StoreOwner owner) {
+	static boolean addNewStoreOwner(StoreManager sm, Subscriber owner) {
 		return sm != null && sm.getPremisions()[BlMain.addNewStoreOwner] && BlPermissions.addNewStoreOwner(sm.getStore(), owner);
 	}
 
@@ -73,7 +74,7 @@ public class BlStoreManager {
 	 * @param manager
 	 * @return true if succseed false otherwise
 	 */
-	static boolean addNewManager(StoreManager oldMan, StoreManager newMan) {
+	static boolean addNewManager(StoreManager oldMan, Subscriber newMan) {
 		return oldMan != null && oldMan.getPremisions()[BlMain.addNewManager] && BlPermissions.addNewManager(oldMan.getStore(), newMan);
 	}
 

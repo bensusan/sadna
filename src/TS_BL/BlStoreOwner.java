@@ -56,7 +56,7 @@ public class BlStoreOwner {
 	 * @param owner
 	 * @return true if succseed false otherwise
 	 */
-	static boolean addNewStoreOwner(StoreOwner oldSo, StoreOwner newSo)
+	static boolean addNewStoreOwner(StoreOwner oldSo, Subscriber newSo)
 	{
 		return (oldSo != null && newSo != null && oldSo.getStore() != null) && BlPermissions.addNewStoreOwner(oldSo.getStore(), newSo);
 	}
@@ -65,7 +65,7 @@ public class BlStoreOwner {
 	 * @param manager
 	 * @return true if succseed false otherwise
 	 */
-	static boolean addNewManager(StoreOwner so, StoreManager manager)
+	static boolean addNewManager(StoreOwner so, Subscriber manager)
 	{
 		return (so != null && manager != null && so.getStore() != null) && BlPermissions.addNewManager(so.getStore(), manager);
 	}

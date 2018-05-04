@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import TS_SharedClasses.*;
+import UnitTests.subscriberTests;
 
 public class BlMain {
 
@@ -82,11 +83,11 @@ public class BlMain {
 		return BlStoreManager.addDiscountToProduct(sm, discount, product);
 	}
 
-	public static boolean addNewStoreOwner(StoreManager sm, StoreOwner owner) {
+	public static boolean addNewStoreOwner(StoreManager sm, Subscriber owner) {
 		return BlStoreManager.addNewStoreOwner(sm, owner);
 	}
 
-	public static boolean addNewManager(StoreManager oldMan, StoreManager newMan) {
+	public static boolean addNewManager(StoreManager oldMan, Subscriber newMan) {
 		return BlStoreManager.addNewManager(oldMan, newMan);
 	}
 
@@ -122,11 +123,11 @@ public class BlMain {
 		return BlStoreOwner.addDiscountToProduct(so, discount, product);
 	}
 
-	public static boolean addNewStoreOwner(StoreOwner oldSo, StoreOwner newSo) {
+	public static boolean addNewStoreOwner(StoreOwner oldSo, Subscriber newSo) {
 		return BlStoreOwner.addNewStoreOwner(oldSo, newSo);
 	}
 
-	public static boolean addNewManager(StoreOwner so, StoreManager manager) {
+	public static boolean addNewManager(StoreOwner so, Subscriber manager) {
 		return BlStoreOwner.addNewManager(so, manager);
 	}
 

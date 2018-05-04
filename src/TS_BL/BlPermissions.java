@@ -1,6 +1,7 @@
 package TS_BL;
 
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 import TS_SharedClasses.*;
@@ -51,27 +52,29 @@ public class BlPermissions {
 	}
 
 
-	static boolean addNewStoreOwner(Store s, StoreOwner owner) {
+	static boolean addNewStoreOwner(Store s, Subscriber owner) {
 		if(s == null || owner == null)
 			return false;
+		StoreOwner so = new StoreOwner(s);
 		List<StoreOwner> owners = s.getMyOwners();
-		if(!owners.add(owner))
+		if(!owners.add(so))
 			return false;
 		s.setMyOwners(owners);
-		owner.setStore(s);
-		return true;
+	//	owner.setStore(s);
+		return BlMain.addOwner(owner, so);
 	}
 
 
-	static boolean addNewManager(Store s, StoreManager newMan) {
+	static boolean addNewManager(Store s, Subscriber newMan) {
 		if(s == null || newMan == null)
 			return false;
+		StoreManager sm = new StoreManager(s);
 		List<StoreManager> managers = s.getMyManagers();
-		if(!managers.add(newMan))
+		if(!managers.add(sm))
 			return false;
 		s.setMyManagers(managers);
-		newMan.setStore(s);
-		return true;
+		//newMan.setStore(s);
+		return BlMain.addManager(newMan, sm);
 	}
 
 	static boolean closeStore(Store s) {

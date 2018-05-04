@@ -68,14 +68,16 @@ public class storeOwnerTests {
 	}
 	private void testAddPolicyToProduct() {
 		Product product=new Product("ping pong ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
+		BlMain.addProductToStore(so, product, 10);
 		assertFalse(BlMain.addPolicyToProduct(so, null, product));
 		assertFalse(BlMain.addPolicyToProduct(so, new PurchasePolicy(new LotteryPurchase(new java.sql.Date(0))), null));
 		StoreOwner so2=null;
 		assertFalse(BlMain.addPolicyToProduct(so2, new PurchasePolicy(new LotteryPurchase(new java.sql.Date(0))), product));
-		assertTrue(BlMain.addPolicyToProduct(so, new PurchasePolicy(new LotteryPurchase(new java.sql.Date(0))), product));
+		assertTrue(BlMain.addPolicyToProduct(so, new PurchasePolicy(new LotteryPurchase(new java.sql.Date(12,12,2018))), product));
 	}
 	private void testAddDiscountToProduct() {
 		Product product=new Product("ping pong ball", 5, 5, "toys", new PurchasePolicy(new LotteryPurchase(new java.sql.Date(0))));
+		BlMain.addProductToStore(so, product, 10);
 		assertFalse(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 30), product));
 		BlMain.addPolicyToProduct(so, new PurchasePolicy(new ImmediatelyPurchase()), product);
 		assertFalse(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), -10), product));

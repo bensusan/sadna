@@ -27,7 +27,7 @@ public class Product {
 		this.grading=oldProduct.grading;
 		this.category=oldProduct.category;
 		this.purchasePolicy=oldProduct.purchasePolicy;
-		this.store=oldProduct.store;
+		
 	}
 
 	public int getId() {

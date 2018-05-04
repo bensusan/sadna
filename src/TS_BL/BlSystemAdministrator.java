@@ -3,8 +3,8 @@ package TS_BL;
 
 import java.util.List;
 
+import IntegrationTests.systemAdministratorRegTests;
 import TS_SharedClasses.*;
-import tests.regressionTests.systemAdministratorRegTests;
 
 public class BlSystemAdministrator {
 

@@ -48,26 +48,21 @@ public class storeOwnerTests {
 		assertFalse(BlMain.addProductToStore(so, product, 1));
 		so.setStore(store);
 		assertTrue(BlMain.addProductToStore(so, product, 1));
-		assertTrue(BlMain.addProductToStore(so, product, 1));
-		assertFalse(BlMain.addProductToStore(so, product, 0));
-		assertTrue(BlMain.addProductToStore(so, product, -1));
-		assertFalse(BlMain.addProductToStore(so, product, -2));//there is only one product in stock
-		Product product2=new Product( "iphone x", 250, 6, "cell phones", new PurchasePolicy(new ImmediatelyPurchase()));
-		assertFalse(BlMain.addProductToStore(so, product2, 1));//same id
 		
 	}
 	private void testUpdateProductDetails() {
-		Product oldProduct=new Product("ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
-		Product newProduct=new Product("ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
-		
+		Product oldProduct=(Product) so.getStore().getProducts().keySet().toArray()[0];
+		Product newProduct=new Product(oldProduct);
+		newProduct.setName("new name");
 		assertFalse(BlMain.updateProductDetails(so, oldProduct, newProduct, -1));
 		assertFalse(BlMain.updateProductDetails(so, oldProduct, null, 1));
 		assertFalse(BlMain.updateProductDetails(so, null, newProduct, 1));
 		StoreOwner so2=null;
 		assertFalse(BlMain.updateProductDetails(so2, oldProduct, newProduct, 1));
 		
-		assertFalse(BlMain.updateProductDetails(so, newProduct, oldProduct, 1));//product does not exist
-		newProduct.setName("ping pong ball");
+		Product new2=new Product("temp", 3, 3, "temp", null);
+		assertFalse(BlMain.updateProductDetails(so, new2, oldProduct, 1));//product does not exist
+		
 		assertTrue(BlMain.updateProductDetails(so, oldProduct, newProduct, 1));
 		
 	}

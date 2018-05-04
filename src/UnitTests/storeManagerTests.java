@@ -50,6 +50,7 @@ public class storeManagerTests {
 		
 		Product oldProduct=new Product("ball", 10, 7, "toys", null);
 		Product newProduct=new Product("ball", 10, 7, "toys", null);
+		BlMain.addProductToStore(sm, oldProduct, 10);
 		newProduct.setPrice(8);
 		assertFalse(BlMain.updateProductDetails(sm, oldProduct, newProduct, 5));
 		sm.setSpecificPermission(BlMain.updateProductDetails, true);
@@ -58,6 +59,7 @@ public class storeManagerTests {
 	
 	private void testDeleteProductFromStore() {
 		Product product=new Product("ball", 8, 7, "toys", null);
+		BlMain.addProductToStore(sm, product, 10);
 		assertFalse(BlMain.deleteProductFromStore(sm, product));
 		sm.setSpecificPermission(BlMain.deleteProductFromStore, true);
 		assertTrue(BlMain.deleteProductFromStore(sm, product));
@@ -73,7 +75,8 @@ public class storeManagerTests {
 	}
 
 	private void testAddDiscountToProduct() {
-		Product product=new Product("ball", 8, 7, "toys", null);
+		Product product=new Product("ball", 8, 7, "toys",new PurchasePolicy(new ImmediatelyPurchase()));
+		BlMain.addProductToStore(sm, product, 10);
 		DiscountPolicy discount=new OvertDiscount(null, 30);
 		assertFalse(BlMain.addDiscountToProduct(sm, discount, product));
 		sm.setSpecificPermission(BlMain.addDiscountToProduct, true);

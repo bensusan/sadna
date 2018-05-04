@@ -16,6 +16,8 @@ public class BlOvertDiscount {
 		if (date.after(od.getDiscountEndDate())){
 			return -1;
 		}
+		if(od.getDiscountPrecentage() == 0)
+			return price;
 		return (price * od.getDiscountPrecentage()) / 100;
 	}
 }

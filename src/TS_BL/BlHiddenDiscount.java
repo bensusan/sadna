@@ -20,6 +20,8 @@ public class BlHiddenDiscount {
 		if (date.after(hd.getDiscountEndDate())){
 			return -1;
 		}
+		if(hd.getDiscountPrecentage() == 0)
+			return price;
 		return (price * hd.getDiscountPrecentage()) / 100;
 	}
 	

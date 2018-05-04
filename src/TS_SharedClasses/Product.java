@@ -20,6 +20,16 @@ public class Product {
 		this.purchasePolicy = purchasePolicy;
 	}
 
+	public Product(Product oldProduct) {
+		this.id=oldProduct.id;
+		this.name=oldProduct.name;
+		this.price=oldProduct.price;
+		this.grading=oldProduct.grading;
+		this.category=oldProduct.category;
+		this.purchasePolicy=oldProduct.purchasePolicy;
+		
+	}
+
 	public int getId() {
 		return id;
 	}

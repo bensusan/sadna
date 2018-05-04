@@ -10,7 +10,15 @@ public class Product {
 	private String category;
 	private PurchasePolicy purchasePolicy;
 	private Store store;
-		
+	
+	public Product(){
+		this.id = nextID++;
+		this.name = "";
+		this.price = 0;
+		this.grading = 0;
+		this.category = "";
+		this.purchasePolicy = null;
+	}
 	public Product(String name, int price, int grading, String category, PurchasePolicy purchasePolicy) {
 		this.id = nextID++;
 		this.name = name;

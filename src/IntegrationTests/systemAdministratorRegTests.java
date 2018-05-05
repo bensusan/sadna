@@ -26,16 +26,10 @@ public class systemAdministratorRegTests {
 	public void testRemoveSubscriber() {
 		Subscriber s=BlMain.signUp(new Guest (), "newUser", "newPass", "newName", "newAddress", "0948376767", "1234567890987654");
 		Store newStore =BlMain.openStore(s,"ofir's store", 5, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true);
-		
-		StoreOwner owner=new StoreOwner(newStore);
 		Subscriber s2=BlMain.signUp(new Guest(), "newUser2", "newPass2", "new Name", "newAddress2", "0948376767", "1234567890987654");
-		BlMain.addOwner(s2, owner);
-		BlMain.addNewStoreOwner(s.getOwner().get(0), s2.getOwner().get(0));
-		
+		BlMain.addNewStoreOwner(s.getOwner().get(0), s2);
 		Subscriber s3=BlMain.signUp(new Guest(), "newUser3", "newPass3", "new new Name", "newAddress3", "0948376767", "1234567890987654");
-		StoreManager manager=new StoreManager(newStore);
-		BlMain.addManager(s3, manager);
-		BlMain.addNewManager(s.getOwner().get(0), manager);
+		BlMain.addNewManager(s.getOwner().get(0), s3);
 		
 		BlMain.removeSubscriber(amit, s);
 		assertFalse(BlMain.allSubscribers.contains(s));
@@ -52,7 +46,7 @@ public class systemAdministratorRegTests {
 			fail();
 		}catch (Exception e) {}
 		assertFalse(BlMain.getAllStores().contains(newStore));//we remove last owner
-		assertFalse(s3.getManager().contains(manager));
+		assertEquals(s3.getManager().size(),0);
 		
 		BlMain.removeSubscriber(amit, s3);//just to clear data
 		

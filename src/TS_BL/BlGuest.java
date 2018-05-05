@@ -157,8 +157,14 @@ public class BlGuest {
 		if(!BlMain.legalPassword(password))
 			return null; //password rules failed.
 		Subscriber ans = BlMain.checkIfSubscriberExists(username);
-		if(ans != null && ans.getPassword() == md5Hash(password))
+		if(ans != null && ans.getPassword().toString().equals(md5Hash(password).toString()))
+		{
+			if(ans.getCart().getProducts().isEmpty())
+			{
+				ans.setCart(g.getCart());
+			}
 			return ans;
+		}
 		
 		return null;
 	}

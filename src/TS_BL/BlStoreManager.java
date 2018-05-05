@@ -1,5 +1,6 @@
 package TS_BL;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import TS_SharedClasses.*;
@@ -96,7 +97,7 @@ public class BlStoreManager {
 	 * @return history of pruchase in the store
 	 */
 	static List<Purchase> getPurchaseHistory(StoreManager sm) {
-		return sm != null && sm.getPremisions()[BlMain.getPurchaseHistory] ? BlPermissions.getPurchaseHistory(sm.getStore()) : null;
+		return sm != null && sm.getPremisions()[BlMain.getPurchaseHistory] ? BlPermissions.getPurchaseHistory(sm.getStore()) : new LinkedList<Purchase>();
 	}
 	
 	static void expiredProducts(StoreManager sm){

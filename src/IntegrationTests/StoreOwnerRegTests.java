@@ -30,8 +30,6 @@ public class StoreOwnerRegTests {
 	private static Subscriber or;
 	private static Subscriber sagiv;
 	private static Store ofirStore;
-	private static StoreManager orAtOfir;
-	private static StoreOwner sagivAtOfir;
 	private static StoreOwner ofirOwnership;
 	private static Product tennisProduct;
 	
@@ -88,7 +86,7 @@ public class StoreOwnerRegTests {
 				productdelete=false;
 			}
 		}
-		assertTrue(productdelete);
+		assertFalse(productdelete);
 	}
 	private void testAddPolicyToProduct() {
 		BlMain.addPolicyToProduct(ofirOwnership, new PurchasePolicy(new ImmediatelyPurchase()), tennisProduct);
@@ -109,30 +107,33 @@ public class StoreOwnerRegTests {
 		}
 	}
 	private void testAddNewStoreOwner() {
-		sagiv=BlMain.signUp(sagiv, "sagiv123", "sagiv123", "sagiv mapgavker", "herzel 12 Tel Aviv", "0526988521", "4444444444444444");
-		sagivAtOfir=new StoreOwner(ofirStore);
-		BlMain.addNewStoreOwner(ofirOwnership, sagivAtOfir);
+		sagiv=BlMain.signUp(new Guest(), "sagiv123", "sagiv123", "sagiv mapgavker", "herzel 12 Tel Aviv", "0526988521", "4444444444444444");
+		int storeown=ofirStore.getMyOwners().size();
 		for (Subscriber s:BlMain.allSubscribers)
 		{
 			if(s.getUsername().equals("sagiv123"))
 			{
-				assertTrue(s.getOwner().contains(sagivAtOfir));
+				int before=s.getOwner().size();
+				BlMain.addNewStoreOwner(ofirOwnership, sagiv);
+				assertEquals(s.getOwner().size(),before+1);
 			}
 		}
-		assertTrue(ofirStore.getMyOwners().contains(sagivAtOfir));
+		assertEquals(ofirStore.getMyOwners().size(),storeown+1);
 	}
 	private void testAddNewManager() {
-		or=BlMain.signUp(or, "or123", "or123", "or ben susan", "raul valenberg 4 Rehovot", "0547217189", "3333333333333333");
-		orAtOfir =new StoreManager( ofirStore);
-		BlMain.addNewManager(ofirOwnership, orAtOfir);
+		or=BlMain.signUp(new Guest(), "or123", "or123", "or ben susan", "raul valenberg 4 Rehovot", "0547217189", "3333333333333333");
+		
+		int manBef=ofirStore.getMyManagers().size();
 		for (Subscriber s:BlMain.allSubscribers)
 		{
 			if(s.getUsername().equals("or123"))
 			{
-				assertTrue(s.getManager().contains(orAtOfir));
+				int before=s.getManager().size();
+				BlMain.addNewManager(ofirOwnership, or);
+				assertEquals(s.getManager().size(),before+1);
 			}
 		}
-		assertTrue(ofirStore.getMyManagers().contains(orAtOfir));
+		assertEquals(ofirStore.getMyManagers().size(),manBef+1);
 	}
 
 	@AfterClass

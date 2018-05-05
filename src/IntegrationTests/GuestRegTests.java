@@ -47,13 +47,20 @@ public class GuestRegTests {
 		BlMain.removeSubscriber(amit, (Subscriber)ofir);
 	}
 	@Test
-	public void testSignUp() {
-		alex=BlMain.signUp(alex, "alexuser", "alexpass", "alex", "alex address", "0543545678", "9876543212345678");
+	public void mainTest()
+	{
+		testSignUp();
+		testAddProductToCart();
+		testLogIn();
+		testPuchaseCart();
+	}
+	private void testSignUp() {
+		alex=BlMain.signUp(new Guest(), "alexuser", "alexpass", "alex", "alex address", "0543545678", "9876543212345678");
 		assertTrue(BlMain.allSubscribers.contains(alex));
 		assertEquals(BlMain.signIn(alex, "alexuser", "alexpass"),alex);
 	}
-	@Test
-	public void testAddProductToCart() {
+	
+	private void testAddProductToCart() {
 		BlMain.addImmediatelyProduct(alex, tennisProduct, 10);
 		for(ProductInCart p :alex.getCart().getProducts())
 		{
@@ -66,8 +73,8 @@ public class GuestRegTests {
 		BlMain.removeProductFromCart(alex, tennisProduct);
 	}
 	
-	@Test
-	public void testLogIn() {
+	
+	private void testLogIn() {
 		alex=new Guest();
 		BlMain.addImmediatelyProduct(alex, tennisProduct, 20);
 		alex=BlMain.signIn(alex, "alexuser", "alexpass");
@@ -82,9 +89,7 @@ public class GuestRegTests {
 		assertTrue(containProduct);
 	}
 	
-
-	@Test
-	public void testPuchaseCart() {
+	private void testPuchaseCart() {
 		BlMain.purchaseCart(alex, ((Subscriber)alex).getCreditCardNumber(), ((Subscriber)alex).getAddress());
 		assertEquals(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).get(tennisProduct).intValue(),30);
 		assertTrue(alex.getCart().getProducts().isEmpty());

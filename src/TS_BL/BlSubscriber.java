@@ -29,6 +29,9 @@ public class BlSubscriber {
 		StoreOwner so=new StoreOwner(s);
 		own.add(so);
 		sub.setOwner(own);
+		own=s.getMyOwners();
+		own.add(so);
+		s.setMyOwners(own);
 		return s;
 	}
 	

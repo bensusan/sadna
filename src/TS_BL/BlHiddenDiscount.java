@@ -22,7 +22,7 @@ public class BlHiddenDiscount {
 		}
 		if(hd.getDiscountPrecentage() == 0)
 			return price;
-		return (price * hd.getDiscountPrecentage()) / 100;
+		return price - ((price * hd.getDiscountPrecentage()) / 100);
 	}
 	
 	static boolean checkCodeForDiscount(HiddenDiscount hd, int code){

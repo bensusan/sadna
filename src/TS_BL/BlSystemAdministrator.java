@@ -1,6 +1,7 @@
 
 package TS_BL;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import IntegrationTests.systemAdministratorRegTests;
@@ -20,6 +21,9 @@ public class BlSystemAdministrator {
 		List<Subscriber> subList = BlMain.allSubscribers;
 		if (!subList.contains(s))
 			return false;
+		if(!s.getOwner().isEmpty() && s.getOwner().size() == 1){
+			s.getOwner().get(0).getStore().setMyManagers(new LinkedList<StoreManager>());
+		}
 		if (s instanceof SystemAdministrator){
 			boolean canRemoveAdmin = false;
 			for (Subscriber subs : BlMain.allSubscribers){

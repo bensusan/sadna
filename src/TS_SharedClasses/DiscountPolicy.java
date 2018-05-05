@@ -9,7 +9,12 @@ public abstract class DiscountPolicy {
 	public DiscountPolicy(Date discountEndDate, int discountPrecentage) {
 		super();
 		this.discountEndDate = discountEndDate;
-		this.discountPrecentage = discountPrecentage;
+		if(discountPrecentage > 100)
+			this.discountPrecentage = 100;
+		else if(discountPrecentage < 0)
+			this.discountPrecentage = 0;
+		else
+			this.discountPrecentage = discountPrecentage;
 	}
 	
 	public Date getDiscountEndDate() {

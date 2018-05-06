@@ -4,7 +4,6 @@ package TS_BL;
 import java.util.LinkedList;
 import java.util.List;
 
-import IntegrationTests.systemAdministratorRegTests;
 import TS_SharedClasses.*;
 
 public class BlSystemAdministrator {

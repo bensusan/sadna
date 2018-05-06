@@ -7,11 +7,11 @@ import TS_BL.BlOvertDiscount;
 
 public class OvertDiscount extends DiscountPolicy {
 
-	public OvertDiscount(Date dicountEndDate, int discountPrecentage) {
+	public OvertDiscount(Date dicountEndDate, int discountPrecentage) throws Exception {
 		super(dicountEndDate, discountPrecentage);
 	}
 	
-	public OvertDiscount() {
+	public OvertDiscount() throws Exception {
 		super(new Date(8099, 11, 31), 0);
 	}
 

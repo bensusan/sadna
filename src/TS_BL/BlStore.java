@@ -41,7 +41,7 @@ public class BlStore {
 		if(amount < 0 || !checkInStock(p, amount))
 			return false;
 		Map<Product, Integer> products = s.getProducts();
-		products.put(p, products.get(p) - amount);
+		products.put(p, amount);
 		if(products.get(p) == 0)
 			products.remove(p);
 		return true;

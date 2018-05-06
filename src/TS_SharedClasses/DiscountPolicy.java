@@ -6,9 +6,12 @@ public abstract class DiscountPolicy {
 	private Date discountEndDate;
 	private int discountPrecentage;
 	
-	public DiscountPolicy(Date discountEndDate, int discountPrecentage) {
+	public DiscountPolicy(Date discountEndDate, int discountPrecentage) throws Exception {
 		super();
+		if(discountPrecentage < 0 || discountPrecentage > 100)
+			throw new Exception("Invalid Discount precentage.");
 		this.discountEndDate = discountEndDate;
+		
 		this.discountPrecentage = discountPrecentage;
 	}
 	

@@ -34,14 +34,21 @@ public class PurchaseTypeAT {
 		List<StoreOwner> own1 = sub.getOwner();
 		so = own1.get(0);
 		
-		prod1 = new Product("prod1", 200, 4, "test cat 1", 
-				new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
-		prod2 = new Product("prod2", 200, 4, "test cat 2", 
-				new PurchasePolicy(new ImmediatelyPurchase()));
-		prod3 = new Product("prod3", 100, 4, "test cat 3", 
-				new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
-		prod4 = new Product("prod4", 200, 4, "test cat 4", 
-				new PurchasePolicy(new ImmediatelyPurchase()));
+		try {
+			prod1 = new Product("prod1", 200, 4, "test cat 1", 
+					new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
+			prod2 = new Product("prod2", 200, 4, "test cat 2", 
+					new PurchasePolicy(new ImmediatelyPurchase()));
+			prod3 = new Product("prod3", 100, 4, "test cat 3", 
+					new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
+			prod4 = new Product("prod4", 200, 4, "test cat 4", 
+					new PurchasePolicy(new ImmediatelyPurchase()));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail();
+		}
+		
 		
 		BlMain.addProductToStore(so, prod1, 2);
 		BlMain.addProductToStore(so, prod2, 10);

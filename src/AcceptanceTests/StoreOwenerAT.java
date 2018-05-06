@@ -36,30 +36,44 @@ public class StoreOwenerAT {
 		List<StoreOwner> own1 = sub.getOwner();
 		so = own1.get(0);
 		
-		prod1 = new Product("prod1", 200, 4, "test cat 1", 
-				new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
-		prod11 = new Product("prod1", 200, 4, "test cat 1", 
-				new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
-		prod111 = new Product("prod1", 200, 4, "test cat 1", 
-				new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
-		prod2 = new Product("prod2", 200, 4, "test cat 2", 
-				new PurchasePolicy(new ImmediatelyPurchase()));
-		prod3 = new Product("prod3", 100, 4, "test cat 3", 
-				new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
-		prod33 = new Product("prod3", 100, 4, "test cat 3", 
-				new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
-		prod4 = new Product("prod4", 200, 4, "test cat 4", 
-				new PurchasePolicy(new ImmediatelyPurchase()));
+		try {
+			prod1 = new Product("prod1", 200, 4, "test cat 1", 
+					new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
+			prod11 = new Product("prod1", 200, 4, "test cat 1", 
+					new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
+			prod111 = new Product("prod1", 200, 4, "test cat 1", 
+					new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
+			prod2 = new Product("prod2", 200, 4, "test cat 2", 
+					new PurchasePolicy(new ImmediatelyPurchase()));
+			prod3 = new Product("prod3", 100, 4, "test cat 3", 
+					new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
+			prod33 = new Product("prod3", 100, 4, "test cat 3", 
+					new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
+			prod4 = new Product("prod4", 200, 4, "test cat 4", 
+					new PurchasePolicy(new ImmediatelyPurchase()));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail();
+		}
+		
 		
 
 	}
 	@Test
 	public void mainTest(){
 		testAddProduct();
-		testRemoveProduct();
-		testEditProduct();
-		testDefinePurchasePolicy();
-		testDefineDiscountPolicy();
+		try {
+			testRemoveProduct();
+			testEditProduct();
+			testDefinePurchasePolicy();
+			testDefineDiscountPolicy();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail();
+		}
+		
 		testAddStoreOwner();
 		testAddStoreManager();
 		testWatchPurchaseHistory();
@@ -83,7 +97,7 @@ public class StoreOwenerAT {
 		
 	}
 	//3.1.2
-	private void testRemoveProduct(){
+	private void testRemoveProduct() throws Exception{
 		BlMain.addProductToStore(so, prod4, 10);
 		//test incorret input
 		assertFalse(BlMain.deleteProductFromStore(so, null));
@@ -102,7 +116,7 @@ public class StoreOwenerAT {
 		
 	}
 	//3.1.1
-	private void testEditProduct(){
+	private void testEditProduct() throws Exception{
 		BlMain.addProductToStore(so, prod1, 10);
 		Product newProduct = new Product("newProduct", 200, 4, "test cat 1", new PurchasePolicy(new ImmediatelyPurchase()));
 		
@@ -125,7 +139,7 @@ public class StoreOwenerAT {
 		assertTrue(s.getProducts().keySet().contains(newProduct));
 	}
 	//3.2.1
-	private void testDefinePurchasePolicy(){
+	private void testDefinePurchasePolicy() throws Exception{
 		BlMain.addProductToStore(so, prod1, 10);
 		
 		//incorrect Input
@@ -144,7 +158,7 @@ public class StoreOwenerAT {
 		
 	}
 	//3.2.2
-	private void testDefineDiscountPolicy(){
+	private void testDefineDiscountPolicy() throws Exception{
 		boolean a = BlMain.addProductToStore(so, prod11, 10);
 		
 		//incorrect Input
@@ -168,10 +182,10 @@ public class StoreOwenerAT {
 		//incorrect Input
 		assertFalse(BlMain.addNewStoreOwner(so, null));
 		StoreOwner nullso = null;
-		assertFalse(BlMain.addNewStoreOwner(nullso, so2));
+		assertFalse(BlMain.addNewStoreOwner(nullso, sub));
 		
 		//need to add function add new store owner from subscriber
-		assertTrue(BlMain.addNewStoreOwner(so, so2));
+		assertTrue(BlMain.addNewStoreOwner(so, sub));
 		
 	}
 	//3.4
@@ -181,11 +195,11 @@ public class StoreOwenerAT {
 		//incorrect Input
 		assertFalse(BlMain.addNewManager(so, null));
 		StoreOwner nullso = null;
-		assertFalse(BlMain.addNewManager(nullso, sm));
+		assertFalse(BlMain.addNewManager(nullso, sub));
 		
 		
 		//need to add function add new man owner from subscriber
-		assertTrue(BlMain.addNewManager(so, sm));
+		assertTrue(BlMain.addNewManager(so, sub));
 	}
 	//3.7
 	private void testWatchPurchaseHistory(){

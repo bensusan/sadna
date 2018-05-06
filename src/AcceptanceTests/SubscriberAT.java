@@ -48,8 +48,8 @@ public class SubscriberAT {
 	private void testOpenStore(){
 		// incorrect inputs
 		try{
-			BlMain.openStore(sub, -5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
-			BlMain.openStore(null,  5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), false);
+			BlMain.openStore(sub,"storeName1", -5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
+			BlMain.openStore(null,"storeName2",  5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), false);
 			fail();
 		}catch (Exception e) {}
 		//good case

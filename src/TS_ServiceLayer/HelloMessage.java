@@ -1,21 +1,23 @@
 package TS_ServiceLayer;
 
+import java.util.List;
+
 public class HelloMessage {
 
-    private String name;
+	public static enum functionNames {addImmediatelyProduct}
+	
+	//assume first argument is on of the enums.
+	private List<Object> args;
 
-    public HelloMessage() {
+    public HelloMessage(List<Object> args) {
+    	this.args = args;
     }
 
-    public HelloMessage(String name) {
-        this.name = name;
+    public List<Object> getArgs() {
+        return args;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setArgs(List<Object> args) {
+        this.args = args;
     }
 }

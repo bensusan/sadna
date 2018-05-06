@@ -20,9 +20,7 @@ public class BlSystemAdministrator {
 		List<Subscriber> subList = BlMain.allSubscribers;
 		if (!subList.contains(s))
 			return false;
-		if(!s.getOwner().isEmpty() && s.getOwner().size() == 1){
-			s.getOwner().get(0).getStore().setMyManagers(new LinkedList<StoreManager>());
-		}
+		
 		if (s instanceof SystemAdministrator){
 			boolean canRemoveAdmin = false;
 			for (Subscriber subs : BlMain.allSubscribers){
@@ -33,6 +31,9 @@ public class BlSystemAdministrator {
 			}
 			if(!canRemoveAdmin)
 				return false;
+		}
+		if(!s.getOwner().isEmpty() && s.getOwner().size() == 1){
+			s.getOwner().get(0).getStore().setMyManagers(new LinkedList<StoreManager>());
 		}
 		subList.remove(s);
 		BlMain.allSubscribers = subList;

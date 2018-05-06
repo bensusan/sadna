@@ -6,7 +6,7 @@ public class ImmediatelyPurchase implements PurchaseType {
 
 	private DiscountPolicy discountPolicy;
 
-	public ImmediatelyPurchase() {
+	public ImmediatelyPurchase() throws Exception {
 		super();
 		discountPolicy = new OvertDiscount();
 	}
@@ -24,12 +24,10 @@ public class ImmediatelyPurchase implements PurchaseType {
 		return discountPolicy;
 	}
 
-	@Override
 	public boolean purchase(Guest g, ProductInCart pic,String buyerAddress) {
 		return BlImmediatelyPurchase.purchase(this, g, pic);
 	}
 	
-	@Override
 	public void undoPurchase(ProductInCart pic, Guest g) {
 		BlImmediatelyPurchase.undoPurchase(this, g, pic);
 	}

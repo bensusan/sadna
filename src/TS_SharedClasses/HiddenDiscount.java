@@ -8,7 +8,7 @@ import TS_BL.BlMain;
 public class HiddenDiscount extends DiscountPolicy{
 	private int code;
 
-	public HiddenDiscount(int code,Date discountEndDate, int discountPrecentage) {
+	public HiddenDiscount(int code,Date discountEndDate, int discountPrecentage) throws Exception {
 		super(discountEndDate, discountPrecentage);
 		this.code = code;
 	}

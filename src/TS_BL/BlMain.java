@@ -1,6 +1,6 @@
 package TS_BL;
 
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,15 +15,14 @@ public class BlMain {
 			addPolicyToProduct = 3, addDiscountToProduct = 4, addNewStoreOwner = 5, addNewManager = 6, closeStore = 7,
 			openStore = 8, getPurchaseHistory = 9, expiredProducts = 10, changeStorePurchasePolicy = 11;
 
-	public static Subscriber admin = new SystemAdministrator("itzik", "11111111", "shmulik", "bait shel or", "0522222222", "111111111111",
-			new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>()); //or add this to allSubscribers
-	public static List<Subscriber> allSubscribers = new LinkedList<Subscriber>();
+	public static List<Subscriber> allSubscribers = new ArrayList<Subscriber>(){
+		{
+			add(((Subscriber)new SystemAdministrator("itzik", "11111111", "shmulik", "bait shel or", "0522222222", "111111111111", new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>())));
+		}		
+	};
 	
 	public static Map<Guest, LinkedList<String>> allUsersWithTheirCreditCards = new HashMap<Guest, LinkedList<String>>(); // TODO
-//	public static int purchaseId = -1;
-	public static int storeId = -1;
 	
-
 	// need to insert to here all guests that payed with their credit card for pay back
 
 	public static boolean addImmediatelyProduct(Guest g, Product p, int amount) {
@@ -158,14 +157,6 @@ public class BlMain {
 	public static boolean addManager(Subscriber sub, StoreManager manager) {
 		return BlSubscriber.addManager(sub, manager);
 	}
-	//
-	//	static boolean deleteOwner(Subscriber sub, StoreOwner owner) {
-	//		return BlSubscriber.deleteOwner(sub, owner);
-	//	}
-	//
-	//	static boolean deleteManager(Subscriber sub, StoreManager manager) {
-	//		return BlSubscriber.deleteManager(sub, manager);
-	//	}
 
 	public static boolean removeSubscriber(SystemAdministrator sa, Subscriber s) {
 		return BlSystemAdministrator.removeSubscriber(sa, s);
@@ -178,11 +169,6 @@ public class BlMain {
 	public static List<Purchase> viewStoreHistory(SystemAdministrator sa, Store store) {
 		return BlSystemAdministrator.viewStoreHistory(sa, store);
 	}
-
-	// More functions that are necessary.
-	//	static boolean payToStore(Store s, int price) {
-	//		return BlStore.payToStore(s, price);
-	//	}
 
 	public static Subscriber signUp(Guest g, String username, String password, String fullName, String address,
 			String phone, String creditCardNumber) {
@@ -208,7 +194,6 @@ public class BlMain {
 	public static boolean changeStorePurchasePolicy(StoreManager sm, PurchasePolicy pp){
 		return BlStoreManager.changeStorePurchasePolicy(sm, pp);
 	}
-
 
 	////////////////////////////////////// Help functions for everyone
 	static Subscriber checkIfSubscriberExists(String username) {

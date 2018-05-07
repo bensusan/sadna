@@ -60,7 +60,7 @@ public class BlPermissions {
 			return false;
 		s.setMyOwners(owners);
 	//	owner.setStore(s);
-		return BlMain.addOwner(owner, so);
+		return BlSubscriber.addOwner(owner, so);
 	}
 
 
@@ -73,7 +73,7 @@ public class BlPermissions {
 			return false;
 		s.setMyManagers(managers);
 		//newMan.setStore(s);
-		return BlMain.addManager(newMan, sm);
+		return BlSubscriber.addManager(newMan, sm);
 	}
 
 	static boolean closeStore(Store s) {

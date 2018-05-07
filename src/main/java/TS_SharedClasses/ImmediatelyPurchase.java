@@ -4,24 +4,23 @@ import TS_BL.BlImmediatelyPurchase;
 
 public class ImmediatelyPurchase implements PurchaseType {
 
-	private DiscountPolicy discountPolicy;
+	private PurchasePolicy discountTree;
 
 	public ImmediatelyPurchase() throws Exception {
 		super();
-		discountPolicy = new OvertDiscount();
+		discountTree = null;
 	}
 
-	public ImmediatelyPurchase(DiscountPolicy discountPolicy) {
-		this.discountPolicy = discountPolicy;
-		// TODO Auto-generated constructor stub
+	public ImmediatelyPurchase(PurchasePolicy discountTree) {
+		this.discountTree = discountTree;
 	}
 	
-	public void setDiscountPolicy(DiscountPolicy discountPolicy) {
-		this.discountPolicy = discountPolicy;
+	public void setDiscountTree(PurchasePolicy discountTree) {
+		this.discountTree = discountTree;
 	}
 
-	public DiscountPolicy getDiscountPolicy() {
-		return discountPolicy;
+	public PurchasePolicy getDiscountTree() {
+		return discountTree;
 	}
 
 	public boolean purchase(Guest g, ProductInCart pic,String buyerAddress) throws Exception {
@@ -42,10 +41,10 @@ public class ImmediatelyPurchase implements PurchaseType {
 		if (getClass() != obj.getClass())
 			return false;
 		ImmediatelyPurchase other = (ImmediatelyPurchase) obj;
-		if (discountPolicy == null) {
-			if (other.discountPolicy != null)
+		if (discountTree == null) {
+			if (other.discountTree != null)
 				return false;
-		} else if (!discountPolicy.equals(other.discountPolicy))
+		} else if (!discountTree.equals(other.discountTree))
 			return false;
 		return true;
 	}

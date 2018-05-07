@@ -7,25 +7,28 @@ public class Product {
 	private String name;
 	private int price;
 	private int grading;
-	private String category;
 	private PurchasePolicy purchasePolicy;
 	private Store store;
+	private Category category;
+	private PurchaseType type;
 	
 	public Product(){
 		this.id = nextID++;
 		this.name = "";
 		this.price = 0;
 		this.grading = 0;
-		this.category = "";
+		this.category = null;
 		this.purchasePolicy = null;
+		this.type=null;
 	}
-	public Product(String name, int price, int grading, String category, PurchasePolicy purchasePolicy) {
+	public Product(String name, int price, int grading, Category category, PurchasePolicy purchasePolicy,PurchaseType type) {
 		this.id = nextID++;
 		this.name = name;
 		this.price = price;
 		this.grading = grading;
 		this.category = category;
 		this.purchasePolicy = purchasePolicy;
+		this.type=type;
 	}
 
 	public Product(Product oldProduct) {
@@ -35,6 +38,7 @@ public class Product {
 		this.grading=oldProduct.grading;
 		this.category=oldProduct.category;
 		this.purchasePolicy=oldProduct.purchasePolicy;
+		this.type=oldProduct.type;
 		
 	}
 
@@ -66,11 +70,11 @@ public class Product {
 		this.grading = grading;
 	}
 
-	public String getCategory() {
+	public Category getCategory() {
 		return category;
 	}
 
-	public void setCategory(String category) {
+	public void setCategory(Category category) {
 		this.category = category;
 	}
 
@@ -92,6 +96,12 @@ public class Product {
 		this.store = store;
 	}
 
+	public PurchaseType getType() {
+		return type;
+	}
+	public void setType(PurchaseType type) {
+		this.type = type;
+	}
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

@@ -23,6 +23,7 @@ public class Store {
 	private List<StoreManager> myManagers;
 	private int moneyEarned;
 	private PurchasePolicy storePolicy;
+	private Map<Category,PurchasePolicy> categoryDiscounts;
 
 	public Store(String name, String address, String phone, int gradeing, Map<Product, Integer> products,
 			List<Purchase> purchaseHistory, boolean isOpen) {
@@ -43,12 +44,14 @@ public class Store {
 		this.myManagers = new LinkedList<StoreManager>();
 		this.moneyEarned = 0;
 		this.setStorePolicy(null);
+		this.categoryDiscounts=new HashMap<Category,PurchasePolicy>();
 	}
 	
 	public Store(String name, String address, String phone, int gradeing, Map<Product, Integer> products,
-			List<Purchase> purchaseHistory, boolean isOpen, PurchasePolicy storePolicy) {
+			List<Purchase> purchaseHistory, boolean isOpen, PurchasePolicy storePolicy,Map<Category,PurchasePolicy> categoryDiscounts) {
 		this(name, address, phone, gradeing, products, purchaseHistory, isOpen);
 		this.setStorePolicy(storePolicy);
+		this.categoryDiscounts=categoryDiscounts;
 	}
 
 	public int getStoreId() {
@@ -141,6 +144,14 @@ public class Store {
 
 	public void setStorePolicy(PurchasePolicy storePolicy) {
 		this.storePolicy = storePolicy;
+	}
+
+	public Map<Category, PurchasePolicy> getCategoryDiscounts() {
+		return categoryDiscounts;
+	}
+
+	public void setCategoryDiscounts(Map<Category, PurchasePolicy> categoryDiscounts) {
+		this.categoryDiscounts = categoryDiscounts;
 	}
 
 	@Override

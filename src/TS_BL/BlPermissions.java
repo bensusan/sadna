@@ -74,7 +74,7 @@ public class BlPermissions {
 			throw new Exception("couldn't add new owner");
 		s.setMyOwners(owners);
 	//	owner.setStore(s);
-		return BlMain.addOwner(owner, so);
+		return BlSubscriber.addOwner(owner, so);
 	}
 
 
@@ -87,7 +87,7 @@ public class BlPermissions {
 			throw new Exception("couldn't add new manager");
 		s.setMyManagers(managers);
 		//newMan.setStore(s);
-		return BlMain.addManager(newMan, sm);
+		return BlSubscriber.addManager(newMan, sm);
 	}
 
 	static boolean closeStore(Store s) {

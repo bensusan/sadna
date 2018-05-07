@@ -32,6 +32,7 @@ public abstract class DiscountPolicy {
 	}
 	
 	public abstract int updatePrice(int price, int code);
+	public abstract int updatePrice(int price, int code)  throws Exception;
 
 	@Override
 	public boolean equals(Object obj) {

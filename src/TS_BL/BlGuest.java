@@ -17,12 +17,15 @@ public class BlGuest {
 	 * @param p
 	 * @param amount
 	 * @return true if succseed false otherwise
+	 * @throws Exception 
 	 */
 	static boolean addImmediatelyProduct(Guest g, Product p, int amount, int discountCode) {
+	static boolean addImmediatelyProduct(Guest g, Product p, int amount, int discountCode) throws Exception {
 		return g != null && BlCart.addImmediatelyProduct(g.getCart(), p, amount, discountCode);
 	}
 	
 	static boolean addLotteryProduct(Guest g, Product p, int money) {
+	static boolean addLotteryProduct(Guest g, Product p, int money) throws Exception {
 		return g != null && BlCart.addLotteryProduct(g.getCart(), p, money);
 	}
 
@@ -31,8 +34,10 @@ public class BlGuest {
 	 * 
 	 * @param p
 	 * @return true if succseed false otherwise
+	 * @throws Exception 
 	 */
 	static boolean removeProductFromCart(Guest g, Product p) {
+	static boolean removeProductFromCart(Guest g, Product p) throws Exception {
 		return g != null && BlCart.removeProduct(g.getCart(), p);
 	}
 
@@ -42,16 +47,20 @@ public class BlGuest {
 	 * @param p
 	 * @param amount
 	 * @return true if succseed false otherwise
+	 * @throws Exception 
 	 */
 	static boolean editProductAmount(Guest g, Product p, int amount) {
+	static boolean editProductAmount(Guest g, Product p, int amount) throws Exception {
 		return g != null && BlCart.editProductAmount(g.getCart(), p, amount);
 	}
 	
 	static boolean editProductDiscount(Guest g, Product p, int discountCode) {
+	static boolean editProductDiscount(Guest g, Product p, int discountCode) throws Exception {
 		return g != null && BlCart.editProductDiscount(g.getCart(), p, discountCode);
 	}
 	
 	static boolean editProductPrice(Guest g, Product p, int money) {
+	static boolean editProductPrice(Guest g, Product p, int money) throws Exception {
 		return g != null && BlCart.editProductPrice(g.getCart(), p, money);
 	}
 
@@ -60,8 +69,10 @@ public class BlGuest {
 	 * 
 	 * @param newCart
 	 * @return true if succseed false otherwise
+	 * @throws Exception 
 	 */
 	static boolean editCart(Guest g, Cart newCart) {
+	static boolean editCart(Guest g, Cart newCart) throws Exception {
 		return g != null && BlCart.editCart(g.getCart(), newCart);
 	}
 
@@ -71,12 +82,22 @@ public class BlGuest {
 	 * @param creditCardNumber
 	 * @param buyerAddress
 	 * @return true if succseed false otherwise
+	 * @throws Exception 
 	 */
 	
 	//TODO - CreditCard
 	static boolean puchaseCart(Guest g, String creditCardNumber, String buyerAddress) {
 		if(g == null || g.getCart().getProducts().isEmpty() || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.legalAddress(buyerAddress))
 			return false;
+	static boolean puchaseCart(Guest g, String creditCardNumber, String buyerAddress) throws Exception {
+		if(g == null) 
+			throw new Exception("something went wrong");
+		if(g.getCart().getProducts().isEmpty())
+			throw new Exception("the cart is empty");	
+		if(!BlMain.legalCreditCard(creditCardNumber))
+			throw new Exception("ilegal credit card");
+		if(!BlMain.legalAddress(buyerAddress))
+			throw new Exception("ilegal address");
 //		boolean isExistLotteryPurchase = false;
 		Cart notPurchased = new Cart();
 		for (ProductInCart pic : g.getCart().getProducts()) {
@@ -95,6 +116,7 @@ public class BlGuest {
 		
 		if(notPurchased.getProducts().size() == g.getCart().getProducts().size())
 			return false;
+			throw new Exception("there aren't any products for immediate purchase");
 		
 		g.getCart().getProducts().removeAll(notPurchased.getProducts());
 		//g.getCart() now has all the products that purchased.
@@ -104,6 +126,7 @@ public class BlGuest {
 				BlStore.undoPayToStore(pic.getMyProduct().getStore(), pic.getPrice(), creditCardNumber);
 			}
 			return false;
+			throw new Exception("we had problem with the supply system");
 		}
 		
 		for (ProductInCart pic : g.getCart().getProducts()) {
@@ -131,17 +154,23 @@ public class BlGuest {
 	 * @param creditCardNumber
 	 * @param buyerAddress
 	 * @return true if succseed false otherwise
+	 * @throws Exception 
 	 */
 	
 	static Subscriber signUp(Guest g, String username, String password, String fullName, String address, String phone, String creditCardNumber){
+	static Subscriber signUp(Guest g, String username, String password, String fullName, String address, String phone, String creditCardNumber) throws Exception{
 		if(g == null)
 			return null;
+			throw new Exception("something went wrong");
 		if(!BlMain.correctSpelledLettersSpacesNumbers(username) || !BlMain.correctSpelledLettersSpaces(fullName) || !BlMain.correctSpelledLettersSpacesNumbers(address) || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.correctSpelledNumbers(phone))
 			return null; //exception spell in user name | full name | address
+			throw new Exception("problem with one of the fields,check spelling try again"); //exception spell in user name | full name | address
 		if(!BlMain.legalPassword(password))
 			return null; //password rules failed.
+			throw new Exception("illegal password, try again"); //password rules failed.
 		if(BlMain.checkIfSubscriberExists(username) != null)
 			return null; //user name exists
+			throw new Exception("the username is already taken, try again"); //user name exists
 		password = md5Hash(password);
 		Subscriber newSub = new Subscriber(g.getCart(), username, password, fullName, address, phone, creditCardNumber, new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>()); 
 		BlMain.allSubscribers.add(newSub);
@@ -150,13 +179,18 @@ public class BlGuest {
 	}
 	
 	static Subscriber signIn(Guest g, String username, String password){
+	static Subscriber signIn(Guest g, String username, String password) throws Exception{
 		if(g == null)
 			return null;
+			throw new Exception("something went wrong");
 		if(!BlMain.correctSpelledLettersSpacesNumbers(username))
 			return null; //exception spell in user name
+			throw new Exception("wrong username");
 		if(!BlMain.legalPassword(password))
 			return null; //password rules failed.
+			throw new Exception("wrong password");
 		Subscriber ans = BlMain.checkIfSubscriberExists(username);
+		
 		if(ans != null && ans.getPassword().toString().equals(md5Hash(password).toString()))
 		{
 			if(ans.getCart().getProducts().isEmpty())
@@ -167,6 +201,7 @@ public class BlGuest {
 		}
 		
 		return null;
+		throw new Exception("incorrect password or username");
 	}
 	
 	//Takes a string, and converts it to md5 hashed string.

@@ -11,6 +11,11 @@ public class BlPermissions {
 	static boolean addProductToStore(Store s, Product product, int amount) {
 		if(s == null || product == null || amount <= 0 || product.getStore() != null)
 			return false;
+	static boolean addProductToStore(Store s, Product product, int amount) throws Exception {
+		if(s == null || product == null || product.getStore() != null)
+			throw new Exception("something went wrong");
+		if(amount <= 0)
+			throw new Exception("amount must be greater than 0");
 		product.setStore(s);
 		if(s.getProducts().get(product) != null)
 			return s.getProducts().put(product, s.getProducts().get(product)+ amount) != null;
@@ -19,45 +24,56 @@ public class BlPermissions {
 
 
 	static boolean deleteProductFromStore(Store s, Product product) {
+	static boolean deleteProductFromStore(Store s, Product product) throws Exception {
 		if(s == null || product == null || s.getProducts().remove(product) == null)
 			return false;
+			throw new Exception("something went wrong");
 		product.setStore(null);
 		return true;
 	}
 
 
 	static boolean updateProductDetails(Store s, Product oldProduct, Product newProduct, int amount) {
+	static boolean updateProductDetails(Store s, Product oldProduct, Product newProduct, int amount) throws Exception {
 		return s != null && oldProduct != null && newProduct != null && amount > 0 && deleteProductFromStore(s, oldProduct) && addProductToStore(s, newProduct, amount);
 	}
 
 
 	static boolean addPolicyToProduct(Store s, PurchasePolicy policy, Product product) {
+	static boolean addPolicyToProduct(Store s, PurchasePolicy policy, Product product) throws Exception {
 		if(s == null || policy == null || product == null ||s.getProducts().get(product) == null)
 			return false;
+			throw new Exception("something went wrong");
 		product.setPurchasePolicy(policy);
 		return true;
 	}
 
 
 	static boolean addDiscountToProduct(Store s, DiscountPolicy discount, Product product) {
+	static boolean addDiscountToProduct(Store s, DiscountPolicy discount, Product product) throws Exception {
 		if(s == null || discount == null || product == null || s.getProducts().get(product) == null)
 			return false;
+			throw new Exception("something went wrong");
 		PurchaseType pt = product.getPurchasePolicy().getPurchaseType(); 
 		if(pt instanceof ImmediatelyPurchase){
 			((ImmediatelyPurchase) pt).setDiscountPolicy(discount);
 			return true;
 		}
 		return false;
+		throw new Exception("discount can be added only to products that are for immediate purchase");
 	}
 
 
 	static boolean addNewStoreOwner(Store s, Subscriber owner) {
+	static boolean addNewStoreOwner(Store s, Subscriber owner) throws Exception {
 		if(s == null || owner == null)
 			return false;
+			throw new Exception("something went wrong");
 		StoreOwner so = new StoreOwner(s);
 		List<StoreOwner> owners = s.getMyOwners();
 		if(!owners.add(so))
 			return false;
+			throw new Exception("couldn't add new owner");
 		s.setMyOwners(owners);
 	//	owner.setStore(s);
 		return BlMain.addOwner(owner, so);
@@ -65,12 +81,15 @@ public class BlPermissions {
 
 
 	static boolean addNewManager(Store s, Subscriber newMan) {
+	static boolean addNewManager(Store s, Subscriber newMan) throws Exception {
 		if(s == null || newMan == null)
 			return false;
+			throw new Exception("something went wrong");
 		StoreManager sm = new StoreManager(s);
 		List<StoreManager> managers = s.getMyManagers();
 		if(!managers.add(sm))
 			return false;
+			throw new Exception("couldn't add new manager");
 		s.setMyManagers(managers);
 		//newMan.setStore(s);
 		return BlMain.addManager(newMan, sm);
@@ -117,8 +136,10 @@ public class BlPermissions {
 	}
 
 	static boolean changeStorePurchasePolicy(Store s, PurchasePolicy pp){
+	static boolean changeStorePurchasePolicy(Store s, PurchasePolicy pp) throws Exception{
 		if(s == null || pp == null)
 			return false;
+			throw new Exception("something went wrong");
 		s.setStorePolicy(pp);
 		return true;
 	}

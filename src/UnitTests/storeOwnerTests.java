@@ -38,125 +38,370 @@ public class storeOwnerTests {
 		testChangeStorePurchasePolicy();
 	}
 	private void testAddProductToStore() {
-		Product product=new Product( "ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
-		assertFalse(BlMain.addProductToStore(so, product, -1));
-		assertFalse(BlMain.addProductToStore(so, null, 1));
+		Product product = null;
+		try {
+			product = new Product( "ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		try {
+			BlMain.addProductToStore(so, product, -1);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(),"amount must be greater than 0");
+		}
+		try {
+			BlMain.addProductToStore(so, null, 1);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(),"something went wrong");
+		}
 		StoreOwner so2=null;
-		assertFalse(BlMain.addProductToStore(so2, product, 1));
+		try {
+			BlMain.addProductToStore(so2, product, 1);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(),"something went wrong");
+		}
 		Store store=so.getStore();
 		so.setStore(null);
-		assertFalse(BlMain.addProductToStore(so, product, 1));
+		try {
+			BlMain.addProductToStore(so, product, 1);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(),"something went wrong");
+		}
 		so.setStore(store);
-		assertTrue(BlMain.addProductToStore(so, product, 1));
+		try {
+			assertTrue(BlMain.addProductToStore(so, product, 1));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	private void testUpdateProductDetails() {
 		Product oldProduct=(Product) so.getStore().getProducts().keySet().toArray()[0];
+		
 		Product newProduct=new Product(oldProduct);
 		newProduct.setName("new name");
-		assertFalse(BlMain.updateProductDetails(so, oldProduct, newProduct, -1));
-		assertFalse(BlMain.updateProductDetails(so, oldProduct, null, 1));
-		assertFalse(BlMain.updateProductDetails(so, null, newProduct, 1));
+		try {
+			BlMain.updateProductDetails(so, oldProduct, newProduct, -1);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(),"amount must be greater than 0");
+		}
+		try {
+			BlMain.updateProductDetails(so, oldProduct, null, 1);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(),"something went wrong");		
+		}
+		
+		try {
+			BlMain.updateProductDetails(so, null, newProduct, 1);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(),"something went wrong");
+		}
 		StoreOwner so2=null;
-		assertFalse(BlMain.updateProductDetails(so2, oldProduct, newProduct, 1));
+		try {
+			assertFalse(BlMain.updateProductDetails(so2, oldProduct, newProduct, 1));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		Product new2=new Product("temp", 3, 3, "temp", null);
-		assertFalse(BlMain.updateProductDetails(so, new2, oldProduct, 1));//product does not exist
+		try {
+			BlMain.updateProductDetails(so, new2, oldProduct, 1);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(),"this product doesn't belongs to this store");
+		}//product does not exist
 		
-		assertTrue(BlMain.updateProductDetails(so, oldProduct, newProduct, 1));
+		try {
+			assertTrue(BlMain.updateProductDetails(so, oldProduct, newProduct, 1));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	private void testAddPolicyToProduct() {
-		Product product=new Product("ping pong ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
-		BlMain.addProductToStore(so, product, 10);
-		assertFalse(BlMain.addPolicyToProduct(so, null, product));
-		assertFalse(BlMain.addPolicyToProduct(so, new PurchasePolicy(new LotteryPurchase(new java.sql.Date(0))), null));
+		Product product = null;
+		try {
+			product = new Product("ping pong ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		try {
+			BlMain.addProductToStore(so, product, 10);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			BlMain.addPolicyToProduct(so, null, product);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(),"something went wrong");
+		}
+		try {
+			BlMain.addPolicyToProduct(so, new PurchasePolicy(new LotteryPurchase(new java.sql.Date(0))), null);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(),"something went wrong");
+		}
 		StoreOwner so2=null;
-		assertFalse(BlMain.addPolicyToProduct(so2, new PurchasePolicy(new LotteryPurchase(new java.sql.Date(0))), product));
-		assertTrue(BlMain.addPolicyToProduct(so, new PurchasePolicy(new LotteryPurchase(new java.sql.Date(12,12,2018))), product));
+		try {
+			assertFalse(BlMain.addPolicyToProduct(so2, new PurchasePolicy(new LotteryPurchase(new java.sql.Date(0))), product));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			assertTrue(BlMain.addPolicyToProduct(so, new PurchasePolicy(new LotteryPurchase(new java.sql.Date(12,12,2018))), product));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	private void testAddDiscountToProduct() {
 		Product product=new Product("ping pong ball", 5, 5, "toys", new PurchasePolicy(new LotteryPurchase(new java.sql.Date(0))));
-		BlMain.addProductToStore(so, product, 10);
-		assertFalse(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 30), product));
-		BlMain.addPolicyToProduct(so, new PurchasePolicy(new ImmediatelyPurchase()), product);
-		assertFalse(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), -10), product));
-		assertFalse(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 130), product));
-		assertFalse(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 30), null));
-		assertFalse(BlMain.addDiscountToProduct(so, new OvertDiscount(null, 30), product));
-		assertFalse(BlMain.addDiscountToProduct(so, null, product));
+		try {
+			BlMain.addProductToStore(so, product, 10);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 30), product);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(),"discount can be added only to products that are for immediate purchase");
+		}
+		try {
+			BlMain.addPolicyToProduct(so, new PurchasePolicy(new ImmediatelyPurchase()), product);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		try {
+			BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), -10), product);
+		} catch (Exception e) {
+			assertEquals(e.getMessage() , "Invalid Discount precentage.");
+		}
+		try {
+			BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 130), product);
+		} catch (Exception e1) {
+			assertEquals(e1.getMessage() , "Invalid Discount precentage.");
+		}
+		try {
+			BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 30), null);
+		} catch (Exception e) {
+			assertEquals(e.getMessage() , "something went wrong");
+		}
+		try {
+			assertTrue(BlMain.addDiscountToProduct(so, new OvertDiscount(null, 30), product));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			BlMain.addDiscountToProduct(so, null, product);
+		} catch (Exception e) {
+			assertEquals(e.getMessage() , "something went wrong");
+		}
 		StoreOwner so2=null;
-		assertFalse(BlMain.addDiscountToProduct(so2, new OvertDiscount(new java.sql.Date(0), 30), product));
-		assertTrue(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 30), product));
+		try {
+			assertFalse(BlMain.addDiscountToProduct(so2, new OvertDiscount(new java.sql.Date(0), 30), product));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			assertTrue(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 30), product));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	private void testDeleteProductFromStore() {
-		Product product2=new Product("iphone x", 250, 6, "cell phones", new PurchasePolicy(new ImmediatelyPurchase()));
-		assertFalse(BlMain.deleteProductFromStore(so, product2));
-		assertFalse(BlMain.deleteProductFromStore(so, null));
+		Product product2 = null;
+		try {
+			product2 = new Product("iphone x", 250, 6, "cell phones", new PurchasePolicy(new ImmediatelyPurchase()));
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+		try {
+			BlMain.deleteProductFromStore(so, product2);
+		} catch (Exception e1) {
+			assertEquals(e1.getMessage() , "something went wrong");
+		}
+		try {
+			BlMain.deleteProductFromStore(so, null);
+		} catch (Exception e) {
+			assertEquals(e.getMessage() , "something went wrong");
+		}
 		StoreOwner so2=null;
-		assertFalse(BlMain.deleteProductFromStore(so2, product2));
+		try {
+			assertFalse(BlMain.deleteProductFromStore(so2, product2));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		Store store=so.getStore();
 		so.setStore(null);
-		Product product=new Product("ping pong ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
-		assertFalse(BlMain.deleteProductFromStore(so, product));
+		Product product = null;
+		try {
+			product = new Product("ping pong ball", 5, 5, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+		try {
+			BlMain.deleteProductFromStore(so, product);
+		} catch (Exception e1) {
+			assertEquals(e1.getMessage() , "something went wrong");
+		}
 		so.setStore(store);
-		assertTrue(BlMain.deleteProductFromStore(so, product));
-		assertFalse(BlMain.deleteProductFromStore(so, product));
+		try {
+			BlMain.addProductToStore(so, product, 10);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		try {
+			assertTrue(BlMain.deleteProductFromStore(so, product));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			BlMain.deleteProductFromStore(so, product);
+		} catch (Exception e) {
+			assertEquals(e.getMessage() , "something went wrong");
+		}
 	}
 	private void testAddNewStoreOwner() {
-		Subscriber newSub=BlMain.signUp(new Guest(), "newSub", "newPass", "newName", "newAdd", "0547878987", "7876543212345678");
-		assertFalse(BlMain.addNewStoreOwner(so, null));
+		Subscriber newSub = null;
+		try {
+			newSub = BlMain.signUp(new Guest(), "newSub", "newPass", "newName", "newAdd", "0547878987", "7876543212345678");
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+		try {
+			assertFalse(BlMain.addNewStoreOwner(so, null));
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
 		StoreOwner so2=null;
-		assertFalse(BlMain.addNewStoreOwner(so2, newSub));
-		assertTrue(BlMain.addNewStoreOwner(so, newSub));
-		BlMain.removeSubscriber(new SystemAdministrator(null, null, null, null, null, null, null, null, null), newSub);
+		try {
+			assertFalse(BlMain.addNewStoreOwner(so2, newSub));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		try {
+			assertTrue(BlMain.addNewStoreOwner(so, newSub));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			BlMain.removeSubscriber(new SystemAdministrator(null, null, null, null, null, null, null, null, null), newSub);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	private void testAddNewManager() {
-		Subscriber newSub=BlMain.signUp(new Guest(), "newSub", "newPass", "newName", "newAdd", "0547878987", "7876543212345678");
+		Subscriber newSub = null;
+		try {
+			newSub = BlMain.signUp(new Guest(), "newSub", "newPass", "newName", "newAdd", "0547878987", "7876543212345678");
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
 		
-		assertFalse(BlMain.addNewManager(so, null));
+		try {
+			BlMain.addNewManager(so, null);
+		} catch (Exception e1) {
+			assertEquals(e1.getMessage() , "something went wrong");
+		}
 		StoreOwner so2=null;
-		assertFalse(BlMain.addNewManager(so2, newSub));
-		assertTrue(BlMain.addNewManager(so, newSub));
-		BlMain.removeSubscriber(new SystemAdministrator(null, null, null, null, null, null, null, null, null), newSub);
+		try {
+			BlMain.addNewManager(so2, newSub);
+		} catch (Exception e) {
+			assertEquals(e.getMessage() , "something went wrong");
+		}
+		try {
+			assertTrue(BlMain.addNewManager(so, newSub));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			BlMain.removeSubscriber(new SystemAdministrator(null, null, null, null, null, null, null, null, null), newSub);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	private void testCloseStore() {
 		StoreOwner so2=null;
-		assertFalse(BlMain.closeStore(so2));
+		try {
+			BlMain.closeStore(so2);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(),"something went wrong");
+		}
 		Store tempStore=so.getStore();
 		so.setStore(null);
-		assertFalse(BlMain.closeStore(so));
+		try {
+			BlMain.closeStore(so);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(),"something went wrong");
+		}
 		so.setStore(tempStore);
-		assertTrue(BlMain.closeStore(so));
+		try {
+			assertTrue(BlMain.closeStore(so));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		assertFalse(so.getStore().getIsOpen());
-		assertFalse(BlMain.closeStore(so));//the store is close
+		try {
+			assertFalse(BlMain.closeStore(so));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}//the store is close
 		
 	}
 	private void testOpenStore() {
 		StoreOwner so2=null;
-		assertFalse(BlMain.openStore(so2));
+		try {
+			BlMain.openStore(so2);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(),"something went wrong");
+		}
 		Store tempStore=so.getStore();
 		so.setStore(null);
-		assertFalse(BlMain.openStore(so));
+		try {
+			BlMain.openStore(so);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(),"something went wrong");
+		}
 		so.setStore(tempStore);
-		assertTrue(BlMain.openStore(so));
+		try {
+			assertTrue(BlMain.openStore(so));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		assertTrue(so.getStore().getIsOpen());
-		assertFalse(BlMain.openStore(so));//the store is open
+		try {
+			assertFalse(BlMain.openStore(so));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}//the store is open
 	}
 	private void testGetPurchaseHistory() {
 		assertTrue(BlMain.getPurchaseHistory(so).isEmpty());
-
 	}
 	private void testChangeStorePurchasePolicy()
 	{
 		StoreOwner so2=null;
-		assertFalse(BlMain.changeStorePurchasePolicy(so2, new PurchasePolicy(new ImmediatelyPurchase())));
+		try {
+			assertFalse(BlMain.changeStorePurchasePolicy(so2, new PurchasePolicy(new ImmediatelyPurchase())));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		Store tempStore=so.getStore();
 		so.setStore(null);
-		assertFalse(BlMain.changeStorePurchasePolicy(so, new PurchasePolicy(new ImmediatelyPurchase())));
+		try {
+			BlMain.changeStorePurchasePolicy(so, new PurchasePolicy(new ImmediatelyPurchase()));
+		} catch (Exception e) {
+			assertEquals(e.getMessage() , "something went wrong");
+		}
 		so.setStore(tempStore);
-		assertFalse(BlMain.changeStorePurchasePolicy(so, null));
-		assertTrue(BlMain.changeStorePurchasePolicy(so, new PurchasePolicy(new ImmediatelyPurchase())));
+		try {
+			BlMain.changeStorePurchasePolicy(so, null);
+		} catch (Exception e) {
+			assertEquals(e.getMessage() , "something went wrong");
+		}
+		try {
+			assertTrue(BlMain.changeStorePurchasePolicy(so, new PurchasePolicy(new ImmediatelyPurchase())));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

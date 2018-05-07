@@ -47,12 +47,7 @@ public class LotteryPurchase implements PurchaseType {
 		this.participants = new HashMap<Guest, Integer>();
 	}
 
-<<<<<<< HEAD
-	public boolean purchase(Guest g, ProductInCart pic,String buyerAddress) {
-=======
-	@Override
 	public boolean purchase(Guest g, ProductInCart pic,String buyerAddress) throws Exception {
->>>>>>> Alex
 		return BlLotteryPurchase.purchase(this, g, pic,buyerAddress);
 	}
 	

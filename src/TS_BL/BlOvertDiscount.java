@@ -22,11 +22,8 @@ public class BlOvertDiscount {
 		}
 		if(od.getDiscountPrecentage() == 0)
 			return price;
-<<<<<<< HEAD
-		return price - ((price * od.getDiscountPrecentage()) / 100);
-=======
-		
+
 		return (price * od.getDiscountPrecentage()) / 100;
->>>>>>> Alex
+
 	}
 }

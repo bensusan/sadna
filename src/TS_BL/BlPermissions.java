@@ -29,7 +29,19 @@ public class BlPermissions {
 
 
 	static boolean updateProductDetails(Store s, Product oldProduct, Product newProduct, int amount) throws Exception {
-		return s != null && oldProduct != null && newProduct != null && amount > 0 && deleteProductFromStore(s, oldProduct) && addProductToStore(s, newProduct, amount);
+		if(s == null || oldProduct == null || newProduct == null)
+			throw new Exception("something went wrong");
+		if(!s.getProducts().containsKey(oldProduct))
+			throw new Exception("this product doesn't belongs to this store");
+		
+		int temp = s.getProducts().get(oldProduct);
+		
+		try {
+			return deleteProductFromStore(s, oldProduct) && addProductToStore(s, newProduct, amount);
+		} catch (Exception e) {
+			addProductToStore(s, oldProduct, temp);
+			throw e;
+		}
 	}
 
 

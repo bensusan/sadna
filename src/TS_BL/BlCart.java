@@ -13,19 +13,14 @@ public class BlCart {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean addImmediatelyProduct(Cart c, Product p, int amount, int discountCode) {
-		if (c == null || p == null || amount < 1 || p.getStore() == null)
-			return false;
 	static boolean addImmediatelyProduct(Cart c, Product p, int amount, int discountCode) throws Exception {
 		if (c == null || p == null || p.getStore() == null)
 			throw new Exception("something went wrong");
 		if (amount < 1)
 			throw new Exception("amount must be greater than 1");
 		if(!BlMain.isImmediatelyPurchase(p))
-			return false;
 			throw new Exception("this product isn't for immediate purchase");
 		if(isProductExistInCart(c, p) != -1)
-			return false;
 			throw new Exception("this product already in the cart");
 		ImmediatelyPurchase myPurchaseType = ((ImmediatelyPurchase)p.getPurchasePolicy().getPurchaseType());
 		int updatedPrice = myPurchaseType.getDiscountPolicy().updatePrice(p.getPrice(), discountCode);
@@ -49,16 +44,13 @@ public class BlCart {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean removeProduct(Cart c, Product p) {
 	static boolean removeProduct(Cart c, Product p) throws Exception {
 		if (c == null || p == null)
-			return false;
 			throw new Exception("something went wrong");
 		int index = isProductExistInCart(c, p); 
 		if (index != -1) {
 			return c.getProducts().remove(index) != null;
 		}
-		return false;
 		throw new Exception("the product isn't belongs to the cart");
 	}
 
@@ -70,9 +62,6 @@ public class BlCart {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean editProductAmount(Cart c, Product p, int amount) {
-		if (c == null || p == null || amount < 1 || !BlMain.isImmediatelyPurchase(p))
-			return false;
 	static boolean editProductAmount(Cart c, Product p, int amount) throws Exception {
 		if (c == null || p == null)
 			throw new Exception("something went wrong");
@@ -87,14 +76,10 @@ public class BlCart {
 			old.setAmount(amount);
 			return true;
 		}
-		return false;
 
 		throw new Exception("the product isn't belongs to the cart");
 	}
 	
-	static boolean editProductDiscount(Cart c, Product p, int discountCode){
-		if (c == null || p == null || !BlMain.isImmediatelyPurchase(p))
-			return false;
 	static boolean editProductDiscount(Cart c, Product p, int discountCode) throws Exception{
 		if (c == null || p == null)
 			throw new Exception("something went wrong");
@@ -107,12 +92,9 @@ public class BlCart {
 			old.setPrice(updatedPrice);
 			return true;
 		}
-		return false;
 		throw new Exception("the product isn't belongs to the cart");
 	}
 	
-	static boolean editProductPrice(Cart c, Product p, int money){
-		if (c == null || p == null || money < 0 || !BlMain.isLotteryPurchase(p))
 	static boolean editProductPrice(Cart c, Product p, int money) throws Exception{
 		if (c == null || p == null)
 			throw new Exception("something went wrong");
@@ -127,7 +109,6 @@ public class BlCart {
 			old.setPrice(money);
 			return true;
 		}
-		return false;
 		throw new Exception("the product isn't belongs to the cart");
 	}
 
@@ -140,15 +121,12 @@ public class BlCart {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean editCart(Cart c, Cart newCart) {
 	static boolean editCart(Cart c, Cart newCart) throws Exception {
 		if (c == null || newCart == null)
-			return false;
 			throw new Exception("something went wrong");
 		
 		for (ProductInCart pic : newCart.getProducts()) {
 			if(isProductExistInCart(c, pic.getMyProduct()) == -1)
-				return false;
 				throw new Exception("the product doesn't exists");
 		}
 		int index = -1;
@@ -165,19 +143,14 @@ public class BlCart {
 		return true;
 	}
 
-	public static boolean addLotteryProduct(Cart c, Product lotteryProduct, int money) {
-		if (c == null || lotteryProduct == null || money < 0 || lotteryProduct.getStore() == null)
-			return false;
 	public static boolean addLotteryProduct(Cart c, Product lotteryProduct, int money) throws Exception {
 		if (c == null || lotteryProduct == null || lotteryProduct.getStore() == null) 
 			throw new Exception("something went wrong");		
 		if(money < 0)
 			throw new Exception("must be a positive number");
 		if(!BlMain.isLotteryPurchase(lotteryProduct))
-			return false;
 			throw new Exception("the product isn't belongs to any lottery");
 		if(isProductExistInCart(c, lotteryProduct) != -1)
-			return false;
 			throw new Exception("the product alreadt exists in cart");
 		
 		return c.getProducts().add(new ProductInCart(lotteryProduct, money, 1));

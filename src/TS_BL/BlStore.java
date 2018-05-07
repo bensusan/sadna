@@ -37,11 +37,8 @@ public class BlStore {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean stockUpdate(Product p, int amount) {
 	static boolean stockUpdate(Product p, int amount) throws Exception {
 		Store s = p.getStore();
-		if(amount < 0 || !checkInStock(p, amount))
-			return false;
 		if(amount < 0)
 			throw new Exception("amount must be a positive number");
 		if(!checkInStock(p, amount))

@@ -21,11 +21,8 @@ public class BlSubscriber {
 	 * @throws Exception 
 	 */
 	static Store openStore(Subscriber sub, String storeName, int gradeing, Map<Product, Integer> products,
-			List<Purchase> purchaseHistory, boolean isOpen)
 			List<Purchase> purchaseHistory, boolean isOpen) throws Exception
 	{
-		if(sub == null || gradeing < 0 || gradeing > 5)
-			return null;
 		if(sub == null)
 			throw new Exception("invalid subscriber");
 		if(gradeing < 0 || gradeing > 5)
@@ -49,11 +46,8 @@ public class BlSubscriber {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean addPurchaseToHistory(Subscriber sub, Purchase p)
 	static boolean addPurchaseToHistory(Subscriber sub, Purchase p) throws Exception
 	{
-		if (p == null || sub == null)
-			return false;
 		if(p == null)
 			throw new Exception("something went wrong with the purchase");
 		if(sub == null)
@@ -69,11 +63,8 @@ public class BlSubscriber {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean addOwner(Subscriber sub, StoreOwner owner)
 	static boolean addOwner(Subscriber sub, StoreOwner owner) throws Exception
 	{
-		if(sub == null || owner == null)
-			return false;
 		if(owner == null)
 			throw new Exception("invalid owner");
 		if(sub == null)
@@ -82,7 +73,6 @@ public class BlSubscriber {
 		
 		List<StoreOwner> sOwn = sub.getOwner();
 		if (sOwn.contains(owner))
-			return false;
 			throw new Exception("this owner already appear in the list of owners");
 
 		sOwn.add(owner);
@@ -96,11 +86,8 @@ public class BlSubscriber {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean addManager(Subscriber sub, StoreManager manager)
 	static boolean addManager(Subscriber sub, StoreManager manager) throws Exception
 	{
-		if(sub == null || manager == null)
-			return false;
 		if(sub == null)
 			throw new Exception("invalid subscriber");
 		if(manager == null)
@@ -108,7 +95,6 @@ public class BlSubscriber {
 		
 		List<StoreManager> sMng = sub.getManager();
 		if (sMng.contains(manager))
-			return false;
 			throw new Exception("this manager already appear in the list of store managers");
 
 
@@ -123,11 +109,8 @@ public class BlSubscriber {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean deleteOwner(Subscriber sub, StoreOwner owner)
 	static boolean deleteOwner(Subscriber sub, StoreOwner owner) throws Exception
 	{
-		if(sub == null || owner == null)
-			return false;
 		if(sub == null) 
 			throw new Exception("invalid subscriber");
 		if(owner == null)
@@ -135,7 +118,6 @@ public class BlSubscriber {
 		
 		List<StoreOwner> sOwn = sub.getOwner();
 		if (!sOwn.contains(owner))
-			return false;
 			throw new Exception("the owner doesn't appear in the list of store owners");
 
 		sOwn.remove(owner);
@@ -149,11 +131,8 @@ public class BlSubscriber {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean deleteManager(Subscriber sub, StoreManager manager)
 	static boolean deleteManager(Subscriber sub, StoreManager manager) throws Exception
 	{
-		if(sub == null || manager == null)
-			return false;
 		if(sub == null) 
 			throw new Exception("invalid subscriber");
 		if(manager == null)
@@ -161,7 +140,6 @@ public class BlSubscriber {
 
 		List<StoreManager> sMng = sub.getManager();
 		if (!sMng.contains(manager))
-			return false;
 			throw new Exception("the manager doesn't appear in the list of store managers");
 
 		sMng.remove(manager);

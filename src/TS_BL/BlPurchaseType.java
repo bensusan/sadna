@@ -4,7 +4,6 @@ import TS_SharedClasses.*;
 
 public class BlPurchaseType {
 
-	static boolean purchase(ProductInCart pic, Guest g, String buyerAddress){
 	static boolean purchase(ProductInCart pic, Guest g, String buyerAddress) throws Exception{
 		PurchaseType pt = pic.getMyProduct().getPurchasePolicy().getPurchaseType();
 		Product p = pic.getMyProduct();
@@ -12,7 +11,6 @@ public class BlPurchaseType {
 		return BlStore.checkInStock(p, amount) && pt.purchase(g, pic,buyerAddress);
 	}
 
-	public static void undoPurchase(ProductInCart pic, Guest g) {
 	public static void undoPurchase(ProductInCart pic, Guest g) throws Exception {
 		pic.getMyProduct().getPurchasePolicy().getPurchaseType().undoPurchase(pic, g);
 		

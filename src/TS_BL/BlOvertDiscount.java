@@ -10,9 +10,6 @@ public class BlOvertDiscount {
 	 * @return the price after discount
 	 * @throws Exception 
 	 */
-	public static int updatePrice(OvertDiscount od, int price) {
-		if(od == null || price <= 0)
-			return -1;
 	public static int updatePrice(OvertDiscount od, int price) throws Exception {
 		if(od == null)
 			throw new Exception("something went wrong");
@@ -21,7 +18,6 @@ public class BlOvertDiscount {
 			
 		Date date = new Date();
 		if (date.after(od.getDiscountEndDate())){
-			return -1;
 			throw new Exception("discount end date has passed");
 		}
 		if(od.getDiscountPrecentage() == 0)

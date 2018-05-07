@@ -11,21 +11,15 @@ import TS_SharedClasses.*;
 
 public class BlLotteryPurchase {
 
-	public static boolean purchase(LotteryPurchase lp, Guest g, ProductInCart pic,String buyerAddress) {
 	public static boolean purchase(LotteryPurchase lp, Guest g, ProductInCart pic,String buyerAddress) throws Exception {
 		int price = pic.getPrice();
 		int productPrice = pic.getMyProduct().getPrice();
 		Date date = new Date(); 
-		if(date.after(lp.getActualEndDate()) || lp.getParticipants().keySet().contains(g))
-			return false;
-		if(lp.gethasEnded())
-			return false;
 		if(date.after(lp.getActualEndDate()) || lp.gethasEnded())
 			throw new Exception("lottery has ended");
 		if(lp.getParticipants().keySet().contains(g))
 			throw new Exception("you are already in!");
 		if(getSumOfMoney(lp) + price > productPrice)
-			return false;
 			throw new Exception("you can't pay more than the original price");
 		lp.addParticipant(g, price);
 
@@ -48,9 +42,6 @@ public class BlLotteryPurchase {
 		return sumOfMoney;
 	}
 
-	static boolean tryMakeLotteryDone(LotteryPurchase lp, int productPrice) {
-		if(lp == null || productPrice <= 0)
-			return false;
 	static boolean tryMakeLotteryDone(LotteryPurchase lp, int productPrice) throws Exception {
 		if(lp == null)
 			throw new Exception("something went wrong");
@@ -62,7 +53,6 @@ public class BlLotteryPurchase {
 			closeCurrentLottery(lp);
 			return true;
 		}
-		return false;
 		throw new Exception("lottery has passed");
 	}
 

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Edit Product Page</title>
+	<h3>Edit Product Page</h3>
+    <link href="/bootstrap.min.css" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+    <script src="/jquery-1.10.2.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+
+<body>
+<br>Choose an option: </br>
+
+<br>
+<a  onclick="toggle_visibility('editAmountDetails'); hide_visibility('editDetailsForm');"><button id="addProduct" type="submit">Change amount</button></a>
+<form id="editAmountDetails" style="display: none;">
+<input id="newAmount"  type="text" name="newAmount" placeholder="enter amount.." >
+<button id="submitEditAmount"  type="submit">Submit New Amount</button>
+</form>
+</br>
+
+
+<a  onclick="hide_visibility('editAmountDetails');toggle_visibility('editDetailsForm');"><button id="editDetails" type="submit">Edit Details</button></a>
+<form id="editDetailsForm" style="display: none;">
+  Product Name: <input type="text" name="ProductName" placeholder="enter product name.." ><br>
+Price: <input type="text" name="ProductPrice" placeholder="enter price.." ><br>
+Category: <select name="Category">
+	<option value=""></option>
+  <option value="Clothing">Clothing</option>
+  <option value="Food">Food</option>
+  <option value="Sport">Sport</option>
+  <option value="Books">Books</option>
+  <option value="Other">Other</option>
+</select><br>
+Amount: <input type="text" name="ProductAmount" placeholder="enter amount.." ><br>
+<button id="submitEditDetails" type="submit">Submit New Details</button>
+</form> 
+<br>
+
+<button onclick = "hide_visibility('editDetailsForm');hide_visibility('editAmountDetails');confirm_delete();" id="deleteProduct" type="submit">Delete Product</button><br>
+<button id="addPurchasePolicy" type="submit">Add Purchase Policy</button><br>
+
+<script type="text/javascript">
+<!--
+    function toggle_visibility(id) {
+       var e = document.getElementById(id);
+       if(e.style.display == 'block')
+          e.style.display = 'none';
+       else
+          e.style.display = 'block';
+    }
+	function hide_visibility(id) {
+       var e = document.getElementById(id);
+       e.style.display = 'none';
+    }
+	
+	function confirm_delete() {
+       var result = confirm("Want to delete?");
+		if (result) {
+		
+		}
+    }
+//-->
+</script>
+
+</body>
+</html>

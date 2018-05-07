@@ -10,15 +10,18 @@ public class BlHiddenDiscount {
 	/**
 	 * @param price
 	 * @return the price after discount if the code correct
+	 * @throws Exception 
 	 */
-	public static int updatePrice(HiddenDiscount hd, int price, int code) {
-		if(hd == null || price < 0)
-			return -1;
+	public static int updatePrice(HiddenDiscount hd, int price, int code) throws Exception {
+		if(hd == null)
+			throw new Exception("something went wrong");
+		if(price < 0)
+			throw new Exception("price must be a positive number");
 		if (!checkCodeForDiscount(hd, code))
-			return -1;
+			throw new Exception("wrong coupon code");
 		Date date = new Date();
 		if (date.after(hd.getDiscountEndDate())){
-			return -1;
+			throw new Exception("the coupon has expired");
 		}
 		if(hd.getDiscountPrecentage() == 0)
 			return price;

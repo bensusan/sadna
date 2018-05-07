@@ -22,7 +22,7 @@ public class HiddenDiscount extends DiscountPolicy{
 	}
 
 	@Override
-	public int updatePrice(int price, int code) {
+	public int updatePrice(int price, int code) throws Exception {
 		return BlHiddenDiscount.updatePrice(this, price, code);
 	}
 

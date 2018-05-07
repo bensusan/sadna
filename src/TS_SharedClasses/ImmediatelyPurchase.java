@@ -25,12 +25,12 @@ public class ImmediatelyPurchase implements PurchaseType {
 	}
 
 	@Override
-	public boolean purchase(Guest g, ProductInCart pic,String buyerAddress) {
+	public boolean purchase(Guest g, ProductInCart pic,String buyerAddress) throws Exception {
 		return BlImmediatelyPurchase.purchase(this, g, pic);
 	}
 	
 	@Override
-	public void undoPurchase(ProductInCart pic, Guest g) {
+	public void undoPurchase(ProductInCart pic, Guest g) throws Exception {
 		BlImmediatelyPurchase.undoPurchase(this, g, pic);
 	}
 

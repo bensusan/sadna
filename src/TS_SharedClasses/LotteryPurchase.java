@@ -48,7 +48,7 @@ public class LotteryPurchase implements PurchaseType {
 	}
 
 	@Override
-	public boolean purchase(Guest g, ProductInCart pic,String buyerAddress) {
+	public boolean purchase(Guest g, ProductInCart pic,String buyerAddress) throws Exception {
 		return BlLotteryPurchase.purchase(this, g, pic,buyerAddress);
 	}
 	

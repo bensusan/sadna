@@ -17,7 +17,7 @@ public class OvertDiscount extends DiscountPolicy {
 
 	//the code here doesn't mean anything
 	@Override
-	public int updatePrice(int price, int code) {
+	public int updatePrice(int price, int code) throws Exception {
 		return BlOvertDiscount.updatePrice(this, price);
 	}
 

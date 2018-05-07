@@ -147,18 +147,6 @@ public class BlMain {
 		return BlSubscriber.openStore(sub,storeName,gradeing,products,purchaseHistory,isOpen);
 	}
 
-	static boolean addPurchaseToHistory(Subscriber sub, Purchase purchase) throws Exception {
-		return BlSubscriber.addPurchaseToHistory(sub, purchase);
-	}
-
-	public static boolean addOwner(Subscriber sub, StoreOwner owner) throws Exception {
-		return BlSubscriber.addOwner(sub,owner);
-	}
-
-	public static boolean addManager(Subscriber sub, StoreManager manager) throws Exception {
-		return BlSubscriber.addManager(sub, manager);
-	}
-
 	public static boolean removeSubscriber(SystemAdministrator sa, Subscriber s) throws Exception {
 		return BlSystemAdministrator.removeSubscriber(sa, s);
 	}

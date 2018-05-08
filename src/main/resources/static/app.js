@@ -32,14 +32,18 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function sendName() {
-    stompClient.send("/app/hello", {}, JSON.stringify(
-    {	'guest': "{'cart':{'products':[]}}",
-    	'ls': ["a", "b"],
-    	'g': 1,
-    	'userName': $("#userName").val(),
-    	'password': $("#password").val()
-    }));
+
+//signIn(Guest g, String userName, String password) : Subscriber
+function signIn() {
+    stompClient.send("/app/hello", {}, 
+    JSON.stringify(
+				    {	'functionName': "signIn",
+				    	'paramsAsJSON': [	"{'cart': {'products': []}}",	//new Guest()
+				    						$("#userName").val(),			//userName
+				    						$("#password").val()
+				    					]
+				    }
+	));
 }
 
 function showGreeting(message) {
@@ -52,6 +56,6 @@ $(function () {
     });
     $( "#connect" ).click(function() { connect(); });
     $( "#disconnect" ).click(function() { disconnect(); });
-    $( "#send" ).click(function() { sendName(); });
+    $( "#send" ).click(function() { signIn(); });
 });
 

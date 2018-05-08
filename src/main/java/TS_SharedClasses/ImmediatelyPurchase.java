@@ -1,5 +1,7 @@
 package TS_SharedClasses;
 
+import java.io.Serializable;
+
 import TS_BL.BlImmediatelyPurchase;
 
 public class ImmediatelyPurchase implements PurchaseType {

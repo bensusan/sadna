@@ -1,5 +1,7 @@
 package TS_SharedClasses;
 
+import java.io.Serializable;
+
 public class PurchasePolicy {
 
 	private PurchaseType purchaseType;

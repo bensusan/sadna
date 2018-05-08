@@ -1,9 +1,10 @@
 package TS_SharedClasses;
+import java.io.Serializable;
 import java.util.Arrays;
 
 import TS_BL.BlMain;
 
-public class StoreManager{
+public class StoreManager {
 	private boolean[] premisions;
 	private Store store;
 	

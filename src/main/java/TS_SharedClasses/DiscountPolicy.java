@@ -1,5 +1,6 @@
 package TS_SharedClasses;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 public abstract class DiscountPolicy {

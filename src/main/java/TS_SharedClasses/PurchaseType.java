@@ -1,6 +1,6 @@
 package TS_SharedClasses;
 
-public interface PurchaseType {
+public interface PurchaseType  {
 
 	void undoPurchase(ProductInCart pic, Guest g) throws Exception;
 

@@ -1,5 +1,6 @@
 package TS_SharedClasses;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.Map;
 
 import TS_BL.BlMain;
 
-public class Cart {
+public class Cart  {
 
 	private List<ProductInCart> products;
 	

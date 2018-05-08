@@ -1,6 +1,8 @@
 package TS_SharedClasses;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product  {
 
 	private static int nextID = 0;
 	private int id;
@@ -18,6 +20,7 @@ public class Product {
 		this.grading = 0;
 		this.category = "";
 		this.purchasePolicy = null;
+		this.store = null;
 	}
 	public Product(String name, int price, int grading, String category, PurchasePolicy purchasePolicy) {
 		this.id = nextID++;
@@ -26,6 +29,7 @@ public class Product {
 		this.grading = grading;
 		this.category = category;
 		this.purchasePolicy = purchasePolicy;
+		this.store = null;
 	}
 
 	public Product(Product oldProduct) {
@@ -35,6 +39,7 @@ public class Product {
 		this.grading=oldProduct.grading;
 		this.category=oldProduct.category;
 		this.purchasePolicy=oldProduct.purchasePolicy;
+		this.store = oldProduct.store;
 		
 	}
 

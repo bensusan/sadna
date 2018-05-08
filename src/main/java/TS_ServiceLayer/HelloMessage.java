@@ -1,23 +1,67 @@
 package TS_ServiceLayer;
 
-import java.util.List;
+import java.io.Serializable;
 
-public class HelloMessage {
+import TS_SharedClasses.*;
 
-	public static enum functionNames {addImmediatelyProduct, addLotteryProduct, removeProductFromCart, editProductAmount, editProductDiscount, editProductPrice, editCart, purchaseCart, addProductToStore, deleteProductFromStore, updateProductDetails, addPolicyToProduct, addDiscountToProduct, addNewStoreOwner, addNewManager, closeStore, openStore, getPurchaseHistory, removeSubscriber, viewSubscriberHistory, viewStoreHistory, signUp, signIn, expiredProducts, changeStorePurchasePolicy}
-	
-	//assume first argument is on of the enums.
-	private List<Object> args;
+public class HelloMessage implements Serializable {
 
-    public HelloMessage(List<Object> args) {
-    	this.args = args;
+	private String guest;
+	private String[] ls;
+	private int g;
+    private String userName;
+    private String password;
+    
+    public HelloMessage() {
     }
 
-    public List<Object> getArgs() {
-        return args;
+    public HelloMessage(String guest, String[] ls, int g, String userName, String password) {
+    	this.guest = guest;
+    	this.ls = ls;
+    	this.g = g;
+        this.userName = userName;
+        this.password = password;
+    }
+    
+    public String getGuest() {
+		return guest;
+	}
+
+	public void setString(String guest) {
+		this.guest = guest;
+	}
+
+	public String[] getLs() {
+		return ls;
+	}
+
+	public void setLs(String[] ls) {
+		this.ls = ls;
+	}
+
+	public int getG() {
+		return g;
+	}
+
+	public void setG(int g) {
+		this.g = g;
+	}
+
+	public String getUserName() {
+        return userName;
     }
 
-    public void setArgs(List<Object> args) {
-        this.args = args;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+    
+    
 }

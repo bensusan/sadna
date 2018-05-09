@@ -1,6 +1,7 @@
 package TS_SharedClasses;
 
 public abstract class PurchasePolicy {
+
 	
 	private DiscountPolicy discount;
 

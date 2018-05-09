@@ -1,23 +1,35 @@
 package TS_ServiceLayer;
 
-import java.util.List;
-
 public class HelloMessage {
 
-	public static enum functionNames {addImmediatelyProduct, addLotteryProduct, removeProductFromCart, editProductAmount, editProductDiscount, editProductPrice, editCart, purchaseCart, addProductToStore, deleteProductFromStore, updateProductDetails, addPolicyToProduct, addDiscountToProduct, addNewStoreOwner, addNewManager, closeStore, openStore, getPurchaseHistory, removeSubscriber, viewSubscriberHistory, viewStoreHistory, signUp, signIn, expiredProducts, changeStorePurchasePolicy}
+	public static enum functionNames {addImmediatelyProduct, addLotteryProduct, removeProductFromCart, editProductAmount, editProductDiscount, editProductPrice, editCart, purchaseCart, addProductToStore, deleteProductFromStore, updateProductDetails, addPolicyToProduct, addDiscountToProduct, addNewStoreOwner, addNewManager, closeStore, openStore, getPurchaseHistory, removeSubscriber, viewSubscriberHistory, viewStoreHistory, signUp, signIn, expiredProducts, changeStorePurchasePolicy};
 	
-	//assume first argument is on of the enums.
-	private List<Object> args;
-
-    public HelloMessage(List<Object> args) {
-    	this.args = args;
+	private String functionName;
+	private String[] paramsAsJSON;
+    
+    public HelloMessage() {
     }
 
-    public List<Object> getArgs() {
-        return args;
+    public HelloMessage(String functionName, String[] paramsAsJSON) {
+    	this.functionName = functionName;
+    	this.paramsAsJSON = paramsAsJSON;
     }
 
-    public void setArgs(List<Object> args) {
-        this.args = args;
-    }
+	public String getFunctionName() {
+		return functionName;
+	}
+
+	public void setFunctionName(String functionName) {
+		this.functionName = functionName;
+	}
+
+	public String[] getParamsAsJSON() {
+		return paramsAsJSON;
+	}
+
+	public void setParamsAsJSON(String[] paramsAsJSON) {
+		this.paramsAsJSON = paramsAsJSON;
+	}
+    
+    
 }

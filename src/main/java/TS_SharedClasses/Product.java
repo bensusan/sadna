@@ -1,6 +1,8 @@
 package TS_SharedClasses;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product  {
 
 	private static int nextID = 0;
 	private int id;

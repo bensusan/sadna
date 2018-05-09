@@ -1,11 +1,19 @@
 package TS_SharedClasses;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Category {
 	private String name;
 	private PurchasePolicy purchasePolicy;
 	private List<Product>products;
+	
+	public Category(String name){
+		this.name=name;
+		this.purchasePolicy=null;
+		this.products=new LinkedList<Product>();
+	}
+	
 	public String getName() {
 		return name;
 	}

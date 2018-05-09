@@ -40,9 +40,9 @@ public abstract class PurchasePolicy {
 			return false;
 		return true;
 	}
-	public abstract boolean isCorrectProduct( int amount, Guest guest) throws Exception ;
+	public abstract boolean isCorrectProduct( int amount, String address) throws Exception ;
 		
-	public abstract int updatePriceProduct(Product p, int amount, Guest guest, int discountCode) throws Exception;
+	public abstract int updatePriceProduct(Product p, int amount, String address, int discountCode) throws Exception;
 	
 	
 }

@@ -16,14 +16,14 @@ public class NotPolicy extends PurchasePolicy {
 		this.subPolicy = subPolicy;
 	}
 	@Override
-	public boolean isCorrectProduct(int amount, Guest guest) throws Exception {
+	public boolean isCorrectProduct(int amount, String address) throws Exception {
 		if(subPolicy==null)
 			throw new Exception("");
-		return !subPolicy.isCorrectProduct(amount, guest);
+		return !subPolicy.isCorrectProduct(amount, address);
 	}
 	@Override
-	public int updatePriceProduct(Product p, int amount, Guest guest, int discountCode) throws Exception {
-		if(isCorrectProduct(amount, guest)&&this.getCurrDiscount()!=null)
+	public int updatePriceProduct(Product p, int amount, String address, int discountCode) throws Exception {
+		if(isCorrectProduct(amount, address)&&this.getCurrDiscount()!=null)
 		{
 			return this.getCurrDiscount().updatePrice(p.getPrice(), discountCode);
 		}

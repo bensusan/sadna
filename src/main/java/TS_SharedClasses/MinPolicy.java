@@ -14,15 +14,15 @@ public class MinPolicy extends PurchasePolicy {
 		this.min = min;
 	}
 	@Override
-	public int updatePriceProduct(Product p, int amount, Guest guest, int discountCode) throws Exception {
-		if(isCorrectProduct(amount, guest))
+	public int updatePriceProduct(Product p, int amount, String address, int discountCode) throws Exception {
+		if(isCorrectProduct(amount, address))
 		{
 			return this.getCurrDiscount().updatePrice(p.getPrice(), discountCode);
 		}
 		return p.getPrice();
 	}
 	@Override
-	public boolean isCorrectProduct( int amount, Guest guest) {
+	public boolean isCorrectProduct( int amount, String address) {
 		return amount>=this.min;
 	}
 

@@ -16,26 +16,26 @@ public class OrPolicy extends PurchasePolicy {
 		this.subPolicy = subPolicy;
 	}
 	@Override
-	public boolean isCorrectProduct(int amount, Guest guest) throws Exception {
+	public boolean isCorrectProduct(int amount, String address) throws Exception {
 		if(subPolicy.isEmpty()||subPolicy==null)
 			throw new Exception("");
 		boolean ans=false;
 		for(PurchasePolicy pol:subPolicy){
-			ans=ans||pol.isCorrectProduct(amount, guest);
+			ans=ans||pol.isCorrectProduct(amount, address);
 		}
 		return ans;
 	}
 	@Override
-	public int updatePriceProduct(Product p, int amount, Guest guest, int discountCode) throws Exception {
-		if(isCorrectProduct(amount, guest))
+	public int updatePriceProduct(Product p, int amount, String address, int discountCode) throws Exception {
+		if(isCorrectProduct(amount, address))
 		{
 			if(this.getCurrDiscount()!=null)
 				return this.getCurrDiscount().updatePrice(p.getPrice(), discountCode);
 			else{
 				int minPrice=p.getPrice();
 				for(PurchasePolicy pol:subPolicy){
-					if (pol.isCorrectProduct(amount, guest)){
-						int cur=pol.updatePriceProduct(p, amount, guest, discountCode);
+					if (pol.isCorrectProduct(amount, address)){
+						int cur=pol.updatePriceProduct(p, amount, address, discountCode);
 						if(minPrice>cur)
 							minPrice=cur;
 					}

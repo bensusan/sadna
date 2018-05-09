@@ -21,7 +21,13 @@ public class BlMain {
 			add(((Subscriber)new SystemAdministrator("itzik", "11111111", "shmulik", "bait shel or", "0522222222", "111111111111", new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>())));
 		}		
 	};
-	
+	public static List<Category> allCategory=new ArrayList<Category>(){
+		{
+			add(new Category("toyes"));
+			add(new Category("food"));
+			//....
+		}
+	};
 	public static Map<Guest, LinkedList<String>> allUsersWithTheirCreditCards = new HashMap<Guest, LinkedList<String>>();
 	
 	// need to insert to here all guests that payed with their credit card for pay back

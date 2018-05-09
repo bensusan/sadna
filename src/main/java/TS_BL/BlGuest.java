@@ -19,7 +19,7 @@ public class BlGuest {
 	 * @throws Exception 
 	 */
 	static boolean addImmediatelyProduct(Guest g, Product p, int amount, int discountCode) throws Exception {
-		return g != null && BlCart.addImmediatelyProduct(g.getCart(), p, amount, discountCode);
+		return g != null && BlCart.addImmediatelyProduct(g.getCart(), p, amount, discountCode,g);
 	}
 	
 	static boolean addLotteryProduct(Guest g, Product p, int money) throws Exception {
@@ -50,7 +50,7 @@ public class BlGuest {
 	}
 	
 	static boolean editProductDiscount(Guest g, Product p, int discountCode) throws Exception {
-		return g != null && BlCart.editProductDiscount(g.getCart(), p, discountCode);
+		return g != null && BlCart.editProductDiscount(g.getCart(), p, discountCode,g);
 	}
 	
 	static boolean editProductPrice(Guest g, Product p, int money) throws Exception {
@@ -99,7 +99,7 @@ public class BlGuest {
 					notPurchased.getProducts().add(pic);
 				}	
 			}
-			else if(!(BlPurchaseType.purchase(pic, g, buyerAddress) && BlStore.payToStore(pic.getMyProduct().getStore(), pic.getPrice(), creditCardNumber)))
+			else 
 				notPurchased.getProducts().add(pic);
 		}
 		
@@ -117,7 +117,7 @@ public class BlGuest {
 		}
 		
 		for (ProductInCart pic : g.getCart().getProducts()) {
-			PurchaseType pt = pic.getMyProduct().getPurchasePolicy().getPurchaseType(); 
+			PurchaseType pt = pic.getMyProduct().getType(); 
 			if(pt instanceof LotteryPurchase)
 				BlLotteryPurchase.startLottery(((LotteryPurchase)pt));
 			

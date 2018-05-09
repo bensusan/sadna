@@ -13,7 +13,7 @@ public class BlCart {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean addImmediatelyProduct(Cart c, Product p, int amount, int discountCode) throws Exception {
+	static boolean addImmediatelyProduct(Cart c, Product p, int amount, int discountCode,Guest guest) throws Exception {
 		if (c == null || p == null || p.getStore() == null)
 			throw new Exception("something went wrong");
 		if (amount < 1)
@@ -22,8 +22,8 @@ public class BlCart {
 			throw new Exception("this product isn't for immediate purchase");
 		if(isProductExistInCart(c, p) != -1)
 			throw new Exception("this product already in the cart");
-		ImmediatelyPurchase myPurchaseType = ((ImmediatelyPurchase)p.getPurchasePolicy().getPurchaseType());
-		int updatedPrice = myPurchaseType.getDiscountPolicy().updatePrice(p.getPrice(), discountCode);
+		ImmediatelyPurchase myPurchaseType = ((ImmediatelyPurchase)p.getType());
+		int updatedPrice = myPurchaseType.getDiscountTree().updatePriceProduct(p,amount,guest, discountCode);
 		return c.getProducts().add(new ProductInCart(p, updatedPrice, amount));
 	}
 	
@@ -80,7 +80,7 @@ public class BlCart {
 		throw new Exception("the product isn't belongs to the cart");
 	}
 	
-	static boolean editProductDiscount(Cart c, Product p, int discountCode) throws Exception{
+	static boolean editProductDiscount(Cart c, Product p, int discountCode,Guest guest) throws Exception{
 		if (c == null || p == null)
 			throw new Exception("something went wrong");
 		if(!BlMain.isImmediatelyPurchase(p))
@@ -88,7 +88,15 @@ public class BlCart {
 		int index = isProductExistInCart(c, p);
 		if (index != -1) {
 			ProductInCart old = c.getProducts().get(index);
-			int updatedPrice = ((ImmediatelyPurchase)p.getPurchasePolicy().getPurchaseType()).getDiscountPolicy().updatePrice(p.getPrice(), discountCode); 
+			int amount=0;
+			for (ProductInCart pin : c.getProducts()) {
+				if(pin.getMyProduct().equals(p))
+				amount=pin.getAmount();
+				break;
+			}
+			if(amount==0) 
+				throw new Exception("something went wrong");
+			int updatedPrice = ((ImmediatelyPurchase)p.getType()).getDiscountTree().updatePriceProduct(p, amount, guest, discountCode); 
 			old.setPrice(updatedPrice);
 			return true;
 		}

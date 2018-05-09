@@ -52,9 +52,9 @@ public class BlStoreOwner {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean addDiscountToProduct(StoreOwner so, DiscountPolicy discount, Product product) throws Exception
+	static boolean addDiscountToProduct(StoreOwner so, PurchasePolicy discountTree, Product product) throws Exception
 	{
-		return so != null && BlPermissions.addDiscountToProduct(so.getStore(), discount, product);
+		return so != null && BlPermissions.addDiscountToProduct(so.getStore(), discountTree, product);
 	}
 	/**
 	 * add new owner to store

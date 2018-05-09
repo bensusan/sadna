@@ -59,8 +59,8 @@ public class BlStoreManager {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean addDiscountToProduct(StoreManager sm, DiscountPolicy discount, Product product) throws Exception {
-		return sm != null && sm.getPremisions()[BlMain.addDiscountToProduct] && BlPermissions.addDiscountToProduct(sm.getStore(), discount, product);
+	static boolean addDiscountToProduct(StoreManager sm, PurchasePolicy discountTree, Product product) throws Exception {
+		return sm != null && sm.getPremisions()[BlMain.addDiscountToProduct] && BlPermissions.addDiscountToProduct(sm.getStore(), discountTree, product);
 	}
 
 	/**

@@ -48,6 +48,8 @@ public class ImmediatelyPurchase implements PurchaseType {
 			return false;
 		return true;
 	}
+
+	
 	
 	
 	

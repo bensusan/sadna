@@ -53,12 +53,12 @@ public class BlPermissions {
 	}
 
 
-	static boolean addDiscountToProduct(Store s, DiscountPolicy discount, Product product) throws Exception {
-		if(s == null || discount == null || product == null || s.getProducts().get(product) == null)
+	static boolean addDiscountToProduct(Store s, PurchasePolicy discountTree, Product product) throws Exception {
+		if(s == null || discountTree == null || product == null || s.getProducts().get(product) == null)
 			throw new Exception("something went wrong");
-		PurchaseType pt = product.getPurchasePolicy().getPurchaseType(); 
+		PurchaseType pt = product.getType(); 
 		if(pt instanceof ImmediatelyPurchase){
-			((ImmediatelyPurchase) pt).setDiscountPolicy(discount);
+			((ImmediatelyPurchase) pt).setDiscountTree(discountTree);
 			return true;
 		}
 		throw new Exception("discount can be added only to products that are for immediate purchase");
@@ -118,7 +118,7 @@ public class BlPermissions {
 		if(s == null)
 			return;
 		for (Product product : s.getProducts().keySet()) {
-			PurchaseType pt = product.getPurchasePolicy().getPurchaseType(); 
+			PurchaseType pt = product.getType(); 
 			if(pt instanceof LotteryPurchase){
 				Calendar today = Calendar.getInstance();
 				today.set(Calendar.HOUR_OF_DAY, 0);

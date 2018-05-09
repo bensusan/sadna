@@ -8,11 +8,11 @@ public abstract class PurchasePolicy {
 	{
 		this.discount=discount;
 	}
-	public void setPurchaseType(DiscountPolicy discount) {
+	public void setDiscount(DiscountPolicy discount) {
 		this.discount = discount;
 	}
 
-	public DiscountPolicy getPurchaseType() {
+	public DiscountPolicy getCurrDiscount() {
 		return this.discount;
 	}
 
@@ -40,6 +40,9 @@ public abstract class PurchasePolicy {
 			return false;
 		return true;
 	}
+	public abstract boolean isCorrectProduct( int amount, Guest guest) throws Exception ;
+		
+	public abstract int updatePriceProduct(Product p, int amount, Guest guest, int discountCode) throws Exception;
 	
 	
 }

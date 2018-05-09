@@ -78,8 +78,8 @@ public class BlMain {
 		return BlStoreManager.addPolicyToProduct(sm, policy, product);
 	}
 
-	public static boolean addDiscountToProduct(StoreManager sm, DiscountPolicy discount, Product product) throws Exception {
-		return BlStoreManager.addDiscountToProduct(sm, discount, product);
+	public static boolean addDiscountToProduct(StoreManager sm, PurchasePolicy discountTree, Product product) throws Exception {
+		return BlStoreManager.addDiscountToProduct(sm, discountTree, product);
 	}
 
 	public static boolean addNewStoreOwner(StoreManager sm, Subscriber owner) throws Exception {
@@ -118,8 +118,8 @@ public class BlMain {
 		return BlStoreOwner.addPolicyToProduct(so, policy, product);
 	}
 
-	public static boolean addDiscountToProduct(StoreOwner so, DiscountPolicy discount, Product product) throws Exception {
-		return BlStoreOwner.addDiscountToProduct(so, discount, product);
+	public static boolean addDiscountToProduct(StoreOwner so, PurchasePolicy discountTree, Product product) throws Exception {
+		return BlStoreOwner.addDiscountToProduct(so, discountTree, product);
 	}
 
 	public static boolean addNewStoreOwner(StoreOwner oldSo, Subscriber newSo) throws Exception {
@@ -327,13 +327,13 @@ public class BlMain {
 	}
 	
 	static boolean isImmediatelyPurchase(Product p){
-		if(p.getPurchasePolicy() == null || !(p.getPurchasePolicy().getPurchaseType() instanceof ImmediatelyPurchase))
+		if(p.getPurchasePolicy() == null || !(p.getType() instanceof ImmediatelyPurchase))
 			return false;
 		return true;
 	}
 	
 	static boolean isLotteryPurchase(Product p){
-		if(p.getPurchasePolicy() == null || !(p.getPurchasePolicy().getPurchaseType() instanceof LotteryPurchase))
+		if(p.getPurchasePolicy() == null || !(p.getType() instanceof LotteryPurchase))
 			return false;
 		return true;
 	}

@@ -284,7 +284,7 @@ public class BlMain {
 	private static boolean productInCriterion(String criterion, String str, Product p) {
 		if (criterion.equals("Name") && p.getName().equals(str))
 			return true;
-		if (criterion.equals("Category") && p.getCategory().equals(str))
+		if (criterion.equals("Category") && p.getCategory().getName().equals(str))
 			return true;
 		return false;
 	}

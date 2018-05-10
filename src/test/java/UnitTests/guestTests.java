@@ -91,7 +91,7 @@ public class guestTests {
 			if(p2.getMyProduct().equals(ball))
 			{
 				assertEquals(p2.getAmount(),1);
-				assertEquals(p2.getPrice(),5);
+				assertEquals(p2.getDiscountOrPrice(),5);
 			}
 		}
 	}
@@ -129,7 +129,7 @@ public class guestTests {
 			if(p2.getMyProduct().equals(ballwithDiscount))
 			{
 				assertEquals(p2.getAmount(),1);
-				assertEquals(p2.getPrice(),4);
+				assertEquals(p2.getDiscountOrPrice(),4);
 			}
 		}
 		
@@ -149,7 +149,7 @@ public class guestTests {
 			if(p2.getMyProduct().equals(ballwithDiscount))
 			{
 				assertEquals(p2.getAmount(),1);
-				assertEquals(p2.getPrice(),5);
+				assertEquals(p2.getDiscountOrPrice(),5);
 			}
 		}
 	}
@@ -267,7 +267,7 @@ public class guestTests {
 		{
 			if(p2.getMyProduct().equals(ball)){
 				assertEquals(p2.getAmount(),2);
-				assertEquals(p2.getPrice(),5);
+				assertEquals(p2.getDiscountOrPrice(),5);
 			}
 		}
 	}

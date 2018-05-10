@@ -22,12 +22,12 @@ public class NotPolicy extends PurchasePolicy {
 		return !subPolicy.isCorrectProduct(amount, address);
 	}
 	@Override
-	public int updatePriceProduct(Product p, int amount, String address, int discountCode) throws Exception {
+	public int updatePriceProduct(int price, int amount, String address, int discountCode) throws Exception {
 		if(isCorrectProduct(amount, address)&&this.getCurrDiscount()!=null)
 		{
-			return this.getCurrDiscount().updatePrice(p.getPrice(), discountCode);
+			return this.getCurrDiscount().updatePrice(price, discountCode);
 		}
-		return p.getPrice();
+		return price;
 	}
 
 }

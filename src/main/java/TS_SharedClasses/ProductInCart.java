@@ -5,12 +5,12 @@ import java.io.Serializable;
 public class ProductInCart {
 
 	private Product myProduct;
-	private int price;
+	private int discountOrPrice;
 	private int amount;
 	public ProductInCart(Product myProduct, int price, int amount) {
 		super();
 		this.myProduct = myProduct;
-		this.price = price;
+		this.discountOrPrice = price;
 		this.amount = amount;
 	}
 	
@@ -20,11 +20,11 @@ public class ProductInCart {
 	public void setMyProduct(Product myProduct) {
 		this.myProduct = myProduct;
 	}
-	public int getPrice() {
-		return price;
+	public int getDiscountOrPrice() {
+		return discountOrPrice;
 	}
-	public void setPrice(int price) {
-		this.price = price;
+	public void setDiscountOrPrice(int price) {
+		this.discountOrPrice = price;
 	}
 	public int getAmount() {
 		return amount;
@@ -49,7 +49,7 @@ public class ProductInCart {
 				return false;
 		} else if (!myProduct.equals(other.myProduct))
 			return false;
-		if (price != other.price)
+		if (discountOrPrice != other.discountOrPrice)
 			return false;
 		return true;
 	}

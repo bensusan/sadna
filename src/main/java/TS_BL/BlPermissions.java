@@ -46,7 +46,7 @@ public class BlPermissions {
 
 
 	static boolean addPolicyToProduct(Store s, PurchasePolicy policy, Product product) throws Exception {
-		if(s == null || policy == null || product == null ||s.getProducts().get(product) == null)
+		if(s == null  || product == null ||s.getProducts().get(product) == null)
 			throw new Exception("something went wrong");
 		product.setPurchasePolicy(policy);
 		return true;
@@ -54,7 +54,7 @@ public class BlPermissions {
 
 
 	static boolean addDiscountToProduct(Store s, PurchasePolicy discountTree, Product product) throws Exception {
-		if(s == null || discountTree == null || product == null || s.getProducts().get(product) == null)
+		if(s == null || product == null || s.getProducts().get(product) == null)
 			throw new Exception("something went wrong");
 		PurchaseType pt = product.getType(); 
 		if(pt instanceof ImmediatelyPurchase){

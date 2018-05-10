@@ -14,12 +14,12 @@ public class MaxPolicy extends PurchasePolicy {
 		this.max = max;
 	}
 	@Override
-	public int updatePriceProduct(Product p, int amount, String address, int discountCode) throws Exception {
+	public int updatePriceProduct(int price, int amount, String address, int discountCode) throws Exception {
 		if(isCorrectProduct(amount, address))
 		{
-			return this.getCurrDiscount().updatePrice(p.getPrice(), discountCode);
+			return this.getCurrDiscount().updatePrice(price, discountCode);
 		}
-		return p.getPrice();
+		return price;
 	}
 	@Override
 	public boolean isCorrectProduct(int amount, String address) {

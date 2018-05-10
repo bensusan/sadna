@@ -12,7 +12,7 @@ import TS_SharedClasses.*;
 public class BlLotteryPurchase {
 
 	public static boolean purchase(LotteryPurchase lp, Guest g, ProductInCart pic,String buyerAddress) throws Exception {
-		int price = pic.getPrice();
+		int price = pic.getDiscountOrPrice();
 		int productPrice = pic.getMyProduct().getPrice();
 		Date date = new Date(); 
 		if(date.after(lp.getActualEndDate()) || lp.gethasEnded())

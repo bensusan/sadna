@@ -1,6 +1,10 @@
 package TS_BL;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -19,7 +23,7 @@ public class BlGuest {
 	 * @throws Exception 
 	 */
 	static boolean addImmediatelyProduct(Guest g, Product p, int amount, int discountCode) throws Exception {
-		return g != null && BlCart.addImmediatelyProduct(g.getCart(), p, amount, discountCode,g);
+		return g != null && BlCart.addImmediatelyProduct(g.getCart(), p, amount, discountCode);
 	}
 	
 	static boolean addLotteryProduct(Guest g, Product p, int money) throws Exception {
@@ -89,11 +93,59 @@ public class BlGuest {
 			throw new Exception("ilegal address");
 //		boolean isExistLotteryPurchase = false;
 		Cart notPurchased = new Cart();
+		//check if all product comply the product policy
+		for (ProductInCart pic : g.getCart().getProducts()) {
+			if (!pic.getMyProduct().getPurchasePolicy().isCorrectProduct(pic.getAmount(), buyerAddress));
+				throw new Exception("product "+pic.getMyProduct().getName()+" does not comply with policy");
+		}//check if cart comply the store policy
+		for (ProductInCart pic : g.getCart().getProducts()) {
+			List<ProductInCart>StoreProducts=new ArrayList<ProductInCart>();
+			for (ProductInCart pic2 : g.getCart().getProducts()) {
+				if(pic.getMyProduct().getStore().equals(pic2.getMyProduct().getStore()))
+					StoreProducts.add(pic2);
+			}
+			if (!pic.getMyProduct().getStore().getStorePolicy().isCorrectProduct(StoreProducts.size(), buyerAddress));
+				throw new Exception("the cart does not comply with "+pic.getMyProduct().getStore().getStoreName()+" store policy");
+		}//check if cart comply the category policy
+		for(ProductInCart pic:g.getCart().getProducts()){
+			List<ProductInCart>CategoryProducts=new ArrayList<ProductInCart>();
+			for (ProductInCart pic2 : g.getCart().getProducts()) {
+				if(pic.getMyProduct().getCategory().equals(pic2.getMyProduct().getCategory()))
+					CategoryProducts.add(pic2);
+			}
+			if (!pic.getMyProduct().getCategory().getPurchasePolicy().isCorrectProduct(CategoryProducts.size(), buyerAddress));
+				throw new Exception("the cart does not comply with "+pic.getMyProduct().getStore().getStoreName()+" store policy");
+		}
+		
+		Map<ProductInCart,Integer>productToPrice=new HashMap<ProductInCart,Integer>();
+		//try to buy the products
 		for (ProductInCart pic : g.getCart().getProducts()) {
 
 			boolean purchase = BlPurchaseType.purchase(pic, g,buyerAddress);
 			if(purchase){
-				boolean payMoney = BlStore.payToStore(pic.getMyProduct().getStore(), pic.getPrice(), creditCardNumber);
+				int productPrice=pic.getMyProduct().getPrice();
+				if (pic.getMyProduct().getType()instanceof ImmediatelyPurchase)
+				{
+					productPrice=pic.getMyProduct().getPurchasePolicy().updatePriceProduct(pic.getMyProduct().getPrice(), pic.getAmount(), buyerAddress, pic.getDiscountOrPrice());
+					PurchasePolicy categoryDiscountTree=pic.getMyProduct().getStore().getCategoryDiscounts().get(pic.getMyProduct().getCategory());
+					int sameStoreAndCategoryCounter=0;
+					for(ProductInCart pic2:g.getCart().getProducts())
+					{
+						if(pic.getMyProduct().getStore().equals(pic2.getMyProduct().getStore())){
+							if(pic.getMyProduct().getCategory().equals(pic2.getMyProduct().getCategory()))
+							{
+								sameStoreAndCategoryCounter++;
+							}
+						}
+					}
+					productPrice=categoryDiscountTree.updatePriceProduct(productPrice, sameStoreAndCategoryCounter, buyerAddress, pic.getDiscountOrPrice());
+				}
+				else{
+					productPrice=pic.getDiscountOrPrice();
+				}
+				productPrice*=pic.getAmount();
+				productToPrice.put(pic, productPrice);
+				boolean payMoney = BlStore.payToStore(pic.getMyProduct().getStore(), productPrice, creditCardNumber);
 				if(!payMoney){
 					BlPurchaseType.undoPurchase(pic, g);
 					notPurchased.getProducts().add(pic);
@@ -111,7 +163,7 @@ public class BlGuest {
 		if(!BlStore.sendTheProducts(g, buyerAddress)){
 			for(ProductInCart pic : g.getCart().getProducts()){
 				BlPurchaseType.undoPurchase(pic, g);
-				BlStore.undoPayToStore(pic.getMyProduct().getStore(), pic.getPrice(), creditCardNumber);
+				BlStore.undoPayToStore(pic.getMyProduct().getStore(), productToPrice.get(pic), creditCardNumber);
 			}
 			throw new Exception("we had problem with the supply system");
 		}

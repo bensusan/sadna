@@ -13,7 +13,7 @@ public class BlCart {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean addImmediatelyProduct(Cart c, Product p, int amount, int discountCode,Guest guest) throws Exception {
+	static boolean addImmediatelyProduct(Cart c, Product p, int amount, int discountCode) throws Exception {
 		if (c == null || p == null || p.getStore() == null)
 			throw new Exception("something went wrong");
 		if (amount < 1)
@@ -22,9 +22,7 @@ public class BlCart {
 			throw new Exception("this product isn't for immediate purchase");
 		if(isProductExistInCart(c, p) != -1)
 			throw new Exception("this product already in the cart");
-		ImmediatelyPurchase myPurchaseType = ((ImmediatelyPurchase)p.getType());
-		int updatedPrice = myPurchaseType.getDiscountTree().updatePriceProduct(p,amount,guest, discountCode);
-		return c.getProducts().add(new ProductInCart(p, updatedPrice, amount));
+		return c.getProducts().add(new ProductInCart(p, discountCode, amount));
 	}
 	
 	
@@ -89,15 +87,15 @@ public class BlCart {
 		if (index != -1) {
 			ProductInCart old = c.getProducts().get(index);
 			int amount=0;
-			for (ProductInCart pin : c.getProducts()) {
-				if(pin.getMyProduct().equals(p))
-				amount=pin.getAmount();
-				break;
+			for (ProductInCart pic : c.getProducts()) {
+				if(pic.getMyProduct().equals(p)){
+					amount=pic.getAmount();
+					break;
+				}
 			}
 			if(amount==0) 
 				throw new Exception("something went wrong");
-			int updatedPrice = ((ImmediatelyPurchase)p.getType()).getDiscountTree().updatePriceProduct(p, amount, guest, discountCode); 
-			old.setPrice(updatedPrice);
+			old.setDiscountOrPrice(discountCode);
 			return true;
 		}
 		throw new Exception("the product isn't belongs to the cart");
@@ -114,7 +112,7 @@ public class BlCart {
 		int index = isProductExistInCart(c, p);
 		if (index != -1) {
 			ProductInCart old = c.getProducts().get(index);
-			old.setPrice(money);
+			old.setDiscountOrPrice(money);
 			return true;
 		}
 		throw new Exception("the product isn't belongs to the cart");

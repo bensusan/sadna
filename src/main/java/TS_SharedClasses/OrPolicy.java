@@ -26,16 +26,16 @@ public class OrPolicy extends PurchasePolicy {
 		return ans;
 	}
 	@Override
-	public int updatePriceProduct(Product p, int amount, String address, int discountCode) throws Exception {
+	public int updatePriceProduct(int price, int amount, String address, int discountCode) throws Exception {
 		if(isCorrectProduct(amount, address))
 		{
 			if(this.getCurrDiscount()!=null)
-				return this.getCurrDiscount().updatePrice(p.getPrice(), discountCode);
+				return this.getCurrDiscount().updatePrice(price, discountCode);
 			else{
-				int minPrice=p.getPrice();
+				int minPrice=price;
 				for(PurchasePolicy pol:subPolicy){
 					if (pol.isCorrectProduct(amount, address)){
-						int cur=pol.updatePriceProduct(p, amount, address, discountCode);
+						int cur=pol.updatePriceProduct(price, amount, address, discountCode);
 						if(minPrice>cur)
 							minPrice=cur;
 					}
@@ -43,7 +43,7 @@ public class OrPolicy extends PurchasePolicy {
 				return minPrice;
 			}
 		}
-		return p.getPrice();
+		return price;
 	}
 
 }

@@ -252,11 +252,11 @@ public class GuestAT {
 			for(ProductInCart p : g.getCart().getProducts()){
 				if(immediateOvertProduct.equals(p.getMyProduct())){
 					assertEquals(20, p.getAmount());
-					assertEquals(10, p.getPrice());
+					assertEquals(10, p.getDiscountOrPrice());
 				}
 				if(immediateNoDiscountProduct.equals(p.getMyProduct())){
 					assertEquals(15, p.getAmount());
-					assertEquals(10, p.getPrice());
+					assertEquals(10, p.getDiscountOrPrice());
 				}
 			}
 

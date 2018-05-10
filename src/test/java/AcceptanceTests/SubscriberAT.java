@@ -22,7 +22,12 @@ public class SubscriberAT {
 	@BeforeClass
 	public static void beforeTests(){
 		signed = new Guest();
+		try{
 		sub = BlMain.signUp(signed, "usr", "pass", "name", "address", "132412356", "1234567891011");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	@Test
 	public void mainTest(){
@@ -53,10 +58,14 @@ public class SubscriberAT {
 			fail();
 		}catch (Exception e) {}
 		//good case
+		try{
 		Store toCheck = BlMain.openStore(sub,"store_name9", 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
-		
 		List<StoreOwner> ownStores = sub.getOwner();
 		assertEquals(toCheck, ownStores.get(0).getStore());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 }

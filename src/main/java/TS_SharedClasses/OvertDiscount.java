@@ -13,12 +13,14 @@ public class OvertDiscount extends DiscountPolicy {
 	}
 	
 	public OvertDiscount() throws Exception {
-		super(new Date(8099, 11, 31), 0);
+		super();
 	}
 
 	//the code here doesn't mean anything
 	@Override
 	public int updatePrice(int price, int code) throws Exception {
+		this.setDiscountEndDate(Date.valueOf("2020-01-01"));
+		this.setDiscountPrecentage(0);
 		return BlOvertDiscount.updatePrice(this, price);
 	}
 

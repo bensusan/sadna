@@ -17,7 +17,7 @@ import TS_BL.BlMain;
 import TS_SharedClasses.*;
 
 public class SystemAdminAT {
-	
+
 	private static SystemAdministrator sa;
 	private static Subscriber s1;
 	private static Subscriber s2;
@@ -26,9 +26,21 @@ public class SystemAdminAT {
 	@BeforeClass
 	public static void beforeTests(){
 		sa = new SystemAdministrator("admin", "nimda", "sagivmap", "Ashdod", "088559977", "132456789987", new ArrayList<Purchase>(), new ArrayList<StoreManager>(), new ArrayList<StoreOwner>());
-		s1 = BlMain.signUp(new Guest(), "first", "first", "nameA", "add1" , "012345678945", "987564321123");
-		s2 = BlMain.signUp(new Guest(), "second", "second", "nameB", "add2" , "012345678945", "987564321123");
-		s3 = BlMain.signUp(new Guest(), "third", "third", "nameC", "add3" , "012345678945", "987564321123");
+		try {
+			s1 = BlMain.signUp(new Guest(), "first", "first", "nameA", "add1" , "012345678945", "987564321123");
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+		try {
+			s2 = BlMain.signUp(new Guest(), "second", "second", "nameB", "add2" , "012345678945", "987564321123");
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		try {
+			s3 = BlMain.signUp(new Guest(), "third", "third", "nameC", "add3" , "012345678945", "987564321123");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	@Test
 	public void mainTest(){
@@ -38,15 +50,31 @@ public class SystemAdminAT {
 	//5.2
 	private void testRemoveSubscriber(){
 		//incorrect input
-		assertFalse(BlMain.removeSubscriber(sa, null));
+		try {
+			BlMain.removeSubscriber(sa, null);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(), "invalid subscriber");
+		}
 		SystemAdministrator sa2 = null;
-		assertFalse(BlMain.removeSubscriber(sa2, s1));
-		
+		try {
+			BlMain.removeSubscriber(sa2, s1);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(), "invalid admin");
+		}
+
 		Subscriber notExits  = new Subscriber( new Cart(), "forth", "forth", "name4", "add4" , "012345678945", "987564321123", new ArrayList<Purchase>(), new ArrayList<StoreManager>(), new ArrayList<StoreOwner>());
-		assertFalse(BlMain.removeSubscriber(sa, notExits));
-		
-		assertTrue(BlMain.removeSubscriber(sa, s1));
-		
+		try {
+			assertFalse(BlMain.removeSubscriber(sa, notExits));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			assertTrue(BlMain.removeSubscriber(sa, s1));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		assertFalse(BlMain.allSubscribers.contains(s1));
 	}
 	//5.4

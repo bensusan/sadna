@@ -16,6 +16,11 @@ public abstract class DiscountPolicy {
 		this.discountPrecentage = discountPrecentage;
 	}
 	
+	public DiscountPolicy() throws Exception {
+		this.discountEndDate = Date.valueOf("2020-01-01");
+		this.discountPrecentage = 0;
+	}
+	
 	public Date getDiscountEndDate() {
 		return discountEndDate;
 	}

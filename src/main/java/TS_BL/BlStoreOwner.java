@@ -12,8 +12,8 @@ public class BlStoreOwner {
 	 * @return true if the add succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean addProductToStore(StoreOwner so, Product product, int amount) throws Exception {
-		return so != null && BlPermissions.addProductToStore(so.getStore(), product, amount);
+	static boolean addProductToStore(StoreOwner so, Product product, int amount,String category) throws Exception {
+		return so != null && BlPermissions.addProductToStore(so.getStore(), product, amount,category);
 	}
 	/**
 	 * @param product
@@ -30,8 +30,8 @@ public class BlStoreOwner {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean updateProductDetails(StoreOwner so, Product oldProduct, Product newProduct, int amount) throws Exception {
-		return so != null && BlPermissions.updateProductDetails(so.getStore(), oldProduct, newProduct, amount);
+	static boolean updateProductDetails(StoreOwner so, Product oldProduct, Product newProduct, int amount,String newProductCategory) throws Exception {
+		return so != null && BlPermissions.updateProductDetails(so.getStore(), oldProduct, newProduct, amount,newProductCategory);
 	}
 	/**
 	 * add policy to product

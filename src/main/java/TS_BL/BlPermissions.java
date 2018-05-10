@@ -8,11 +8,24 @@ import TS_SharedClasses.*;
 public class BlPermissions {
 
 	//Here we will implement Store's owner and Store's manager permissions
-	static boolean addProductToStore(Store s, Product product, int amount) throws Exception {
+	static boolean addProductToStore(Store s, Product product, int amount,String category) throws Exception {
 		if(s == null || product == null || product.getStore() != null)
 			throw new Exception("something went wrong");
 		if(amount <= 0)
 			throw new Exception("amount must be greater than 0");
+		if(!BlMain.getAllCategorys().contains(category))
+			throw new Exception("category does not exist");
+		for(Category c:BlMain.allCategory)
+		{
+			if(c.getName().equals(category))
+			{
+				List<Product>prod=c.getProducts();
+				prod.add(product);
+				c.setProducts(prod);
+				product.setCategory(c);
+				break;
+			}
+		}
 		product.setStore(s);
 		if(s.getProducts().get(product) != null)
 			return s.getProducts().put(product, s.getProducts().get(product)+ amount) != null;
@@ -21,14 +34,15 @@ public class BlPermissions {
 
 
 	static boolean deleteProductFromStore(Store s, Product product) throws Exception {
-		if(s == null || product == null || s.getProducts().remove(product) == null)
+		if(s == null || product == null || s.getProducts().remove(product) == null|| product.getCategory().getProducts().remove(product))
 			throw new Exception("something went wrong");
 		product.setStore(null);
+		product.setCategory(null);
 		return true;
 	}
 
 
-	static boolean updateProductDetails(Store s, Product oldProduct, Product newProduct, int amount) throws Exception {
+	static boolean updateProductDetails(Store s, Product oldProduct, Product newProduct, int amount,String newProductCategory) throws Exception {
 		if(s == null || oldProduct == null || newProduct == null)
 			throw new Exception("something went wrong");
 		if(!s.getProducts().containsKey(oldProduct))
@@ -37,9 +51,9 @@ public class BlPermissions {
 		int temp = s.getProducts().get(oldProduct);
 		
 		try {
-			return deleteProductFromStore(s, oldProduct) && addProductToStore(s, newProduct, amount);
+			return deleteProductFromStore(s, oldProduct) && addProductToStore(s, newProduct, amount,newProductCategory);
 		} catch (Exception e) {
-			addProductToStore(s, oldProduct, temp);
+			addProductToStore(s, oldProduct, temp,newProductCategory);
 			throw e;
 		}
 	}

@@ -31,7 +31,14 @@ public class BlMain {
 	public static Map<Guest, LinkedList<String>> allUsersWithTheirCreditCards = new HashMap<Guest, LinkedList<String>>();
 	
 	// need to insert to here all guests that payed with their credit card for pay back
-
+	public static List<String> getAllCategorys() {
+		List<String>ans=new LinkedList<String>();
+		for(Category c:allCategory){
+			ans.add(c.getName());
+		}
+		return ans;
+	}
+	
 	public static boolean addImmediatelyProduct(Guest g, Product p, int amount) throws Exception {
 		return BlGuest.addImmediatelyProduct(g, p, amount, -1);
 	}
@@ -68,16 +75,16 @@ public class BlMain {
 		return BlGuest.puchaseCart(g, creditCardNumber, buyerAddress);
 	}
 
-	public static boolean addProductToStore(StoreManager sm, Product product, int amount) throws Exception {
-		return BlStoreManager.addProductToStore(sm, product, amount);
+	public static boolean addProductToStore(StoreManager sm, Product product, int amount,String category) throws Exception {
+		return BlStoreManager.addProductToStore(sm, product, amount,category);
 	}
 
 	public static boolean deleteProductFromStore(StoreManager sm, Product product) throws Exception {
 		return BlStoreManager.deleteProductFromStore(sm, product);
 	}
 
-	public static boolean updateProductDetails(StoreManager sm, Product oldProduct, Product newProduct, int amount) throws Exception {
-		return BlStoreManager.updateProductDetails(sm, oldProduct, newProduct, amount);
+	public static boolean updateProductDetails(StoreManager sm, Product oldProduct, Product newProduct, int amount,String newProductCategory) throws Exception {
+		return BlStoreManager.updateProductDetails(sm, oldProduct, newProduct, amount,newProductCategory);
 	}
 
 	public static boolean addPolicyToProduct(StoreManager sm, PurchasePolicy policy, Product product) throws Exception {
@@ -108,16 +115,16 @@ public class BlMain {
 		return BlStoreManager.getPurchaseHistory(sm);
 	}
 
-	public static boolean addProductToStore(StoreOwner so, Product product, int amount) throws Exception {
-		return BlStoreOwner.addProductToStore(so, product, amount);
+	public static boolean addProductToStore(StoreOwner so, Product product, int amount,String category) throws Exception {
+		return BlStoreOwner.addProductToStore(so, product, amount,category);
 	}
 
 	public static boolean deleteProductFromStore(StoreOwner so, Product product) throws Exception {
 		return BlStoreOwner.deleteProductFromStore(so, product);
 	}
 
-	public static boolean updateProductDetails(StoreOwner so, Product oldProduct, Product newProduct, int amount) throws Exception {
-		return BlStoreOwner.updateProductDetails(so, oldProduct, newProduct, amount);
+	public static boolean updateProductDetails(StoreOwner so, Product oldProduct, Product newProduct, int amount,String newProductCategory) throws Exception {
+		return BlStoreOwner.updateProductDetails(so, oldProduct, newProduct, amount,newProductCategory);
 	}
 
 	public static boolean addPolicyToProduct(StoreOwner so, PurchasePolicy policy, Product product) throws Exception {
@@ -347,4 +354,6 @@ public class BlMain {
 	static String getCreditCard(Guest g){
 		return allUsersWithTheirCreditCards.get(g).get(0);
 	}
+
+	
 }

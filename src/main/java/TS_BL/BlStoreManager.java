@@ -13,8 +13,8 @@ public class BlStoreManager {
 	 * @return true if the add succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean addProductToStore(StoreManager sm, Product product, int amount) throws Exception {
-		return sm != null && sm.getPremisions()[BlMain.addProductToStore] && BlPermissions.addProductToStore(sm.getStore(), product, amount);
+	static boolean addProductToStore(StoreManager sm, Product product, int amount,String category) throws Exception {
+		return sm != null && sm.getPremisions()[BlMain.addProductToStore] && BlPermissions.addProductToStore(sm.getStore(), product, amount,category);
 	}
 
 	/**
@@ -35,8 +35,8 @@ public class BlStoreManager {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
-	static boolean updateProductDetails(StoreManager sm, Product oldProduct, Product newProduct, int amount) throws Exception {
-		return sm != null && sm.getPremisions()[BlMain.updateProductDetails] && BlPermissions.updateProductDetails(sm.getStore(), oldProduct, newProduct, amount);
+	static boolean updateProductDetails(StoreManager sm, Product oldProduct, Product newProduct, int amount,String newProductCategory) throws Exception {
+		return sm != null && sm.getPremisions()[BlMain.updateProductDetails] && BlPermissions.updateProductDetails(sm.getStore(), oldProduct, newProduct, amount,newProductCategory);
 	}
 
 	/**

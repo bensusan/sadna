@@ -8,8 +8,13 @@ import TS_SharedClasses.*;
 public class BlPermissions {
 
 	//Here we will implement Store's owner and Store's manager permissions
+<<<<<<< HEAD
 	static boolean addProductToStore(Store s, Product product, int amount,String category) throws Exception {
 		if(s == null || product == null || product.getStore() != null)
+=======
+	static boolean addProductToStore(Store s, Product product, int amount) throws Exception {
+		if(s == null || product == null)
+>>>>>>> Ofir
 			throw new Exception("something went wrong");
 		if(amount <= 0)
 			throw new Exception("amount must be greater than 0");
@@ -45,6 +50,8 @@ public class BlPermissions {
 	static boolean updateProductDetails(Store s, Product oldProduct, Product newProduct, int amount,String newProductCategory) throws Exception {
 		if(s == null || oldProduct == null || newProduct == null)
 			throw new Exception("something went wrong");
+		if(amount <= 0)
+			throw new Exception("amount must be greater than 0");
 		if(!s.getProducts().containsKey(oldProduct))
 			throw new Exception("this product doesn't belongs to this store");
 		
@@ -88,7 +95,7 @@ public class BlPermissions {
 			throw new Exception("couldn't add new owner");
 		s.setMyOwners(owners);
 	//	owner.setStore(s);
-		return BlSubscriber.addOwner(owner, so);
+		return true;
 	}
 
 
@@ -99,9 +106,9 @@ public class BlPermissions {
 		List<StoreManager> managers = s.getMyManagers();
 		if(!managers.add(sm))
 			throw new Exception("couldn't add new manager");
-		s.setMyManagers(managers);
+		 s.setMyManagers(managers);
 		//newMan.setStore(s);
-		return BlSubscriber.addManager(newMan, sm);
+		 return true;
 	}
 
 	static boolean closeStore(Store s) {
@@ -109,7 +116,6 @@ public class BlPermissions {
 			s.setIsOpen(false);
 			return true;
 		}
-		
 		else
 			return false;
 	}

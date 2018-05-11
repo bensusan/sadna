@@ -95,8 +95,9 @@ public class BlGuest {
 		Cart notPurchased = new Cart();
 		//check if all product comply the product policy
 		for (ProductInCart pic : g.getCart().getProducts()) {
-			if (!pic.getMyProduct().getPurchasePolicy().isCorrectProduct(pic.getAmount(), buyerAddress));
+			if (!(pic.getMyProduct().getPurchasePolicy().isCorrectProduct(pic.getAmount(), buyerAddress))){
 				throw new Exception("product "+pic.getMyProduct().getName()+" does not comply with policy");
+			}
 		}//check if cart comply the store policy
 		for (ProductInCart pic : g.getCart().getProducts()) {
 			List<ProductInCart>StoreProducts=new ArrayList<ProductInCart>();
@@ -104,17 +105,20 @@ public class BlGuest {
 				if(pic.getMyProduct().getStore().equals(pic2.getMyProduct().getStore()))
 					StoreProducts.add(pic2);
 			}
-			if (!pic.getMyProduct().getStore().getStorePolicy().isCorrectProduct(StoreProducts.size(), buyerAddress));
+			if (!pic.getMyProduct().getStore().getStorePolicy().isCorrectProduct(StoreProducts.size(), buyerAddress)){
 				throw new Exception("the cart does not comply with "+pic.getMyProduct().getStore().getStoreName()+" store policy");
+			}
 		}//check if cart comply the category policy
 		for(ProductInCart pic:g.getCart().getProducts()){
 			List<ProductInCart>CategoryProducts=new ArrayList<ProductInCart>();
 			for (ProductInCart pic2 : g.getCart().getProducts()) {
-				if(pic.getMyProduct().getCategory().equals(pic2.getMyProduct().getCategory()))
+				if(pic.getMyProduct().getCategory().equals(pic2.getMyProduct().getCategory())){
 					CategoryProducts.add(pic2);
+				}
 			}
-			if (!pic.getMyProduct().getCategory().getPurchasePolicy().isCorrectProduct(CategoryProducts.size(), buyerAddress));
+			if (!pic.getMyProduct().getCategory().getPurchasePolicy().isCorrectProduct(CategoryProducts.size(), buyerAddress)){
 				throw new Exception("the cart does not comply with "+pic.getMyProduct().getStore().getStoreName()+" store policy");
+			}
 		}
 		
 		Map<ProductInCart,Integer>productToPrice=new HashMap<ProductInCart,Integer>();
@@ -138,7 +142,8 @@ public class BlGuest {
 							}
 						}
 					}
-					productPrice=categoryDiscountTree.updatePriceProduct(productPrice, sameStoreAndCategoryCounter, buyerAddress, pic.getDiscountOrPrice());
+					if(categoryDiscountTree!=null)
+						productPrice=categoryDiscountTree.updatePriceProduct(productPrice, sameStoreAndCategoryCounter, buyerAddress, pic.getDiscountOrPrice());
 				}
 				else{
 					productPrice=pic.getDiscountOrPrice();

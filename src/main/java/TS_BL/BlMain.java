@@ -23,7 +23,7 @@ public class BlMain {
 	};
 	public static List<Category> allCategory=new ArrayList<Category>(){
 		{
-			add(new Category("toyes"));
+			add(new Category("toys"));
 			add(new Category("food"));
 			//....
 		}

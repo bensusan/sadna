@@ -40,6 +40,7 @@ public class SystemAdminAT {
 			s3 = BlMain.signUp(new Guest(), "third", "third", "nameC", "add3" , "012345678945", "987564321123");
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 	}
 	@Test
@@ -67,12 +68,14 @@ public class SystemAdminAT {
 			assertFalse(BlMain.removeSubscriber(sa, notExits));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 
 		try {
 			assertTrue(BlMain.removeSubscriber(sa, s1));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 
 		assertFalse(BlMain.allSubscribers.contains(s1));

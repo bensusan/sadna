@@ -25,7 +25,8 @@ public class NotPolicy extends PurchasePolicy {
 	public int updatePriceProduct(int price, int amount, String address, int discountCode) throws Exception {
 		if(isCorrectProduct(amount, address)&&this.getCurrDiscount()!=null)
 		{
-			return this.getCurrDiscount().updatePrice(price, discountCode);
+			if (getCurrDiscount()!=null)
+				return this.getCurrDiscount().updatePrice(price, discountCode);
 		}
 		return price;
 	}

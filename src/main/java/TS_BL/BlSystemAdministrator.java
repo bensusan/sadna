@@ -73,12 +73,9 @@ public class BlSystemAdministrator {
 		if(store == null)
 			throw new Exception("invalid store");
 
-		List<Store> stores = sa.getStores();
-		if(stores.contains(store)){
+		
 			return store.getPurchaseHistory();
-		}
-		else
-			throw new Exception("this store doesn't appears in the list of stores");
+		
 	}
 
 }

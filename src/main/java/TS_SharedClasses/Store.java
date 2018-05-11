@@ -140,7 +140,13 @@ public class Store {
 	}
 
 	public PurchasePolicy getStorePolicy() {
-		return storePolicy;
+		if(storePolicy==null)
+		{
+			return new EmptyPolicy();
+		}
+		else{
+			return storePolicy;
+		}
 	}
 
 	public void setStorePolicy(PurchasePolicy storePolicy) {

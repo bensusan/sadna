@@ -38,28 +38,28 @@ public class StoreOwenerAT {
 			so = own1.get(0);
 
 			try {
-				prod1 = new Product("prod1", 200, 4, "test cat 1", 
-						new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
-				prod11 = new Product("prod1", 200, 4, "test cat 1", 
-						new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
-				prod111 = new Product("prod1", 200, 4, "test cat 1", 
-						new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
-				prod2 = new Product("prod2", 200, 4, "test cat 2", 
-						new PurchasePolicy(new ImmediatelyPurchase()));
-				prod3 = new Product("prod3", 100, 4, "test cat 3", 
-						new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
-				prod33 = new Product("prod3", 100, 4, "test cat 3", 
-						new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
-				prod4 = new Product("prod4", 200, 4, "test cat 4", 
-						new PurchasePolicy(new ImmediatelyPurchase()));
+				prod1 = new Product("prod1", 200, 4, new EmptyPolicy(), 
+						new ImmediatelyPurchase(new EmptyPolicy(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
+				prod11 = new Product("prod1", 200, 4, new EmptyPolicy(),
+						new ImmediatelyPurchase(new EmptyPolicy(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
+				prod111 = new Product("prod1", 200, 4, new EmptyPolicy(),
+						new ImmediatelyPurchase(new EmptyPolicy(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
+				prod2 = new Product("prod2", 200, 4, new EmptyPolicy(),
+						new ImmediatelyPurchase());
+				prod3 = new Product("prod3", 100, 4, new EmptyPolicy(),
+						new LotteryPurchase(Date.valueOf("2019-01-01")));
+				prod33 = new Product("prod3", 100, 4, new EmptyPolicy(), 
+						new LotteryPurchase(Date.valueOf("2019-01-01")));
+				prod4 = new Product("prod4", 200, 4, new EmptyPolicy(),
+						new ImmediatelyPurchase());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				fail();
 			}
 		}
 		catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			fail();
 		}
 
 
@@ -81,38 +81,40 @@ public class StoreOwenerAT {
 	private void testAddProduct(){
 		//test incorret input
 		try {
-			BlMain.addProductToStore(so, prod2, -1);
+			BlMain.addProductToStore(so, prod2, -1,"toys");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), "amount must be greater than 0");
 		}
 		try {
-			BlMain.addProductToStore(so, prod2, 0);
+			BlMain.addProductToStore(so, prod2, 0,"toys");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), "amount must be greater than 0");
 		}
 		try {
-			BlMain.addProductToStore(so, null, 1);
+			BlMain.addProductToStore(so, null, 1,"toys");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), "something went wrong");
 		}
 		StoreOwner so2 = null;
 		try {
-			BlMain.addProductToStore(so2, prod2, 1);
+			BlMain.addProductToStore(so2, prod2, 1,"toys");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), "something went wrong");
 		}
 
 		//good case
 		try {
-			assertTrue(BlMain.addProductToStore(so, prod2, 1));
+			assertTrue(BlMain.addProductToStore(so, prod2, 1,"toys"));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		//add the same product with diff amount
 		try {
-			assertTrue(BlMain.addProductToStore(so, prod2, 2));
+			assertTrue(BlMain.addProductToStore(so, prod2, 2,"toys"));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		Store s = so.getStore();
 		assertEquals(3, s.getProducts().get(prod2).intValue());
@@ -121,7 +123,7 @@ public class StoreOwenerAT {
 	//3.1.2
 	private void testRemoveProduct(){
 		try{
-			BlMain.addProductToStore(so, prod4, 10);
+			BlMain.addProductToStore(so, prod4, 10,"toys");
 			//test incorret input
 			try{
 				BlMain.deleteProductFromStore(so, null);
@@ -142,8 +144,8 @@ public class StoreOwenerAT {
 			assertFalse(s.getProducts().keySet().contains(prod4));
 
 			//not exist product
-			Product notExits = new Product("notExits", 200, 4, "test cat 2", 
-					new PurchasePolicy(new ImmediatelyPurchase()));
+			Product notExits = new Product("notExits", 200, 4, new EmptyPolicy(), 
+					new ImmediatelyPurchase());
 			try{
 				assertFalse(BlMain.deleteProductFromStore(so, notExits));
 			}
@@ -153,53 +155,54 @@ public class StoreOwenerAT {
 		}
 		catch(Exception e){
 			e.printStackTrace();
+			fail();
 		}
 	}
 	//3.1.1
 	private void testEditProduct(){
 		try {
-			BlMain.addProductToStore(so, prod1, 10);
-			Product newProduct = new Product("newProduct", 200, 4, "test cat 1", new PurchasePolicy(new ImmediatelyPurchase()));
+			BlMain.addProductToStore(so, prod1, 10,"toys");
+			Product newProduct = new Product("newProduct", 200, 4, new EmptyPolicy(), new ImmediatelyPurchase());
 
 			//incorrect Input
 			try{
-				BlMain.updateProductDetails(so, prod1, newProduct, -1);
+				BlMain.updateProductDetails(so, prod1, newProduct, -1,"toys");
 			}
 			catch(Exception e){
 				assertEquals(e.getMessage(), "amount must be greater than 0");
 			}
 			try{
-				BlMain.updateProductDetails(so, prod1, newProduct, 0);
+				BlMain.updateProductDetails(so, prod1, newProduct, 0,"toys");
 			}
 			catch(Exception e){
 				assertEquals(e.getMessage(), "amount must be greater than 0");
 			}
 			try{
-				BlMain.updateProductDetails(so, prod1, null, 1);
+				BlMain.updateProductDetails(so, prod1, null, 1,"toys");
 			}
 			catch(Exception e){
 				assertEquals(e.getMessage(), "something went wrong");
 			}
 			try{
-				BlMain.updateProductDetails(so, null, newProduct, 1);
+				BlMain.updateProductDetails(so, null, newProduct, 1,"toys");
 			}
 			catch(Exception e){
 				assertEquals(e.getMessage(), "something went wrong");
 			}
 			StoreOwner so2 = null;
 			try{
-				BlMain.updateProductDetails(so2, prod1, newProduct, 1);
+				BlMain.updateProductDetails(so2, prod1, newProduct, 1,"toys");
 			}
 			catch(Exception e){
 				assertEquals(e.getMessage(), "something went wrong");
 			}
 
 			//not Exist
-			Product notExits = new Product("notExits", 200, 4, "test cat 2", new PurchasePolicy(new ImmediatelyPurchase()));
-			assertTrue(BlMain.updateProductDetails(so, prod1, notExits, 1));
+			Product notExits = new Product("notExits", 200, 4, new EmptyPolicy(), new ImmediatelyPurchase());
+			assertTrue(BlMain.updateProductDetails(so, prod1, notExits, 1,"toys"));
 
 			//good case
-			assertTrue(BlMain.updateProductDetails(so, notExits, newProduct, 1));
+			assertTrue(BlMain.updateProductDetails(so, notExits, newProduct, 1,"toys"));
 			Store s = so.getStore();
 			assertFalse(s.getProducts().keySet().contains(notExits));
 			assertTrue(s.getProducts().keySet().contains(newProduct));
@@ -211,9 +214,10 @@ public class StoreOwenerAT {
 	//3.2.1
 	private void testDefinePurchasePolicy(){
 		try {
-			BlMain.addProductToStore(so, prod1, 10);
+			BlMain.addProductToStore(so, prod1, 10,"toys");
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 
 		//incorrect Input
@@ -223,29 +227,30 @@ public class StoreOwenerAT {
 			assertEquals(e.getMessage(), "something went wrong");
 		}
 		try {
-			BlMain.addPolicyToProduct(so, new PurchasePolicy(new ImmediatelyPurchase()), null);
+			BlMain.addPolicyToProduct(so, new EmptyPolicy(), null);
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), "something went wrong");
 		}
 		StoreOwner so2 = null;
 		try {
-			BlMain.addPolicyToProduct(so2, new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))), prod1);
+			BlMain.addPolicyToProduct(so2, new EmptyPolicy(), prod1);
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), "something went wrong");
 		}
 
 		//good case
-		PurchasePolicy newPolicy = new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01")));
+		PurchasePolicy newPolicy =new EmptyPolicy();
 		try {
 			assertTrue(BlMain.addPolicyToProduct(so, newPolicy, prod1));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 
 		//add policy to non exists prod
 		try{
-		Product notExits = new Product("notExits", 200, 4, "test cat 2", new PurchasePolicy(new ImmediatelyPurchase()));
-		BlMain.addPolicyToProduct(so, new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))), notExits);
+		Product notExits = new Product("notExits", 200, 4, new EmptyPolicy(), new ImmediatelyPurchase());
+		BlMain.addPolicyToProduct(so, new MaxPolicy(null,3), notExits);
 		}
 		catch(Exception e){
 			assertEquals(e.getMessage(), "something went wrong");
@@ -254,7 +259,7 @@ public class StoreOwenerAT {
 	//3.2.2
 	private void testDefineDiscountPolicy(){
 		try {
-			boolean a = BlMain.addProductToStore(so, prod11, 10);
+			boolean a = BlMain.addProductToStore(so, prod11, 10,"toys");
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -266,42 +271,45 @@ public class StoreOwenerAT {
 			assertEquals(e.getMessage(), "something went wrong");
 		}
 		try {
-			BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 10), null);
+			BlMain.addDiscountToProduct(so, new EmptyPolicy(new OvertDiscount(new java.sql.Date(0), 10)), null);
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), "something went wrong");
 		}
 		StoreOwner so2 = null;
 		try {
-			BlMain.addDiscountToProduct(so2, new OvertDiscount(new java.sql.Date(0), 10), prod11);
+			BlMain.addDiscountToProduct(so2, new EmptyPolicy(new OvertDiscount(new java.sql.Date(0), 10)), prod11);
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), "something went wrong");
 		}
 		//not found
 		Product notExits;
 		try {
-			notExits = new Product("notExits", 200, 4, "test cat 2", new PurchasePolicy(new ImmediatelyPurchase()));
+			notExits = new Product("notExits", 200, 4, new EmptyPolicy(),new ImmediatelyPurchase());
 
 			try {
-				BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 10), notExits);
+				BlMain.addDiscountToProduct(so, new EmptyPolicy(new OvertDiscount(new java.sql.Date(0), 10)), notExits);
 			} catch (Exception e) {
 				assertEquals(e.getMessage(), "something went wrong");
 			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		//good case
 		try {
-			assertTrue(BlMain.addDiscountToProduct(so, new OvertDiscount(new java.sql.Date(0), 10), prod11));
+			assertTrue(BlMain.addDiscountToProduct(so, new EmptyPolicy(new OvertDiscount(new java.sql.Date(0), 10)), prod11));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 
 		try {
-			BlMain.addProductToStore(so, prod2, 10);
-			assertTrue(BlMain.addDiscountToProduct(so, new HiddenDiscount(123, Date.valueOf("2019-01-01"), 20), prod2));
+			BlMain.addProductToStore(so, prod2, 10,"toys");
+			assertTrue(BlMain.addDiscountToProduct(so, new EmptyPolicy(new HiddenDiscount(123, Date.valueOf("2019-01-01"), 20)), prod2));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 	}
 	//3.3
@@ -326,6 +334,7 @@ public class StoreOwenerAT {
 			assertTrue(BlMain.addNewStoreOwner(so2, sub));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 
 	}
@@ -352,13 +361,14 @@ public class StoreOwenerAT {
 			assertTrue(BlMain.addNewManager(so, sub));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 	}
 	//3.7
 	private void testWatchPurchaseHistory(){
 		try{
-			BlMain.addProductToStore(so, prod33, 22);
-			BlMain.addProductToStore(so, prod111, 22);
+			BlMain.addProductToStore(so, prod33, 22,"toys");
+			BlMain.addProductToStore(so, prod111, 22,"toys");
 			Guest g1 = new Guest();
 			Guest g2 = new Guest();
 
@@ -382,6 +392,7 @@ public class StoreOwenerAT {
 		}
 		catch(Exception e){
 			e.printStackTrace();
+			fail();
 		}
 
 	}

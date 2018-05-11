@@ -18,7 +18,7 @@ public class BlMain {
 
 	public static List<Subscriber> allSubscribers = new ArrayList<Subscriber>(){
 		{
-			add(((Subscriber)new SystemAdministrator("itzik", "11111111", "shmulik", "bait shel or", "0522222222", "111111111111", new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>())));
+			add(((Subscriber)new SystemAdministrator("itzik", BlGuest.md5Hash("11111111"), "shmulik", "bait shel or", "0522222222", "111111111111", new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>())));
 		}		
 	};
 	public static List<Category> allCategory=new ArrayList<Category>(){

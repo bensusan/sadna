@@ -25,193 +25,208 @@ public class GreetingController {
 		Thread.sleep(1000); // simulated delay
 		Gson gson = new Gson();
 		String[] args = message.getParamsAsJSON();
-		HelloMessage.functionNames f = HelloMessage.functionNames.valueOf(message.getFunctionName());
-		Object ret = null;
+		String fName = message.getFunctionName();
+		HelloMessage.functionNames f = HelloMessage.functionNames.valueOf(fName);
+		Greeting ret = new Greeting(message.getPageName(), fName);
 		try {
 			switch (f) {
 			case addImmediatelyProduct:
-				if (args.length == 3)
-					ret = BlMain.addImmediatelyProduct(gson.fromJson(args[0], Guest.class),
-							gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class));
-				else if (args.length == 4)
-					ret = BlMain.addImmediatelyProduct(gson.fromJson(args[0], Guest.class),
+				if (args.length == 3) {
+					ret.setContentAsJson(gson.toJson(BlMain.addImmediatelyProduct(gson.fromJson(args[0], Guest.class),
+							gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class))));
+				} else if (args.length == 4){
+					ret.setContentAsJson(gson.toJson(BlMain.addImmediatelyProduct(gson.fromJson(args[0], Guest.class),
 							gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class),
-							gson.fromJson(args[3], Integer.class));
+							gson.fromJson(args[3], Integer.class))));
+				}
 				break;
 			case addLotteryProduct:
-				if (args.length == 3)
-					ret = BlMain.addLotteryProduct(gson.fromJson(args[0], Guest.class),
-							gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class));
+				if (args.length == 3){
+					ret.setContentAsJson(gson.toJson(BlMain.addLotteryProduct(gson.fromJson(args[0], Guest.class),
+							gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class))));
+				}
 				break;
 			case removeProductFromCart:
-				if (args.length == 2)
-					ret = BlMain.removeProductFromCart(gson.fromJson(args[0], Guest.class),
-							gson.fromJson(args[1], Product.class));
+				if (args.length == 2){
+					ret.setContentAsJson(gson.toJson(BlMain.removeProductFromCart(gson.fromJson(args[0], Guest.class),
+							gson.fromJson(args[1], Product.class))));
+				}
 				break;
 			case editProductAmount:
-				if (args.length == 2)
-					ret = BlMain.editProductAmount(gson.fromJson(args[0], Guest.class),
-							gson.fromJson(args[1], Product.class), gson.fromJson(args[1], Integer.class));
+				if (args.length == 2){
+					ret.setContentAsJson(gson.toJson(BlMain.editProductAmount(gson.fromJson(args[0], Guest.class),
+							gson.fromJson(args[1], Product.class), gson.fromJson(args[1], Integer.class))));
+				}
 				break;
 			case editProductDiscount:
-				if (args.length == 2)
-					ret = BlMain.editProductDiscount(gson.fromJson(args[0], Guest.class),
-							gson.fromJson(args[1], Product.class), gson.fromJson(args[1], Integer.class));
+				if (args.length == 2){
+					ret.setContentAsJson(gson.toJson(BlMain.editProductDiscount(gson.fromJson(args[0], Guest.class),
+							gson.fromJson(args[1], Product.class), gson.fromJson(args[1], Integer.class))));
+				}
 				break;
 			case editProductPrice:
-				if (args.length == 2)
-					ret = BlMain.editProductPrice(gson.fromJson(args[0], Guest.class),
-							gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class));
+				if (args.length == 2){
+					ret.setContentAsJson(gson.toJson(BlMain.editProductPrice(gson.fromJson(args[0], Guest.class),
+							gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class))));
+				}
 				break;
 			case editCart:
-				if (args.length == 2)
-					ret = BlMain.editCart(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], Cart.class));
+				if (args.length == 2){
+					ret.setContentAsJson(gson.toJson(BlMain.editCart(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], Cart.class))));
+				}
 				break;
 			case purchaseCart:
-				if (args.length == 3)
-					ret = BlMain.purchaseCart(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], String.class),
-							gson.fromJson(args[2], String.class));
+				if (args.length == 3){
+					ret.setContentAsJson(gson.toJson(BlMain.purchaseCart(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], String.class),
+							gson.fromJson(args[2], String.class))));
+				}
 				break;
 			case addProductToStore:
 				if (args.length == 4) {
 					try {
-						ret = BlMain.addProductToStore(gson.fromJson(args[0], StoreManager.class),
-								gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class), gson.fromJson(args[3],  String.class));
+						ret.setContentAsJson(gson.toJson(BlMain.addProductToStore(gson.fromJson(args[0], StoreManager.class),
+								gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class),
+								gson.fromJson(args[3], String.class))));
 					} catch (JsonSyntaxException j) {
-						ret = BlMain.addProductToStore(gson.fromJson(args[0], StoreOwner.class),
-								gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class), gson.fromJson(args[3],  String.class));
+						ret.setContentAsJson(gson.toJson(BlMain.addProductToStore(gson.fromJson(args[0], StoreOwner.class),
+								gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class),
+								gson.fromJson(args[3], String.class))));
 					}
 				}
 				break;
 			case deleteProductFromStore:
 				if (args.length == 2) {
 					try {
-						ret = BlMain.deleteProductFromStore(gson.fromJson(args[0], StoreManager.class),
-								gson.fromJson(args[1], Product.class));
+						ret.setContentAsJson(gson.toJson(BlMain.deleteProductFromStore(gson.fromJson(args[0], StoreManager.class),
+								gson.fromJson(args[1], Product.class))));
 					} catch (JsonSyntaxException j) {
-						ret = BlMain.deleteProductFromStore(gson.fromJson(args[0], StoreOwner.class),
-								gson.fromJson(args[1], Product.class));
+						ret.setContentAsJson(gson.toJson(BlMain.deleteProductFromStore(gson.fromJson(args[0], StoreOwner.class),
+								gson.fromJson(args[1], Product.class))));
 					}
 				}
 				break;
 			case updateProductDetails:
 				if (args.length == 5) {
 					try {
-						ret = BlMain.updateProductDetails(gson.fromJson(args[0], StoreManager.class),
+						ret.setContentAsJson(gson.toJson(BlMain.updateProductDetails(gson.fromJson(args[0], StoreManager.class),
 								gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Product.class),
-								gson.fromJson(args[3], Integer.class), gson.fromJson(args[4],  String.class));
+								gson.fromJson(args[3], Integer.class), gson.fromJson(args[4], String.class))));
 					} catch (JsonSyntaxException j) {
-						ret = BlMain.updateProductDetails(gson.fromJson(args[0], StoreOwner.class),
+						ret.setContentAsJson(gson.toJson(BlMain.updateProductDetails(gson.fromJson(args[0], StoreOwner.class),
 								gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Product.class),
-								gson.fromJson(args[3], Integer.class), gson.fromJson(args[4],  String.class));
+								gson.fromJson(args[3], Integer.class), gson.fromJson(args[4], String.class))));
 					}
 				}
 				break;
 			case addPolicyToProduct:
 				if (args.length == 3) {
 					try {
-						ret = BlMain.addPolicyToProduct(gson.fromJson(args[0], StoreManager.class),
-								gson.fromJson(args[1], PurchasePolicy.class), gson.fromJson(args[2], Product.class));
+						ret.setContentAsJson(gson.toJson(BlMain.addPolicyToProduct(gson.fromJson(args[0], StoreManager.class),
+								gson.fromJson(args[1], PurchasePolicy.class), gson.fromJson(args[2], Product.class))));
 					} catch (JsonSyntaxException j) {
-						ret = BlMain.addPolicyToProduct(gson.fromJson(args[0], StoreOwner.class),
-								gson.fromJson(args[1], PurchasePolicy.class), gson.fromJson(args[2], Product.class));
+						ret.setContentAsJson(gson.toJson(BlMain.addPolicyToProduct(gson.fromJson(args[0], StoreOwner.class),
+								gson.fromJson(args[1], PurchasePolicy.class), gson.fromJson(args[2], Product.class))));
 					}
 				}
 				break;
 			case addDiscountToProduct:
 				if (args.length == 4) {
 					try {
-						ret = BlMain.addDiscountToProduct(gson.fromJson(args[0], StoreManager.class),
-								gson.fromJson(args[1], PurchasePolicy.class), gson.fromJson(args[2], Product.class));
+						ret.setContentAsJson(gson.toJson(BlMain.addDiscountToProduct(gson.fromJson(args[0], StoreManager.class),
+								gson.fromJson(args[1], PurchasePolicy.class), gson.fromJson(args[2], Product.class))));
 					} catch (JsonSyntaxException j) {
-						ret = BlMain.addDiscountToProduct(gson.fromJson(args[0], StoreOwner.class),
-								gson.fromJson(args[1], PurchasePolicy.class), gson.fromJson(args[2], Product.class));
+						ret.setContentAsJson(gson.toJson(BlMain.addDiscountToProduct(gson.fromJson(args[0], StoreOwner.class),
+								gson.fromJson(args[1], PurchasePolicy.class), gson.fromJson(args[2], Product.class))));
 					}
 				}
 				break;
 			case addNewStoreOwner:
 				if (args.length == 2) {
 					try {
-						ret = BlMain.addNewStoreOwner(gson.fromJson(args[0], StoreManager.class),
-								gson.fromJson(args[1], Subscriber.class));
+						ret.setContentAsJson(gson.toJson(BlMain.addNewStoreOwner(gson.fromJson(args[0], StoreManager.class),
+								gson.fromJson(args[1], Subscriber.class))));
 					} catch (JsonSyntaxException j) {
-						ret = BlMain.addNewStoreOwner(gson.fromJson(args[0], StoreOwner.class),
-								gson.fromJson(args[1], Subscriber.class));
+						ret.setContentAsJson(gson.toJson(BlMain.addNewStoreOwner(gson.fromJson(args[0], StoreOwner.class),
+								gson.fromJson(args[1], Subscriber.class))));
 					}
 				}
 				break;
 			case addNewManager:
 				if (args.length == 2) {
 					try {
-						ret = BlMain.addNewManager(gson.fromJson(args[0], StoreManager.class),
-								gson.fromJson(args[1], Subscriber.class));
+						ret.setContentAsJson(gson.toJson(BlMain.addNewManager(gson.fromJson(args[0], StoreManager.class),
+								gson.fromJson(args[1], Subscriber.class))));
 					} catch (JsonSyntaxException j) {
-						ret = BlMain.addNewManager(gson.fromJson(args[0], StoreOwner.class),
-								gson.fromJson(args[1], Subscriber.class));
+						ret.setContentAsJson(gson.toJson(BlMain.addNewManager(gson.fromJson(args[0], StoreOwner.class),
+								gson.fromJson(args[1], Subscriber.class))));
 					}
 				}
 				break;
 			case closeStore:
 				if (args.length == 1) {
 					try {
-						ret = BlMain.closeStore(gson.fromJson(args[0], StoreManager.class));
+						ret.setContentAsJson(gson.toJson(BlMain.closeStore(gson.fromJson(args[0], StoreManager.class))));
 					} catch (JsonSyntaxException j) {
-						ret = BlMain.closeStore(gson.fromJson(args[0], StoreOwner.class));
+						ret.setContentAsJson(gson.toJson(BlMain.closeStore(gson.fromJson(args[0], StoreOwner.class))));
 					}
 				}
 				break;
 			case openStore:
 				if (args.length == 1) {
 					try {
-						ret = BlMain.openStore(gson.fromJson(args[0], StoreManager.class));
+						ret.setContentAsJson(gson.toJson(BlMain.openStore(gson.fromJson(args[0], StoreManager.class))));
 					} catch (JsonSyntaxException j) {
-						ret = BlMain.openStore(gson.fromJson(args[0], StoreOwner.class));
+						ret.setContentAsJson(gson.toJson(BlMain.openStore(gson.fromJson(args[0], StoreOwner.class))));
 					}
 				} else if (args.length == 6) {
 					Map<Product, Integer> map = new HashMap<Product, Integer>();
 					List<Purchase> p = new LinkedList<Purchase>();
-					ret = BlMain.openStore(gson.fromJson(args[0], Subscriber.class),
+					ret.setContentAsJson(gson.toJson(BlMain.openStore(gson.fromJson(args[0], Subscriber.class),
 							gson.fromJson(args[1], String.class), gson.fromJson(args[2], Integer.class),
 							(Map<Product, Integer>) gson.fromJson(args[3], map.getClass()),
 							(List<Purchase>) gson.fromJson(args[4], p.getClass()),
-							gson.fromJson(args[5], Boolean.class));
+							gson.fromJson(args[5], Boolean.class))));
 				}
 				break;
 			case getPurchaseHistory:
 				if (args.length == 1) {
 					try {
-						ret = BlMain.getPurchaseHistory(gson.fromJson(args[0], StoreManager.class));
+						ret.setContentAsJson(gson.toJson(BlMain.getPurchaseHistory(gson.fromJson(args[0], StoreManager.class))));
 					} catch (JsonSyntaxException j) {
-						ret = BlMain.getPurchaseHistory(gson.fromJson(args[0], StoreOwner.class));
+						ret.setContentAsJson(gson.toJson(BlMain.getPurchaseHistory(gson.fromJson(args[0], StoreOwner.class))));
 					}
 				}
 				break;
 			case removeSubscriber:
-				if (args.length == 2)
-					ret = BlMain.removeSubscriber(gson.fromJson(args[0], SystemAdministrator.class),
-							gson.fromJson(args[1], Subscriber.class));
+				if (args.length == 2){
+					ret.setContentAsJson(gson.toJson(BlMain.removeSubscriber(gson.fromJson(args[0], SystemAdministrator.class),
+							gson.fromJson(args[1], Subscriber.class))));
+				}
 				break;
 			case viewSubscriberHistory:
-				if (args.length == 2)
-					ret = BlMain.viewSubscriberHistory(gson.fromJson(args[0], SystemAdministrator.class),
-							gson.fromJson(args[1], Subscriber.class));
+				if (args.length == 2){
+					ret.setContentAsJson(gson.toJson(BlMain.viewSubscriberHistory(gson.fromJson(args[0], SystemAdministrator.class),
+							gson.fromJson(args[1], Subscriber.class))));
+				}
 				break;
 			case viewStoreHistory:
-				if (args.length == 2)
-					ret = BlMain.viewStoreHistory(gson.fromJson(args[0], SystemAdministrator.class),
-							gson.fromJson(args[1], Store.class));
+				if (args.length == 2){
+					ret.setContentAsJson(gson.toJson(BlMain.viewStoreHistory(gson.fromJson(args[0], SystemAdministrator.class),
+							gson.fromJson(args[1], Store.class))));
+				}
 				break;
 			case signUp:
-				if (args.length == 7)
-					ret = BlMain.signUp(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], String.class),
+				if (args.length == 7){
+					ret.setContentAsJson(gson.toJson(BlMain.signUp(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], String.class),
 							gson.fromJson(args[2], String.class), gson.fromJson(args[3], String.class),
 							gson.fromJson(args[4], String.class), gson.fromJson(args[5], String.class),
-							gson.fromJson(args[6], String.class));
+							gson.fromJson(args[6], String.class))));
+				}
 				break;
 			case signIn:
 				if (args.length == 3) {
-					ret = BlMain.signIn(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], String.class),
-							gson.fromJson(args[2], String.class));
+					ret.setContentAsJson(gson.toJson(BlMain.signIn(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], String.class),
+							gson.fromJson(args[2], String.class))));
 				}
 				break;
 			case expiredProducts:
@@ -226,21 +241,21 @@ public class GreetingController {
 			case changeStorePurchasePolicy:
 				if (args.length == 2) {
 					try {
-						ret = BlMain.changeStorePurchasePolicy(gson.fromJson(args[0], StoreManager.class),
-								gson.fromJson(args[1], PurchasePolicy.class));
+						ret.setContentAsJson(gson.toJson(BlMain.changeStorePurchasePolicy(gson.fromJson(args[0], StoreManager.class),
+								gson.fromJson(args[1], PurchasePolicy.class))));
 					} catch (JsonSyntaxException j) {
-						ret = BlMain.changeStorePurchasePolicy(gson.fromJson(args[0], StoreOwner.class),
-								gson.fromJson(args[1], PurchasePolicy.class));
+						ret.setContentAsJson(gson.toJson(BlMain.changeStorePurchasePolicy(gson.fromJson(args[0], StoreOwner.class),
+								gson.fromJson(args[1], PurchasePolicy.class))));
 					}
 				}
 				break;
 			default:
 				break;
 			}
-			return ret != null ? new Greeting(ret.toString()) : null;
 		} catch (Exception e) {
-			return new Greeting(e.getMessage());
+			ret.setException();
+			ret.setContentAsJson(e.getMessage());
 		}
+		return ret;
 	}
-
 }

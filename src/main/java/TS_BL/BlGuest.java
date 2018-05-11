@@ -235,7 +235,7 @@ public class BlGuest {
 	}
 	
 	//Takes a string, and converts it to md5 hashed string.
-    private static String md5Hash(String message) {
+    static String md5Hash(String message) {
         String md5 = "";
         if(null == message) 
             return null;

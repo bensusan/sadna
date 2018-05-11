@@ -19,7 +19,9 @@ function connect() {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/greetings', function (greeting) {
-            showGreeting(JSON.parse(greeting.body).content);
+        	var body = JSON.parse(greeting.body);
+        	var obj = JSON.parse(body.contentAsJson)
+            showGreeting(body.pageName + " " + body.functionName + " " + body.isException + " " + obj.username);
         });
     });
 }
@@ -37,7 +39,8 @@ function disconnect() {
 function signIn() {
     stompClient.send("/app/hello", {}, 
     JSON.stringify(
-				    {	'functionName': "signIn",
+				    {	'pageName': "Login",
+				    	'functionName': "signIn",
 				    	'paramsAsJSON': [	"{'cart': {'products': []}}",	//new Guest()
 				    						$("#userName").val(),			//userName
 				    						$("#password").val()

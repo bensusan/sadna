@@ -27,6 +27,7 @@ public class SubscriberAT {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 	}
 	@Test
@@ -65,6 +66,7 @@ public class SubscriberAT {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		
 	}

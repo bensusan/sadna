@@ -38,63 +38,72 @@ public class GuestAT {
 				so = own1.get(0);
 
 				try{
-					immediateOvertProduct = new Product("prod1", 200, 4, "test cat 1", 
-							new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
+					
+					immediateOvertProduct=new Product("prod1",200,4,new EmptyPolicy(),new ImmediatelyPurchase(new EmptyPolicy(new OvertDiscount(Date.valueOf("2019-01-01"),50))));
+//					immediateOvertProduct = new Product("prod1", 200, 4, "test cat 1", 
+//							new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
 					try{
-						immediateNoDiscountProduct = new Product("prod2", 200, 4, "test cat 2", 
-								new PurchasePolicy(new ImmediatelyPurchase()));
+						immediateNoDiscountProduct = new Product("prod2", 200, 4,new EmptyPolicy(), 
+								new ImmediatelyPurchase());
 						try{
-							lotteryProduct = new Product("prod3", 100, 4, "test cat 3", 
-									new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
+							lotteryProduct = new Product("prod3", 100, 4,new EmptyPolicy(),
+									new LotteryPurchase(Date.valueOf("2019-01-01")));
 							try{
-								zeroAmountProduct = new Product("prod4", 200, 4, "test cat 4", 
-										new PurchasePolicy(new ImmediatelyPurchase()));
+								zeroAmountProduct = new Product("prod4", 200, 4, new EmptyPolicy(), 
+										new ImmediatelyPurchase());
 
 
 
 								try {
-									BlMain.addProductToStore(so, immediateOvertProduct, 50);
+									BlMain.addProductToStore(so, immediateOvertProduct, 50,"toys");
 								} catch (Exception e) {
 									e.printStackTrace();
+									fail();
 								}
 								try {
-									BlMain.addProductToStore(so, immediateNoDiscountProduct, 50);
+									BlMain.addProductToStore(so, immediateNoDiscountProduct, 50,"toys");
 								} catch (Exception e2) {
 									e2.printStackTrace();
 								}
 								try {
-									BlMain.addProductToStore(so, lotteryProduct, 50);
+									BlMain.addProductToStore(so, lotteryProduct, 50,"toys");
 								} catch (Exception e1) {
 									e1.printStackTrace();
 								}
 								try {
-									BlMain.addProductToStore(so, zeroAmountProduct, 0);
+									BlMain.addProductToStore(so, zeroAmountProduct, 0,"toys");
 								} catch (Exception e) {
 									assertEquals(e.getMessage(), "amount must be greater than 0");
 								}
 							}
 							catch (Exception e) {
 								e.printStackTrace();
+								fail();
 							}
 						}
 						catch (Exception e) {
 							e.printStackTrace();
+							fail();
 						}
 					}
 					catch (Exception e) {
 						e.printStackTrace();
+						fail();
 					}
 				}
 				catch (Exception e) {
 					e.printStackTrace();
+					fail();
 				}
 			}
 			catch (Exception e) {
 				e.printStackTrace();
+				fail();
 			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 	}
 	@Test
@@ -228,15 +237,15 @@ public class GuestAT {
 
 				Product p1;
 				Product p2;
-				p1 = new Product("prod1", 100, 4, "test cat 1", new PurchasePolicy(new ImmediatelyPurchase()));
-				p2 = new Product("prod2", 100, 4, "test cat 2", new PurchasePolicy(new ImmediatelyPurchase()));
+				p1 = new Product("prod1", 100, 4,new EmptyPolicy(), new ImmediatelyPurchase());
+				p2 = new Product("prod2", 100, 4, new EmptyPolicy(), new ImmediatelyPurchase());
 				try {
-					BlMain.addProductToStore(so1, p1, 5);
+					BlMain.addProductToStore(so1, p1, 5,"toys");
 				} catch (Exception e) {
 					assertEquals(so1.getStore().getProducts().get(p1) , ((Integer)5));
 				}
 				try {
-					BlMain.addProductToStore(so1, p2, 3);
+					BlMain.addProductToStore(so1, p2, 3,"toys");
 				} catch (Exception e) {
 					assertEquals(so1.getStore().getProducts().get(p2) , ((Integer)3));
 				}
@@ -249,24 +258,24 @@ public class GuestAT {
 						List<StoreOwner> own2 = sub2.getOwner();
 						StoreOwner so2 = own2.get(0);
 						try{
-							Product p3 = new Product("prod1", 100, 4, "test cat 1", new PurchasePolicy(new ImmediatelyPurchase()));
+							Product p3 = new Product("prod1", 100, 4,new EmptyPolicy(),new ImmediatelyPurchase());
 							try{
-								Product p4 = new Product("prod2", 100, 4, "test cat 2", new PurchasePolicy(new ImmediatelyPurchase()));
+								Product p4 = new Product("prod2", 100, 4, new EmptyPolicy(), new ImmediatelyPurchase());
 								try{
-									Product p5 = new Product("prod3", 100, 4, "test cat 2", new PurchasePolicy(new ImmediatelyPurchase()));
+									Product p5 = new Product("prod3", 100, 4, new EmptyPolicy(), new ImmediatelyPurchase());
 
 									try {
-										BlMain.addProductToStore(so2, p3, 5);
+										BlMain.addProductToStore(so2, p3, 5,"toys");
 									} catch (Exception e) {
 										assertEquals(so2.getStore().getProducts().get(p3) , ((Integer)5));
 									}
 									try {
-										BlMain.addProductToStore(so2, p4, 3);
+										BlMain.addProductToStore(so2, p4, 3,"toys");
 									} catch (Exception e) {
 										assertEquals(so2.getStore().getProducts().get(p4) , ((Integer)3));
 									}
 									try {
-										BlMain.addProductToStore(so2, p5, 3);
+										BlMain.addProductToStore(so2, p5, 3,"toys");
 									} catch (Exception e) {
 										assertEquals(so2.getStore().getProducts().get(p5) , ((Integer)3));
 									}
@@ -289,37 +298,30 @@ public class GuestAT {
 									assertTrue(prodDict2.get(p5)== 3);
 
 								}catch (Exception e2) {
-									// TODO Auto-generated catch block
 									e2.printStackTrace();
 								}
 							}
 							catch (Exception e2) {
-								// TODO Auto-generated catch block
 								e2.printStackTrace();
 							}
 						}
 						catch (Exception e2) {
-							// TODO Auto-generated catch block
 							e2.printStackTrace();
 						}
 					}
 					catch (Exception e2) {
-						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
 				}
 				catch (Exception e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 			}
 			catch (Exception e2) {
-				// TODO Auto-generated catch block
 				e2.printStackTrace();
 			}
 		}
 		catch (Exception e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 	}
@@ -330,11 +332,13 @@ public class GuestAT {
 			BlMain.addImmediatelyProduct(g, immediateOvertProduct, 1);
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		try {
 			BlMain.addImmediatelyProduct(g, immediateNoDiscountProduct, 3);
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 
 		Cart c = g.getCart();
@@ -367,7 +371,7 @@ public class GuestAT {
 		//item not found
 		Product p3;
 		try{
-			p3 = new Product("prod3", 100, 4, "test cat 3", new PurchasePolicy(new ImmediatelyPurchase()));
+			p3 = new Product("prod3", 100, 4, new EmptyPolicy(), new ImmediatelyPurchase());
 			try{
 				BlMain.removeProductFromCart(g, p3);
 			}
@@ -390,11 +394,13 @@ public class GuestAT {
 			}
 			catch(Exception e){
 				e.printStackTrace();
+				fail();
 			}
 
 		}
 		catch(Exception e){
 			e.printStackTrace();
+			fail();
 		}
 
 	}
@@ -416,7 +422,7 @@ public class GuestAT {
 		//item not found
 		Product p3;
 		try{
-			p3 = new Product("prod3", 100, 4, "test cat 3", new PurchasePolicy(new ImmediatelyPurchase()));
+			p3 = new Product("prod3", 100, 4, new EmptyPolicy(), new ImmediatelyPurchase());
 			try{
 				BlMain.editProductAmount(g, p3, 3);
 			}
@@ -455,14 +461,17 @@ public class GuestAT {
 				}
 				catch(Exception e){
 					e.printStackTrace();
+					fail();
 				}
 			}
 			catch(Exception e){
 				e.printStackTrace();
+				fail();
 			}
 		}
 		catch(Exception e){
 			e.printStackTrace();
+			fail();
 		}
 	}
 
@@ -516,7 +525,7 @@ public class GuestAT {
 		try{
 			BlMain.addImmediatelyProduct(g2, immediateNoDiscountProduct, 11);
 			try{
-				BlMain.purchaseCart(g2, "13245678", "rehovot");
+				BlMain.purchaseCart(g2, "1324567", "rehovot");
 			}
 			catch (Exception e) {
 				assertEquals(e.getMessage(), "ilegal credit card");
@@ -524,6 +533,7 @@ public class GuestAT {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 
 		//test success purchase no discount
@@ -535,10 +545,12 @@ public class GuestAT {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
+				fail();
 			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 
 		//test success purchase no discount
@@ -550,10 +562,12 @@ public class GuestAT {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
+				fail();
 			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 
 	}

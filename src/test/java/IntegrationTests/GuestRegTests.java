@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import TS_BL.BlMain;
 import TS_SharedClasses.Cart;
+import TS_SharedClasses.EmptyPolicy;
 import TS_SharedClasses.Guest;
 import TS_SharedClasses.ImmediatelyPurchase;
 import TS_SharedClasses.Product;
@@ -36,9 +37,9 @@ public class GuestRegTests {
 	public static void setUpBeforeClass() throws Exception {
 		ofir=BlMain.signUp(new Guest(), "ofir123", "ofir123", "ofir imas", "pach zevel 1 Ashdod", "0584792829", "2222222222222222");
 		ofirStore=BlMain.openStore((Subscriber) ofir,"ofir's store",5, new HashMap<Product, Integer>(), new LinkedList<Purchase>(),true);
-		tennisProduct=new Product("tennis ball", 5, 1, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
+		tennisProduct=new Product("tennis ball", 5, 1, new EmptyPolicy(), new ImmediatelyPurchase());
 		ofirOwnership=((Subscriber)ofir).getOwner().get(0);
-		BlMain.addProductToStore(ofirOwnership, tennisProduct, 50);
+		BlMain.addProductToStore(ofirOwnership, tennisProduct, 50,"toys");
 	}
 
 	@AfterClass
@@ -55,13 +56,28 @@ public class GuestRegTests {
 		testPuchaseCart();
 	}
 	private void testSignUp() {
-		alex=BlMain.signUp(new Guest(), "alexuser", "alexpass", "alex", "alex address", "0543545678", "9876543212345678");
+		try {
+			alex=BlMain.signUp(new Guest(), "alexuser", "alexpass", "alex", "alex address", "0543545678", "9876543212345678");
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 		assertTrue(BlMain.allSubscribers.contains(alex));
-		assertEquals(BlMain.signIn(alex, "alexuser", "alexpass"),alex);
+		try {
+			assertEquals(BlMain.signIn(alex, "alexuser", "alexpass"),alex);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
 	
 	private void testAddProductToCart() {
-		BlMain.addImmediatelyProduct(alex, tennisProduct, 10);
+		try {
+			BlMain.addImmediatelyProduct(alex, tennisProduct, 10);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 		for(ProductInCart p :alex.getCart().getProducts())
 		{
 			if(p.getMyProduct().equals(tennisProduct))
@@ -70,14 +86,29 @@ public class GuestRegTests {
 			}
 		}
 		assertEquals(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).get(tennisProduct).intValue(),50);
-		BlMain.removeProductFromCart(alex, tennisProduct);
+		try {
+			BlMain.removeProductFromCart(alex, tennisProduct);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
 	
 	
 	private void testLogIn() {
 		alex=new Guest();
-		BlMain.addImmediatelyProduct(alex, tennisProduct, 20);
-		alex=BlMain.signIn(alex, "alexuser", "alexpass");
+		try {
+			BlMain.addImmediatelyProduct(alex, tennisProduct, 20);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+		try {
+			alex=BlMain.signIn(alex, "alexuser", "alexpass");
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 		boolean containProduct= false;
 		for(ProductInCart p :alex.getCart().getProducts())
 		{
@@ -90,19 +121,37 @@ public class GuestRegTests {
 	}
 	
 	private void testPuchaseCart() {
-		BlMain.purchaseCart(alex, ((Subscriber)alex).getCreditCardNumber(), ((Subscriber)alex).getAddress());
+		try {
+			BlMain.purchaseCart(alex, ((Subscriber)alex).getCreditCardNumber(), ((Subscriber)alex).getAddress());
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 		assertEquals(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).get(tennisProduct).intValue(),30);
 		assertTrue(alex.getCart().getProducts().isEmpty());
 		SystemAdministrator amit=new SystemAdministrator("amit123", "amit123", "amit kaplan", "hatamar 3 Modiin", "0545818680", "1111111111111111",new LinkedList<Purchase>(),new LinkedList<StoreManager>(),new LinkedList<StoreOwner>());
 		
-		List<Purchase>l=BlMain.viewStoreHistory(amit, ofirStore);
+		List<Purchase> l=null;
+		try {
+			l = BlMain.viewStoreHistory(amit, ofirStore);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+		assertNotNull(l);
 		for (Purchase p:l)
 		{
 			if(p.getPurchased().getMyProduct().equals(tennisProduct)){
 				assertEquals(p.getPurchased().getAmount(),20);
 			}
 		}
-		l=BlMain.viewSubscriberHistory(amit, (Subscriber)alex);
+		try {
+			l=BlMain.viewSubscriberHistory(amit, (Subscriber)alex);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+		assertNotNull(l);
 		for(Purchase p:l)
 		{
 			if(p.getPurchased().getMyProduct().equals(tennisProduct)){

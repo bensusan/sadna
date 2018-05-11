@@ -39,6 +39,7 @@ public class systemAdministratorTests {
 			assertTrue(BlMain.removeSubscriber(amit, ofir));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 	}
 

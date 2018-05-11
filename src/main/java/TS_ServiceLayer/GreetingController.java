@@ -73,13 +73,13 @@ public class GreetingController {
 							gson.fromJson(args[2], String.class));
 				break;
 			case addProductToStore:
-				if (args.length == 3) {
+				if (args.length == 4) {
 					try {
 						ret = BlMain.addProductToStore(gson.fromJson(args[0], StoreManager.class),
-								gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class));
+								gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class), gson.fromJson(args[3],  String.class));
 					} catch (JsonSyntaxException j) {
 						ret = BlMain.addProductToStore(gson.fromJson(args[0], StoreOwner.class),
-								gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class));
+								gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class), gson.fromJson(args[3],  String.class));
 					}
 				}
 				break;
@@ -95,15 +95,15 @@ public class GreetingController {
 				}
 				break;
 			case updateProductDetails:
-				if (args.length == 4) {
+				if (args.length == 5) {
 					try {
 						ret = BlMain.updateProductDetails(gson.fromJson(args[0], StoreManager.class),
 								gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Product.class),
-								gson.fromJson(args[3], Integer.class));
+								gson.fromJson(args[3], Integer.class), gson.fromJson(args[4],  String.class));
 					} catch (JsonSyntaxException j) {
 						ret = BlMain.updateProductDetails(gson.fromJson(args[0], StoreOwner.class),
 								gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Product.class),
-								gson.fromJson(args[3], Integer.class));
+								gson.fromJson(args[3], Integer.class), gson.fromJson(args[4],  String.class));
 					}
 				}
 				break;
@@ -119,13 +119,13 @@ public class GreetingController {
 				}
 				break;
 			case addDiscountToProduct:
-				if (args.length == 3) {
+				if (args.length == 4) {
 					try {
 						ret = BlMain.addDiscountToProduct(gson.fromJson(args[0], StoreManager.class),
-								gson.fromJson(args[1], DiscountPolicy.class), gson.fromJson(args[2], Product.class));
+								gson.fromJson(args[1], PurchasePolicy.class), gson.fromJson(args[2], Product.class));
 					} catch (JsonSyntaxException j) {
 						ret = BlMain.addDiscountToProduct(gson.fromJson(args[0], StoreOwner.class),
-								gson.fromJson(args[1], DiscountPolicy.class), gson.fromJson(args[2], Product.class));
+								gson.fromJson(args[1], PurchasePolicy.class), gson.fromJson(args[2], Product.class));
 					}
 				}
 				break;

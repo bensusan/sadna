@@ -267,6 +267,21 @@ public class BlMain {
 		}
 		return res;
 	}
+	
+	public static List<Store> getAllSubscriberStores(Subscriber sub){
+		LinkedList<Store> stores = new LinkedList<Store>();
+		for (StoreOwner owner : sub.getOwner()) {
+			Store s = owner.getStore();
+			if(!stores.contains(s))
+				stores.add(s);
+		}
+		for (StoreManager man : sub.getManager()) {
+			Store s = man.getStore();
+			if(!stores.contains(s))
+				stores.add(s);
+		}
+		return stores;
+	}
 
 	public static List<Product> findProductByName(String name) {
 		return findProductByCriterion("Name", name);

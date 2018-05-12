@@ -8,15 +8,16 @@ import TS_BL.BlMain;
 
 public class Subscriber extends Guest {
 	
-	private String username;
-	private String password;
-	private String fullName;
-	private String address;
-	private String phone;
-	private String creditCardNumber;
-	private List<Purchase> purchaseHistory;
-	private List<StoreManager> manager;
-	private List<StoreOwner> owner;
+	protected String username;
+	protected String password;
+	protected String fullName;
+	protected String address;
+	protected String phone;
+	protected String creditCardNumber;
+	protected List<Purchase> purchaseHistory;
+	protected List<StoreManager> manager;
+	protected List<StoreOwner> owner;
+	protected boolean isAdmin;
 
 	public Subscriber(String username, String password, String fullName, String address, String phone,
 			String creditCardNumber,List<Purchase> purchaseHistory,List<StoreManager> manager,List<StoreOwner> owner) {
@@ -36,6 +37,7 @@ public class Subscriber extends Guest {
 		this.owner=owner;
 		if(owner == null)
 			this.owner = new LinkedList<StoreOwner>();
+		isAdmin = false;
 	}
 	
 	public Subscriber(Cart cart, String username, String password, String fullName, String address, String phone,
@@ -56,6 +58,7 @@ public class Subscriber extends Guest {
 		this.owner=owner;
 		if(owner == null)
 			this.owner = new LinkedList<StoreOwner>();
+		isAdmin = false;
 	}
 
 	public String getUsername() {
@@ -128,6 +131,15 @@ public class Subscriber extends Guest {
 
 	public void setOwner(List<StoreOwner> owner) {
 		this.owner = owner;
+	}
+	
+	
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 
 	@Override

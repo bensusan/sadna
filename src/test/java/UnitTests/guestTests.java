@@ -30,12 +30,12 @@ public class guestTests {
 		ofir=BlMain.signUp(new Guest(), "ofir123", "ofir123", "ofir imas", "pach zevel 1 Ashdod", "0584792829", "2222222222222222");
 		ofirStore=BlMain.openStore((Subscriber) ofir,"ofir store",5, new HashMap<Product, Integer>(), new LinkedList<Purchase>(),true);
 		ofirOwnership=((Subscriber)ofir).getOwner().get(0);
-		ball=new Product("ball", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase()));
-		ballwithDiscount=new Product("ball with Discount", 5, 3, "toyes", new PurchasePolicy(new ImmediatelyPurchase(new HiddenDiscount(1212, new Date(12,12,2018), 20))));
-		ballwithLottery=new Product("ball", 5, 3, "toyes", new PurchasePolicy(new LotteryPurchase(new Date(12,12,2018))));
-		BlMain.addProductToStore(ofirOwnership, ball, 10);
-		BlMain.addProductToStore(ofirOwnership, ballwithDiscount, 10);
-		BlMain.addProductToStore(ofirOwnership, ballwithLottery, 10);
+		ball=new Product("ball", 5, 3, new EmptyPolicy(), new ImmediatelyPurchase());
+		ballwithDiscount=new Product("ball with Discount", 5, 3, new EmptyPolicy(), new ImmediatelyPurchase(new EmptyPolicy(new HiddenDiscount(1212, new Date(12,12,2018), 20))));
+		ballwithLottery=new Product("ball", 5, 3, new EmptyPolicy(),new LotteryPurchase(new Date(12,12,2018)));
+		BlMain.addProductToStore(ofirOwnership, ball, 10,"toys");
+		BlMain.addProductToStore(ofirOwnership, ballwithDiscount, 10,"toys");
+		BlMain.addProductToStore(ofirOwnership, ballwithLottery, 10,"toys");
 	}
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
@@ -84,6 +84,7 @@ public class guestTests {
 			assertTrue(BlMain.addImmediatelyProduct(g, ball, 1));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		
 		for(ProductInCart p2:g.getCart().getProducts())
@@ -91,7 +92,6 @@ public class guestTests {
 			if(p2.getMyProduct().equals(ball))
 			{
 				assertEquals(p2.getAmount(),1);
-				assertEquals(p2.getDiscountOrPrice(),5);
 			}
 		}
 	}
@@ -129,7 +129,6 @@ public class guestTests {
 			if(p2.getMyProduct().equals(ballwithDiscount))
 			{
 				assertEquals(p2.getAmount(),1);
-				assertEquals(p2.getDiscountOrPrice(),4);
 			}
 		}
 		
@@ -149,7 +148,6 @@ public class guestTests {
 			if(p2.getMyProduct().equals(ballwithDiscount))
 			{
 				assertEquals(p2.getAmount(),1);
-				assertEquals(p2.getDiscountOrPrice(),5);
 			}
 		}
 	}
@@ -180,6 +178,7 @@ public class guestTests {
 			BlMain.addLotteryProduct(g, ballwithLottery, 0);
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		try {
 			BlMain.addLotteryProduct(g, ballwithLottery, 1);
@@ -200,6 +199,7 @@ public class guestTests {
 			BlMain.addImmediatelyProduct(g, ball, 1);
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		try {
 			BlMain.removeProductFromCart(g, null);
@@ -215,6 +215,7 @@ public class guestTests {
 			assertTrue(BlMain.removeProductFromCart(g, ball));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		boolean containP=false;
 		for(ProductInCart p2 :g.getCart().getProducts())
@@ -232,6 +233,7 @@ public class guestTests {
 			BlMain.addImmediatelyProduct(g, ball, 1);
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		try {
 			BlMain.editProductAmount(null, ball, 2);
@@ -254,7 +256,7 @@ public class guestTests {
 			assertEquals(e.getMessage() , "amout must be greater than 1");
 		}
 		try {
-			BlMain.editProductAmount(g, new Product("banana", 6, 3, "fruits", new PurchasePolicy(new ImmediatelyPurchase())), 2);
+			BlMain.editProductAmount(g, new Product("banana", 6, 3, new EmptyPolicy(), new ImmediatelyPurchase()), 2);
 		} catch (Exception e) {
 			assertEquals(e.getMessage() , "the product isn't belongs to the cart");
 		}//product not in cart
@@ -262,12 +264,12 @@ public class guestTests {
 			BlMain.editProductAmount(g, ball, 2);
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		for(ProductInCart p2:g.getCart().getProducts())
 		{
 			if(p2.getMyProduct().equals(ball)){
 				assertEquals(p2.getAmount(),2);
-				assertEquals(p2.getDiscountOrPrice(),5);
 			}
 		}
 	}
@@ -277,7 +279,9 @@ public class guestTests {
 		try {
 			assertFalse(BlMain.editCart(g, new Cart())); //guest is null
 		} catch (Exception e) {
-			e.printStackTrace();}
+			e.printStackTrace();
+			fail();
+		}
 		
 		g=new Guest();
 		try {
@@ -290,11 +294,13 @@ public class guestTests {
 			BlMain.addImmediatelyProduct(g, ball, 1);
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		try {
 			assertTrue(BlMain.editCart(g, new Cart()));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		boolean containP=false;
 		for(ProductInCart p2 :g.getCart().getProducts())
@@ -317,6 +323,7 @@ public class guestTests {
 			assertTrue(BlMain.addImmediatelyProduct(g, ball, 1));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		try {
 			BlMain.purchaseCart(g, "1", "herzel 23 tel aviv");
@@ -342,6 +349,7 @@ public class guestTests {
 			assertTrue(BlMain.purchaseCart(g, "1234567890123456", "herzel 23 tel aviv"));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 	}
 	
@@ -410,12 +418,14 @@ public class guestTests {
 			BlMain.addImmediatelyProduct(g, ball, 1);
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		Subscriber s1 = null;
 		try {
 			s1 = BlMain.signIn(g, "abc", "123");
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		
 		assertEquals(s1.getUsername(),"abc");

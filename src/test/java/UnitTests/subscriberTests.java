@@ -29,8 +29,6 @@ public class subscriberTests {
 	@Test
 	public void mainTest(){
 		testOpenStore();
-		testAddOwner();
-		testAddManager();
 	}
 	private void testOpenStore()
 	{
@@ -52,6 +50,7 @@ public class subscriberTests {
 			assertNotNull(BlMain.openStore(ofir,"ofir's store", 3, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		
 		SystemAdministrator amit=new SystemAdministrator("amit123", "amit123", "amit kaplan", "hatamar 3 Modiin", "0545818680", "1111111111111111",new LinkedList<Purchase>(),new LinkedList<StoreManager>(),new LinkedList<StoreOwner>());
@@ -59,47 +58,11 @@ public class subscriberTests {
 			BlMain.removeSubscriber(amit, ofir);
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 	}
 	
-	private void testAddOwner() {
-		Subscriber sub2=null;
-		try {
-			BlMain.addOwner(sub2, owner);
-		} catch (Exception e) {
-			assertEquals(e.getMessage(),"invalid subscriber");
-		}
-		try {
-			BlMain.addOwner(sub, null);
-		} catch (Exception e) {
-			assertEquals(e.getMessage(),"invalid owner");
-		}
-		try {
-			assertTrue(BlMain.addOwner(sub, owner));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		assertTrue(sub.getOwner().contains(owner));
-	}
-	private void testAddManager() {
-		Subscriber sub2=null;
-		try {
-			BlMain.addManager(sub2, manager);
-		} catch (Exception e) {
-			assertEquals(e.getMessage(),"invalid subscriber");
-		}
-		try {
-			BlMain.addManager(sub, null);
-		} catch (Exception e) {
-			assertEquals(e.getMessage(),"invalid manager");
-		}
-		try {
-			assertTrue(BlMain.addManager(sub, manager));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		assertTrue(sub.getManager().contains(manager));
-	}
+	
 	
 	
 	

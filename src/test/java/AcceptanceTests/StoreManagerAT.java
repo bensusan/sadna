@@ -5,11 +5,10 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
 import java.sql.Date;
 
-import org.junit.Before;
+
 import org.junit.BeforeClass;
 
 import TS_BL.BlMain;
@@ -25,7 +24,6 @@ public class StoreManagerAT {
 	private static Product prod2;
 	private static Product prod3;
 	private static Product prod4;
-	private static boolean[] arr;
 
 	@BeforeClass
 	public static void beforeTests(){
@@ -40,38 +38,43 @@ public class StoreManagerAT {
 
 
 				try {
-					prod1 = new Product("prod1", 200, 4, "test cat 1", 
-							new PurchasePolicy(new ImmediatelyPurchase(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
-					prod2 = new Product("prod2", 200, 4, "test cat 2", 
-							new PurchasePolicy(new ImmediatelyPurchase()));
-					prod3 = new Product("prod3", 100, 4, "test cat 3", 
-							new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
-					prod4 = new Product("prod4", 200, 4, "test cat 4", 
-							new PurchasePolicy(new ImmediatelyPurchase()));
+					prod1 = new Product("prod1", 200, 4, new EmptyPolicy(), 
+							new ImmediatelyPurchase(new EmptyPolicy(new OvertDiscount(Date.valueOf("2019-01-01"), 50))));
+					prod2 = new Product("prod2", 200, 4,new EmptyPolicy(), 
+							new ImmediatelyPurchase());
+					prod3 = new Product("prod3", 100, 4,new EmptyPolicy(), 
+							new LotteryPurchase(Date.valueOf("2019-01-01")));
+					prod4 = new Product("prod4", 200, 4,new EmptyPolicy(),
+							new ImmediatelyPurchase());
 				} catch (Exception e) {
 					e.printStackTrace();
+					fail();
 				}
 
 
 				try {
-					BlMain.addProductToStore(so, prod1, 10);
+					BlMain.addProductToStore(so, prod1, 10,"toys");
 				} catch (Exception e) {
 					e.printStackTrace();
+					fail();
 				}
 				try {
-					BlMain.addProductToStore(so, prod2, 10);
+					BlMain.addProductToStore(so, prod2, 10,"toys");
 				} catch (Exception e) {
 					e.printStackTrace();
+					fail();
 				}
 				try {
-					BlMain.addProductToStore(so, prod3, 10);
+					BlMain.addProductToStore(so, prod3, 10,"toys");
 				} catch (Exception e) {
 					e.printStackTrace();
+					fail();
 				}
 				try {
-					BlMain.addProductToStore(so, prod4, 10);
+					BlMain.addProductToStore(so, prod4, 10,"toys");
 				} catch (Exception e) {
 					e.printStackTrace();
+					fail();
 				}
 
 
@@ -81,14 +84,17 @@ public class StoreManagerAT {
 					BlMain.addNewManager(so, sub);
 				} catch (Exception e) {
 					e.printStackTrace();
+					fail();
 				}
 			}
 			catch (Exception e) {
 				e.printStackTrace();
+				fail();
 			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 
 	}
@@ -107,49 +113,53 @@ public class StoreManagerAT {
 	}
 	//4.1
 	private void testAddProductToStore() {
-		Product product=new Product("ball", 10, 7, "toys", null);
+		Product product=new Product("ball", 10, 7, new EmptyPolicy(), null);
 		try{
-			assertFalse(BlMain.addProductToStore(sm, product, 5));
+			assertFalse(BlMain.addProductToStore(sm, product, 5,"toys"));
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 
 		sm.setSpecificPermission(BlMain.addProductToStore, true);
 		try{
-			assertTrue(BlMain.addProductToStore(sm, product, 5));
+			assertTrue(BlMain.addProductToStore(sm, product, 5,"toys"));
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 	}
 
 	private void testUpdateProductDetails() {
 
-		Product oldProduct=new Product("ball", 10, 7, "toys", null);
-		Product newProduct=new Product("ball", 10, 7, "toys", null);
+		Product oldProduct=new Product("ball", 10, 7, new EmptyPolicy(), null);
+		Product newProduct=new Product("ball", 10, 7, new EmptyPolicy(), null);
 		newProduct.setPrice(8);
 		try{
-			BlMain.addProductToStore(sm, oldProduct, 1);
-			assertFalse(BlMain.updateProductDetails(sm, oldProduct, newProduct, 5));
+			BlMain.addProductToStore(sm, oldProduct, 1,"toys");
+			assertFalse(BlMain.updateProductDetails(sm, oldProduct, newProduct, 5,"toys"));
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		sm.setSpecificPermission(BlMain.updateProductDetails, true);
 		try{
-			BlMain.addProductToStore(sm, oldProduct, 1);
-			assertTrue(BlMain.updateProductDetails(sm, oldProduct, newProduct, 5));
+			BlMain.addProductToStore(sm, oldProduct, 1,"toys");
+			assertTrue(BlMain.updateProductDetails(sm, oldProduct, newProduct, 5,"toys"));
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 	}
 
 	private void testDeleteProductFromStore() {
-		Product product=new Product("ball", 8, 7, "toys", null);
+		Product product=new Product("ball", 8, 7, new EmptyPolicy(), null);
 		try{
-			BlMain.addProductToStore(sm, product, 1);
+			BlMain.addProductToStore(sm, product, 1,"toys");
 			BlMain.deleteProductFromStore(sm, product);
 		}
 		catch (Exception e) {
@@ -157,20 +167,21 @@ public class StoreManagerAT {
 		}
 		sm.setSpecificPermission(BlMain.deleteProductFromStore, true);
 		try{
-			BlMain.addProductToStore(sm, product, 1);
+			BlMain.addProductToStore(sm, product, 1,"toys");
 			assertTrue(BlMain.deleteProductFromStore(sm, product));
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 	}
 
 	private void testAddPolicyToProduct() {
 		PurchasePolicy policy;
 		try {
-			policy = new PurchasePolicy(new ImmediatelyPurchase());
-			Product product=new Product("ball", 8, 7, "toys", new PurchasePolicy(new LotteryPurchase(Date.valueOf("2019-01-01"))));
-			BlMain.addProductToStore(sm, product, 5);
+			policy = new EmptyPolicy();
+			Product product=new Product("ball", 8, 7, new MaxPolicy(null, 3), new LotteryPurchase(Date.valueOf("2019-01-01")));
+			BlMain.addProductToStore(sm, product, 5,"toys");
 			assertFalse(BlMain.addPolicyToProduct(sm, policy, product));
 			sm.setSpecificPermission(BlMain.addPolicyToProduct, true);
 			assertTrue(BlMain.addPolicyToProduct(sm, policy, product));
@@ -181,16 +192,18 @@ public class StoreManagerAT {
 
 	private void testAddDiscountToProduct() {
 		try{
-		Product product=new Product("ball", 8, 7, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
-		DiscountPolicy discount;
+		Product product=new Product("ball", 8, 7, new EmptyPolicy(), new ImmediatelyPurchase());
+		PurchasePolicy discount;
 		try {
-			discount = new OvertDiscount(null, 30);
-			BlMain.addProductToStore(sm, product, 1);
+			discount=new EmptyPolicy(new OvertDiscount(null, 30));
+			
+			BlMain.addProductToStore(sm, product, 1,"toys");
 			try{
 			assertFalse(BlMain.addDiscountToProduct(sm, discount, product));
 			}
 			catch (Exception e) {
 				e.printStackTrace();
+				fail();
 			}
 			sm.setSpecificPermission(BlMain.addDiscountToProduct, true);
 			try{
@@ -198,22 +211,22 @@ public class StoreManagerAT {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
+				fail();
 			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 
 	}
 
-	private void testAddNewStoreOwner() {
-		fail("Not yet implemented");
-	}
-
+	
 	private void testAddNewManager() {
 		//StoreManager nsm=new StoreManager(sm.getStore());
 		try{
@@ -221,6 +234,7 @@ public class StoreManagerAT {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		sm.setSpecificPermission(BlMain.addNewManager, true);
 		try{
@@ -228,6 +242,7 @@ public class StoreManagerAT {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 	}
 

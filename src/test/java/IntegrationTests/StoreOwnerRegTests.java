@@ -11,8 +11,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import TS_BL.BlMain;
+import TS_SharedClasses.EmptyPolicy;
 import TS_SharedClasses.Guest;
 import TS_SharedClasses.ImmediatelyPurchase;
+import TS_SharedClasses.MaxPolicy;
 import TS_SharedClasses.OvertDiscount;
 import TS_SharedClasses.Product;
 import TS_SharedClasses.ProductInCart;
@@ -39,44 +41,101 @@ public class StoreOwnerRegTests {
 		ofir=BlMain.signUp(new Guest(), "ofir123", "ofir123", "ofir imas", "pach zevel 1 Ashdod", "0584792829", "2222222222222222");
 		ofirStore=BlMain.openStore((Subscriber) ofir,"ofir's store",5, new HashMap<Product, Integer>(), new LinkedList<Purchase>(),true);
 		ofirOwnership=((Subscriber)ofir).getOwner().get(0);
-		tennisProduct=new Product("tennis ball", 5, 1, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
+		tennisProduct=new Product("tennis ball", 5, 1, new EmptyPolicy(),new ImmediatelyPurchase());
 		
 	}
 	@Test
 	public void mainTests(){
 		testAddProductToStore();
 		testUpdateProductDetails();
-		testDeleteProductFromStore();
 		testAddPolicyToProduct();
 		testAddDiscountToProduct();
+		testDeleteProductFromStore();
 		testAddNewStoreOwner();
 		testAddNewManager();
 	}
 	private void testAddProductToStore() {
-		BlMain.addProductToStore(ofirOwnership, tennisProduct, 20);
+		try {
+			BlMain.addProductToStore(ofirOwnership, tennisProduct, 20,"toys");
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 		assertTrue(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).containsKey(tennisProduct));
 		assertEquals(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).get(tennisProduct).intValue(),20);
 	}
 	private void testUpdateProductDetails() {
 		Guest g=new Guest();
-		BlMain.addImmediatelyProduct(g, tennisProduct, 10);
-		Product newTennisProduct =new Product("new tennis ball", 10, 1, "toys", new PurchasePolicy(new ImmediatelyPurchase()));
-		
-		BlMain.updateProductDetails(ofirOwnership, tennisProduct, newTennisProduct, 30);
-		assertTrue(g.getCart().getProducts().size()>0);
-		for (Product p:BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).keySet()){
-			if (p.getName().equals("new tennis ball"))
+		try {
+			BlMain.addImmediatelyProduct(g, tennisProduct, 10);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		try {
+			Product newTennisProduct = new Product("new tennis ball", 10, 1, new EmptyPolicy(), new ImmediatelyPurchase());
+			
+			try {
+				BlMain.updateProductDetails(ofirOwnership, tennisProduct, newTennisProduct, 30,"toys");
+			} catch (Exception e) {
+				e.printStackTrace();
+				fail();
+			}
+			assertTrue(g.getCart().getProducts().size()>0);
+			for (Product p:BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).keySet()){
+				if (p.getName().equals("new tennis ball"))
+				{
+					assertEquals(p.getPrice(),10);
+					assertEquals(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).get(p).intValue(),30);
+				}
+			}
+			tennisProduct=newTennisProduct;
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	private void testAddPolicyToProduct() {
+		try {
+			BlMain.addPolicyToProduct(ofirOwnership, new MaxPolicy(null,3), tennisProduct);
+			for(Product p:BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).keySet())
 			{
-				assertEquals(p.getPrice(),10);
-				assertEquals(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).get(p).intValue(),30);
+				if (p.getName().equals("new tennis ball")){
+					assertTrue(p.getPurchasePolicy() instanceof MaxPolicy);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+	private void testAddDiscountToProduct() {
+		try {
+			BlMain.addDiscountToProduct(ofirOwnership, new EmptyPolicy(new OvertDiscount(new Date(2019,10,3), 20)), tennisProduct);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+		for(Product p:BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).keySet())
+		{
+			if (p.getName().equals("new tennis ball")){
+				assertEquals(((ImmediatelyPurchase)p.getType()).getDiscountTree().getCurrDiscount().getDiscountPrecentage(),20);
 			}
 		}
-		tennisProduct=newTennisProduct;
 	}
 	private void testDeleteProductFromStore() {
 		Guest g=new Guest();
-		BlMain.addImmediatelyProduct(g, tennisProduct, 10);
-		BlMain.deleteProductFromStore(ofirOwnership, tennisProduct);
+		try {
+			BlMain.addImmediatelyProduct(g, tennisProduct, 10);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+		try {
+			BlMain.deleteProductFromStore(ofirOwnership, tennisProduct);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 		assertFalse(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).containsKey(tennisProduct));
 		boolean productdelete=true;
 		for(ProductInCart p2 :g.getCart().getProducts())
@@ -88,40 +147,37 @@ public class StoreOwnerRegTests {
 		}
 		assertFalse(productdelete);
 	}
-	private void testAddPolicyToProduct() {
-		BlMain.addPolicyToProduct(ofirOwnership, new PurchasePolicy(new ImmediatelyPurchase()), tennisProduct);
-		for(Product p:BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).keySet())
-		{
-			if (p.getName().equals("new tennis ball")){
-				assertTrue(p.getPurchasePolicy().getPurchaseType() instanceof ImmediatelyPurchase);
-			}
-		}
-	}
-	private void testAddDiscountToProduct() {
-		BlMain.addDiscountToProduct(ofirOwnership, new OvertDiscount(new Date(2019,10,3), 20), tennisProduct);
-		for(Product p:BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).keySet())
-		{
-			if (p.getName().equals("new tennis ball")){
-				assertEquals(((ImmediatelyPurchase)p.getPurchasePolicy().getPurchaseType()).getDiscountPolicy().getDiscountPrecentage(),20);
-			}
-		}
-	}
 	private void testAddNewStoreOwner() {
-		sagiv=BlMain.signUp(new Guest(), "sagiv123", "sagiv123", "sagiv mapgavker", "herzel 12 Tel Aviv", "0526988521", "4444444444444444");
+		try {
+			sagiv=BlMain.signUp(new Guest(), "sagiv123", "sagiv123", "sagiv mapgavker", "herzel 12 Tel Aviv", "0526988521", "4444444444444444");
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 		int storeown=ofirStore.getMyOwners().size();
 		for (Subscriber s:BlMain.allSubscribers)
 		{
 			if(s.getUsername().equals("sagiv123"))
 			{
 				int before=s.getOwner().size();
-				BlMain.addNewStoreOwner(ofirOwnership, sagiv);
+				try {
+					BlMain.addNewStoreOwner(ofirOwnership, s);
+				} catch (Exception e) {
+					e.printStackTrace();
+					fail();
+				}
 				assertEquals(s.getOwner().size(),before+1);
 			}
 		}
 		assertEquals(ofirStore.getMyOwners().size(),storeown+1);
 	}
 	private void testAddNewManager() {
-		or=BlMain.signUp(new Guest(), "or123", "or123", "or ben susan", "raul valenberg 4 Rehovot", "0547217189", "3333333333333333");
+		try {
+			or=BlMain.signUp(new Guest(), "or123", "or123", "or ben susan", "raul valenberg 4 Rehovot", "0547217189", "3333333333333333");
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 		
 		int manBef=ofirStore.getMyManagers().size();
 		for (Subscriber s:BlMain.allSubscribers)
@@ -129,7 +185,12 @@ public class StoreOwnerRegTests {
 			if(s.getUsername().equals("or123"))
 			{
 				int before=s.getManager().size();
-				BlMain.addNewManager(ofirOwnership, or);
+				try {
+					BlMain.addNewManager(ofirOwnership, s);
+				} catch (Exception e) {
+					e.printStackTrace();
+					fail();
+				}
 				assertEquals(s.getManager().size(),before+1);
 			}
 		}

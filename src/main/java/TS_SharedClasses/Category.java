@@ -21,7 +21,13 @@ public class Category {
 		this.name = name;
 	}
 	public PurchasePolicy getPurchasePolicy() {
-		return purchasePolicy;
+		if(purchasePolicy==null)
+		{
+			return new EmptyPolicy();
+		}
+		else{
+			return purchasePolicy;
+		}
 	}
 	public void setPurchasePolicy(PurchasePolicy purchasePolicy) {
 		this.purchasePolicy = purchasePolicy;

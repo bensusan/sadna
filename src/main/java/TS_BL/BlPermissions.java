@@ -34,8 +34,9 @@ public class BlPermissions {
 
 
 	static boolean deleteProductFromStore(Store s, Product product) throws Exception {
-		if(s == null || product == null || s.getProducts().remove(product) == null|| product.getCategory().getProducts().remove(product))
+		if(s == null || product == null || s.getProducts().remove(product) == null)
 			throw new Exception("something went wrong");
+		product.getCategory().getProducts().remove(product);
 		product.setStore(null);
 		product.setCategory(null);
 		return true;
@@ -70,7 +71,7 @@ public class BlPermissions {
 
 
 	static boolean addDiscountToProduct(Store s, PurchasePolicy discountTree, Product product) throws Exception {
-		if(s == null || product == null || s.getProducts().get(product) == null)
+		if(s == null || product == null||discountTree==null || s.getProducts().get(product) == null)
 			throw new Exception("something went wrong");
 		PurchaseType pt = product.getType(); 
 		if(pt instanceof ImmediatelyPurchase){
@@ -89,6 +90,10 @@ public class BlPermissions {
 		if(!owners.add(so))
 			throw new Exception("couldn't add new owner");
 		s.setMyOwners(owners);
+		owners=owner.getOwner();
+		if(!owners.add(so))
+			throw new Exception("couldn't add new owner");
+		owner.setOwner(owners);
 	//	owner.setStore(s);
 		return true;
 	}
@@ -102,6 +107,11 @@ public class BlPermissions {
 		if(!managers.add(sm))
 			throw new Exception("couldn't add new manager");
 		 s.setMyManagers(managers);
+		 managers=newMan.getManager();
+		 if(!managers.add(sm))
+				throw new Exception("couldn't add new manager");
+		 newMan.setManager(managers);
+		 
 		//newMan.setStore(s);
 		 return true;
 	}

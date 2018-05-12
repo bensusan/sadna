@@ -23,12 +23,12 @@ public class Product  {
 		this.purchasePolicy = null;
 		this.type=null;
 	}
-	public Product(String name, int price, int grading, Category category, PurchasePolicy purchasePolicy,PurchaseType type) {
+	public Product(String name, int price, int grading, PurchasePolicy purchasePolicy,PurchaseType type) {
 		this.id = nextID++;
 		this.name = name;
 		this.price = price;
 		this.grading = grading;
-		this.category = category;
+		this.category = null;
 		this.purchasePolicy = purchasePolicy;
 		this.type=type;
 	}
@@ -85,8 +85,6 @@ public class Product  {
 	}
 
 	public PurchasePolicy getPurchasePolicy() {
-		if(purchasePolicy == null && this.store != null)
-			return this.store.getStorePolicy();
 		return purchasePolicy;
 	}
 

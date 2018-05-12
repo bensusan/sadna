@@ -2,6 +2,7 @@ package TS_BL;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import TS_SharedClasses.*;
 
@@ -159,6 +160,25 @@ public class BlPermissions {
 		if(s == null || pp == null)
 			throw new Exception("something went wrong");
 		s.setStorePolicy(pp);
+		return true;
+	}
+
+
+	public static boolean addDiscountToCategoryStore(Store store, PurchasePolicy discountTree, String category) throws Exception {
+		if(store == null || !BlMain.getAllCategorys().contains(category)||discountTree==null)
+			throw new Exception("something went wrong");
+		Map<Category, PurchasePolicy> categoryDiscounts = store.getCategoryDiscounts();
+		Category cat=null;
+		for (Category c:BlMain.allCategory)
+		{
+			if(c.getName().equals(category))
+			{
+				cat=c;
+			}
+		}
+		if (cat==null)
+			throw new Exception("something went wrong");
+		categoryDiscounts.put(cat, discountTree);
 		return true;
 	}
 

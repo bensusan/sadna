@@ -134,6 +134,13 @@ public class BlMain {
 	public static boolean addDiscountToProduct(StoreOwner so, PurchasePolicy discountTree, Product product) throws Exception {
 		return BlStoreOwner.addDiscountToProduct(so, discountTree, product);
 	}
+	
+	public static boolean addDiscountToCategoryStore(StoreOwner so, PurchasePolicy discountTree, String category) throws Exception {
+		return BlStoreOwner.addDiscountToCategoryStore(so, discountTree, category);
+	}
+	public static boolean addDiscountToCategoryStore(StoreManager manager, PurchasePolicy discountTree, String category) throws Exception {
+		return BlStoreManager.addDiscountToCategoryStore(manager, discountTree, category);
+	}
 
 	public static boolean addNewStoreOwner(StoreOwner oldSo, Subscriber newSo) throws Exception {
 		return BlStoreOwner.addNewStoreOwner(oldSo, newSo);

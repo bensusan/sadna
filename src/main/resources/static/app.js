@@ -96,6 +96,20 @@ function signIn() {
 	));
 }
 
+function openStore() {
+	window.alert("entered openStore.js");
+	stompClient.send("/app/hello", {},
+    JSON.stringify(
+				    {	'pageName': "openStorePage",
+				    	'functionName': "openStore",
+				    	'paramsAsJSON': [localStorage.getItem('currentUser'),	//subsciber
+				    						$("#storeNameToAdd").val(),				//storeName
+				    						JSON.stringify(0),
+											JSON.stringify(true)]
+				    }
+	));
+}
+
 function loadMainPage() {
     stompClient.send("/app/hello", {},
     JSON.stringify(

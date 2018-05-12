@@ -168,6 +168,24 @@ function makeMainPage(){
     }
 }
 
+function signUp(){
+    stompClient.send("/app/hello", {},
+    JSON.stringify(
+				    {	'pageName': "signUpPage",
+				    	'functionName': "signUp",
+				    	'paramsAsJSON': [	localStorage.getItem('currentUser'),	//new Guest()
+				    						$("#newuserName").val(),			//userName
+				    						$("#newpassword").val(),
+				    						$("#fullname").val(),
+				    						$("#address").val(),
+				    						$("#phonenum").val(),
+				    						$("#creditCardNumber").val()
+				    					]
+				    }
+	));
+	window.location.href = "mainPage.html";
+}
+
 $(function () {
     connect();
     if(window.location.href.includes("mainPage.html"))

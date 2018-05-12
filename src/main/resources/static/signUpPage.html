@@ -14,7 +14,7 @@
 <noscript><h2 style="color: #ff0000">
 Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable Javascript and reload this page!
 </h2></noscript>
-<form  name="signUpForm"  action="#">
+<form name="signUpForm">
 <div class="form-group1">
     <label for="newuserName">User name please:</label>
     <input type="text" id="newuserName" class="form-control" placeholder="type here...">
@@ -39,10 +39,9 @@ Seems your browser doesn't support Javascript! Websocket relies on Javascript be
     <label for="creditCardNumber">creditCardNumber please:</label>
     <input type="text" id="creditCardNumber" class="form-control" placeholder="type here...">
 </div> 
-
 <button onclick="signUp()">Sign Up</button>
-<button  onclick="document.getElementById("signUpForm").reset();">Clear</button>
+<input type="reset" value="Reset" onClick="window.location.reload()">
+<button onclick="loadMainPage()">Back</button>
 </form>
-
 </body>
 </html>

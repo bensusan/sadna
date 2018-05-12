@@ -29,6 +29,9 @@ function connect() {
                     case "loginPage":
                         recieveLoginPageMsg(body.functionName, obj);
                         break;
+                    case "signUpPage":
+                    	recieveSignUpMsg(body.functionName, obj);
+                    	break;
                     default:
                         break;
                 }
@@ -75,6 +78,17 @@ function recieveLoginPageMsg(funcName, obj) {
         case "signIn":
             localStorage.setItem('currentUser', JSON.stringify(obj));
             localStorage.setItem('isSubscriber', JSON.stringify(true));
+            loadMainPage();
+            break;
+        default:
+            break;
+    }
+}
+
+function recieveSignUpMsg(funcName, obj) {
+	window.alert("YOU");
+    switch (funcName){
+        case "signUp":
             loadMainPage();
             break;
         default:
@@ -183,7 +197,8 @@ function signUp(){
 				    					]
 				    }
 	));
-	window.location.href = "mainPage.html";
+	
+	loadMainPage();
 }
 
 $(function () {

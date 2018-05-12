@@ -54,13 +54,13 @@ public class SubscriberAT {
 	private void testOpenStore(){
 		// incorrect inputs
 		try{
-			BlMain.openStore(sub,"storeName1", -5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
-			BlMain.openStore(null,"storeName2",  5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), false);
+			BlMain.openStore(sub,"storeName1", -5,  true);
+			BlMain.openStore(null,"storeName2",  5,  false);
 			fail();
 		}catch (Exception e) {}
 		//good case
 		try{
-		Store toCheck = BlMain.openStore(sub,"store_name9", 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
+		Store toCheck = BlMain.openStore(sub,"store_name9", 5, true);
 		List<StoreOwner> ownStores = sub.getOwner();
 		assertEquals(toCheck, ownStores.get(0).getStore());
 		}

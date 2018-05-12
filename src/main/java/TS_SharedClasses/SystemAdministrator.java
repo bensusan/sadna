@@ -16,6 +16,7 @@ public class SystemAdministrator extends Subscriber {
 		
 		listOfSubs = BlMain.allSubscribers;
 		listOfStores = new ArrayList<Store>();
+		this.isAdmin = true;
 	}
 	
 	public void addSub(Subscriber s){

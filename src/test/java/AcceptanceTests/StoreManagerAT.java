@@ -31,7 +31,7 @@ public class StoreManagerAT {
 		try{
 			sub = BlMain.signUp(g, "StoreManagerAT", "globPass", "usr", "name", "132412356", "1234567891011");
 			try{
-				Store s1 = BlMain.openStore(sub,"store_name5",  5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
+				Store s1 = BlMain.openStore(sub,"store_name5",  5, true);
 				sm = new StoreManager(s1);
 				List<StoreOwner> own1 = sub.getOwner();
 				so = own1.get(0);

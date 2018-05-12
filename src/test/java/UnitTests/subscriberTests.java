@@ -39,15 +39,13 @@ public class subscriberTests {
 			e1.printStackTrace();
 		}
 		try{
-			BlMain.openStore(null,"ofir's store", 3, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true);
-			BlMain.openStore(ofir,"ofir's store", -1, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true);
-			BlMain.openStore(ofir,"ofir's store", 3, null, new LinkedList<Purchase>(), true);
-			BlMain.openStore(ofir,"ofir's store", 3, new HashMap<Product,Integer>(), null, true);
+			BlMain.openStore(null,"ofir's store", 3, true);
+			BlMain.openStore(ofir,"ofir's store", -1,  true);
 			//fail();
 		}
 		catch (Exception e) {}
 		try {
-			assertNotNull(BlMain.openStore(ofir,"ofir's store", 3, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true));
+			assertNotNull(BlMain.openStore(ofir,"ofir's store", 3,  true));
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();

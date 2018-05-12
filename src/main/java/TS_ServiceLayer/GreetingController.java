@@ -252,16 +252,8 @@ public class GreetingController {
 			case getAllStoresWithThierProductsAndAmounts:
 				if(args.length == 0)
 					ret.setContentAsJson(gson.toJson(BlMain.getAllStoresWithThierProductsAndAmounts()));
-				break;
-			case getAllStores:
-				if(args.length == 0)
-					ret.setContentAsJson(gson.toJson(BlMain.getAllStores()));
-				break;
-			case getAllSubscriberStores:
-				if(args.length == 1)
-					ret.setContentAsJson(gson.toJson(BlMain.getAllSubscriberStores(gson.fromJson(args[0], Subscriber.class))));
 			default:
-				throw new Exception("NO SUCH FUNCTION");
+				break;
 			}
 		} catch (Exception e) {
 			ret.setException();

@@ -33,7 +33,7 @@ public class StoreOwenerAT {
 		g = new Guest();
 		try{
 			sub = BlMain.signUp(g, "StoreOwenerAT111", "globPass", "usr", "name", "132412356", "1234567891011");
-			Store s1 = BlMain.openStore(sub,"store_name6", 5, true);
+			Store s1 = BlMain.openStore(sub,"store_name6", 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
 			List<StoreOwner> own1 = sub.getOwner();
 			so = own1.get(0);
 

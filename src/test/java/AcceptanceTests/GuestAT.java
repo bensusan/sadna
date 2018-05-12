@@ -33,7 +33,7 @@ public class GuestAT {
 		try{
 			sub = BlMain.signUp(g, "globUse1", "globPass", "usr", "name", "132412356", "1234567891011");
 			try{
-				Store s1 = BlMain.openStore(sub, "store_name1", 5, true);
+				Store s1 = BlMain.openStore(sub, "store_name1", 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
 				List<StoreOwner> own1 = sub.getOwner();
 				so = own1.get(0);
 
@@ -231,7 +231,7 @@ public class GuestAT {
 		try{
 			sub1 = BlMain.signUp(g1, "usr1", "pass1", "usr", "name", "132412356", "121321233456");
 			try{
-				Store s1 = BlMain.openStore(sub1, "store_name2",5,true);
+				Store s1 = BlMain.openStore(sub1, "store_name2",5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
 				List<StoreOwner> own1 = sub1.getOwner();
 				StoreOwner so1 = own1.get(0);
 
@@ -254,7 +254,7 @@ public class GuestAT {
 				try{
 					Subscriber sub2 = BlMain.signUp(g2, "usr2", "pass1", "user", "name", "123456789", "13332123132");
 					try{
-						Store s2 = BlMain.openStore(sub2,"store_name3", 5,true);
+						Store s2 = BlMain.openStore(sub2,"store_name3", 5, new HashMap<Product, Integer>(), new ArrayList<Purchase>(), true);
 						List<StoreOwner> own2 = sub2.getOwner();
 						StoreOwner so2 = own2.get(0);
 						try{

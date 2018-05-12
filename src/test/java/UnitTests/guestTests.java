@@ -28,7 +28,7 @@ public class guestTests {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		ofir=BlMain.signUp(new Guest(), "ofir123", "ofir123", "ofir imas", "pach zevel 1 Ashdod", "0584792829", "2222222222222222");
-		ofirStore=BlMain.openStore((Subscriber) ofir,"ofir store",5,true);
+		ofirStore=BlMain.openStore((Subscriber) ofir,"ofir store",5, new HashMap<Product, Integer>(), new LinkedList<Purchase>(),true);
 		ofirOwnership=((Subscriber)ofir).getOwner().get(0);
 		ball=new Product("ball", 5, 3, new EmptyPolicy(), new ImmediatelyPurchase());
 		ballwithDiscount=new Product("ball with Discount", 5, 3, new EmptyPolicy(), new ImmediatelyPurchase(new EmptyPolicy(new HiddenDiscount(1212, new Date(12,12,2018), 20))));

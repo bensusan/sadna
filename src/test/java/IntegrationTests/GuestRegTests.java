@@ -36,7 +36,7 @@ public class GuestRegTests {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		ofir=BlMain.signUp(new Guest(), "ofir123", "ofir123", "ofir imas", "pach zevel 1 Ashdod", "0584792829", "2222222222222222");
-		ofirStore=BlMain.openStore((Subscriber) ofir,"ofir's store",5,true);
+		ofirStore=BlMain.openStore((Subscriber) ofir,"ofir's store",5, new HashMap<Product, Integer>(), new LinkedList<Purchase>(),true);
 		tennisProduct=new Product("tennis ball", 5, 1, new EmptyPolicy(), new ImmediatelyPurchase());
 		ofirOwnership=((Subscriber)ofir).getOwner().get(0);
 		BlMain.addProductToStore(ofirOwnership, tennisProduct, 50,"toys");

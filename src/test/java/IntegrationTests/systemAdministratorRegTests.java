@@ -28,7 +28,7 @@ public class systemAdministratorRegTests {
 			Subscriber s = BlMain.signUp(new Guest (), "newUser", "newPass", "newName", "newAddress", "0948376767", "1234567890987654");
 			
 			try {
-				Store newStore = BlMain.openStore(s,"ofir's store", 5,true);
+				Store newStore = BlMain.openStore(s,"ofir's store", 5, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true);
 				Subscriber s2=BlMain.signUp(new Guest(), "newUser2", "newPass2", "new Name", "newAddress2", "0948376767", "1234567890987654");
 				BlMain.addNewStoreOwner(s.getOwner().get(0), s2);
 				Subscriber s3=BlMain.signUp(new Guest(), "newUser3", "newPass3", "new new Name", "newAddress3", "0948376767", "1234567890987654");

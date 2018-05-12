@@ -1,3 +1,4 @@
+
 var stompClient = null;
 
 var currentUser = {'cart': {'products': []}};
@@ -58,9 +59,8 @@ function mainTableOnLoad() {
     Object.entries(obj).map(([s, pAndA]) => {
         Object.entries(pAndA).map(([p, amount]) => {
             if (amount > 0) {
-                var toShow = "Store - id: " + s.storeId + " name: " + s.name + " Product - id: " + p.id + " name: " + p.name;
                 var pAsJson = JSON.stringify(p);
-                $('#myTable').append('<button onclick="loadProductPage("+ pAsJson + ")">toShow</button>');
+                $('#myTable').append('<button onclick="loadProductPage("+ pAsJson + ")">Store - id: " + s.storeId + " name: " + s.name + " Product - id: " + p.id + " name: " + p.name</button>');
                 found = true;
             }
         });

@@ -183,8 +183,6 @@ public class GreetingController {
 					List<Purchase> p = new LinkedList<Purchase>();
 					ret.setContentAsJson(gson.toJson(BlMain.openStore(gson.fromJson(args[0], Subscriber.class),
 							gson.fromJson(args[1], String.class), gson.fromJson(args[2], Integer.class),
-							(Map<Product, Integer>) gson.fromJson(args[3], map.getClass()),
-							(List<Purchase>) gson.fromJson(args[4], p.getClass()),
 							gson.fromJson(args[5], Boolean.class))));
 				}
 				break;

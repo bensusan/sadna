@@ -155,9 +155,8 @@ public class BlMain {
 		return BlStoreOwner.getPurchaseHistory(so);
 	}
 
-	public static Store openStore(Subscriber sub, String storeName,  int gradeing, Map<Product, Integer> products,
-			List<Purchase> purchaseHistory, boolean isOpen) throws Exception {
-		return BlSubscriber.openStore(sub,storeName,gradeing,products,purchaseHistory,isOpen);
+	public static Store openStore(Subscriber sub, String storeName,  int gradeing, boolean isOpen) throws Exception {
+		return BlSubscriber.openStore(sub,storeName,gradeing,new HashMap<Product, Integer>(),new LinkedList<Purchase>(),isOpen);
 	}
 
 	public static boolean removeSubscriber(SystemAdministrator sa, Subscriber s) throws Exception {

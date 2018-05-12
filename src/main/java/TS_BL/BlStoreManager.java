@@ -114,4 +114,10 @@ public class BlStoreManager {
 	static boolean changeStorePurchasePolicy(StoreManager sm, PurchasePolicy pp) throws Exception{
 		return sm != null && sm.getPremisions()[BlMain.changeStorePurchasePolicy] && BlPermissions.changeStorePurchasePolicy(sm.getStore(), pp);
 	}
+
+	public static boolean addDiscountToCategoryStore(StoreManager sm, PurchasePolicy discountTree,
+			String category) throws Exception {
+		return sm != null && sm.getPremisions()[BlMain.addDiscountToProduct] && BlPermissions.addDiscountToCategoryStore(sm.getStore(), discountTree, category);
+		
+	}
 }

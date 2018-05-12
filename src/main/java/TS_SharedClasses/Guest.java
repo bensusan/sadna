@@ -3,7 +3,7 @@ package TS_SharedClasses;
 import java.io.Serializable;
 
 public class Guest {
-	private Cart cart;
+	protected Cart cart;
 	
 	public Guest(Cart cart) {
 		super();

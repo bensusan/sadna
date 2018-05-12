@@ -6,6 +6,7 @@ var currentUser = {'cart': {'products': []}};
 function setUPOnce(){
     localStorage.setItem('currentUser', JSON.stringify({'cart': {'products': []}})); //New Guest for start
     localStorage.setItem('isSubscriber', JSON.stringify(false));
+    localStorage.setItem('specificProduct', JSON.stringify(null));
 }
 
 function connect() {
@@ -57,10 +58,14 @@ function mainTableOnLoad() {
     var found = false;
     Object.entries(obj).map(([s, pAndA]) => {
         Object.entries(pAndA).map(([p, amount]) => {
-            $('#myTable').append(amount);
-            found = true;
+            if (amount > 0) {
+                var pAsJson = JSON.stringify(p);
+                $('#myTable').append('<button onclick="loadProductPage("+ pAsJson + ")">Store - id: " + s.storeId + " name: " + s.name + " Product - id: " + p.id + " name: " + p.name</button>');
+                found = true;
+            }
         });
     });
+
     if(!found)
         window.alert("No Products");
 }
@@ -124,17 +129,42 @@ function loadCartPage(){
     window.location.href = "cartPage.html";
 }
 
+function loadProductPage(product) {
+    //product comes here as string
+    localStorage.setItem('specificProduct', product);
+    stompClient.disconnect();
+    stompClient = null;
+    window.location.href = "productPage.html";
+}
+
+function loadMyStoresPage() {
+    //assume current user is subscriber
+    var storeManager = JSON.parse(localStorage.getItem('currentUser')).manager;
+    var storeOwner = JSON.parse(localStorage.getItem('currentUser')).owner;
+    if((storeManager !== null && storeManager.length > 0) || (storeOwner !== null && storeOwner.length > 0))
+    {
+        stompClient.disconnect();
+        stompClient = null;
+        window.location.href = "myStoresPage.html";
+    }
+    else{
+        window.alert("You don\'t own or manage any stores");
+    }
+}
+
 function makeMainPage(){
     if(JSON.parse(localStorage.getItem('isSubscriber')) === false) {
         $('#loginMBtn').show();
         $('#signUpMBtn').show();
         $('#openStoreMBtn').hide();
+        $('#myStores').hide();
     }
     else
     {
         $('#loginMBtn').hide();
         $('#signUpMBtn').hide();
         $('#openStoreMBtn').show();
+        $('#myStores').show();
     }
 }
 

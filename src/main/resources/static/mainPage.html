@@ -20,6 +20,7 @@
     <button id="loginMBtn" onclick="loadLoginPage()">Login</button>
     <button id="signUpMBtn" onclick="loadSignUpPage()">Sign up</button>
     <button id="openStoreMBtn" onclick="loadOpenStorePage()">Open Store</button>
+    <button id="myStores" onclick="loadMyStoresPage()">My Stores</button>
     <button onclick="loadCartPage()">My Cart</button>
 </div>
 <div >
@@ -27,13 +28,13 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <table id="conversation" class="table table-striped">
+        <table id="conversation">
             <thead>
             <tr>
                 <th>Products sort by Store</th>
             </tr>
             </thead>
-            <tbody id="myTable">
+            <tbody id="myTable" class="clickable-row">
             </tbody>
         </table>
     </div>

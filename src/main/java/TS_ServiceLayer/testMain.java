@@ -31,14 +31,14 @@ public class testMain {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		Gson g = new Gson();
-		Product p = new Product("p", 2, 2, new Category("s"), new MaxPolicy(new OvertDiscount(), 10), new ImmediatelyPurchase());
-		HashMap<Product, Integer> h = new HashMap<Product, Integer>();
-		h.put(p, 2);
+//		Gson g = new Gson();
+//		Product p = new Product("p", 2, 2, new Category("s"), new MaxPolicy(new OvertDiscount(), 10), new ImmediatelyPurchase());
+//		HashMap<Product, Integer> h = new HashMap<Product, Integer>();
+//		h.put(p, 2);
 		
-		HashMap<Store, Map<Product,Integer>> h2 = new HashMap<Store, Map<Product,Integer>>();
-		h2.put(new Store("a", "a", "a", 3, h, null, true), h);
-		System.out.println(g.toJson(h2));
+//		HashMap<Store, Map<Product,Integer>> h2 = new HashMap<Store, Map<Product,Integer>>();
+//		h2.put(new Store("a", "a", "a", 3, h, null, true), h);
+//		System.out.println(g.toJson(h2));
 //		System.out.println(g.toJson(h));
 
 

@@ -2,7 +2,7 @@ package IntegrationTests;
 
 import static org.junit.Assert.*;
 
-
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,19 +12,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import TS_BL.BlMain;
-import TS_SharedClasses.Cart;
-import TS_SharedClasses.EmptyPolicy;
-import TS_SharedClasses.Guest;
-import TS_SharedClasses.ImmediatelyPurchase;
-import TS_SharedClasses.Product;
-import TS_SharedClasses.ProductInCart;
-import TS_SharedClasses.Purchase;
-import TS_SharedClasses.PurchasePolicy;
-import TS_SharedClasses.Store;
-import TS_SharedClasses.StoreManager;
-import TS_SharedClasses.StoreOwner;
-import TS_SharedClasses.Subscriber;
-import TS_SharedClasses.SystemAdministrator;
+import TS_SharedClasses.*;
+
 
 public class GuestRegTests {
 
@@ -121,6 +110,20 @@ public class GuestRegTests {
 	}
 	
 	private void testPuchaseCart() {
+		try {
+			BlMain.addPolicyToProduct(ofirOwnership, new AndPolicy(null,new LinkedList<PurchasePolicy>()
+				{{add(new MinPolicy(null,3));add(new MaxPolicy(null,30));}}), tennisProduct);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			fail();
+		}
+		try {
+			BlMain.addDiscountToProduct(ofirOwnership, new OrPolicy(new OvertDiscount(new Date(2019,7,7),20),new LinkedList<PurchasePolicy>()
+					{{add(new MinPolicy(null,3));add(new MaxPolicy(null,30));}}), tennisProduct);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			fail();
+		}
 		try {
 			BlMain.purchaseCart(alex, ((Subscriber)alex).getCreditCardNumber(), ((Subscriber)alex).getAddress());
 		} catch (Exception e) {

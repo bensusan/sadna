@@ -249,6 +249,9 @@ public class GreetingController {
 					}
 				}
 				break;
+			case getAllStoresWithThierProductsAndAmounts:
+				if(args.length == 0)
+					ret.setContentAsJson(gson.toJson(BlMain.getAllStoresWithThierProductsAndAmounts()));
 			default:
 				break;
 			}

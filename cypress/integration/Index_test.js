@@ -4,7 +4,7 @@ describe('Index Tests', function() {
     })
 
     it('Enter Welcome page', function() {
-        cy.contains('title', 'Welcome')
+        cy.contains('title', 'Trading system')
     })
 
 

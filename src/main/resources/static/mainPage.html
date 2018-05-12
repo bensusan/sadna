@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Trading system</title>
+    <h3>Trading system</h3>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+
+<body>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div>
+    <button id="loginMBtn" onclick="loadLoginPage()">Login</button>
+    <button id="signUpMBtn" onclick="loadSignUpPage()">Sign up</button>
+    <button id="openStoreMBtn" onclick="loadOpenStorePage()">Open Store</button>
+    <button onclick="loadCartPage()">My Cart</button>
+</div>
+<div >
+    <button onclick="mainTableOnLoad()">Load products</button>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table id="conversation" class="table table-striped">
+            <thead>
+            <tr>
+                <th>Products sort by Store</th>
+            </tr>
+            </thead>
+            <tbody id="myTable">
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

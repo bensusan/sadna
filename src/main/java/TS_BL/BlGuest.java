@@ -233,6 +233,7 @@ public class BlGuest {
 			{
 				ans.setCart(g.getCart());
 			}
+			System.out.println(ans);
 			return ans;
 		}
 		

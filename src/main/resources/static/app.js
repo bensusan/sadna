@@ -2,6 +2,7 @@ var stompClient = null;
 
 var currentUser = {'cart': {'products': []}};
 
+
 function setUPOnce(){
     localStorage.setItem('currentUser', JSON.stringify({'cart': {'products': []}})); //New Guest for start
     localStorage.setItem('isSubscriber', JSON.stringify(false));
@@ -31,6 +32,12 @@ function connect() {
                         break;
                     case "signUpPage":
                     	recieveSignUpMsg(body.functionName, obj);
+                    	break;
+                    case "openStorePage":
+                    	recieveOpenStoreMsg(body.functionName, obj);
+                    	break;
+                    case "myStoresPage":
+                    	recieveMyStoresMsg(body.functionName, obj);
                     	break;
                     default:
                         break;
@@ -78,6 +85,8 @@ function recieveLoginPageMsg(funcName, obj) {
         case "signIn":
             localStorage.setItem('currentUser', JSON.stringify(obj));
             localStorage.setItem('isSubscriber', JSON.stringify(true));
+            if(window.confirm("shit2222"))
+        		window.alert("shit");
             loadMainPage();
             break;
         default:
@@ -87,14 +96,45 @@ function recieveLoginPageMsg(funcName, obj) {
 
 function recieveSignUpMsg(funcName, obj) {
 	window.alert("YOU");
+	if(window.confirm("shit3333"))
+        		window.alert("shit");
     switch (funcName){
         case "signUp":
+        if(window.confirm("shit3333"))
+        		window.alert("shit");
             loadMainPage();
             break;
         default:
             break;
     }
 }
+
+function recieveOpenStoreMsg(funcName, obj) {
+    switch (funcName){
+        case "openStore":
+        	//localStorage.currentUser.owner = obj.owner;
+        	if(window.confirm("shit4444"))
+        		window.alert("shit");
+            loadMainPage();
+            break;
+        default:
+            break;
+    }
+}
+
+function recieveMyStoresMsg(funcName, obj) {
+    switch (funcName){
+        case "getAllSubscriberStores":
+            localStorage.setItem('stores', JSON.stringify(true));
+             window.alert("shit111");
+              window.alert(JSON.stringify(JSON.parse(localStorage.getItem('stores'))));
+            loadMainPage();
+            break;
+        default:
+            break;
+    }
+}
+
 
 //signIn(Guest g, String userName, String password) : Subscriber
 function signIn() {
@@ -108,6 +148,12 @@ function signIn() {
 				    					]
 				    }
 	));
+	
+	 var sub = JSON.parse(localStorage.getItem('currentUser'));
+	 if(sub == null){
+	      window.alert("shit");
+	 	}
+	
 }
 
 function loadMainPage() {
@@ -117,6 +163,7 @@ function loadMainPage() {
             'functionName': "getAllStoresWithThierProductsAndAmounts",
             'paramsAsJSON': []
         }));
+         
 }
 
 function loadLoginPage(){
@@ -153,17 +200,10 @@ function loadProductPage(product) {
 
 function loadMyStoresPage() {
     //assume current user is subscriber
-    var storeManager = JSON.parse(localStorage.getItem('currentUser')).manager;
-    var storeOwner = JSON.parse(localStorage.getItem('currentUser')).owner;
-    if((storeManager !== null && storeManager.length > 0) || (storeOwner !== null && storeOwner.length > 0))
-    {
-        stompClient.disconnect();
-        stompClient = null;
-        window.location.href = "myStoresPage.html";
-    }
-    else{
-        window.alert("You don\'t own or manage any stores");
-    }
+    getMyStores();
+    stompClient.disconnect();
+    stompClient = null;
+    window.location.href = "myStoresPage.html";
 }
 
 function makeMainPage(){
@@ -201,11 +241,40 @@ function signUp(){
 	loadMainPage();
 }
 
+function openStore(){
+    stompClient.send("/app/hello", {},
+    JSON.stringify(
+				    {	'pageName': "openStorePage",
+				    	'functionName': "openStore",
+				    	'paramsAsJSON': [	localStorage.getItem('currentUser'),	//will be store owner
+				    						$("#storeName").val(),			//store name
+				    						$("#grading").val(),				//number of policy
+				    						Boolean(true)
+				    					]
+				    }
+	));
+	
+	loadMainPage();
+}
+
+function getMyStores(){
+    stompClient.send("/app/hello", {},
+    JSON.stringify(
+				    {	'pageName': "myStoresPage",
+				    	'functionName': "getAllSubscriberStores",
+				    	'paramsAsJSON': [	localStorage.getItem('currentUser') 	//will be store owner
+				    					]
+				    }
+	));
+	
+}
+
+
 $(function () {
     connect();
     if(window.location.href.includes("mainPage.html"))
         makeMainPage();
     else{
-        //TODO maybe change somehow to switch.
-    }
+	  
+   	}
 });

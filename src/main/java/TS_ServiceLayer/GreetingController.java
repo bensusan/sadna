@@ -178,12 +178,12 @@ public class GreetingController {
 					} catch (JsonSyntaxException j) {
 						ret.setContentAsJson(gson.toJson(BlMain.openStore(gson.fromJson(args[0], StoreOwner.class))));
 					}
-				} else if (args.length == 6) {
+				} else if (args.length == 4) {
 					Map<Product, Integer> map = new HashMap<Product, Integer>();
 					List<Purchase> p = new LinkedList<Purchase>();
 					ret.setContentAsJson(gson.toJson(BlMain.openStore(gson.fromJson(args[0], Subscriber.class),
 							gson.fromJson(args[1], String.class), gson.fromJson(args[2], Integer.class),
-							gson.fromJson(args[5], Boolean.class))));
+							gson.fromJson(args[3], Boolean.class))));
 				}
 				break;
 			case getPurchaseHistory:
@@ -223,8 +223,12 @@ public class GreetingController {
 				break;
 			case signIn:
 				if (args.length == 3) {
-					ret.setContentAsJson(gson.toJson(BlMain.signIn(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], String.class),
-							gson.fromJson(args[2], String.class))));
+					Subscriber sub = BlMain.signIn(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], String.class),
+							gson.fromJson(args[2], String.class));
+					//if (sub == null)
+					//	ret.setContentAsJson(gson.toJson("user not exists"));
+					//else
+						ret.setContentAsJson(gson.toJson(sub));
 				}
 				break;
 			case expiredProducts:

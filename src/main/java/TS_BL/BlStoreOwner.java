@@ -42,7 +42,9 @@ public class BlStoreOwner {
 	 */
 	static boolean addPolicyToProduct(StoreOwner so, PurchasePolicy policy, Product product) throws Exception
 	{
-		return so != null && BlPermissions.addPolicyToProduct(so.getStore(), policy, product);
+		if (so==null)
+			throw new Exception("something went wrong");
+		return BlPermissions.addPolicyToProduct(so.getStore(), policy, product);
 	}
 	
 	/**
@@ -120,5 +122,8 @@ public class BlStoreOwner {
 	public static boolean addDiscountToCategoryStore(StoreOwner so, PurchasePolicy discountTree, String category) throws Exception {
 		return so != null && BlPermissions.addDiscountToCategoryStore(so.getStore(), discountTree, category);
 		
+	}
+	public static boolean changeProductType(StoreOwner so, PurchaseType type, Product product) throws Exception {
+		return so!=null && BlPermissions.changeProductType(so.getStore(),type,product);
 	}
 }

@@ -2,6 +2,7 @@ package UnitTests;
 
 import static org.junit.Assert.*;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -38,6 +39,7 @@ public class storeManagerTests {
 		testOpenStore();
 		testGetPurchaseHistory();
 		testChangeStorePurchasePolicy();
+		testAddDiscountToCategoryStore();
 	}
 	private void testAddProductToStore() {
 		Product product=new Product( "ball", 10, 7, new EmptyPolicy(), null);
@@ -221,6 +223,21 @@ public class storeManagerTests {
 		sm.setSpecificPermission(BlMain.changeStorePurchasePolicy, true);
 		try {
 			assertTrue(BlMain.changeStorePurchasePolicy(sm, new MinPolicy(null,3)));
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+	private void testAddDiscountToCategoryStore(){
+		try {
+			assertFalse(BlMain.addDiscountToCategoryStore(sm, new EmptyPolicy(new OvertDiscount(new Date(2019,9,8), 30)), "toys"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+		sm.setSpecificPermission(BlMain.addDiscountToCategoryStore, true);
+		try {
+			assertTrue(BlMain.addDiscountToCategoryStore(sm, new EmptyPolicy(new OvertDiscount(new Date(2019,9,8), 30)), "toys"));
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();

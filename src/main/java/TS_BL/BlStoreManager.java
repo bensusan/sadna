@@ -117,7 +117,11 @@ public class BlStoreManager {
 
 	public static boolean addDiscountToCategoryStore(StoreManager sm, PurchasePolicy discountTree,
 			String category) throws Exception {
-		return sm != null && sm.getPremisions()[BlMain.addDiscountToProduct] && BlPermissions.addDiscountToCategoryStore(sm.getStore(), discountTree, category);
+		return sm != null && sm.getPremisions()[BlMain.addDiscountToCategoryStore] && BlPermissions.addDiscountToCategoryStore(sm.getStore(), discountTree, category);
 		
+	}
+
+	public static boolean changeProductType(StoreManager sm, PurchaseType type, Product product) throws Exception {
+		return sm!=null &&sm.getPremisions()[BlMain.changeProductType] && BlPermissions.changeProductType(sm.getStore(),type,product);
 	}
 }

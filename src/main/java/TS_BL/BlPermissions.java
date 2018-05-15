@@ -182,4 +182,12 @@ public class BlPermissions {
 		return true;
 	}
 
+
+	public static boolean changeProductType(Store s, PurchaseType type, Product product) throws Exception {
+		if(s == null || type == null||product==null||!s.getProducts().containsKey(product))
+			throw new Exception("something went wrong");
+		product.setType(type);
+		return true;
+	}
+
 }

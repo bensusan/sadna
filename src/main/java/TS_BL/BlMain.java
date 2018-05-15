@@ -10,11 +10,12 @@ import TS_SharedClasses.*;
 
 public class BlMain {
 
-	public final static int NUM_OF_PERMISSIONS = 12; 
+	public final static int NUM_OF_PERMISSIONS = 14; 
 	// constants according to BlPermission's functions order.
 	public final static int addProductToStore = 0, deleteProductFromStore = 1, updateProductDetails = 2,
 			addPolicyToProduct = 3, addDiscountToProduct = 4, addNewStoreOwner = 5, addNewManager = 6, closeStore = 7,
-			openStore = 8, getPurchaseHistory = 9, expiredProducts = 10, changeStorePurchasePolicy = 11;
+			openStore = 8, getPurchaseHistory = 9, expiredProducts = 10, changeStorePurchasePolicy = 11,
+			addDiscountToCategoryStore=12, changeProductType=13;
 
 	public static List<Subscriber> allSubscribers = new ArrayList<Subscriber>(){
 		{
@@ -94,7 +95,15 @@ public class BlMain {
 	public static boolean addDiscountToProduct(StoreManager sm, PurchasePolicy discountTree, Product product) throws Exception {
 		return BlStoreManager.addDiscountToProduct(sm, discountTree, product);
 	}
-
+	public static boolean changeProductType(StoreOwner so,PurchaseType type,Product product) throws Exception
+	{
+		return BlStoreOwner.changeProductType(so,type,product);
+	}
+	public static boolean changeProductType(StoreManager sm,PurchaseType type,Product product) throws Exception
+	{
+		return BlStoreManager.changeProductType(sm,type,product);
+	}
+	
 	public static boolean addNewStoreOwner(StoreManager sm, Subscriber owner) throws Exception {
 		return BlStoreManager.addNewStoreOwner(sm, owner);
 	}

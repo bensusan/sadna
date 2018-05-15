@@ -9,22 +9,11 @@ import java.util.LinkedList;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.internal.matchers.InstanceOf;
 
 import TS_BL.BlMain;
-import TS_SharedClasses.EmptyPolicy;
-import TS_SharedClasses.Guest;
-import TS_SharedClasses.ImmediatelyPurchase;
-import TS_SharedClasses.MaxPolicy;
-import TS_SharedClasses.OvertDiscount;
-import TS_SharedClasses.Product;
-import TS_SharedClasses.ProductInCart;
-import TS_SharedClasses.Purchase;
-import TS_SharedClasses.PurchasePolicy;
-import TS_SharedClasses.Store;
-import TS_SharedClasses.StoreManager;
-import TS_SharedClasses.StoreOwner;
-import TS_SharedClasses.Subscriber;
-import TS_SharedClasses.SystemAdministrator;
+import TS_SharedClasses.*;
+
 
 public class StoreOwnerRegTests {
 
@@ -50,6 +39,8 @@ public class StoreOwnerRegTests {
 		testUpdateProductDetails();
 		testAddPolicyToProduct();
 		testAddDiscountToProduct();
+		testAddDiscountToCategoryStore();
+		testChangeStorePurchasePolicy();
 		testDeleteProductFromStore();
 		testAddNewStoreOwner();
 		testAddNewManager();
@@ -122,6 +113,33 @@ public class StoreOwnerRegTests {
 			}
 		}
 	}
+	private void testAddDiscountToCategoryStore(){
+		try {
+			BlMain.addDiscountToCategoryStore(ofirOwnership, new EmptyPolicy(new OvertDiscount(new Date(2019,10,3), 20)), "toys");
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+		for(Category c:ofirStore.getCategoryDiscounts().keySet())
+		{
+			if(c.getName().equals("toys"))
+			{
+				assertTrue(ofirStore.getCategoryDiscounts().get(c).getCurrDiscount() instanceof  OvertDiscount);
+			}
+		}
+		
+	}
+	private void testChangeStorePurchasePolicy(){
+		try {
+			BlMain.changeStorePurchasePolicy(ofirOwnership, new MinPolicy(null,3));
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+		assertTrue(ofirStore.getStorePolicy() instanceof MinPolicy);
+		
+	}
+	
 	private void testDeleteProductFromStore() {
 		Guest g=new Guest();
 		try {

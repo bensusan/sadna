@@ -27,15 +27,21 @@ public class BlSubscriber {
 			throw new Exception("invalid subscriber");
 		if(gradeing < 0 || gradeing > 5)
 			throw new Exception("something went wrong with the grading");
-			
+		List<Subscriber> sub1 = BlMain.allSubscribers;
+		
 		List<StoreOwner> own=sub.getOwner();
 		Store s = new Store(storeName, sub.getAddress(), sub.getPhone(), gradeing, products, purchaseHistory, isOpen);
 		StoreOwner so=new StoreOwner(s);
 		own.add(so);
-		sub.setOwner(own);
+		
+		BlMain.allSubscribers.get(BlMain.getIndexByUN(sub)).setOwner(own);
+		sub.setOwner(own); //for safety
+		
 		own=s.getMyOwners();
 		own.add(so);
 		s.setMyOwners(own);
+		
+		List<Subscriber> sub2 = BlMain.allSubscribers;
 		return s;
 	}
 	
@@ -146,4 +152,5 @@ public class BlSubscriber {
 		sub.setManager(sMng);
 		return true;
 	}
+
 }

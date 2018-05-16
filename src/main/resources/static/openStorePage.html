@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Open Store Form</title>
     <h3>Open Store</h3>
@@ -11,19 +10,19 @@
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <script src="/app.js"></script>
 </head>
-
 <body>
+<noscript><h2 style="color: #ff0000">
+Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable Javascript and reload this page!
+</h2></noscript>
 <form name="openStoreForm">
 <div class="form-group1">
-    <label for="storeName">Store's name please:</label>
-    <input type="text" id="storeName" class="form-control" placeholder="enter store name...">
+    <label for="newStoreName">Store name please:</label>
+    <input type="text" id="newStoreName" class="form-control" placeholder="type here...">
 </div>
-<div class="form-group2">
-    <label for="grading">Grading number please:</label>
-    <input type="text" id="grading" class="form-control" placeholder="enter grading number...">
-</div>
-<button onclick="openStore()">Open Store</button>
 
+<button onclick="openStore()">OPEN</button>
+<input type="reset" value="Reset" onClick="window.location.reload()">
+<button onclick="loadMainPage()">Back</button>
 </form>
 </body>
 </html>

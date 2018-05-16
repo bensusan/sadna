@@ -163,6 +163,7 @@ public class BlMain {
 	}
 
 	public static Store openStore(Subscriber sub, String storeName,  int gradeing, boolean isOpen) throws Exception {
+		
 		return BlSubscriber.openStore(sub,storeName,gradeing,new HashMap<Product, Integer>(),new LinkedList<Purchase>(),isOpen);
 	}
 
@@ -180,7 +181,9 @@ public class BlMain {
 
 	public static Subscriber signUp(Guest g, String username, String password, String fullName, String address,
 			String phone, String creditCardNumber) throws Exception {
-		return BlGuest.signUp(g, username, password, fullName, address, phone, creditCardNumber);
+		Subscriber toReturn = BlGuest.signUp(g, username, password, fullName, address, phone, creditCardNumber);
+		List<Subscriber> toView = allSubscribers;
+		return toReturn;
 	}
 
 	public static Subscriber signIn(Guest g, String username, String password) throws Exception {
@@ -375,6 +378,28 @@ public class BlMain {
 	static String getCreditCard(Guest g){
 		return allUsersWithTheirCreditCards.get(g).get(0);
 	}
-
+	
+	public static Subscriber getSubscriberFromUsername(String usrname){
+		Subscriber to_return = null;
+		for(Subscriber s : allSubscribers){
+			if(s.getUsername().equals(usrname)){
+				to_return = s;
+				break;
+			}
+		}
+		return to_return;
+	}
+	
+	
+	public static int getIndexByUN(Subscriber sub){
+		int ans = 0;
+		for (Subscriber s : allSubscribers) {
+			if(s.getUsername().equals(sub.getUsername()))
+				return ans;
+			ans++;
+		}
+		
+		return -1;
+	}
 	
 }

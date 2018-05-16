@@ -20,8 +20,8 @@ public class Store {
 	private Map<Product, Integer> products;
 	private List<Purchase> purchaseHistory;
 	private boolean isOpen;
-	private List<StoreOwner> myOwners;
-	private List<StoreManager> myManagers;
+	private transient List<StoreOwner> myOwners;
+	private transient List<StoreManager> myManagers;
 	private int moneyEarned;
 	private PurchasePolicy storePolicy;
 	private Map<Category,PurchasePolicy> categoryDiscounts;

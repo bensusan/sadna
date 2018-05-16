@@ -33,12 +33,13 @@ function connect() {
                     case "signUpPage":
                     	recieveSignUpMsg(body.functionName, obj);
                     	break;
-                    case "openStorePage":
+					case "openStorePage":
                     	recieveOpenStoreMsg(body.functionName, obj);
                     	break;
-                    case "myStoresPage":
-                    	recieveMyStoresMsg(body.functionName, obj);
-                    	break;
+					case "updateCurrentSubscriber":
+						window.alert("Entered line 39");
+						recieveUpdateCurrentSubscriber(body.functionName, obj);
+						break;
                     default:
                         break;
                 }
@@ -55,6 +56,16 @@ function recieveMainPageMsg(funcName, obj) {
             stompClient.disconnect();
             stompClient = null;
             window.location.href = "mainPage.html";
+            break;
+        default:
+            break;
+    }
+}
+
+function recieveUpdateCurrentSubscriber(funcName, obj) {
+    switch (funcName){
+        case "getSubscriberFromUsername":
+            localStorage.setItem('currentUser', JSON.stringify(obj));
             break;
         default:
             break;
@@ -95,13 +106,11 @@ function recieveLoginPageMsg(funcName, obj) {
 }
 
 function recieveSignUpMsg(funcName, obj) {
-	window.alert("YOU");
 	if(window.confirm("shit3333"))
         		window.alert("shit");
     switch (funcName){
         case "signUp":
-        if(window.confirm("shit3333"))
-        		window.alert("shit");
+			window.alert("Successfully signed up");
             loadMainPage();
             break;
         default:
@@ -112,8 +121,9 @@ function recieveSignUpMsg(funcName, obj) {
 function recieveOpenStoreMsg(funcName, obj) {
     switch (funcName){
         case "openStore":
-        	//localStorage.currentUser.owner = obj.owner;
-        	if(window.confirm("shit4444"))
+			window.alert("Store " + JSON.stringify(obj['name']) + " opened succesfuly!");
+			updateCurrentSubscriber();
+			setTimeout(function(){
         		window.alert("shit");
             loadMainPage();
             break;
@@ -128,13 +138,25 @@ function recieveMyStoresMsg(funcName, obj) {
             localStorage.setItem('stores', JSON.stringify(true));
              window.alert("shit111");
               window.alert(JSON.stringify(JSON.parse(localStorage.getItem('stores'))));
-            loadMainPage();
+			loadMainPage();
+			}, 2000);
+            
             break;
         default:
             break;
     }
 }
 
+function updateCurrentSubscriber(){
+	    stompClient.send("/app/hello", {},
+		JSON.stringify(
+				    {	'pageName': "updateCurrentSubscriber",
+				    	'functionName': "getSubscriberFromUsername",
+				    	'paramsAsJSON': [	JSON.parse(localStorage.getItem('currentUser'))['username']	//username as string
+				    					]
+				    }
+	));
+}
 
 //signIn(Guest g, String userName, String password) : Subscriber
 function signIn() {
@@ -153,6 +175,21 @@ function signIn() {
 	 if(sub == null){
 	      window.alert("shit");
 	 	}
+	
+}
+
+function openStore() {
+	window.alert("enter OS");
+    stompClient.send("/app/hello", {},
+    JSON.stringify(
+				    {	'pageName': "openStorePage",
+				    	'functionName': "openStore",
+				    	'paramsAsJSON': [	localStorage.getItem('currentUser'),	//logged in sub turns to store owner
+				    						$("#newStoreName").val()			//store name
+				    					]
+				    }
+	));
+	
 	
 }
 
@@ -199,8 +236,10 @@ function loadProductPage(product) {
 }
 
 function loadMyStoresPage() {
+	window.alert(localStorage.getItem('currentUser'));
     //assume current user is subscriber
     getMyStores();
+	
     stompClient.disconnect();
     stompClient = null;
     window.location.href = "myStoresPage.html";

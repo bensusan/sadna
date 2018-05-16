@@ -32,6 +32,13 @@ function connect() {
                     case "signUpPage":
                     	recieveSignUpMsg(body.functionName, obj);
                     	break;
+					case "openStorePage":
+                    	recieveOpenStoreMsg(body.functionName, obj);
+                    	break;
+					case "updateCurrentSubscriber":
+						window.alert("Entered line 39");
+						recieveUpdateCurrentSubscriber(body.functionName, obj);
+						break;
                     default:
                         break;
                 }
@@ -48,6 +55,16 @@ function recieveMainPageMsg(funcName, obj) {
             stompClient.disconnect();
             stompClient = null;
             window.location.href = "mainPage.html";
+            break;
+        default:
+            break;
+    }
+}
+
+function recieveUpdateCurrentSubscriber(funcName, obj) {
+    switch (funcName){
+        case "getSubscriberFromUsername":
+            localStorage.setItem('currentUser', JSON.stringify(obj));
             break;
         default:
             break;
@@ -86,14 +103,40 @@ function recieveLoginPageMsg(funcName, obj) {
 }
 
 function recieveSignUpMsg(funcName, obj) {
-	window.alert("YOU");
     switch (funcName){
         case "signUp":
+			window.alert("Successfully signed up");
             loadMainPage();
             break;
         default:
             break;
     }
+}
+
+function recieveOpenStoreMsg(funcName, obj) {
+    switch (funcName){
+        case "openStore":
+			window.alert("Store " + JSON.stringify(obj['name']) + " opened succesfuly!");
+			updateCurrentSubscriber();
+			setTimeout(function(){
+			loadMainPage();
+			}, 2000);
+            
+            break;
+        default:
+            break;
+    }
+}
+
+function updateCurrentSubscriber(){
+	    stompClient.send("/app/hello", {},
+		JSON.stringify(
+				    {	'pageName': "updateCurrentSubscriber",
+				    	'functionName': "getSubscriberFromUsername",
+				    	'paramsAsJSON': [	JSON.parse(localStorage.getItem('currentUser'))['username']	//username as string
+				    					]
+				    }
+	));
 }
 
 //signIn(Guest g, String userName, String password) : Subscriber
@@ -108,6 +151,21 @@ function signIn() {
 				    					]
 				    }
 	));
+}
+
+function openStore() {
+	window.alert("enter OS");
+    stompClient.send("/app/hello", {},
+    JSON.stringify(
+				    {	'pageName': "openStorePage",
+				    	'functionName': "openStore",
+				    	'paramsAsJSON': [	localStorage.getItem('currentUser'),	//logged in sub turns to store owner
+				    						$("#newStoreName").val()			//store name
+				    					]
+				    }
+	));
+	
+	
 }
 
 function loadMainPage() {
@@ -152,9 +210,11 @@ function loadProductPage(product) {
 }
 
 function loadMyStoresPage() {
+	window.alert(localStorage.getItem('currentUser'));
     //assume current user is subscriber
     var storeManager = JSON.parse(localStorage.getItem('currentUser')).manager;
     var storeOwner = JSON.parse(localStorage.getItem('currentUser')).owner;
+	
     if((storeManager !== null && storeManager.length > 0) || (storeOwner !== null && storeOwner.length > 0))
     {
         stompClient.disconnect();

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Open Store Form</title>
+    <h3>Open Store</h3>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+<body>
+<noscript><h2 style="color: #ff0000">
+Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable Javascript and reload this page!
+</h2></noscript>
+<form name="openStoreForm">
+<div class="form-group1">
+    <label for="newStoreName">Store name please:</label>
+    <input type="text" id="newStoreName" class="form-control" placeholder="type here...">
+</div>
+
+<button onclick="openStore()">OPEN</button>
+<input type="reset" value="Reset" onClick="window.location.reload()">
+<button onclick="loadMainPage()">Back</button>
+</form>
+</body>
+</html>

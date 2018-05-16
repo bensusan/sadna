@@ -178,12 +178,12 @@ public class GreetingController {
 					} catch (JsonSyntaxException j) {
 						ret.setContentAsJson(gson.toJson(BlMain.openStore(gson.fromJson(args[0], StoreOwner.class))));
 					}
-				} else if (args.length == 6) {
-					Map<Product, Integer> map = new HashMap<Product, Integer>();
-					List<Purchase> p = new LinkedList<Purchase>();
-					ret.setContentAsJson(gson.toJson(BlMain.openStore(gson.fromJson(args[0], Subscriber.class),
-							gson.fromJson(args[1], String.class), gson.fromJson(args[2], Integer.class),
-							gson.fromJson(args[5], Boolean.class))));
+				} else if (args.length == 2) {
+					Subscriber sub = gson.fromJson(args[0], Subscriber.class);
+					String str = gson.fromJson(args[1], String.class);
+					Store s = BlMain.openStore(sub,str, 3, true);
+					String ans = gson.toJson(s);
+					ret.setContentAsJson(ans);
 				}
 				break;
 			case getPurchaseHistory:
@@ -215,10 +215,11 @@ public class GreetingController {
 				break;
 			case signUp:
 				if (args.length == 7){
-					ret.setContentAsJson(gson.toJson(BlMain.signUp(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], String.class),
+					Subscriber subs = BlMain.signUp(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], String.class),
 							gson.fromJson(args[2], String.class), gson.fromJson(args[3], String.class),
 							gson.fromJson(args[4], String.class), gson.fromJson(args[5], String.class),
-							gson.fromJson(args[6], String.class))));
+							gson.fromJson(args[6], String.class));
+					ret.setContentAsJson(gson.toJson(subs));
 				}
 				break;
 			case signIn:
@@ -258,6 +259,12 @@ public class GreetingController {
 			case getAllSubscriberStores:
 				if(args.length == 1)
 					ret.setContentAsJson(gson.toJson(BlMain.getAllSubscriberStores(gson.fromJson(args[0], Subscriber.class))));
+				break;
+				
+			case getSubscriberFromUsername:
+				if(args.length == 1)
+					ret.setContentAsJson(gson.toJson(BlMain.getSubscriberFromUsername(gson.fromJson(args[0], String.class))));
+				break;
 			default:
 				throw new Exception("NO SUCH FUNCTION");
 			}

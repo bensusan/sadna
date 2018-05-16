@@ -46,8 +46,9 @@ function connect() {
         });
     });
 }
-// localStorage.setItem('mapForTable', JSON.stringify({}));
-// var mapForTable = null;
+
+
+//****RECIEVE MESSAGE FROM SERVER****//
 function recieveMainPageMsg(funcName, obj) {
     switch (funcName){
         case "getAllStoresWithThierProductsAndAmounts":
@@ -59,35 +60,6 @@ function recieveMainPageMsg(funcName, obj) {
         default:
             break;
     }
-}
-
-function recieveUpdateCurrentSubscriber(funcName, obj) {
-    switch (funcName){
-        case "getSubscriberFromUsername":
-            localStorage.setItem('currentUser', JSON.stringify(obj));
-            break;
-        default:
-            break;
-    }
-}
-
-function mainTableOnLoad() {
-    var obj = JSON.parse(localStorage.getItem('mapForTable'));
-    // obj = {s:{p:1}}; //example for the loop
-    var found = false;
-    Object.entries(obj).map(([s, pAndA]) => {
-        Object.entries(pAndA).map(([p, amount]) => {
-            if (amount > 0) {
-                var toShow = "Store - id: " + s.storeId + " name: " + s.name + " Product - id: " + p.id + " name: " + p.name;
-                var pAsJson = JSON.stringify(p);
-                $('#myTable').append('<button onclick="loadProductPage("+ pAsJson + ")">toShow</button>');
-                found = true;
-            }
-        });
-    });
-
-    if(!found)
-        window.alert("No Products");
 }
 
 function recieveLoginPageMsg(funcName, obj) {
@@ -128,16 +100,17 @@ function recieveOpenStoreMsg(funcName, obj) {
     }
 }
 
-function updateCurrentSubscriber(){
-	    stompClient.send("/app/hello", {},
-		JSON.stringify(
-				    {	'pageName': "updateCurrentSubscriber",
-				    	'functionName': "getSubscriberFromUsername",
-				    	'paramsAsJSON': [	JSON.parse(localStorage.getItem('currentUser'))['username']	//username as string
-				    					]
-				    }
-	));
+function recieveUpdateCurrentSubscriber(funcName, obj) {
+    switch (funcName){
+        case "getSubscriberFromUsername":
+            localStorage.setItem('currentUser', JSON.stringify(obj));
+            break;
+        default:
+            break;
+    }
 }
+
+//****SEND MESSAGE TO SERVER****//
 
 //signIn(Guest g, String userName, String password) : Subscriber
 function signIn() {
@@ -153,6 +126,24 @@ function signIn() {
 	));
 }
 
+function signUp(){
+    stompClient.send("/app/hello", {},
+    JSON.stringify(
+				    {	'pageName': "signUpPage",
+				    	'functionName': "signUp",
+				    	'paramsAsJSON': [	localStorage.getItem('currentUser'),	//new Guest()
+				    						$("#newuserName").val(),			//userName
+				    						$("#newpassword").val(),
+				    						$("#fullname").val(),
+				    						$("#address").val(),
+				    						$("#phonenum").val(),
+				    						$("#creditCardNumber").val()
+				    					]
+				    }
+	));
+}
+
+
 function openStore() {
 	window.alert("enter OS");
     stompClient.send("/app/hello", {},
@@ -166,6 +157,36 @@ function openStore() {
 	));
 	
 	
+}
+
+function updateCurrentSubscriber(){
+	    stompClient.send("/app/hello", {},
+		JSON.stringify(
+				    {	'pageName': "updateCurrentSubscriber",
+				    	'functionName': "getSubscriberFromUsername",
+				    	'paramsAsJSON': [	JSON.parse(localStorage.getItem('currentUser'))['username']	//username as string
+				    					]
+				    }
+	));
+}
+
+function mainTableOnLoad() {
+    var obj = JSON.parse(localStorage.getItem('mapForTable'));
+    // obj = {s:{p:1}}; //example for the loop
+    var found = false;
+    Object.entries(obj).map(([s, pAndA]) => {
+        Object.entries(pAndA).map(([p, amount]) => {
+            if (amount > 0) {
+                var toShow = "Store - id: " + s.storeId + " name: " + s.name + " Product - id: " + p.id + " name: " + p.name;
+                var pAsJson = JSON.stringify(p);
+                $('#myTable').append('<button onclick="loadProductPage("+ pAsJson + ")">toShow</button>');
+                found = true;
+            }
+        });
+    });
+
+    if(!found)
+        window.alert("No Products");
 }
 
 function loadMainPage() {
@@ -242,24 +263,6 @@ function makeMainPage(){
     }
 }
 
-function signUp(){
-    stompClient.send("/app/hello", {},
-    JSON.stringify(
-				    {	'pageName': "signUpPage",
-				    	'functionName': "signUp",
-				    	'paramsAsJSON': [	localStorage.getItem('currentUser'),	//new Guest()
-				    						$("#newuserName").val(),			//userName
-				    						$("#newpassword").val(),
-				    						$("#fullname").val(),
-				    						$("#address").val(),
-				    						$("#phonenum").val(),
-				    						$("#creditCardNumber").val()
-				    					]
-				    }
-	));
-	
-	loadMainPage();
-}
 
 $(function () {
     connect();

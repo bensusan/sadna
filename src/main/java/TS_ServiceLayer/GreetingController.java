@@ -224,12 +224,8 @@ public class GreetingController {
 				break;
 			case signIn:
 				if (args.length == 3) {
-					Subscriber sub = BlMain.signIn(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], String.class),
-							gson.fromJson(args[2], String.class));
-					//if (sub == null)
-					//	ret.setContentAsJson(gson.toJson("user not exists"));
-					//else
-						ret.setContentAsJson(gson.toJson(sub));
+					ret.setContentAsJson(gson.toJson(BlMain.signIn(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], String.class),
+							gson.fromJson(args[2], String.class))));
 				}
 				break;
 			case expiredProducts:

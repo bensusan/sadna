@@ -36,7 +36,6 @@ function connect() {
                     	recieveOpenStoreMsg(body.functionName, obj);
                     	break;
 					case "updateCurrentSubscriber":
-						window.alert("Entered line 39");
 						recieveUpdateCurrentSubscriber(body.functionName, obj);
 						break;
                     default:
@@ -111,8 +110,6 @@ function recieveUpdateCurrentSubscriber(funcName, obj) {
 }
 
 //****SEND MESSAGE TO SERVER****//
-
-//signIn(Guest g, String userName, String password) : Subscriber
 function signIn() {
     stompClient.send("/app/hello", {},
     JSON.stringify(
@@ -145,7 +142,6 @@ function signUp(){
 
 
 function openStore() {
-	window.alert("enter OS");
     stompClient.send("/app/hello", {},
     JSON.stringify(
 				    {	'pageName': "openStorePage",
@@ -170,6 +166,22 @@ function updateCurrentSubscriber(){
 	));
 }
 
+/***LOAD FUNCTIONS***/
+function loadStoreDetails(){
+	var store = JSON.parse(localStorage.getItem('currentStore'));
+	window.alert(JSON.stringify(store));
+	var sid = document.getElementById('storeIdInStorePage');
+	sid.innerHTML = store.storeId
+	var sn = document.getElementById('storeNameInStorePage');
+	sn.innerHTML = store.name
+	var sa = document.getElementById('storeAddressInStorePage');
+	sa.innerHTML = store.address
+	var sp = document.getElementById('storePhoneInStorePage');
+	sp.innerHTML = store.phone
+	var sg = document.getElementById('storeGradingInStorePage');
+	sg.innerHTML = store.gradeing
+}
+
 function mainTableOnLoad() {
     var obj = JSON.parse(localStorage.getItem('mapForTable'));
     // obj = {s:{p:1}}; //example for the loop
@@ -187,6 +199,31 @@ function mainTableOnLoad() {
 
     if(!found)
         window.alert("No Products");
+}
+function loadStoresIOwn(){
+	
+	var storeOwners = JSON.parse(localStorage.getItem('currentUser')).owner;
+	var tableRef = document.getElementById('storeIOwnTable');
+	for(var i = 0; i < storeOwners.length; i++){
+		
+		var store = storeOwners[i].store
+		
+		var newRow   = tableRef.insertRow(-1);
+		var newCell  = newRow.insertCell(0);
+		var newElem = document.createElement( 'button' );
+		newElem.setAttribute('class', 'btn');
+		newElem.setAttribute('onclick', 'loadEditOwnStore('+ JSON.stringify(storeOwners[i].store) +');');
+		newElem.innerHTML = "Store - id: " + store.storeId + ", Name: " + store.name + ", Grading: " + store.gradeing;
+		newCell.appendChild(newElem);
+
+	}
+}
+
+function loadEditOwnStore(store){
+	localStorage.setItem('currentStore', JSON.stringify(store));
+	stompClient.disconnect();
+    stompClient = null;
+    window.location.href = "storePage.html";
 }
 
 function loadMainPage() {
@@ -230,8 +267,14 @@ function loadProductPage(product) {
     window.location.href = "productPage.html";
 }
 
+function loadAddProductPage(){
+	stompClient.disconnect();
+    stompClient = null;
+    window.location.href = "addProductPage.html";
+}
+
 function loadMyStoresPage() {
-	window.alert(localStorage.getItem('currentUser'));
+	/*window.alert(localStorage.getItem('currentUser'));*/
     //assume current user is subscriber
     var storeManager = JSON.parse(localStorage.getItem('currentUser')).manager;
     var storeOwner = JSON.parse(localStorage.getItem('currentUser')).owner;

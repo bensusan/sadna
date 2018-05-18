@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Store Page</title>
+    <h3>Store Page</h3>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+
+<body onload="loadStoreDetails()" style.margin= 10px>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div class="row">
+    <div class="col-md-12">
+        <table id="storeIOwnTable">
+            <tr>
+				<td>Store Id:</td>
+				<td id=storeIdInStorePage></td>
+			</tr>
+			<tr>
+				<td>Name:</td>
+				<td id=storeNameInStorePage></td>
+			</tr>
+			<tr>
+				<td>Address:</td>
+				<td id=storeAddressInStorePage></td>
+			</tr>
+			<tr>
+				<td>Phone:</td>
+				<td id=storePhoneInStorePage></td>
+			</tr>
+			<tr>
+				<td>Grading:</td>
+				<td id=storeGradingInStorePage></td>
+			</tr>
+			
+        </table>
+    </div>
+</div>
+<div class="form-group1" margin>
+		<button> Watch Purchase History</button>
+	</div>
+	<div class="form-group2">
+		<button onclick="loadAddProductPage()"> Add new Product</button>
+	</div>
+	<div class="form-group3">
+		<button> Delete product from store</button>
+	</div>
+	<div class="form-group4">
+		<button>Edit product in store</button>
+	</div>
+	<div class="form-group5">
+		<button>Add policy to product</button>
+	</div>
+	<div class="form-group6">
+		<button>Add discount to product</button>
+	</div>
+	<div class="form-group7">
+		<button>Add new store owner</button>
+	</div>
+	<div class="form-group8">
+		<button>Add new store manager</button>
+	</div>
+	<div class="form-group9">
+		<button>Add discount to category in Store</button>
+	</div>
+
+</body>
+
+
+</html>

@@ -2,8 +2,8 @@
 <html>
 
 <head>
-    <title>Trading system</title>
-    <h3>Trading system</h3>
+    <title>My Stores Page</title>
+    <h3>My Stores..</h3>
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/main.css" rel="stylesheet">
     <script src="/webjars/jquery/jquery.min.js"></script>
@@ -11,26 +11,25 @@
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <script src="/app.js"></script>
 </head>
-<body>
+
+<body onload="loadStoresIOwn()">
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
     enabled. Please enable
     Javascript and reload this page!</h2></noscript>
-
-<script type="text/javascript">
-var storesVar = JSON.parse(localStorage.getItem('stores'));
-var btn = document.createElement("BUTTON");        // Create a <button> element
-var t = document.createTextNode("" + JSON.stringify(storesVar));       // Create a text node
-btn.appendChild(t);                                // Append the text to <button>
-document.body.appendChild(btn);
-//var i;
-//var buttons = [];
-//for (i = 0; i < storesVar.length; i++) { 
- //   buttons[i] = document.createElement("BUTTON");        // Create a <button> element
-	//buttons[i].appendChild(document.createTextNode(JSON.stringify(stores[i].name)));                                
-	//document.body.appendChild(buttons[i]); 
-//}
-
-</script>
-
+<div class="row">
+    <div class="col-md-12">
+        <table id="storeIOwnTable">
+            <thead>
+            <tr>
+                <th>Store I own:</th>
+            </tr>
+            </thead>
+            <tbody id="storeIOwnTableBody" class="clickable-row">
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
+
+
 </html>

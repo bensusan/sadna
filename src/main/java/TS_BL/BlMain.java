@@ -25,6 +25,7 @@ public class BlMain {
 		{
 			add(new Category("toys"));
 			add(new Category("food"));
+			add(new Category("a"));
 			//....
 		}
 	};
@@ -440,6 +441,20 @@ public class BlMain {
 		}
 
 		return null;
+	}
+	
+	public static int getAmountFromProdId(int prodId) {
+		Map<Store, Map<Product, Integer>> m = getAllStoresWithThierProductsAndAmounts();
+		for (Map.Entry<Store, Map<Product, Integer>> entry : m.entrySet())
+		{
+			for(Map.Entry<Product, Integer> subEntry : entry.getValue().entrySet()){
+				if(subEntry.getKey().getId() == prodId){
+					return subEntry.getValue().intValue();
+				}
+			}
+		}
+
+		return 0;
 	}
 	
 }

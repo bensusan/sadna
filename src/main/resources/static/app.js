@@ -44,6 +44,9 @@ function connect() {
 					case "storeProductsPage":
 						recieveStoreProductsPage(body.functionName, obj);
 						break;
+					case "editProductPage":
+						recieveEditProductsPage(body.functionName, obj);
+						break;
 						
                     default:
                         break;
@@ -62,6 +65,19 @@ function recieveMainPageMsg(funcName, obj) {
             stompClient.disconnect();
             stompClient = null;
             window.location.href = "mainPage.html";
+            break;
+        default:
+            break;
+    }
+}
+
+function recieveEditProductsPage(funcName, obj) {
+	switch (funcName){
+        case "updateProductDetails":
+            window.alert("Product Update succesfully");
+            stompClient.disconnect();
+            stompClient = null;
+            window.location.href = "storePage.html";
             break;
         default:
             break;
@@ -284,9 +300,34 @@ function deleteProductFromStore(productId){
         }));
 }
 
-function editProductInStore(id){
-	window.alert("Need to Imp edit Product in store");
+function editProductInStore(){
+	if(isNaN($("#editnewProductPrice").val())){
+		window.alert("wrong price");
+		loadEditProductInStorePage(localStorage.getItem('currentProduct'));
+	}
+	if(isNaN($("#editnewProductAmount").val())){
+		window.alert("wrong amount");
+		loadEditProductInStorePage(localStorage.getItem('currentProduct'));
+	}
+	
+	stompClient.send("/app/hello", {},
+    JSON.stringify(
+        {	'pageName': "editProductPage",
+            'functionName': "updateProductDetails",
+            'paramsAsJSON': [localStorage.getItem('isOwner'),
+							JSON.parse(localStorage.getItem('currentProduct')),
+							JSON.parse(localStorage.getItem('currentStore'))['storeId'],
+							JSON.parse(localStorage.getItem('currentUser'))['username'],
+							$("#editnewProductName").val(),
+							$("#editnewProductPrice").val(),
+							$("#editnewProductCategory").val(),
+							$("#editnewProductAmount").val()
+							]
+							
+        }));
 }
+
+
 
 function addPolicyToProduct(id){
 	window.alert("Need to Imp add policy to product in store");
@@ -378,6 +419,14 @@ function loadAddProductPage(){
 	stompClient.disconnect();
     stompClient = null;
     window.location.href = "addProductPage.html";
+}
+
+function loadEditProductInStorePage(id){
+	window.alert("Need to Imp edit Produccct in store");
+	localStorage.setItem('currentProduct', id);
+	stompClient.disconnect();
+    stompClient = null;
+    window.location.href = "editProductPage.html";
 }
 
 function loadMyStoresPage() {

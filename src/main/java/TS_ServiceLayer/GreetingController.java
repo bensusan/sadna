@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import TS_SharedClasses.*;
 
@@ -113,23 +114,48 @@ public class GreetingController {
 						Product toDelete = BlMain.getProductFromProdId(gson.fromJson(args[1], Integer.class).intValue());
 						boolean ans = BlMain.deleteProductFromStore(so, toDelete);
 						ret.setContentAsJson(gson.toJson(ans));
-						
 					}else{
 						
 					}
 				}
 				break;
 			case updateProductDetails:
-				if (args.length == 5) {
-					try {
-						ret.setContentAsJson(gson.toJson(BlMain.updateProductDetails(gson.fromJson(args[0], StoreManager.class),
-								gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Product.class),
-								gson.fromJson(args[3], Integer.class), gson.fromJson(args[4], String.class))));
-					} catch (JsonSyntaxException j) {
-						ret.setContentAsJson(gson.toJson(BlMain.updateProductDetails(gson.fromJson(args[0], StoreOwner.class),
-								gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Product.class),
-								gson.fromJson(args[3], Integer.class), gson.fromJson(args[4], String.class))));
+				if (args.length == 8) {
+					boolean isOwner = gson.fromJson(args[0], Boolean.class);
+					if(isOwner){
+						StoreOwner so = BlMain.getStoreOwnerForStorePerUsername(gson.fromJson(args[2], Integer.class), gson.fromJson(args[3], String.class));
+						Product oldProduct = BlMain.getProductFromProdId(gson.fromJson(args[1], Integer.class).intValue());
+						int newAmount = BlMain.getAmountFromProdId(gson.fromJson(args[1], Integer.class).intValue());
+						
+						String newName = gson.fromJson(args[4], String.class);
+						if(newName == null)
+							newName = oldProduct.getName();
+						
+						int newPrice;
+						String checkval = gson.fromJson(args[5], String.class);
+						if(checkval == null)
+							newPrice = oldProduct.getPrice();
+						else
+							newPrice = gson.fromJson(args[5], Integer.class);
+						
+						String newCategory = gson.fromJson(args[6], String.class);
+						if(newCategory == null)
+							newCategory = oldProduct.getCategory().getName();
+						
+						checkval = gson.fromJson(args[7], String.class);
+						if(checkval != null)
+							newAmount = gson.fromJson(args[7], Integer.class);
+						
+						
+						
+						Product newProduct = new Product(newName, newPrice, oldProduct.getGrading(), oldProduct.getPurchasePolicy(), oldProduct.getType());
+						
+						boolean ans = BlMain.updateProductDetails(so, oldProduct, newProduct, newAmount, newCategory);
+						ret.setContentAsJson(gson.toJson(ans));
+					}else{
+						
 					}
+					
 				}
 				break;
 			case addPolicyToProduct:

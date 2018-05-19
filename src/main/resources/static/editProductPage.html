@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Product Page</title>
+    <h3>Edit Product</h3>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+<body>
+<noscript><h2 style="color: #ff0000">
+Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable Javascript and reload this page!
+</h2></noscript>
+<form name="addProductForm">
+<div class="form-group1">
+    <label for="editnewProductName">New Product Name:</label>
+    <input type="text" id="editnewProductName" class="form-control" placeholder="type here...">
+</div>
+<div class="form-group2">
+    <label for="editnewProductPrice">New Price:</label>
+    <input type="text" id="editnewProductPrice" class="form-control" placeholder="type here...">
+</div>
+<div class="form-group3">
+    <label for="editnewProductCategory">New Category:</label>
+    <input type="text" id="editnewProductCategory" class="form-control" placeholder="type here...">
+</div>
+<div class="form-group4">
+    <label for="editnewProductAmount">New Amount:</label>
+    <input type="text" id="editnewProductAmount" class="form-control" placeholder="type here...">
+</div>
+<button onclick="editProductInStore()">Edit product</button>
+
+</form>
+</body>
+</html>

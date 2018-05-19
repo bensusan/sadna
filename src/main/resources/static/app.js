@@ -75,6 +75,12 @@ function recieveStoreProductsPage(funcName, obj) {
             stompClient = null;
             window.location.href = "storeProductsPage.html";
             break;
+		case "deleteProductFromStore":
+			window.alert("Product was deleted succesfully!");
+			stompClient.disconnect();
+            stompClient = null;
+            window.location.href = "storePage.html";
+            break;
         default:
             break;
     }
@@ -263,8 +269,19 @@ function loadProductsOfStore(){
 		
 	}
 }
-function deleteProductFromStore(id){
-	window.alert(id);
+function deleteProductFromStore(productId){
+	window.alert(productId);
+	stompClient.send("/app/hello", {},
+    JSON.stringify(
+        {	'pageName': "storeProductsPage",
+            'functionName': "deleteProductFromStore",
+            'paramsAsJSON': [localStorage.getItem('isOwner'),
+							productId,
+							JSON.parse(localStorage.getItem('currentStore'))['storeId'],
+							JSON.parse(localStorage.getItem('currentUser'))['username']
+							]
+							
+        }));
 }
 
 function editProductInStore(id){
@@ -310,6 +327,7 @@ function loadStoreProductsPage(action){
 
 function loadEditOwnStore(store){
 	localStorage.setItem('currentStore', JSON.stringify(store));
+	localStorage.setItem('isOwner', JSON.stringify(true));
 	stompClient.disconnect();
     stompClient = null;
     window.location.href = "storePage.html";

@@ -427,5 +427,19 @@ public class BlMain {
 		}
 		return null;
 	}
+
+	public static Product getProductFromProdId(int prodId) {
+		Map<Store, Map<Product, Integer>> m = getAllStoresWithThierProductsAndAmounts();
+		for (Map.Entry<Store, Map<Product, Integer>> entry : m.entrySet())
+		{
+			for(Map.Entry<Product, Integer> subEntry : entry.getValue().entrySet()){
+				if(subEntry.getKey().getId() == prodId){
+					return subEntry.getKey();
+				}
+			}
+		}
+
+		return null;
+	}
 	
 }

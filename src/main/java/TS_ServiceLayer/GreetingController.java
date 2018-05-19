@@ -106,13 +106,16 @@ public class GreetingController {
 				}
 				break;
 			case deleteProductFromStore:
-				if (args.length == 2) {
-					try {
-						ret.setContentAsJson(gson.toJson(BlMain.deleteProductFromStore(gson.fromJson(args[0], StoreManager.class),
-								gson.fromJson(args[1], Product.class))));
-					} catch (JsonSyntaxException j) {
-						ret.setContentAsJson(gson.toJson(BlMain.deleteProductFromStore(gson.fromJson(args[0], StoreOwner.class),
-								gson.fromJson(args[1], Product.class))));
+				if (args.length == 4) {
+					boolean isOwner = gson.fromJson(args[0], Boolean.class);
+					if(isOwner){
+						StoreOwner so = BlMain.getStoreOwnerForStorePerUsername(gson.fromJson(args[2], Integer.class), gson.fromJson(args[3], String.class));
+						Product toDelete = BlMain.getProductFromProdId(gson.fromJson(args[1], Integer.class).intValue());
+						boolean ans = BlMain.deleteProductFromStore(so, toDelete);
+						ret.setContentAsJson(gson.toJson(ans));
+						
+					}else{
+						
 					}
 				}
 				break;

@@ -249,7 +249,6 @@ function mainTableOnLoad() {
 }
 
 function loadProductsOfStore(){
-	window.alert("AAA");
 	var obj = JSON.parse(localStorage.getItem('prodAmountToStoreMap'));
 	var tableRef = document.getElementById('ProductsInStoreTable');
 	for(var toPrint in obj){
@@ -258,8 +257,26 @@ function loadProductsOfStore(){
 		var newElem = document.createElement( 'button' );
 		newElem.setAttribute('class', 'btn');
 		newElem.innerHTML = toPrint;
+		var productIDasString = toPrint.substring(toPrint.indexOf(" "), toPrint.indexOf(","));
+		newElem.setAttribute('onclick', localStorage.getItem('actionOnProduct')+'('+ productIDasString +');');
 		newCell.appendChild(newElem);
+		
 	}
+}
+function deleteProductFromStore(id){
+	window.alert(id);
+}
+
+function editProductInStore(id){
+	window.alert("Need to Imp edit Product in store");
+}
+
+function addPolicyToProduct(id){
+	window.alert("Need to Imp add policy to product in store");
+}
+
+function addDiscountToProduct(id){
+	window.alert("Need to Imp add discount to product in store");
 }
 
 function loadStoresIOwn(){

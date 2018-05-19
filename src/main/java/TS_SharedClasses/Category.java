@@ -6,7 +6,7 @@ import java.util.List;
 public class Category {
 	private String name;
 	private PurchasePolicy purchasePolicy;
-	private List<Product>products;
+	private transient List<Product>products;
 	
 	public Category(String name){
 		this.name=name;

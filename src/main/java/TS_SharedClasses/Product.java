@@ -2,6 +2,8 @@ package TS_SharedClasses;
 
 import java.io.Serializable;
 
+import com.google.gson.Gson;
+
 public class Product  {
 
 	private static int nextID = 0;
@@ -10,7 +12,7 @@ public class Product  {
 	private int price;
 	private int grading;
 	private PurchasePolicy purchasePolicy;
-	private Store store;
+	private transient Store store;
 	private Category category;
 	private PurchaseType type;
 	
@@ -142,6 +144,13 @@ public class Product  {
 //		} else if (!store.equals(other.store))
 //			return false;
 //		return true;
+	}
+	
+	public String toString(){
+		String toRet = "Id: " + this.getId() + ", Name: " + this.getName() + ", Price: " + this.getPrice() + ", Grade: " +
+						this.getGrading() + ", Category: " + this.getCategory().getName() + ", Policy: " + 
+						this.getPurchasePolicy().toString() + ", Type: " + this.getType().toString();
+		return toRet;
 	}
 	
 	

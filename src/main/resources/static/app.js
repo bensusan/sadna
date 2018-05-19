@@ -41,6 +41,10 @@ function connect() {
 					case "addProductPage":
 						recieveAddProduct(body.functionName, obj);
 						break;
+					case "storeProductsPage":
+						recieveStoreProductsPage(body.functionName, obj);
+						break;
+						
                     default:
                         break;
                 }
@@ -63,11 +67,23 @@ function recieveMainPageMsg(funcName, obj) {
             break;
     }
 }
+function recieveStoreProductsPage(funcName, obj) {
+    switch (funcName){
+        case "getProductAndAmountPerStoreId":
+			localStorage.setItem('prodAmountToStoreMap', JSON.stringify(obj));
+			stompClient.disconnect();
+            stompClient = null;
+            window.location.href = "storeProductsPage.html";
+            break;
+        default:
+            break;
+    }
+}
 
 function recieveAddProduct(funcName, obj) {
     switch (funcName){
         case "addProductToStore":
-			window.alert("New Product was added succesfuly!");
+			window.alert("New Product was added succesfully!");
             stompClient.disconnect();
             stompClient = null;
             window.location.href = "storePage.html";
@@ -231,6 +247,21 @@ function mainTableOnLoad() {
     if(!found)
         window.alert("No Products");
 }
+
+function loadProductsOfStore(){
+	window.alert("AAA");
+	var obj = JSON.parse(localStorage.getItem('prodAmountToStoreMap'));
+	var tableRef = document.getElementById('ProductsInStoreTable');
+	for(var toPrint in obj){
+		var newRow   = tableRef.insertRow(-1);
+		var newCell  = newRow.insertCell(0);
+		var newElem = document.createElement( 'button' );
+		newElem.setAttribute('class', 'btn');
+		newElem.innerHTML = toPrint;
+		newCell.appendChild(newElem);
+	}
+}
+
 function loadStoresIOwn(){
 	
 	var storeOwners = JSON.parse(localStorage.getItem('currentUser')).owner;
@@ -248,6 +279,16 @@ function loadStoresIOwn(){
 		newCell.appendChild(newElem);
 
 	}
+}
+
+function loadStoreProductsPage(action){
+	localStorage.setItem('actionOnProduct', action);
+	stompClient.send("/app/hello", {},
+    JSON.stringify(
+        {	'pageName': "storeProductsPage",
+            'functionName': "getProductAndAmountPerStoreId",
+            'paramsAsJSON': [JSON.parse(localStorage.getItem('currentStore'))['storeId']]
+        }));
 }
 
 function loadEditOwnStore(store){

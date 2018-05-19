@@ -1,9 +1,11 @@
 package TS_ServiceLayer;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import TS_SharedClasses.*;
@@ -12,7 +14,11 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
 import TS_BL.BlMain;
 
@@ -23,7 +29,8 @@ public class GreetingController {
 	@SendTo("/topic/greetings")
 	public Greeting greeting(HelloMessage message) throws Exception {
 		Thread.sleep(1000); // simulated delay
-		Gson gson = new Gson();
+		Gson gson = new Gson();		
+		
 		String[] args = message.getParamsAsJSON();
 		String fName = message.getFunctionName();
 		HelloMessage.functionNames f = HelloMessage.functionNames.valueOf(fName);
@@ -269,6 +276,12 @@ public class GreetingController {
 				if(args.length == 1)
 					ret.setContentAsJson(gson.toJson(BlMain.getSubscriberFromUsername(gson.fromJson(args[0], String.class))));
 				break;
+			case getProductAndAmountPerStoreId:
+				if(args.length == 1){
+					Map<Product, Integer> map = BlMain.getProductAndAmountPerStoreId(gson.fromJson(args[0], Integer.class));
+					ret.setContentAsJson(gson.toJson(map));
+				}
+				break;
 			default:
 				throw new Exception("NO SUCH FUNCTION");
 			}
@@ -279,3 +292,4 @@ public class GreetingController {
 		return ret;
 	}
 }
+

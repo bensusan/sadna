@@ -417,4 +417,15 @@ public class BlMain {
 		
 	}
 	
+	public static Map<Product, Integer> getProductAndAmountPerStoreId(int storeId){
+		Map<Store, Map<Product, Integer>> m = getAllStoresWithThierProductsAndAmounts();
+		for (Map.Entry<Store, Map<Product, Integer>> entry : m.entrySet())
+		{
+		    if(entry.getKey().getStoreId() == storeId){
+		    	return entry.getValue();
+		    }
+		}
+		return null;
+	}
+	
 }

@@ -171,15 +171,15 @@ function loadStoreDetails(){
 	var store = JSON.parse(localStorage.getItem('currentStore'));
 	window.alert(JSON.stringify(store));
 	var sid = document.getElementById('storeIdInStorePage');
-	sid.innerHTML = store.storeId
+	sid.innerHTML = store.storeId;
 	var sn = document.getElementById('storeNameInStorePage');
-	sn.innerHTML = store.name
+	sn.innerHTML = store.name;
 	var sa = document.getElementById('storeAddressInStorePage');
-	sa.innerHTML = store.address
+	sa.innerHTML = store.address;
 	var sp = document.getElementById('storePhoneInStorePage');
-	sp.innerHTML = store.phone
+	sp.innerHTML = store.phone;
 	var sg = document.getElementById('storeGradingInStorePage');
-	sg.innerHTML = store.gradeing
+	sg.innerHTML = store.gradeing;
 }
 
 function mainTableOnLoad() {
@@ -198,7 +198,7 @@ function mainTableOnLoad() {
     });
 
     if(!found)
-        window.alert("No Products");
+        window.alert("No Productttttttttttts");
 }
 function loadStoresIOwn(){
 	
@@ -206,7 +206,7 @@ function loadStoresIOwn(){
 	var tableRef = document.getElementById('storeIOwnTable');
 	for(var i = 0; i < storeOwners.length; i++){
 		
-		var store = storeOwners[i].store
+		var store = storeOwners[i].store;
 		
 		var newRow   = tableRef.insertRow(-1);
 		var newCell  = newRow.insertCell(0);

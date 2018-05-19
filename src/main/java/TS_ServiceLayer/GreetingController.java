@@ -82,15 +82,19 @@ public class GreetingController {
 				}
 				break;
 			case addProductToStore:
-				if (args.length == 4) {
+				if (args.length == 6) {
 					try {
 						ret.setContentAsJson(gson.toJson(BlMain.addProductToStore(gson.fromJson(args[0], StoreManager.class),
 								gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class),
 								gson.fromJson(args[3], String.class))));
 					} catch (JsonSyntaxException j) {
-						ret.setContentAsJson(gson.toJson(BlMain.addProductToStore(gson.fromJson(args[0], StoreOwner.class),
-								gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class),
-								gson.fromJson(args[3], String.class))));
+						Subscriber sub = gson.fromJson(args[0], Subscriber.class);
+						Store store = gson.fromJson(args[1], Store.class);
+						StoreOwner so = BlMain.getStoreOwnerForStorePerUsername(store.getStoreId(), sub.getUsername());
+						Product pToAdd = new Product(gson.fromJson(args[2], String.class), gson.fromJson(args[3], Integer.class), 3, new EmptyPolicy(), new ImmediatelyPurchase());
+						int amount = gson.fromJson(args[5], Integer.class);
+						String category = gson.fromJson(args[4], String.class);
+						ret.setContentAsJson(gson.toJson(BlMain.addProductToStore(so, pToAdd, amount, category)));
 					}
 				}
 				break;

@@ -38,6 +38,9 @@ function connect() {
 					case "updateCurrentSubscriber":
 						recieveUpdateCurrentSubscriber(body.functionName, obj);
 						break;
+					case "addProductPage":
+						recieveAddProduct(body.functionName, obj);
+						break;
                     default:
                         break;
                 }
@@ -55,6 +58,19 @@ function recieveMainPageMsg(funcName, obj) {
             stompClient.disconnect();
             stompClient = null;
             window.location.href = "mainPage.html";
+            break;
+        default:
+            break;
+    }
+}
+
+function recieveAddProduct(funcName, obj) {
+    switch (funcName){
+        case "addProductToStore":
+			window.alert("New Product was added succesfuly!");
+            stompClient.disconnect();
+            stompClient = null;
+            window.location.href = "storePage.html";
             break;
         default:
             break;
@@ -166,10 +182,25 @@ function updateCurrentSubscriber(){
 	));
 }
 
+function addProductToStore(){
+	stompClient.send("/app/hello", {},
+    JSON.stringify(
+				    {	'pageName': "addProductPage",
+				    	'functionName': "addProductToStore",
+				    	'paramsAsJSON': [	localStorage.getItem('currentUser'),	//logged in sub turns to store owner
+											localStorage.getItem('currentStore'),
+				    						$("#newProductName").val(),			//store name
+											$("#newProductPrice").val(),
+											$("#newProductCategory").val(),
+											$("#newProductAmount").val()
+				    					]
+				    }
+	));
+}
+
 /***LOAD FUNCTIONS***/
 function loadStoreDetails(){
 	var store = JSON.parse(localStorage.getItem('currentStore'));
-	window.alert(JSON.stringify(store));
 	var sid = document.getElementById('storeIdInStorePage');
 	sid.innerHTML = store.storeId;
 	var sn = document.getElementById('storeNameInStorePage');
@@ -198,7 +229,7 @@ function mainTableOnLoad() {
     });
 
     if(!found)
-        window.alert("No Productttttttttttts");
+        window.alert("No Products");
 }
 function loadStoresIOwn(){
 	

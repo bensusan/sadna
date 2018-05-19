@@ -401,5 +401,20 @@ public class BlMain {
 		
 		return -1;
 	}
+
+	public static StoreOwner getStoreOwnerForStorePerUsername(int storeId, String username) {
+		for (Subscriber s : allSubscribers) {
+			if(s.getUsername().equals(username)){
+				List<StoreOwner> owner = s.getOwner();
+				for (StoreOwner storeOwner : owner) {
+					if(storeOwner.getStore().getStoreId() == storeId){
+						return storeOwner;
+					}
+				}
+			}
+		}
+		return null;
+		
+	}
 	
 }

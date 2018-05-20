@@ -285,7 +285,6 @@ function hideButtonsToManager(){
 			var managers  = JSON.parse(localStorage.getItem('currentUser')).manager;
 			for(var i = 0; i < managers.length; i++){
 				var store = managers[i].store;
-				window.alert(JSON.parse(localStorage.getItem('currentStore'))['storeId']);
 				if(store.storeId == JSON.parse(localStorage.getItem('currentStore'))['storeId']){
 					var permits = managers[i].premisions;
 					if(permits[0] == false){
@@ -366,10 +365,9 @@ function loadProductsOfStore(){
 
 function loadSubscribers(){
 	var subs = JSON.parse(localStorage.getItem('allSubscribers'));
-	window.alert(JSON.stringify(subs));
 	var tableRef = document.getElementById('subscribersInSystemTable');
 	for(var i = 0; i < subs.length; i++){
-		window.alert(JSON.stringify(subs[i].username));
+
 		
 		
 		var newRow   = tableRef.insertRow(-1);
@@ -384,7 +382,6 @@ function loadSubscribers(){
 }
 
 function addNewStoreOwner(usernameToAdd){
-	window.alert(usernameToAdd);
 	stompClient.send("/app/hello", {},
     JSON.stringify(
         {	'pageName': "subscribersPage",
@@ -455,7 +452,6 @@ function sendAddNewStoreManager(){
 	else
 		toSend = toSend + "0";
 	
-	window.alert(toSend);
 	stompClient.send("/app/hello", {},
     JSON.stringify(
         {	'pageName': "subscribersPage",
@@ -472,7 +468,6 @@ function sendAddNewStoreManager(){
 
 
 function deleteProductFromStore(productId){
-	window.alert(productId);
 	stompClient.send("/app/hello", {},
     JSON.stringify(
         {	'pageName': "storeProductsPage",
@@ -644,7 +639,6 @@ function loadAddProductPage(){
 }
 
 function loadEditProductInStorePage(id){
-	window.alert("Need to Imp edit Produccct in store");
 	localStorage.setItem('currentProduct', id);
 	stompClient.disconnect();
     stompClient = null;

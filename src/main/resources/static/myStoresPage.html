@@ -12,7 +12,7 @@
     <script src="/app.js"></script>
 </head>
 
-<body onload="loadStoresIOwn()">
+<body onload="loadStoresIOwn(); loadStoresIManage();">
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
     enabled. Please enable
     Javascript and reload this page!</h2></noscript>
@@ -25,6 +25,20 @@
             </tr>
             </thead>
             <tbody id="storeIOwnTableBody" class="clickable-row">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table id="storeIManageTable">
+            <thead>
+            <tr>
+                <th>Store I manage:</th>
+            </tr>
+            </thead>
+            <tbody id="storeIManageTableBody" class="clickable-row">
             </tbody>
         </table>
     </div>

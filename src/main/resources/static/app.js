@@ -436,6 +436,25 @@ function loadStoresIOwn(){
 	}
 }
 
+function loadStoresIManage(){
+	
+	var storeManagers = JSON.parse(localStorage.getItem('currentUser')).manager;
+	var tableRef = document.getElementById('storeIManageTable');
+	for(var i = 0; i < storeManagers.length; i++){
+		
+		var store = storeManagers[i].store;
+		
+		var newRow   = tableRef.insertRow(-1);
+		var newCell  = newRow.insertCell(0);
+		var newElem = document.createElement( 'button' );
+		newElem.setAttribute('class', 'btn');
+		newElem.setAttribute('onclick', 'loadEditOwnStore('+ JSON.stringify(storeManagers[i].store) +');');
+		newElem.innerHTML = "Store - id: " + store.storeId + ", Name: " + store.name + ", Grading: " + store.gradeing;
+		newCell.appendChild(newElem);
+
+	}
+}	
+
 function loadStoreProductsPage(action){
 	localStorage.setItem('actionOnProduct', action);
 	stompClient.send("/app/hello", {},
@@ -519,21 +538,26 @@ function loadEditProductInStorePage(id){
     window.location.href = "editProductPage.html";
 }
 
+
+
 function loadMyStoresPage() {
-	/*window.alert(localStorage.getItem('currentUser'));*/
+	updateCurrentSubscriber();
+	setTimeout(function(){
+		var storeManager = JSON.parse(localStorage.getItem('currentUser')).manager;
+		var storeOwner = JSON.parse(localStorage.getItem('currentUser')).owner;
+		
+		if((storeManager !== null && storeManager.length > 0) || (storeOwner !== null && storeOwner.length > 0))
+		{
+			stompClient.disconnect();
+			stompClient = null;
+			window.location.href = "myStoresPage.html";
+		}
+		else{
+			window.alert("You don\'t own or manage any stores");
+		}
+	}, 2000);
     //assume current user is subscriber
-    var storeManager = JSON.parse(localStorage.getItem('currentUser')).manager;
-    var storeOwner = JSON.parse(localStorage.getItem('currentUser')).owner;
-	
-    if((storeManager !== null && storeManager.length > 0) || (storeOwner !== null && storeOwner.length > 0))
-    {
-        stompClient.disconnect();
-        stompClient = null;
-        window.location.href = "myStoresPage.html";
-    }
-    else{
-        window.alert("You don\'t own or manage any stores");
-    }
+    
 }
 
 function makeMainPage(){

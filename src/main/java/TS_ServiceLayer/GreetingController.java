@@ -181,24 +181,32 @@ public class GreetingController {
 				}
 				break;
 			case addNewStoreOwner:
-				if (args.length == 2) {
-					try {
-						ret.setContentAsJson(gson.toJson(BlMain.addNewStoreOwner(gson.fromJson(args[0], StoreManager.class),
-								gson.fromJson(args[1], Subscriber.class))));
-					} catch (JsonSyntaxException j) {
-						ret.setContentAsJson(gson.toJson(BlMain.addNewStoreOwner(gson.fromJson(args[0], StoreOwner.class),
-								gson.fromJson(args[1], Subscriber.class))));
+				if (args.length == 4) {
+					boolean isOwner = gson.fromJson(args[0], Boolean.class);
+					if(isOwner){
+						StoreOwner so = BlMain.getStoreOwnerFromUsername(gson.fromJson(args[1], String.class),
+																		gson.fromJson(args[3], Integer.class));
+						Subscriber subsToAdd = BlMain.getSubscriberFromUsername(gson.fromJson(args[2], String.class));
+						boolean ans = BlMain.addNewStoreOwner(so,subsToAdd);
+						ret.setContentAsJson(gson.toJson(ans));
+					}
+					else{
+						
 					}
 				}
 				break;
 			case addNewManager:
-				if (args.length == 2) {
-					try {
-						ret.setContentAsJson(gson.toJson(BlMain.addNewManager(gson.fromJson(args[0], StoreManager.class),
-								gson.fromJson(args[1], Subscriber.class))));
-					} catch (JsonSyntaxException j) {
-						ret.setContentAsJson(gson.toJson(BlMain.addNewManager(gson.fromJson(args[0], StoreOwner.class),
-								gson.fromJson(args[1], Subscriber.class))));
+				if (args.length == 4) {
+					boolean isOwner = gson.fromJson(args[0], Boolean.class);
+					if(isOwner){
+						StoreOwner so = BlMain.getStoreOwnerFromUsername(gson.fromJson(args[1], String.class),
+																		gson.fromJson(args[3], Integer.class));
+						Subscriber subsToAdd = BlMain.getSubscriberFromUsername(gson.fromJson(args[2], String.class));
+						boolean ans = BlMain.addNewManager(so,subsToAdd);
+						ret.setContentAsJson(gson.toJson(ans));
+					}
+					else{
+						
 					}
 				}
 				break;
@@ -311,6 +319,13 @@ public class GreetingController {
 					ret.setContentAsJson(gson.toJson(map));
 				}
 				break;
+			case getAllSubscribersWithPotential:
+				if(args.length == 0){
+					List<Subscriber> a = BlMain.getAllSubscribersWithPotential();
+					ret.setContentAsJson(gson.toJson(a));
+				}
+				break;
+				
 			default:
 				throw new Exception("NO SUCH FUNCTION");
 			}

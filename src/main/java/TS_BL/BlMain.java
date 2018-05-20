@@ -457,4 +457,23 @@ public class BlMain {
 		return 0;
 	}
 	
+	public static List<Subscriber> getAllSubscribersWithPotential(){
+		List<Subscriber> toReturn = new ArrayList<Subscriber>();
+		for (Subscriber subscriber : allSubscribers) {
+			toReturn.add(subscriber);
+		}
+		return toReturn;
+	}
+	
+
+	public static StoreOwner getStoreOwnerFromUsername(String username, int storeId) {
+		Subscriber s = getSubscriberFromUsername(username);
+		List<StoreOwner> soList = s.getOwner();
+		for (StoreOwner storeOwner : soList) {
+			if(storeOwner.getStore().getStoreId() == storeId)
+				return storeOwner;
+		}
+		return null;
+	}
+	
 }

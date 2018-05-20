@@ -47,6 +47,9 @@ function connect() {
 					case "editProductPage":
 						recieveEditProductsPage(body.functionName, obj);
 						break;
+					case "subscribersPage":
+						recieveSubscribersPage(body.functionName, obj);
+						break;
 						
                     default:
                         break;
@@ -97,6 +100,32 @@ function recieveStoreProductsPage(funcName, obj) {
             stompClient = null;
             window.location.href = "storePage.html";
             break;
+        default:
+            break;
+    }
+}
+
+function recieveSubscribersPage (funcName, obj) {
+    switch (funcName){
+		
+        case "getAllSubscribersWithPotential":
+			localStorage.setItem('allSubscribers', JSON.stringify(obj));
+			stompClient.disconnect();
+            stompClient = null;
+            window.location.href = "subscribersPage.html";
+            break;
+		case "addNewStoreOwner":
+			window.alert("New Store Owner added succesfully!");
+			stompClient.disconnect();
+            stompClient = null;
+            window.location.href = "storePage.html";
+			break;
+		case "addNewManager":
+			window.alert("New Store Manager added succesfully!");
+			stompClient.disconnect();
+            stompClient = null;
+            window.location.href = "storePage.html";
+			break;
         default:
             break;
     }
@@ -278,13 +307,64 @@ function loadProductsOfStore(){
 		var newCell  = newRow.insertCell(0);
 		var newElem = document.createElement( 'button' );
 		newElem.setAttribute('class', 'btn');
-		newElem.innerHTML = toPrint;
+		newElem.innerHTML = toPrint + ", Amount:" + obj[toPrint] ;
 		var productIDasString = toPrint.substring(toPrint.indexOf(" "), toPrint.indexOf(","));
 		newElem.setAttribute('onclick', localStorage.getItem('actionOnProduct')+'('+ productIDasString +');');
 		newCell.appendChild(newElem);
 		
 	}
 }
+
+function loadSubscribers(){
+	var subs = JSON.parse(localStorage.getItem('allSubscribers'));
+	window.alert(JSON.stringify(subs));
+	var tableRef = document.getElementById('subscribersInSystemTable');
+	for(var i = 0; i < subs.length; i++){
+		window.alert(JSON.stringify(subs[i].username));
+		
+		
+		var newRow   = tableRef.insertRow(-1);
+		var newCell  = newRow.insertCell(0);
+		var newElem = document.createElement( 'button' );
+		newElem.setAttribute('class', 'btn');
+		newElem.innerHTML = JSON.stringify(subs[i].username);
+		newElem.setAttribute('onclick', localStorage.getItem('actionOnSubscriber')+'('+ JSON.stringify(subs[i].username) +');');
+		newCell.appendChild(newElem);
+
+	}
+}
+
+function addNewStoreOwner(usernameToAdd){
+	window.alert(usernameToAdd);
+	stompClient.send("/app/hello", {},
+    JSON.stringify(
+        {	'pageName': "subscribersPage",
+            'functionName': "addNewStoreOwner",
+            'paramsAsJSON': [localStorage.getItem('isOwner'),
+							JSON.parse(localStorage.getItem('currentUser'))['username'],
+							usernameToAdd,
+							JSON.parse(localStorage.getItem('currentStore'))['storeId'],
+							]
+							
+        }));
+}
+
+function addNewStoreManager(usernameToAdd){
+	window.alert("newnew");
+	stompClient.send("/app/hello", {},
+    JSON.stringify(
+        {	'pageName': "subscribersPage",
+            'functionName': "addNewManager",
+            'paramsAsJSON': [localStorage.getItem('isOwner'),
+							JSON.parse(localStorage.getItem('currentUser'))['username'],
+							usernameToAdd,
+							JSON.parse(localStorage.getItem('currentStore'))['storeId'],
+							]
+							
+        }));
+}
+
+
 function deleteProductFromStore(productId){
 	window.alert(productId);
 	stompClient.send("/app/hello", {},
@@ -330,11 +410,11 @@ function editProductInStore(){
 
 
 function addPolicyToProduct(id){
-	window.alert("Need to Imp add policy to product in store");
+	window.alert("Need to Imple add policy to product in store");
 }
 
 function addDiscountToProduct(id){
-	window.alert("Need to Imp add discount to product in store");
+	window.alert("Need to Imple add discount to product in store");
 }
 
 function loadStoresIOwn(){
@@ -363,6 +443,16 @@ function loadStoreProductsPage(action){
         {	'pageName': "storeProductsPage",
             'functionName': "getProductAndAmountPerStoreId",
             'paramsAsJSON': [JSON.parse(localStorage.getItem('currentStore'))['storeId']]
+        }));
+}
+
+function loadAllUsersPage(action){
+	localStorage.setItem('actionOnSubscriber', action);
+	stompClient.send("/app/hello", {},
+    JSON.stringify(
+        {	'pageName': "subscribersPage",
+            'functionName': "getAllSubscribersWithPotential",
+            'paramsAsJSON': []
         }));
 }
 

@@ -52,5 +52,10 @@ public class StoreManager {
 		this.premisions[perm] = flag;
 	}
 	
+	public void setAllPermissions(boolean[] newPremisions){
+		for(int i = 0; i < BlMain.NUM_OF_PERMISSIONS; i++){
+			this.premisions[i] = newPremisions[i];
+		}
+	}
 	
 }

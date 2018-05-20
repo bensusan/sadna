@@ -196,13 +196,19 @@ public class GreetingController {
 				}
 				break;
 			case addNewManager:
-				if (args.length == 4) {
+				if (args.length == 5) {
+					boolean[] permits = BlMain.getPermitsFromString(gson.fromJson(args[4], String.class));
 					boolean isOwner = gson.fromJson(args[0], Boolean.class);
 					if(isOwner){
 						StoreOwner so = BlMain.getStoreOwnerFromUsername(gson.fromJson(args[1], String.class),
 																		gson.fromJson(args[3], Integer.class));
 						Subscriber subsToAdd = BlMain.getSubscriberFromUsername(gson.fromJson(args[2], String.class));
 						boolean ans = BlMain.addNewManager(so,subsToAdd);
+						if(ans){
+							StoreManager sm = BlMain.getStoreManagerFromUsername(gson.fromJson(args[2], String.class), gson.fromJson(args[3], Integer.class));
+							sm.setAllPermissions(permits);
+						}
+						
 						ret.setContentAsJson(gson.toJson(ans));
 					}
 					else{

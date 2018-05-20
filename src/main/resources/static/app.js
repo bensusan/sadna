@@ -280,6 +280,55 @@ function loadStoreDetails(){
 	sg.innerHTML = store.gradeing;
 }
 
+function hideButtonsToManager(){
+		if(localStorage.getItem('isOwner') == 'false'){
+			var managers  = JSON.parse(localStorage.getItem('currentUser')).manager;
+			for(var i = 0; i < managers.length; i++){
+				var store = managers[i].store;
+				window.alert(JSON.parse(localStorage.getItem('currentStore'))['storeId']);
+				if(store.storeId == JSON.parse(localStorage.getItem('currentStore'))['storeId']){
+					var permits = managers[i].premisions;
+					if(permits[0] == false){
+						$('#0').hide();
+					}
+					if(permits[1] == false){
+						$('#1').hide();
+					}
+					if(permits[2] == false){
+						$('#2').hide();
+					}
+					if(permits[3] == false){
+						$('#3').hide();
+					}
+					if(permits[4] == false){
+						$('#4').hide();
+					}
+					if(permits[5] == false){
+						$('#5').hide();
+					}
+					if(permits[6] == false){
+						$('#6').hide();
+					}
+					if(permits[9] == false){
+						$('#9').hide();
+					}
+					if(permits[11] == false){
+						$('#11').hide();
+					}
+					if(permits[12] == false){
+						$('#12').hide();
+					}
+					if(permits[13] == false){
+						$('#13').hide();
+					}
+					
+				}
+			}
+			
+		}
+
+}
+
 function mainTableOnLoad() {
     var obj = JSON.parse(localStorage.getItem('mapForTable'));
     // obj = {s:{p:1}}; //example for the loop
@@ -344,21 +393,78 @@ function addNewStoreOwner(usernameToAdd){
 							JSON.parse(localStorage.getItem('currentUser'))['username'],
 							usernameToAdd,
 							JSON.parse(localStorage.getItem('currentStore'))['storeId'],
+							[]
 							]
 							
         }));
 }
 
 function addNewStoreManager(usernameToAdd){
-	window.alert("newnew");
+	localStorage.setItem('usernameToAddAsManager', usernameToAdd);
+	stompClient.disconnect();
+    stompClient = null;
+    window.location.href = "permissionsToManager.html";
+	
+
+}
+
+function sendAddNewStoreManager(){
+	var toSend = '';
+	if (document.getElementById('0').checked)
+		toSend = toSend + "1d";
+	else
+		toSend = toSend + "0d";
+	if (document.getElementById('1').checked)
+		toSend = toSend + "1d";
+	else
+		toSend = toSend + "0d";
+	if (document.getElementById('2').checked)
+			toSend = toSend + "1d";
+	else
+		toSend = toSend + "0d";
+	if (document.getElementById('3').checked)
+				toSend = toSend + "1d";
+	else
+		toSend = toSend + "0d";
+	if (document.getElementById('4').checked)
+		toSend = toSend + "1d";
+	else
+		toSend = toSend + "0d";
+	if (document.getElementById('5').checked)
+		toSend = toSend + "1d";
+	else
+		toSend = toSend + "0d";
+	if (document.getElementById('6').checked)
+		toSend = toSend + "1d";
+	else
+		toSend = toSend + "0d";
+	if (document.getElementById('9').checked)
+		toSend = toSend + "0d0d1d";
+	else
+		toSend = toSend + "0d0d0d";
+	if (document.getElementById('11').checked)
+		toSend = toSend + "0d1d";
+	else
+		toSend = toSend + "0d0d";
+	if (document.getElementById('12').checked)
+		toSend = toSend + "1d";
+	else
+		toSend = toSend + "0d";
+	if (document.getElementById('13').checked)
+		toSend = toSend + "1";
+	else
+		toSend = toSend + "0";
+	
+	window.alert(toSend);
 	stompClient.send("/app/hello", {},
     JSON.stringify(
         {	'pageName': "subscribersPage",
             'functionName': "addNewManager",
             'paramsAsJSON': [localStorage.getItem('isOwner'),
 							JSON.parse(localStorage.getItem('currentUser'))['username'],
-							usernameToAdd,
+							localStorage.getItem('usernameToAddAsManager'),
 							JSON.parse(localStorage.getItem('currentStore'))['storeId'],
+							toSend
 							]
 							
         }));

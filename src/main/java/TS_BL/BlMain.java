@@ -485,4 +485,26 @@ public class BlMain {
 		return null;
 	}
 	
+	public static StoreManager getStoreManagerFromUsername(String username, int storeId) {
+		Subscriber s = getSubscriberFromUsername(username);
+		List<StoreManager> smList = s.getManager();
+		for (StoreManager storeManager : smList) {
+			if(storeManager.getStore().getStoreId() == storeId)
+				return storeManager;
+		}
+		return null;
+	}
+
+	public static boolean[] getPermitsFromString(String fromJson) {
+		String[] permitAsStrings = fromJson.split("d");
+		boolean[] toRet = new boolean[NUM_OF_PERMISSIONS];
+		for(int i = 0; i < NUM_OF_PERMISSIONS; i++){
+			if(permitAsStrings[i].equals("1"))
+				toRet[i] = true;
+			else if(permitAsStrings[i].equals("0"))
+				toRet[i] = false;
+		}
+		return toRet;
+	}
+	
 }

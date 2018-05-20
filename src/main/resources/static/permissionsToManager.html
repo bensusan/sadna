@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Permission To Manager Page</title>
+    <h3>Choose Permissions to allow to new Manager:</h3>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+
+<body>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<form>
+  <input type="checkbox" id="0"> AddProductToStore<br>
+  <input type="checkbox" id="1"> DeleteProductFromStore<br>
+  <input type="checkbox" id="2"> UpdateProductDetails<br>
+  <input type="checkbox" id="3"> AddPolicyToProduct<br>
+  <input type="checkbox" id="4"> AddDiscountToProduct<br>
+  <input type="checkbox" id="5"> AddNewStoreOwner<br>
+  <input type="checkbox" id="6"> AddNewManager<br>
+  <input type="checkbox" id="9"> GetPurchaseHistory<br>
+  <input type="checkbox" id="11"> ChangeStorePurchasePolicy<br>
+  <input type="checkbox" id="12"> AddDiscountToCategoryStore<br>
+  <input type="checkbox" id="13"> ChangeProductType<br>
+  
+
+  <button onclick="sendAddNewStoreManager()"> Add new Manager </button>
+</form>	
+
+
+</body>
+
+
+</html>

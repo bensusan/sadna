@@ -437,7 +437,6 @@ function loadStoresIOwn(){
 }
 
 function loadStoresIManage(){
-	
 	var storeManagers = JSON.parse(localStorage.getItem('currentUser')).manager;
 	var tableRef = document.getElementById('storeIManageTable');
 	for(var i = 0; i < storeManagers.length; i++){
@@ -448,7 +447,7 @@ function loadStoresIManage(){
 		var newCell  = newRow.insertCell(0);
 		var newElem = document.createElement( 'button' );
 		newElem.setAttribute('class', 'btn');
-		newElem.setAttribute('onclick', 'loadEditOwnStore('+ JSON.stringify(storeManagers[i].store) +');');
+		newElem.setAttribute('onclick', 'loadEditManageStore('+ JSON.stringify(storeManagers[i].store) +');');
 		newElem.innerHTML = "Store - id: " + store.storeId + ", Name: " + store.name + ", Grading: " + store.gradeing;
 		newCell.appendChild(newElem);
 
@@ -478,6 +477,14 @@ function loadAllUsersPage(action){
 function loadEditOwnStore(store){
 	localStorage.setItem('currentStore', JSON.stringify(store));
 	localStorage.setItem('isOwner', JSON.stringify(true));
+	stompClient.disconnect();
+    stompClient = null;
+    window.location.href = "storePage.html";
+}
+
+function loadEditManageStore(store){
+	localStorage.setItem('currentStore', JSON.stringify(store));
+	localStorage.setItem('isOwner', JSON.stringify(false));
 	stompClient.disconnect();
     stompClient = null;
     window.location.href = "storePage.html";

@@ -254,12 +254,13 @@ function addProductToStore(){
     JSON.stringify(
 				    {	'pageName': "addProductPage",
 				    	'functionName': "addProductToStore",
-				    	'paramsAsJSON': [	localStorage.getItem('currentUser'),	//logged in sub turns to store owner
-											localStorage.getItem('currentStore'),
+				    	'paramsAsJSON': [	JSON.parse(localStorage.getItem('currentUser'))['username'],	//logged in sub turns to store owner
+											JSON.parse(localStorage.getItem('currentStore'))['storeId'],
 				    						$("#newProductName").val(),			//store name
 											$("#newProductPrice").val(),
 											$("#newProductCategory").val(),
-											$("#newProductAmount").val()
+											$("#newProductAmount").val(),
+											localStorage.getItem('isOwner')
 				    					]
 				    }
 	));
@@ -389,8 +390,7 @@ function addNewStoreOwner(usernameToAdd){
             'paramsAsJSON': [localStorage.getItem('isOwner'),
 							JSON.parse(localStorage.getItem('currentUser'))['username'],
 							usernameToAdd,
-							JSON.parse(localStorage.getItem('currentStore'))['storeId'],
-							[]
+							JSON.parse(localStorage.getItem('currentStore'))['storeId']
 							]
 							
         }));

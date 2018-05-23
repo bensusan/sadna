@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Purchase Type Page</title>
+    <h3>Add Purchase Type Page</h3>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+
+<body onload="hideButtonsToManager(); loadStoreDetails();" style.margin= 10px>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+
+	<form>
+	  <input type="radio" name="purchasetype" value="immedietly" checked> Immedietly Purchase<br>
+	  <input type="radio" name="purchasetype" value="lottery" id="lotteryButton"> Lottery Purchase<br>
+	</form>
+	<p>For Lottery purchase pick end date of lottery:</p>
+	<div>
+	<input type="date" id="endDate">
+	</div>
+	<div>
+	<button onclick="addNewPurchaseTypeToProdcut()">Add new purchase type</button>
+	</div>
+</body>
+
+
+</html>

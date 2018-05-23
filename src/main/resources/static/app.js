@@ -50,6 +50,9 @@ function connect() {
 					case "subscribersPage":
 						recieveSubscribersPage(body.functionName, obj);
 						break;
+					case "addPurchaseTypeToProductPage":
+						recieveAddPurchaseTypeToProductPage(body.functionName, obj);
+						break;
 						
                     default:
                         break;
@@ -68,6 +71,19 @@ function recieveMainPageMsg(funcName, obj) {
             stompClient.disconnect();
             stompClient = null;
             window.location.href = "mainPage.html";
+            break;
+        default:
+            break;
+    }
+}
+
+function recieveAddPurchaseTypeToProductPage(funcName, obj) {
+	switch (funcName){
+        case "changeProductType":
+            window.alert("Product new purchase type added succesfully!");
+            stompClient.disconnect();
+            stompClient = null;
+            window.location.href = "storePage.html";
             break;
         default:
             break;
@@ -645,7 +661,42 @@ function loadEditProductInStorePage(id){
     window.location.href = "editProductPage.html";
 }
 
+function loadAddPurchaseTypeToProductPage(id){
+	localStorage.setItem('currentProduct', id);
+	stompClient.disconnect();
+    stompClient = null;
+	window.location.href = "addPurchaseTypeToProductPage.html";
+}
 
+function addNewPurchaseTypeToProdcut(){
+	if ($("input[type=radio]:checked").length == 0) {
+		window.alert("Please choose purchase type.");
+	}else if($('#lotteryButton').is(':checked') && document.getElementById("endDate").value == ""){
+		window.alert("Please choose end date.");
+	}else{
+		if($('#lotteryButton').is(':checked')){
+			var purType = "lottery";
+			var dateToSend = document.getElementById("endDate").value;
+		}
+		else{
+			var purType = "immedietly";
+			var dateToSend = "";
+		}
+		stompClient.send("/app/hello", {},
+		JSON.stringify(
+			{	'pageName': "addPurchaseTypeToProductPage",
+				'functionName': "changeProductType",
+				'paramsAsJSON': [localStorage.getItem('isOwner'),
+								JSON.parse(localStorage.getItem('currentProduct')),
+								JSON.parse(localStorage.getItem('currentUser'))['username'],
+								purType,
+								dateToSend,
+								JSON.parse(localStorage.getItem('currentStore'))['storeId']
+								]
+								
+		}));
+	}
+}
 
 function loadMyStoresPage() {
 	updateCurrentSubscriber();

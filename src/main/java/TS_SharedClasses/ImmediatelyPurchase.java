@@ -50,7 +50,13 @@ public class ImmediatelyPurchase implements PurchaseType {
 			return false;
 		return true;
 	}
-
+	
+	public String toString(){
+		String toRet = "";
+		toRet = "Immedietly Purchase";
+		
+		return toRet;
+	}
 	
 	
 	

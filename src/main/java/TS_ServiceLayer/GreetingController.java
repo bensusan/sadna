@@ -1,6 +1,7 @@
 package TS_ServiceLayer;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -342,6 +343,32 @@ public class GreetingController {
 				if(args.length == 0){
 					List<Subscriber> a = BlMain.getAllSubscribersWithPotential();
 					ret.setContentAsJson(gson.toJson(a));
+				}
+				break;
+			case changeProductType:
+				if(args.length == 6){
+					boolean isOwner = gson.fromJson(args[0], Boolean.class);
+					Product prodToChange = BlMain.getProductFromProdId(gson.fromJson(args[1], Integer.class));
+					String purType = gson.fromJson(args[3], String.class);
+					PurchaseType newType;
+					int storeId = gson.fromJson(args[5], Integer.class);
+					if(purType.equals("immedietly"))
+						newType = new ImmediatelyPurchase();
+					else{
+						Date newDate = Date.valueOf(gson.fromJson(args[4], String.class));
+						newType = new LotteryPurchase(newDate);
+					}
+					if(isOwner){
+						StoreOwner so = BlMain.getStoreOwnerFromUsername(gson.fromJson(args[2], String.class),
+														gson.fromJson(args[5], Integer.class));
+						boolean ans = BlMain.changeProductType(so, newType, prodToChange);
+						ret.setContentAsJson(gson.toJson(ans));
+					}else{
+						StoreManager so = BlMain.getStoreManagerFromUsername(gson.fromJson(args[2], String.class),
+																			gson.fromJson(args[5], Integer.class));
+						boolean ans = BlMain.changeProductType(so, newType, prodToChange);
+						ret.setContentAsJson(gson.toJson(ans));
+					}
 				}
 				break;
 				

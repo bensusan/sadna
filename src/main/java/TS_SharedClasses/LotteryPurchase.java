@@ -109,5 +109,11 @@ public class LotteryPurchase implements PurchaseType {
 	public Guest getWinner(){
 		return this.winner;
 	}
-
+	
+	public String toString(){
+		String toRet = "";
+		toRet = "Lottery - finish date: " + lotteryEndDate.toString();
+		
+		return toRet;
+	}
 }

@@ -107,6 +107,12 @@ function recieveAddDiscountAndPolicyPage(funcName, obj) {
             stompClient = null;
             window.location.href = "storePage.html";
 			break;
+		case "changeStorePurchasePolicy":
+			window.alert("New Policy to store added succesfully!");
+            stompClient.disconnect();
+            stompClient = null;
+            window.location.href = "storePage.html";
+			break;
         default:
             break;
     }
@@ -691,9 +697,47 @@ function loadAddDiscountAndPolicyPage(id){
 	window.location.href = "addDiscountAndPolicyPage.html";
 }
 
+function changeStorePurchasePolicy(){
+	if ($("input[type=radio]:checked").length == 0 ) {
+		window.alert("Please chooooooose Policy.");
+	}else if($('#minPolicy').is(':checked') && (isNaN($("#minAmountVal").val()) || $("#minAmountVal").val() == ""))
+		window.alert("Wrong min amount");
+	else if($('#maxPolicy').is(':checked') && (isNaN($("#maxAmountVal").val()) || $("#maxAmountVal").val() == ""))
+		window.alert("Wrong max amount");
+	else if(($('#orPolicy').is(':checked') || ($('#andPolicy').is(':checked'))) && (isNaN($("#maxAmountVal").val()) || $("#maxAmountVal").val() == "" || isNaN($("#minAmountVal").val()) || $("#minAmountVal").val() == ""))
+		window.alert("Wrong amounts");
+	else{
+		if($('#emptyPolicy').is(':checked')){
+			var policyType = "empty";
+		}else if($('#minPolicy').is(':checked')){
+			var policyType = "min";
+		}else if($('#maxPolicy').is(':checked')){
+			var policyType = "max";
+		}else if($('#orPolicy').is(':checked')){
+			var policyType = "or";
+		}else if($('#andPolicy').is(':checked')){
+			var policyType = "and";
+		}
+		stompClient.send("/app/hello", {},
+		JSON.stringify(
+			{	'pageName': "addDiscountAndPolicyPage",
+				'functionName': "changeStorePurchasePolicy",
+				'paramsAsJSON': [localStorage.getItem('isOwner'),
+								JSON.parse(localStorage.getItem('currentUser'))['username'],
+								JSON.parse(localStorage.getItem('currentStore'))['storeId'],
+								policyType,
+								$("#minAmountVal").val(),
+								$("#maxAmountVal").val()
+								
+								]
+								
+		}));
+	}
+}
+
 function addPolicyToProduct(){
 	if ($("input[type=radio]:checked").length == 0 ) {
-		window.alert("Please choose Policy.");
+		window.alert("Please chooooooose Policy.");
 	}else if($('#minPolicy').is(':checked') && (isNaN($("#minAmountVal").val()) || $("#minAmountVal").val() == ""))
 		window.alert("Wrong min amount");
 	else if($('#maxPolicy').is(':checked') && (isNaN($("#maxAmountVal").val()) || $("#maxAmountVal").val() == ""))

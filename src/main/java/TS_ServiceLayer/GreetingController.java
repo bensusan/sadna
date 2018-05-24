@@ -391,14 +391,50 @@ public class GreetingController {
 				}
 				break;
 			case changeStorePurchasePolicy:
-				if (args.length == 2) {
-					try {
-						ret.setContentAsJson(gson.toJson(BlMain.changeStorePurchasePolicy(gson.fromJson(args[0], StoreManager.class),
-								gson.fromJson(args[1], PurchasePolicy.class))));
-					} catch (JsonSyntaxException j) {
-						ret.setContentAsJson(gson.toJson(BlMain.changeStorePurchasePolicy(gson.fromJson(args[0], StoreOwner.class),
-								gson.fromJson(args[1], PurchasePolicy.class))));
+				if (args.length == 6) {
+					boolean isOwner = gson.fromJson(args[0], Boolean.class);
+					String purchacePolicy = gson.fromJson(args[3], String.class);
+					PurchasePolicy pp = null;
+					if(purchacePolicy.equals("empty")){
+						pp = new EmptyPolicy();
+					}else if(purchacePolicy.equals("min")){
+						int min = gson.fromJson(args[4], Integer.class);
+						pp = new MinPolicy(null, min);
 					}
+					else if(purchacePolicy.equals("max")){
+						int max = gson.fromJson(args[5], Integer.class);
+						pp = new MaxPolicy(null, max);
+					}else if(purchacePolicy.equals("or")){
+						int min = gson.fromJson(args[4], Integer.class);
+						int max = gson.fromJson(args[5], Integer.class);
+						MinPolicy minp = new MinPolicy(null, min);
+						MaxPolicy maxp = new MaxPolicy(null, max);
+						List<PurchasePolicy> listPP = new ArrayList<PurchasePolicy>();
+						listPP.add(minp);
+						listPP.add(maxp);
+						pp = new OrPolicy(null, listPP);
+					}else if(purchacePolicy.equals("and")){
+						int min = gson.fromJson(args[4], Integer.class);
+						int max = gson.fromJson(args[5], Integer.class);
+						MinPolicy minp = new MinPolicy(null, min);
+						MaxPolicy maxp = new MaxPolicy(null, max);
+						List<PurchasePolicy> listPP = new ArrayList<PurchasePolicy>();
+						listPP.add(minp);
+						listPP.add(maxp);
+						pp = new AndPolicy(null, listPP);
+					}
+					if(isOwner){
+						StoreOwner so = BlMain.getStoreOwnerFromUsername(gson.fromJson(args[1], String.class),
+								gson.fromJson(args[2], Integer.class));
+						boolean ans = BlMain.changeStorePurchasePolicy(so, pp );
+						ret.setContentAsJson(gson.toJson(ans));
+					}else{
+						StoreManager sm = BlMain.getStoreManagerFromUsername(gson.fromJson(args[1], String.class),
+								gson.fromJson(args[2], Integer.class));
+						boolean ans = BlMain.changeStorePurchasePolicy(sm, pp );
+						ret.setContentAsJson(gson.toJson(ans));
+					}
+					
 				}
 				break;
 			case getAllStoresWithThierProductsAndAmounts:

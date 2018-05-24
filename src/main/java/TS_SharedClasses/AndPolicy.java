@@ -49,5 +49,14 @@ public class AndPolicy extends PurchasePolicy {
 		}
 		return ans;
 	}
+	
+	public String toString(){
+		String toRet = "";
+		
+		toRet = "And Policy: [" + subPolicy.get(0).toString() + ", " + subPolicy.get(1).toString() + "]";
+			
+		return toRet;
+	
+	}
 
 }

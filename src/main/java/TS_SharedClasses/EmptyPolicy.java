@@ -20,5 +20,14 @@ public class EmptyPolicy extends PurchasePolicy {
 			return price;
 		return getCurrDiscount().updatePrice(price, discountCode);
 	}
+	
+	public String toString(){
+		String toRet = "";
+		
+		toRet = "No Policy";
+			
+		return toRet;
+	
+	}
 
 }

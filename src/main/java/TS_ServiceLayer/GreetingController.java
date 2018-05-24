@@ -2,6 +2,7 @@ package TS_ServiceLayer;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -164,25 +165,109 @@ public class GreetingController {
 				}
 				break;
 			case addPolicyToProduct:
-				if (args.length == 3) {
-					try {
-						ret.setContentAsJson(gson.toJson(BlMain.addPolicyToProduct(gson.fromJson(args[0], StoreManager.class),
-								gson.fromJson(args[1], PurchasePolicy.class), gson.fromJson(args[2], Product.class))));
-					} catch (JsonSyntaxException j) {
-						ret.setContentAsJson(gson.toJson(BlMain.addPolicyToProduct(gson.fromJson(args[0], StoreOwner.class),
-								gson.fromJson(args[1], PurchasePolicy.class), gson.fromJson(args[2], Product.class))));
+				if (args.length == 7) {
+					boolean isOwner = gson.fromJson(args[0], Boolean.class);
+					Product prodToupdate = BlMain.getProductFromProdId(gson.fromJson(args[1], Integer.class).intValue());
+					String purchacePolicy = gson.fromJson(args[4], String.class);
+					PurchasePolicy pp = null;
+					if(purchacePolicy.equals("empty")){
+						pp = new EmptyPolicy();
+					}else if(purchacePolicy.equals("min")){
+						int min = gson.fromJson(args[5], Integer.class);
+						pp = new MinPolicy(null, min);
 					}
+					else if(purchacePolicy.equals("max")){
+						int max = gson.fromJson(args[6], Integer.class);
+						pp = new MaxPolicy(null, max);
+					}else if(purchacePolicy.equals("or")){
+						int min = gson.fromJson(args[5], Integer.class);
+						int max = gson.fromJson(args[6], Integer.class);
+						MinPolicy minp = new MinPolicy(null, min);
+						MaxPolicy maxp = new MaxPolicy(null, max);
+						List<PurchasePolicy> listPP = new ArrayList<PurchasePolicy>();
+						listPP.add(minp);
+						listPP.add(maxp);
+						pp = new OrPolicy(null, listPP);
+					}else if(purchacePolicy.equals("and")){
+						int min = gson.fromJson(args[5], Integer.class);
+						int max = gson.fromJson(args[6], Integer.class);
+						MinPolicy minp = new MinPolicy(null, min);
+						MaxPolicy maxp = new MaxPolicy(null, max);
+						List<PurchasePolicy> listPP = new ArrayList<PurchasePolicy>();
+						listPP.add(minp);
+						listPP.add(maxp);
+						pp = new AndPolicy(null, listPP);
+					}
+					if(isOwner){
+						StoreOwner so = BlMain.getStoreOwnerFromUsername(gson.fromJson(args[2], String.class),
+								gson.fromJson(args[3], Integer.class));
+						boolean ans = BlMain.addPolicyToProduct(so, pp , prodToupdate);
+						ret.setContentAsJson(gson.toJson(ans));
+					}else{
+						StoreManager sm = BlMain.getStoreManagerFromUsername(gson.fromJson(args[2], String.class),
+								gson.fromJson(args[3], Integer.class));
+						boolean ans = BlMain.addPolicyToProduct(sm, pp , prodToupdate);
+						ret.setContentAsJson(gson.toJson(ans));
+					}
+					
 				}
 				break;
 			case addDiscountToProduct:
-				if (args.length == 4) {
-					try {
-						ret.setContentAsJson(gson.toJson(BlMain.addDiscountToProduct(gson.fromJson(args[0], StoreManager.class),
-								gson.fromJson(args[1], PurchasePolicy.class), gson.fromJson(args[2], Product.class))));
-					} catch (JsonSyntaxException j) {
-						ret.setContentAsJson(gson.toJson(BlMain.addDiscountToProduct(gson.fromJson(args[0], StoreOwner.class),
-								gson.fromJson(args[1], PurchasePolicy.class), gson.fromJson(args[2], Product.class))));
+				if (args.length == 11) {
+					boolean isOwner = gson.fromJson(args[0], Boolean.class);
+					Product prodToupdate = BlMain.getProductFromProdId(gson.fromJson(args[1], Integer.class).intValue());
+					String discountType = gson.fromJson(args[4], String.class);
+					int precentage = gson.fromJson(args[5], Integer.class);
+					Date endDate = Date.valueOf(gson.fromJson(args[6], String.class));
+					DiscountPolicy dp = null;
+					if(discountType.equals("overt")){
+						dp = new OvertDiscount(endDate, precentage);
+					}else if(discountType.equals("hidden")){
+						int code = gson.fromJson(args[7], Integer.class);
+						dp = new HiddenDiscount(code, endDate, precentage);
 					}
+					String purchacePolicy = gson.fromJson(args[8], String.class);
+					PurchasePolicy pp = null;
+					if(purchacePolicy.equals("empty")){
+						pp = new EmptyPolicy(dp);
+					}else if(purchacePolicy.equals("min")){
+						int min = gson.fromJson(args[9], Integer.class);
+						pp = new MinPolicy(dp, min);
+					}
+					else if(purchacePolicy.equals("max")){
+						int max = gson.fromJson(args[10], Integer.class);
+						pp = new MaxPolicy(dp, max);
+					}else if(purchacePolicy.equals("or")){
+						int min = gson.fromJson(args[9], Integer.class);
+						int max = gson.fromJson(args[10], Integer.class);
+						MinPolicy minp = new MinPolicy(dp, min);
+						MaxPolicy maxp = new MaxPolicy(dp, max);
+						List<PurchasePolicy> listPP = new ArrayList<PurchasePolicy>();
+						listPP.add(minp);
+						listPP.add(maxp);
+						pp = new OrPolicy(dp, listPP);
+					}else if(purchacePolicy.equals("and")){
+						int min = gson.fromJson(args[9], Integer.class);
+						int max = gson.fromJson(args[10], Integer.class);
+						MinPolicy minp = new MinPolicy(dp, min);
+						MaxPolicy maxp = new MaxPolicy(dp, max);
+						List<PurchasePolicy> listPP = new ArrayList<PurchasePolicy>();
+						listPP.add(minp);
+						listPP.add(maxp);
+						pp = new AndPolicy(dp, listPP);
+					}
+					if(isOwner){
+						StoreOwner so = BlMain.getStoreOwnerFromUsername(gson.fromJson(args[2], String.class),
+								gson.fromJson(args[3], Integer.class));
+						boolean ans = BlMain.addDiscountToProduct(so, pp , prodToupdate);
+						ret.setContentAsJson(gson.toJson(ans));
+					}else{
+						StoreManager sm = BlMain.getStoreManagerFromUsername(gson.fromJson(args[2], String.class),
+								gson.fromJson(args[3], Integer.class));
+						boolean ans = BlMain.addDiscountToProduct(sm, pp , prodToupdate);
+						ret.setContentAsJson(gson.toJson(ans));
+					}
+					
 				}
 				break;
 			case addNewStoreOwner:

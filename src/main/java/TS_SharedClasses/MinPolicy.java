@@ -26,5 +26,12 @@ public class MinPolicy extends PurchasePolicy {
 	public boolean isCorrectProduct( int amount, String address) {
 		return amount>=this.min;
 	}
-
+	public String toString(){
+		String toRet = "";
+		
+		toRet = "Min Policy: " + this.min;
+			
+		return toRet;
+	
+	}
 }

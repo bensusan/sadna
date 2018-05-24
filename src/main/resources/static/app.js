@@ -53,6 +53,9 @@ function connect() {
 					case "addPurchaseTypeToProductPage":
 						recieveAddPurchaseTypeToProductPage(body.functionName, obj);
 						break;
+					case "addDiscountAndPolicyPage":
+						recieveAddDiscountAndPolicyPage(body.functionName, obj);
+						break;
 						
                     default:
                         break;
@@ -85,6 +88,25 @@ function recieveAddPurchaseTypeToProductPage(funcName, obj) {
             stompClient = null;
             window.location.href = "storePage.html";
             break;
+        default:
+            break;
+    }
+}
+
+function recieveAddDiscountAndPolicyPage(funcName, obj) {
+	switch (funcName){
+        case "addDiscountToProduct":
+            window.alert("New discount added succesfully!");
+            stompClient.disconnect();
+            stompClient = null;
+            window.location.href = "storePage.html";
+            break;
+		case "addPolicyToProduct":
+			window.alert("New Policy added succesfully!");
+            stompClient.disconnect();
+            stompClient = null;
+            window.location.href = "storePage.html";
+			break;
         default:
             break;
     }
@@ -526,13 +548,7 @@ function editProductInStore(){
 
 
 
-function addPolicyToProduct(id){
-	window.alert("Need to Imple add policy to product in store");
-}
 
-function addDiscountToProduct(id){
-	window.alert("Need to Imple add discount to product in store");
-}
 
 function loadStoresIOwn(){
 	
@@ -666,6 +682,108 @@ function loadAddPurchaseTypeToProductPage(id){
 	stompClient.disconnect();
     stompClient = null;
 	window.location.href = "addPurchaseTypeToProductPage.html";
+}
+
+function loadAddDiscountAndPolicyPage(id){
+	localStorage.setItem('currentProduct', id);
+	stompClient.disconnect();
+    stompClient = null;
+	window.location.href = "addDiscountAndPolicyPage.html";
+}
+
+function addPolicyToProduct(){
+	if ($("input[type=radio]:checked").length == 0 ) {
+		window.alert("Please choose Policy.");
+	}else if($('#minPolicy').is(':checked') && (isNaN($("#minAmountVal").val()) || $("#minAmountVal").val() == ""))
+		window.alert("Wrong min amount");
+	else if($('#maxPolicy').is(':checked') && (isNaN($("#maxAmountVal").val()) || $("#maxAmountVal").val() == ""))
+		window.alert("Wrong max amount");
+	else if(($('#orPolicy').is(':checked') || ($('#andPolicy').is(':checked'))) && (isNaN($("#maxAmountVal").val()) || $("#maxAmountVal").val() == "" || isNaN($("#minAmountVal").val()) || $("#minAmountVal").val() == ""))
+		window.alert("Wrong amounts");
+	else{
+		if($('#emptyPolicy').is(':checked')){
+			var policyType = "empty";
+		}else if($('#minPolicy').is(':checked')){
+			var policyType = "min";
+		}else if($('#maxPolicy').is(':checked')){
+			var policyType = "max";
+		}else if($('#orPolicy').is(':checked')){
+			var policyType = "or";
+		}else if($('#andPolicy').is(':checked')){
+			var policyType = "and";
+		}
+		stompClient.send("/app/hello", {},
+		JSON.stringify(
+			{	'pageName': "addDiscountAndPolicyPage",
+				'functionName': "addPolicyToProduct",
+				'paramsAsJSON': [localStorage.getItem('isOwner'),
+								JSON.parse(localStorage.getItem('currentProduct')),
+								JSON.parse(localStorage.getItem('currentUser'))['username'],
+								JSON.parse(localStorage.getItem('currentStore'))['storeId'],
+								policyType,
+								$("#minAmountVal").val(),
+								$("#maxAmountVal").val()
+								
+								]
+								
+		}));
+	}
+}
+
+function addDiscountToProduct(){
+	if ($("input[type=radio]:checked").length == 0 || $("input[type=radio]:checked").length == 1) {
+		window.alert("Please choose Discount and Policy.");
+	}
+	else if(document.getElementById("endDate").value == ""){
+		window.alert("Please choose discount end date.");
+	}
+	else if(isNaN($("#precentageOfDiscount").val()) || $("#precentageOfDiscount").val() == "")
+		window.alert("Wrong %.");
+	else if($('#hiddenDiscountButton').is(':checked') && (document.getElementById("codeOfDiscount").value == ""))
+		window.alert("Please enter discount code.");
+	else if($('#minPolicy').is(':checked') && (isNaN($("#minAmountVal").val()) || $("#minAmountVal").val() == ""))
+		window.alert("Wrong min amount");
+	else if($('#maxPolicy').is(':checked') && (isNaN($("#maxAmountVal").val()) || $("#maxAmountVal").val() == ""))
+		window.alert("Wrong max amount");
+	else if(($('#orPolicy').is(':checked') || ($('#andPolicy').is(':checked'))) && (isNaN($("#maxAmountVal").val()) || $("#maxAmountVal").val() == "" || isNaN($("#minAmountVal").val()) || $("#minAmountVal").val() == ""))
+		window.alert("Wrong amounts");
+	else{
+		if($('#overtDiscountButton').is(':checked')){
+			var discountType = "overt";
+		}else{
+			var discountType = "hidden";
+		}
+		if($('#emptyPolicy').is(':checked')){
+			var policyType = "empty";
+		}else if($('#minPolicy').is(':checked')){
+			var policyType = "min";
+		}else if($('#maxPolicy').is(':checked')){
+			var policyType = "max";
+		}else if($('#orPolicy').is(':checked')){
+			var policyType = "or";
+		}else if($('#andPolicy').is(':checked')){
+			var policyType = "and";
+		}
+		stompClient.send("/app/hello", {},
+		JSON.stringify(
+			{	'pageName': "addDiscountAndPolicyPage",
+				'functionName': "addDiscountToProduct",
+				'paramsAsJSON': [localStorage.getItem('isOwner'),
+								JSON.parse(localStorage.getItem('currentProduct')),
+								JSON.parse(localStorage.getItem('currentUser'))['username'],
+								JSON.parse(localStorage.getItem('currentStore'))['storeId'],
+								discountType,
+								$("#precentageOfDiscount").val(),
+								$("#endDate").val(),
+								$("#codeOfDiscount").val(),
+								policyType,
+								$("#minAmountVal").val(),
+								$("#maxAmountVal").val()
+								
+								]
+								
+		}));
+	}
 }
 
 function addNewPurchaseTypeToProdcut(){

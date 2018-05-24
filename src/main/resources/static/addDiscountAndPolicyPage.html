@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Policy Page</title>
+    <h3>Add Policy Page</h3>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+
+<body onload="arrangePagePerPolicyAction();">
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+
+	<div id="discountSection">
+		<p>Choose discount type:</p>
+		<form>
+		  <input type="radio" name="discountType" onclick="hideCode()" id="overtDiscountButton"> Overt discount<br>
+		  <input type="radio" name="discountType" onclick="showCode()" id="hiddenDiscountButton"> Hidden discount<br>
+		  % of discount: <input type="text" id="precentageOfDiscount"><br>
+		  Pick end date:<input type="date" id="endDate">
+		</form>
+		<div id="hiddenDiscountCodeSection" style="display:none">
+			  <p>For Hidden discount please insert a discount code:</p>
+			  Discount code: <input type="text" id="codeOfDiscount"><br>
+		</div>
+		<p>###################</p>
+	</div>
+	
+	<div id="policySection">
+	
+		<p>Choose Policy type:</p>
+		<form>
+		  <input type="radio" name="policyType" id="emptyPolicy" onclick="hideAllAmount()"> Empty Policy<br>
+		  <input type="radio" name="policyType" id="minPolicy" onclick="onlyMinAmount()"> Minimum amount policy<br>
+		  <input type="radio" name="policyType" id="maxPolicy" onclick="onlyMaxAmount()"> Maximum amount policy<br>
+		  <input type="radio" name="policyType" id="orPolicy" onclick="showAllAmount()"> Or policy<br>
+		  <input type="radio" name="policyType" id="andPolicy" onclick="showAllAmount()"> And policy<br>
+		</form>
+		<div id="amountsSection" style="display:none">
+			  <p>Enter amount(s):</p>
+			  <div id="minAmount" style="display:none">Minimum amount:<input type="text" id="minAmountVal"><br></div>
+			  <div id="maxAmount" style="display:none">Maximum amount:<input type="text" id="maxAmountVal"><br></div>
+		</div>
+	</div>
+	
+	<div id="actionButtonsSection">
+		<button onclick="addPolicyToProduct()" style="display:none" id="addPolicyToProductButton">Add Policy To Product</button>
+		<button onclick="addDiscountToProduct()" style="display:none" id="addDiscountToProductButton">Add Discount To Product</button>
+		<button onclick="changeStorePurchasePolicy()"style="display:none" id="changeStorePurchasePolicyButton">Add Policy To Store</button>
+		<button onclick="addDiscountToCategoryStore()" style="display:none"id="addDiscountToCategoryStoreButton">Add Discount To Category</button>
+	</div>
+	
+<script>
+function arrangePagePerPolicyAction(){
+	if(localStorage.getItem('policyAction') == "addPolicyToProduct"){
+		$('#discountSection').hide();
+		$('#addPolicyToProductButton').show();
+	}else if(localStorage.getItem('policyAction') == "addDiscountToProduct"){
+		$('#discountSection').show();
+		$('#addDiscountToProductButton').show();
+	}else if(localStorage.getItem('policyAction') == "changeStorePurchasePolicy"){
+		$('#discountSection').hide();
+		$('#changeStorePurchasePolicyButton').show();
+	}else if(localStorage.getItem('policyAction') == "addDiscountToCategoryStore"){
+		$('#discountSection').show();
+		$('#addDiscountToCategoryStoreButton').show();
+	}
+}
+
+function hideCode() {
+   $('#hiddenDiscountCodeSection').hide();
+}
+
+function showCode() {
+   $('#hiddenDiscountCodeSection').show();
+}
+
+function onlyMinAmount(){
+	$('#amountsSection').show();
+	$('#minAmount').show();
+	$('#maxAmount').hide();
+}
+
+function onlyMaxAmount(){
+	$('#amountsSection').show();
+	$('#minAmount').hide();
+	$('#maxAmount').show();
+}
+
+function showAllAmount(){
+	$('#amountsSection').show();
+	$('#minAmount').show();
+	$('#maxAmount').show();
+}
+
+function hideAllAmount(){
+	$('#amountsSection').hide();
+}
+</script>
+	
+	
+	
+</body>
+
+
+</html>

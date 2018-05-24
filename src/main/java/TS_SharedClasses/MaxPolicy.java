@@ -26,5 +26,14 @@ public class MaxPolicy extends PurchasePolicy {
 	public boolean isCorrectProduct(int amount, String address) {
 		return (amount<=this.max);
 	}
+	
+	public String toString(){
+		String toRet = "";
+		
+		toRet = "Max Policy: " + this.max;
+			
+		return toRet;
+	
+	}
 
 }

@@ -45,5 +45,14 @@ public class OrPolicy extends PurchasePolicy {
 		}
 		return price;
 	}
+	
+	public String toString(){
+		String toRet = "";
+		
+		toRet = "Or Policy: [" + subPolicy.get(0).toString() + ", " + subPolicy.get(1).toString() + "]";
+			
+		return toRet;
+	
+	}
 
 }

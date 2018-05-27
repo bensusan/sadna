@@ -36,10 +36,12 @@ Seems your browser doesn't support Javascript! Websocket relies on Javascript be
     <label for="phonenume">phone please:</label>
     <input type="text" id="phonenum" class="form-control" placeholder="type here...">
 </div>
-<div class="form-group6">
+
+<div class="form-group6" hidden>
     <label for="creditCardNumber">creditCardNumber please:</label>
-    <input type="text" id="creditCardNumber" class="form-control" placeholder="type here...">
+    <input type="text" id="creditCardNumber" class="form-control" placeholder="type here..." value="123456789">
 </div> 
+
 <button onclick="updatePaswordToMD5(); signUp();">Sign Up</button>
 <input type="reset" value="Reset" onClick="window.location.reload()">
 <button onclick="loadMainPage()">Back</button>

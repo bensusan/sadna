@@ -8,6 +8,7 @@
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+	<script src="/md5.js"></script>
     <script src="/app.js"></script>
 </head>
 <body>
@@ -39,9 +40,18 @@ Seems your browser doesn't support Javascript! Websocket relies on Javascript be
     <label for="creditCardNumber">creditCardNumber please:</label>
     <input type="text" id="creditCardNumber" class="form-control" placeholder="type here...">
 </div> 
-<button onclick="signUp()">Sign Up</button>
+<button onclick="updatePaswordToMD5(); signUp();">Sign Up</button>
 <input type="reset" value="Reset" onClick="window.location.reload()">
 <button onclick="loadMainPage()">Back</button>
 </form>
+
+<script type="text/javascript">
+	function updatePaswordToMD5(){
+		var pass = $('#newpassword').val();
+		var enctyptedpass = hex_md5(pass);
+		document.getElementById("newpassword").value = enctyptedpass;
+	}
+</script>
+
 </body>
 </html>

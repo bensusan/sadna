@@ -211,7 +211,7 @@ public class BlGuest {
 		if(!BlMain.correctSpelledLettersSpacesNumbers(username) || !BlMain.correctSpelledLettersSpaces(fullName) || !BlMain.correctSpelledLettersSpacesNumbers(address) || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.correctSpelledNumbers(phone))
 			throw new Exception("problem with one of the fields,check spelling try again"); //exception spell in user name | full name | address
 		
-		password = md5Hash(password);
+		
 		Subscriber newSub = new Subscriber(g.getCart(), username, password, fullName, address, phone, creditCardNumber, new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>()); 
 		BlMain.allSubscribers.add(newSub);
 		return newSub;
@@ -227,7 +227,7 @@ public class BlGuest {
 			throw new Exception("wrong password");
 		Subscriber ans = BlMain.checkIfSubscriberExists(username);
 		
-		if(ans != null && ans.getPassword().toString().equals(md5Hash(password).toString()))
+		if(ans != null && ans.getPassword().toString().equals(password.toString()))
 		{
 			if(ans.getCart().getProducts().isEmpty())
 			{
@@ -238,23 +238,21 @@ public class BlGuest {
 		
 		throw new Exception("incorrect password or username");
 	}
-	
-	//Takes a string, and converts it to md5 hashed string.
-    static String md5Hash(String message) {
-        String md5 = "";
-        if(null == message) 
-            return null;
-      //adding a salt to the string before it gets hashed, to get better security
-        message = message + salt;
+    
+    static String md5Hash(String chechSum) {
+        String hashedPass = null;
         try {
-            MessageDigest digest = MessageDigest.getInstance("MD5");//Create MessageDigest object for MD5
-            digest.update(message.getBytes(), 0, message.length());//Update input string in message digest
-            md5 = new BigInteger(1, digest.digest()).toString(16);//Converts message digest value in base 16 (hex)
-  
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+          MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+          messageDigest.update(chechSum.getBytes(), 0, chechSum.length());
+          hashedPass = new BigInteger(1, messageDigest.digest()).toString(16);
+          if (hashedPass.length() < 32) {
+            hashedPass = "0" + hashedPass;
+          }
+        } catch (Exception e) {
+          System.out.println("failed to create md5");
+          System.out.println(e.getMessage());
         }
-        return md5;
-    }
+        return hashedPass;
+      }
     
 }

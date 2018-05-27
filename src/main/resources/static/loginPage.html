@@ -8,6 +8,7 @@
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+	<script src="/md5.js"></script>
     <script src="/app.js"></script>
 </head>
 <body>
@@ -22,6 +23,16 @@
     <label for="password">Password please:</label>
     <input type="text" id="password" class="form-control" placeholder="type here...">
 </div>
-<button onclick="signIn()">Login</button>
+<button onclick="updatePaswordToMD5(); signIn();">Login</button>
+<script type="text/javascript">
+	function updatePaswordToMD5(){
+		var pass = $('#password').val();
+		var enctyptedpass = hex_md5(pass);
+		document.getElementById("password").value = enctyptedpass;
+	}
+
+</script>
+
+
 </body>
 </html>

@@ -492,6 +492,64 @@ public class GreetingController {
 					}
 				}
 				break;
+			case addDiscountToCategoryStore:
+				if (args.length == 11) {
+					boolean isOwner = gson.fromJson(args[0], Boolean.class);
+					String Category = gson.fromJson(args[1], String.class);
+					String discountType = gson.fromJson(args[4], String.class);
+					int precentage = gson.fromJson(args[5], Integer.class);
+					Date endDate = Date.valueOf(gson.fromJson(args[6], String.class));
+					DiscountPolicy dp = null;
+					if(discountType.equals("overt")){
+						dp = new OvertDiscount(endDate, precentage);
+					}else if(discountType.equals("hidden")){
+						int code = gson.fromJson(args[7], Integer.class);
+						dp = new HiddenDiscount(code, endDate, precentage);
+					}
+					String purchacePolicy = gson.fromJson(args[8], String.class);
+					PurchasePolicy pp = null;
+					if(purchacePolicy.equals("empty")){
+						pp = new EmptyPolicy(dp);
+					}else if(purchacePolicy.equals("min")){
+						int min = gson.fromJson(args[9], Integer.class);
+						pp = new MinPolicy(dp, min);
+					}
+					else if(purchacePolicy.equals("max")){
+						int max = gson.fromJson(args[10], Integer.class);
+						pp = new MaxPolicy(dp, max);
+					}else if(purchacePolicy.equals("or")){
+						int min = gson.fromJson(args[9], Integer.class);
+						int max = gson.fromJson(args[10], Integer.class);
+						MinPolicy minp = new MinPolicy(dp, min);
+						MaxPolicy maxp = new MaxPolicy(dp, max);
+						List<PurchasePolicy> listPP = new ArrayList<PurchasePolicy>();
+						listPP.add(minp);
+						listPP.add(maxp);
+						pp = new OrPolicy(dp, listPP);
+					}else if(purchacePolicy.equals("and")){
+						int min = gson.fromJson(args[9], Integer.class);
+						int max = gson.fromJson(args[10], Integer.class);
+						MinPolicy minp = new MinPolicy(dp, min);
+						MaxPolicy maxp = new MaxPolicy(dp, max);
+						List<PurchasePolicy> listPP = new ArrayList<PurchasePolicy>();
+						listPP.add(minp);
+						listPP.add(maxp);
+						pp = new AndPolicy(dp, listPP);
+					}
+					if(isOwner){
+						StoreOwner so = BlMain.getStoreOwnerFromUsername(gson.fromJson(args[2], String.class),
+								gson.fromJson(args[3], Integer.class));
+						boolean ans = BlMain.addDiscountToCategoryStore(so, pp , Category);
+						ret.setContentAsJson(gson.toJson(ans));
+					}else{
+						StoreManager sm = BlMain.getStoreManagerFromUsername(gson.fromJson(args[2], String.class),
+								gson.fromJson(args[3], Integer.class));
+						boolean ans = BlMain.addDiscountToCategoryStore(sm, pp , Category);
+						ret.setContentAsJson(gson.toJson(ans));
+					}
+					
+				}
+				break;
 				
 			default:
 				throw new Exception("NO SUCH FUNCTION");

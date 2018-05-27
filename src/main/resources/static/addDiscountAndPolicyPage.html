@@ -16,6 +16,10 @@
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
     enabled. Please enable
     Javascript and reload this page!</h2></noscript>
+	
+	<div id="categoryNameSection">
+		Category name: <input type="text" id="categoryNameForDiscount"><br>
+	</div>
 
 	<div id="discountSection">
 		<p>Choose discount type:</p>
@@ -60,16 +64,20 @@
 function arrangePagePerPolicyAction(){
 	if(localStorage.getItem('policyAction') == "addPolicyToProduct"){
 		$('#discountSection').hide();
+		$('#categoryNameSection').hide();
 		$('#addPolicyToProductButton').show();
 	}else if(localStorage.getItem('policyAction') == "addDiscountToProduct"){
 		$('#discountSection').show();
 		$('#addDiscountToProductButton').show();
+		$('#categoryNameSection').hide();
 	}else if(localStorage.getItem('policyAction') == "changeStorePurchasePolicy"){
 		$('#discountSection').hide();
 		$('#changeStorePurchasePolicyButton').show();
+		$('#categoryNameSection').hide();
 	}else if(localStorage.getItem('policyAction') == "addDiscountToCategoryStore"){
 		$('#discountSection').show();
 		$('#addDiscountToCategoryStoreButton').show();
+		$('#categoryNameSection').show();
 	}
 }
 

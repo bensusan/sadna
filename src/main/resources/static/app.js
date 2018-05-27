@@ -176,6 +176,10 @@ function recieveSubscribersPage (funcName, obj) {
             stompClient = null;
             window.location.href = "storePage.html";
 			break;
+		case "removeSubscriber":
+			window.alert("Subscriber removed succesfully!");
+            loadMainPage();
+			break;
         default:
             break;
     }
@@ -199,6 +203,10 @@ function recieveLoginPageMsg(funcName, obj) {
         case "signIn":
             localStorage.setItem('currentUser', JSON.stringify(obj));
             localStorage.setItem('isSubscriber', JSON.stringify(true));
+			localStorage.setItem('isAdmin', JSON.stringify(false));
+			if(obj.isAdmin == true){
+				localStorage.setItem('isAdmin', JSON.stringify(true));
+			}
             loadMainPage();
             break;
         default:
@@ -446,6 +454,18 @@ function addNewStoreOwner(usernameToAdd){
         }));
 }
 
+function removeSubscriber(usernameToRemove){
+	stompClient.send("/app/hello", {},
+    JSON.stringify(
+        {	'pageName': "subscribersPage",
+            'functionName': "removeSubscriber",
+            'paramsAsJSON': [JSON.parse(localStorage.getItem('currentUser'))['username'],
+							usernameToRemove
+							]
+							
+        }));
+}
+
 function addNewStoreManager(usernameToAdd){
 	localStorage.setItem('usernameToAddAsManager', usernameToAdd);
 	stompClient.disconnect();
@@ -613,6 +633,16 @@ function loadAllUsersPage(action){
     JSON.stringify(
         {	'pageName': "subscribersPage",
             'functionName': "getAllSubscribersWithPotential",
+            'paramsAsJSON': []
+        }));
+}
+//TODO : continue to present all stores
+function loadAllStoresPage(action){
+	localStorage.setItem('actionOnStore', action);
+	stompClient.send("/app/hello", {},
+    JSON.stringify(
+        {	'pageName': "storesPage",
+            'functionName': "getAllStores",
             'paramsAsJSON': []
         }));
 }

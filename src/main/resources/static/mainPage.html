@@ -12,10 +12,17 @@
     <script src="/app.js"></script>
 </head>
 
-<body>
+<body onload="manageSysAdminPermissions()">
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
     enabled. Please enable
     Javascript and reload this page!</h2></noscript>
+
+<div id="systemAdminSection">
+	<button id="removeSubscriberBtn" onclick="loadAllUsersPage('removeSubscriber');">Remove subscriber</button>
+    <button id="viewSubscriberHistoryBtn" onclick="loadAllUsersPage('viewSubscriberHistory');">Watch Subscriber Purchase History</button>
+    <button id="viewStoreHistoryBtn" onclick="loadAllStoresPage('viewStoreHistory')">Watch Store Purchase History</button>
+</div>
+	
 <div>
     <button id="loginMBtn" onclick="loadLoginPage()">Login</button>
     <button id="signUpMBtn" onclick="loadSignUpPage()">Sign up</button>
@@ -39,5 +46,15 @@
         </table>
     </div>
 </div>
+	<script>
+		function manageSysAdminPermissions() {
+		   if(localStorage.getItem('isAdmin') == "true")
+				$('#systemAdminSection').show();
+			else
+				$('#systemAdminSection').hide();
+		}
+
+	</script>
+
 </body>
 </html>

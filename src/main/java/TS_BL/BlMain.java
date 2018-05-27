@@ -507,4 +507,10 @@ public class BlMain {
 		return toRet;
 	}
 	
+	public static SystemAdministrator getSystemAdminFromUsername(String username) {
+		SystemAdministrator s = (SystemAdministrator) getSubscriberFromUsername(username);
+
+		return s;
+	}
+	
 }

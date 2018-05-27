@@ -50,6 +50,9 @@ function connect() {
 					case "subscribersPage":
 						recieveSubscribersPage(body.functionName, obj);
 						break;
+					case "storesPage":
+						recieveStoresPage(body.functionName, obj);
+						break;
 					case "addPurchaseTypeToProductPage":
 						recieveAddPurchaseTypeToProductPage(body.functionName, obj);
 						break;
@@ -180,6 +183,20 @@ function recieveSubscribersPage (funcName, obj) {
 			window.alert("Subscriber removed succesfully!");
             loadMainPage();
 			break;
+        default:
+            break;
+    }
+}
+
+function recieveStoresPage (funcName, obj) {
+    switch (funcName){
+		
+        case "getAllStores":
+			localStorage.setItem('allStores', JSON.stringify(obj));
+			stompClient.disconnect();
+            stompClient = null;
+            window.location.href = "storesPage.html";
+            break;
         default:
             break;
     }
@@ -422,6 +439,7 @@ function loadProductsOfStore(){
 	}
 }
 
+
 function loadSubscribers(){
 	var subs = JSON.parse(localStorage.getItem('allSubscribers'));
 	var tableRef = document.getElementById('subscribersInSystemTable');
@@ -435,6 +453,22 @@ function loadSubscribers(){
 		newElem.setAttribute('class', 'btn');
 		newElem.innerHTML = JSON.stringify(subs[i].username);
 		newElem.setAttribute('onclick', localStorage.getItem('actionOnSubscriber')+'('+ JSON.stringify(subs[i].username) +');');
+		newCell.appendChild(newElem);
+
+	}
+}
+
+function loadStores(){
+	var subs = JSON.parse(localStorage.getItem('allStores'));
+	var tableRef = document.getElementById('storesInSystemTable');
+	for(var i = 0; i < subs.length; i++){
+		
+		var newRow   = tableRef.insertRow(-1);
+		var newCell  = newRow.insertCell(0);
+		var newElem = document.createElement( 'button' );
+		newElem.setAttribute('class', 'btn');
+		newElem.innerHTML = "Store - id: " + subs[i].storeId + ", Name: " + subs[i].name + ", Grading: " + subs[i].gradeing;
+		newElem.setAttribute('onclick', localStorage.getItem('actionOnStore')+'('+ JSON.stringify(subs[i].storeId) +');');
 		newCell.appendChild(newElem);
 
 	}

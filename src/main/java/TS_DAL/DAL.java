@@ -28,32 +28,72 @@ public class DAL {
 			}
 			sql = "USE TradingSystem";
 			stmt.executeUpdate(sql);
-			sql = "CREATE TABLE Subscribers(username VARCHAR(50), password VARCHAR(50), fullname VARCHAR(50), address VARCHAR(50), phone VARCHAR(50), credidCardNumber VARCHAR(50), isAdmin TINYINT(1), PRIMARY KEY (username));";
+			sql = "CREATE TABLE Subscribers(username VARCHAR(50),"
+					+ " password VARCHAR(50), fullname VARCHAR(50),"
+					+ " address VARCHAR(50), phone VARCHAR(50),"
+					+ " credidCardNumber VARCHAR(50),"
+					+ " PRIMARY KEY (username));";
 			stmt.executeUpdate(sql);
-			sql = "CREATE TABLE StoreOwners(username VARCHAR(50) REFERENCES Subscribers(username), storeId INTEGER REFERENCES Stores(storeId) ,PRIMARY KEY (username, storeId));";
+			sql = "CREATE TABLE Admins(username VARCHAR(50),"
+					+ " PRIMARY KEY (username));";
 			stmt.executeUpdate(sql);
-			sql = "CREATE TABLE Stores(storeId INTEGER, name VARCHAR(50), address VARCHAR(50), phone VARCHAR (50), grading INTEGER, isOpen TINYINT(1), moneyEarned INTEGER,PRIMARY KEY (storeId));";
+			sql = "CREATE TABLE StoreOwners(username VARCHAR(50) REFERENCES Subscribers(username),"
+					+ " storeId INTEGER REFERENCES Stores(storeId) ,"
+					+ "PRIMARY KEY (username, storeId));";
 			stmt.executeUpdate(sql);
-			sql = "CREATE TABLE ProductsInStores(storeId INTEGER REFERENCES Stores(storeId), productId INTEGER REFERENCES Products(productId),PRIMARY KEY (storeId, productId));";
+			sql = "CREATE TABLE Stores(storeId INTEGER,"
+					+ " name VARCHAR(50), address VARCHAR(50),"
+					+ " phone VARCHAR (50), "
+					+ "grading INTEGER, "
+					+ "isOpen TINYINT(1), "
+					+ "moneyEarned INTEGER,PRIMARY KEY (storeId));";
 			stmt.executeUpdate(sql);
-			sql = "CREATE TABLE Purchased(username VARCHAR(50) REFERENCES Subscribers(username), productId INTEGER REFERENCES Products(productId), storeId INTEGER REFERENCES Stores(storeId), whenPurchased DATE, discountOrPrice INTEGER, amount INTEGER,PRIMARY KEY (username, productId));";
+			sql = "CREATE TABLE ProductsInStores(storeId INTEGER REFERENCES Stores(storeId),"
+					+ " productId INTEGER REFERENCES Products(productId),amount INTEGER, "
+					+ "PRIMARY KEY (storeId, productId));";
 			stmt.executeUpdate(sql);
-			//products still not finished need time to think
-			sql = "CREATE TABLE Products(productId INTEGER, name VARCHAR(50), price INTEGER, grading INTEGER ,PRIMARY KEY (productId));";
+			sql = "CREATE TABLE Purchased(username VARCHAR(50) REFERENCES Subscribers(username),"
+					+ " productId INTEGER REFERENCES Products(productId),"
+					+ " storeId INTEGER REFERENCES Stores(storeId),"
+					+ " whenPurchased DATE, price INTEGER,"
+					+ " amount INTEGER,"
+					+ "PRIMARY KEY (username, productId, whenPurchased));";
 			stmt.executeUpdate(sql);
-			sql = "CREATE TABLE StoreManagers(username VARCHAR(50) REFERENCES Subscribers(username), storeId INTEGER REFERENCES Stores(storeId) ,PRIMARY KEY (username, storeId));";
+			sql = "CREATE TABLE Products(productId INTEGER,"
+					+ " name VARCHAR(50),"
+					+ " price INTEGER,"
+					+ " grading INTEGER ,"
+					+ "PRIMARY KEY (productId));";
 			stmt.executeUpdate(sql);
-			sql = "CREATE TABLE Permissions(username VARCHAR(50) REFERENCES Subscribers(username), permission INTEGER ,PRIMARY KEY (username, permission));";
+			sql = "CREATE TABLE StoreManagers(username VARCHAR(50) REFERENCES Subscribers(username),"
+					+ "storeId INTEGER REFERENCES Stores(storeId) ,"
+					+ " permission INTEGER"
+					+ "PRIMARY KEY (username, storeId, permission));";
 			stmt.executeUpdate(sql);
-			sql = "CREATE TABLE Carts(username VARCHAR(50) REFERENCES Subscribers(username), productId INTEGER REFERENCES Products(productId), PRIMARY KEY (username, productId));";
+			sql = "CREATE TABLE Carts(username VARCHAR(50) REFERENCES Subscribers(username),"
+					+ " productId INTEGER REFERENCES Products(productId),"
+					+ "amount INTEGER,"
+					+ "code INTEGER"
+					+ "PRIMARY KEY (username, productId));";
 			stmt.executeUpdate(sql);
-			sql = "CREATE TABLE ProductsInCategory(categoryName VARCHAR(50), productId INTEGER REFERENCES Products(productId),PRIMARY KEY (categoryName, productId));";
+			sql = "CREATE TABLE ProductsInCategory(categoryName VARCHAR(50),"
+					+ " productId INTEGER REFERENCES Products(productId),"
+					+ "PRIMARY KEY (categoryName, productId));";
 			stmt.executeUpdate(sql); 
-			sql = "CREATE TABLE HiddenDiscount(productId INTEGER REFERENCES Products(productId), code INTEGER, discountEndDate DATE, discountPercentage DATE,PRIMARY KEY (productId));";
+			sql = "CREATE TABLE HiddenDiscount(productId INTEGER REFERENCES Products(productId),"
+					+ "code INTEGER,"
+					+ " discountEndDate DATE,"
+					+ " discountPercentage DATE,"
+					+ "PRIMARY KEY (productId));";
 			stmt.executeUpdate(sql);
-			sql = "CREATE TABLE OvertDiscount(productId INTEGER REFERENCES Products(productId), discountEndDate DATE, discountPercentage DATE,PRIMARY KEY (productId));";
+			sql = "CREATE TABLE OvertDiscount(productId INTEGER REFERENCES Products(productId),"
+					+ " discountEndDate DATE,"
+					+ " discountPercentage DATE,"
+					+ "PRIMARY KEY (productId));";
 			stmt.executeUpdate(sql);
-			sql = "CREATE TABLE SubscribersInLottery(productId INTEGER REFERENCES Products(productId), username VARCHAR(50) REFERENCES Subscribers(username),PRIMARY KEY (productId, username));";
+			sql = "CREATE TABLE SubscribersInLottery(productId INTEGER REFERENCES Products(productId),"
+					+ " username VARCHAR(50) REFERENCES Subscribers(username),"
+					+ "PRIMARY KEY (productId, username));";
 			stmt.executeUpdate(sql);
 
 			System.out.println("CreateEmployeeTableMySQL: main(): table created.");

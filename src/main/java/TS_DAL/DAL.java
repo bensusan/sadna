@@ -132,16 +132,18 @@ public class DAL {
 	//or
 	public List<Subscriber> allSubscribers() throws Exception
 	{
-		String query ="SELECT * FROM Subscribers";
+		String query = "USE TradingSystem";
 		Connection c=getConnection();
-		Statement statement=c.createStatement();
-		ResultSet rs=statement.executeQuery(query);
-		List<Subscriber>ans=new LinkedList<Subscriber>();
+		Statement statement = c.createStatement();
+		statement.executeQuery(query);
+		query ="SELECT * FROM Subscribers";
+		ResultSet rs = statement.executeQuery(query);
+		List<Subscriber>ans = new LinkedList<Subscriber>();
 		while(rs.next())
 		{
 			List<Purchase> myPurchase=getMyPurchase(rs.getString("username"));
 			List<StoreManager>managers=getSubscriberManagers(rs.getString("username"));
-			List<StoreOwner>owners=getSubscriberOwners(rs.getString("username"));
+			List<StoreOwner>owners=getStoreOwners(rs.getString("username"));
 			Subscriber s=new Subscriber(
 					rs.getString("username"),
 					rs.getString("password"),
@@ -158,10 +160,12 @@ public class DAL {
 
 	}
 
-	public List<StoreOwner> getSubscriberOwners(String username) throws Exception {
-		String query ="SELECT * FROM storeowners WHERE username="+username+";";
+	public List<StoreOwner> getStoreOwners(String username) throws Exception {
+		String query = "USE TradingSystem";
 		Connection c=getConnection();
 		Statement statement=c.createStatement();
+		statement.executeQuery(query);
+		query ="SELECT * FROM StoreOwners WHERE username="+username+";";
 		ResultSet rs=statement.executeQuery(query);
 		List<StoreOwner>ans=new LinkedList<StoreOwner>();
 		while(rs.next())
@@ -187,24 +191,62 @@ public class DAL {
 		return null;
 	}
 
-	public boolean isSubscriberExist(String username){
+	public boolean isSubscriberExist(String username) throws Exception{
+		String query = "USE TradingSystem";
+		Connection c = getConnection();
+		Statement statement=c.createStatement();
+		statement.executeUpdate(query);
+		query = "SELECT username "
+				+ "FROM Subscribers "
+				+ "WHERE username = " + username+ ";";
+		statement.executeUpdate(query);
+		ResultSet res=statement.executeQuery(query);
+		if(res.next())
+			return true;
 		return false;
 	}
 
-	public boolean isAdmin(String username)
+	public boolean isAdmin(String username) throws Exception 
 	{
+		String query = "USE TradingSystem";
+		Connection c = getConnection();
+		Statement statement=c.createStatement();
+		statement.executeUpdate(query);
+		query = "SELECT *  "
+				+ "FROM Admins "
+				+ "WHERE username = " + username+ ";";
+		statement.executeUpdate(query);
+		ResultSet res=statement.executeQuery(query);
+		if(res.next())
+			return true;
 		return false;
 	}
 
-	public void removeSubscriber(){
+	public void removeSubscriber(Subscriber sub) throws Exception{
+		String query = "USE TradingSystem";
+		Connection c = getConnection();
+		Statement statement=c.createStatement();
+		statement.executeUpdate(query);
+		query = "DELETE FROM Subscribers " +
+                "WHERE username = " + sub.getUsername();
+		statement.executeUpdate(query);
 	}
 
 	public List<Purchase> getStorePurchase(Store store){
 		return null;
 	}
 
-	public void addPurchaseToHistory(Subscriber sub, Purchase p){
-
+	public void addPurchaseToHistory(Subscriber sub, Purchase p) throws Exception{
+		String query = "USE TradingSystem";
+		Connection c = getConnection();
+		Statement statement=c.createStatement();
+		statement.executeUpdate(query);
+		query = "INSERT INTO Purchased " +
+                "VALUES (" + sub.getUsername() + " , " + p.getPurchased().getMyProduct().getId() 
+                + " , " + p.getPurchased().getMyProduct().getStore().getStoreId() + 
+                " , " + p.getWhenPurchased() + " , " + p.getPurchased().getDiscountOrPrice() + 
+                " , " + p.getPurchased().getAmount() + ")";
+		statement.executeUpdate(query);
 	}
 
 	//removes owner named "username" from store with storeId
@@ -236,12 +278,12 @@ public class DAL {
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
-		stmt.executeUpdate(query);
+		statement.executeUpdate(query);
 		query = "SELECT ProductsInStore.amount, ProductsInStore.productId  "
 				+ "FROM ProductsInStores "
 				+ "INNER JOIN Carts ON ProductsInStores.productId = Carts.productId"
 				+ "WHERE ProductsInStores.productId = " + productId+ ";";
-		stmt.executeUpdate(query);
+		statement.executeUpdate(query);
 		ResultSet res=statement.executeQuery(query);
 		while(res.next()){
 			if(res.getInt("amount") >= amount)
@@ -334,11 +376,18 @@ public class DAL {
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
 		query = "INSERT INTO StoreOwners " +
-				"VALUES (" + owner.getUsername() + s.getStoreId() + ")";
+				"VALUES (" + owner.getUsername() + " , " + s.getStoreId() + ")";
 		statement.executeUpdate(query);
 	}
 
-	public void addNewStoreManager(Store s, Subscriber newMan){
+	public void addNewStoreManager(Store s, Subscriber newMan, int permission) throws Exception{
+		String query = "USE TradingSystem";
+		Connection c = getConnection();
+		Statement statement=c.createStatement();
+		statement.executeUpdate(query);
+		query = "INSERT INTO StoreOwners " +
+				"VALUES (" + newMan.getUsername() + " , " + s.getStoreId() + " , " + permission + ")";
+		statement.executeUpdate(query);
 	}
 
 	//if isOpen insert 1 to store to the isOpen(TinyInt) field, else insert 0
@@ -412,9 +461,7 @@ public class DAL {
 
 	}
 
-	public void removeSubscriber(String username){
-
-	}
+	
 
 	protected static Connection getConnection() throws Exception {
 		String driver = "com.mysql.cj.jdbc.Driver";

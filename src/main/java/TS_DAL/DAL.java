@@ -13,6 +13,10 @@ public class DAL {
 	private Connection conn = null;
 	private Statement stmt = null;
 
+	private final static int emptyPolicyTypeCode = 0, andPolicyTypeCode = 1, orPolicyTypeCode = 2,
+			notPolicyTypeCode = 3, maxPolicyTypeCode = 4, minPolicyTypeCode = 5;
+	
+	
 	private static DAL dal = new DAL();
 	private DAL(){
 
@@ -51,7 +55,9 @@ public class DAL {
 					+ " phone VARCHAR (50), "
 					+ "grading INTEGER, "
 					+ "isOpen TINYINT(1), "
-					+ "moneyEarned INTEGER,PRIMARY KEY (storeId));";
+					+ "moneyEarned INTEGER,"
+					+ "policyId INTEGER REFERENCES Policies(policyId),"
+					+ "PRIMARY KEY (storeId));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE ProductsInStores(storeId INTEGER REFERENCES Stores(storeId),"
 					+ " productId INTEGER REFERENCES Products(productId),amount INTEGER, "
@@ -64,42 +70,79 @@ public class DAL {
 					+ " amount INTEGER,"
 					+ "PRIMARY KEY (username, productId, whenPurchased));";
 			stmt.executeUpdate(sql);
+			sql="CREATE TABLE Policies("
+					+ "policyId INTEGER,"
+					+ " policyType INTEGER,"
+					+ " IValue INTEGER,"//save int value such max,min...
+					+ " SValue VARCHAR(50),"//save string value such username,address...
+					+ "PRIMARY KEY (policyId));";
+			stmt.executeUpdate(sql);
+			sql="CREATE TABLE SubPolicies("
+					+ "fatherPolicyId INTEGER REFERENCES Policies(policyId),"
+					+ "sonPolicyId INTEGER REFERENCES Policies(policyId),"
+					+ "PRIMARY KEY (fatherPolicyId, sonPolicyId));";
+			stmt.executeUpdate(sql);
+			sql="CREATE TABLE CategoryDiscont("
+					+ "storeId INTEGER REFERENCES Stores(storeId),"
+					+ "categoryName INTEGER,"
+					+ "policyId INTEGER REFERENCES Policies(policyId),"
+					+ "PRIMARY KEY (storeId, categoryName));";
+			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE Products(productId INTEGER,"
 					+ " name VARCHAR(50),"
 					+ " price INTEGER,"
 					+ " grading INTEGER ,"
-					+" category VARCHAR(50),"
+					+ " category VARCHAR(50),"
+					+ " policyId INTEGER REFERENCES Policies(policyId),"
+					+ "PRIMARY KEY (productId));";
+			stmt.executeUpdate(sql);
+			sql = "CREATE TABLE ImmediatelyPurchases("
+					+ "productId INTEGER REFERENCES Products(productId),"
+					+ "policyId INTEGER REFERENCES Policies(policyId),"
+					+ "PRIMARY KEY (productId));";
+			stmt.executeUpdate(sql);
+			sql = "CREATE TABLE LottaryPurchases("
+					+ "productId INTEGER REFERENCES Products(productId),"
+					+ "lottaryId INTEGER UNIQUE,"
+					+ "actualEndDate DATE,"
+					+ "lottaryEndDate DATE,"
+					+ "winnerUserName VARCHAR(50),"
+					+ "hasEnd TINYINT(1),"
 					+ "PRIMARY KEY (productId));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE StoreManagers(username VARCHAR(50) REFERENCES Subscribers(username),"
 					+ "storeId INTEGER REFERENCES Stores(storeId) ,"
-					+ " permission INTEGER"
+					+ " permission INTEGER,"
 					+ "PRIMARY KEY (username, storeId, permission));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE Carts(username VARCHAR(50) REFERENCES Subscribers(username),"
 					+ " productId INTEGER REFERENCES Products(productId),"
 					+ "amount INTEGER,"
-					+ "code INTEGER"
+					+ "code INTEGER,"
 					+ "PRIMARY KEY (username, productId));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE ProductsInCategory(categoryName VARCHAR(50),"
 					+ " productId INTEGER REFERENCES Products(productId),"
 					+ "PRIMARY KEY (categoryName, productId));";
 			stmt.executeUpdate(sql); 
-			sql = "CREATE TABLE HiddenDiscount(productId INTEGER REFERENCES Products(productId),"
+			sql = "CREATE TABLE HiddenDiscount("
+					+ "policyId INTEGER REFERENCES Policies(policyId),"
 					+ "code INTEGER,"
 					+ " discountEndDate DATE,"
 					+ " discountPercentage DATE,"
-					+ "PRIMARY KEY (productId));";
+					+ "PRIMARY KEY (policyId));";
 			stmt.executeUpdate(sql);
-			sql = "CREATE TABLE OvertDiscount(productId INTEGER REFERENCES Products(productId),"
+			sql = "CREATE TABLE OvertDiscount("
+					+ "policyId INTEGER REFERENCES Policies(policyId),"
 					+ " discountEndDate DATE,"
 					+ " discountPercentage DATE,"
-					+ "PRIMARY KEY (productId));";
+					+ "PRIMARY KEY (policyId));";
 			stmt.executeUpdate(sql);
-			sql = "CREATE TABLE SubscribersInLottery(productId INTEGER REFERENCES Products(productId),"
-					+ " username VARCHAR(50) REFERENCES Subscribers(username),"
-					+ "PRIMARY KEY (productId, username));";
+			sql = "CREATE TABLE SubscribersInLottery("
+					+ "lotaryId INTEGER REFERENCES LottaryPurchases(lottaryId),"
+					+ "username VARCHAR(50) REFERENCES Subscribers(username),"
+					+ "moneyPayed INTEGER,"
+					+ "PRIMARY KEY (lotaryId, username));";
 			stmt.executeUpdate(sql);
 
 			System.out.println("CreateEmployeeTableMySQL: main(): table created.");
@@ -295,9 +338,12 @@ public class DAL {
 		String driver = "com.mysql.cj.jdbc.Driver";
 		String url = "jdbc:mysql://localhost:3306/?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 		String username = "root";
-		String password = "root";
+		String password = "12345";
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url, username, password);
 		return conn;
+	}
+	public static void main(String[] args){
+		
 	}
 }

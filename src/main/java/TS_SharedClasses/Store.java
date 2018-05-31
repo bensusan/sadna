@@ -205,5 +205,11 @@ public class Store {
 //		return true;
 	}
 	
+	public String toString(){
+		return "Id: " + this.getStoreId() + ", Name: " + this.getStoreName() + ", Address: "
+				+ this.getAddress() + ", Grading: " + this.getGradeing() + ", Phone: " + this.getPhone()
+				+ ", Money earned: " + this.getMoneyEarned();
+	}
+	
 	
 }

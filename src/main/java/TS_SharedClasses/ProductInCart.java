@@ -53,4 +53,8 @@ public class ProductInCart {
 			return false;
 		return true;
 	}
+	
+	public String toString(){
+		return this.myProduct.toString() + " ,price: " + discountOrPrice + " ,amount: " + amount;
+	}
 }

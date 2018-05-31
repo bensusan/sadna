@@ -406,21 +406,35 @@ function hideButtonsToManager(){
 
 function mainTableOnLoad() {
     var obj = JSON.parse(localStorage.getItem('mapForTable'));
-    // obj = {s:{p:1}}; //example for the loop
+    var tableRef = document.getElementById('mainProductsTable');
     var found = false;
     Object.entries(obj).map(([s, pAndA]) => {
+		var newRow = tableRef.insertRow(-1);
+		var newCell = newRow.insertCell(0);
+		var newElem = document.createElement( 'button' );
+		newElem.setAttribute('class', 'btn');
+		newElem.innerHTML = "Store: " + s;
+		newCell.appendChild(newElem);
         Object.entries(pAndA).map(([p, amount]) => {
-            if (amount > 0) {
-                var toShow = "Store - id: " + s.storeId + " name: " + s.name + " Product - id: " + p.id + " name: " + p.name;
-                var pAsJson = JSON.stringify(p);
-                $('#myTable').append('<button onclick="loadProductPage("+ pAsJson + ")">toShow</button>');
-                found = true;
+            if (amount > 0) 
+            {
+            	var newRow = tableRef.insertRow(-1);
+				var newCell = newRow.insertCell(0);
+				var newElem = document.createElement( 'button' );
+				newElem.setAttribute('class', 'btn');
+				newElem.innerHTML = p + ", Amount:" + amount;
+				var pID = p.substring(p.indexOf(" "), p.indexOf(","));
+				newElem.setAttribute('onclick', 'getProduct(' + pID + ')');
+				newCell.appendChild(newElem);
+                found = true; 
             }
         });
     });
 
     if(!found)
         window.alert("No Products");
+    else
+    	$('#loadProducts').hide();
 }
 
 function loadProductsOfStore(){

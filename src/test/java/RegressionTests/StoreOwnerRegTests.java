@@ -1,4 +1,4 @@
-package IntegrationTests;
+package RegressionTests;
 
 import static org.junit.Assert.*;
 

@@ -14,7 +14,7 @@ public class DAL {
 	private Statement stmt = null;
 
 	private final static int emptyPolicyTypeCode = 0, andPolicyTypeCode = 1, orPolicyTypeCode = 2,
-			notPolicyTypeCode = 3, maxPolicyTypeCode = 4, minPolicyTypeCode = 5;
+			notPolicyTypeCode = 3, maxPolicyTypeCode = 4, minPolicyTypeCode = 5,addressPolicyTypeCode=6;
 	
 	
 	private static DAL dal = new DAL();

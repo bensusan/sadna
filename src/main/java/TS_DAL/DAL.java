@@ -157,7 +157,6 @@ public class DAL {
 			ans.add(s);
 		}
 		return ans;
-
 	}
 
 	public List<StoreOwner> getStoreOwners(String username) throws Exception {
@@ -177,7 +176,6 @@ public class DAL {
 	}
 
 	public Store getStoreByStoreId(String storeId) {
-		// TODO return Store by store id
 		return null;
 	}
 

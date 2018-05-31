@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Product Page</title>
+    <h3>Product Page..</h3>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+
+<body onload="loadProduct()">
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+
+<div class="row">
+    <div class="col-md-12">
+		<div>
+		    Product ID:<p id="productIdInProductPage"></p>
+		</div>
+		<div>
+		     Name: <p id="productNameInProductPage"></p>
+		</div>
+		<div>
+		     Product Grading: <p id="productGradingInProductPage"></p>
+		</div>
+		<div>
+		    Product Category: <p id="productCategoryInProductPage"></p>
+		</div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+		Choose amount: <input type="text" id="productAmount" value="1">
+		Enter Discount Code(optionally): <input type="text" id="discountCode" value="-1">
+ 	</div>
+</div>
+
+<button onclick="addToCart()">Add To Cart</button>
+<input type="reset" value="Reset" onClick="window.location.reload()">
+<button onclick="loadMainPage()">Back</button>
+
+</body>
+</html>

@@ -507,6 +507,16 @@ public class BlMain {
 		return toRet;
 	}
 	
+	public static List<Product> getAllProducts(){
+		List<Product> ans = new ArrayList<Product>();
+		
+		Map<Store,Map<Product, Integer>> fmap = BlMain.getAllStoresWithThierProductsAndAmounts();
+		for (Store s : fmap.keySet())
+			ans.addAll(fmap.get(s).keySet());
+		
+		return ans;
+	}
+	
 	public static SystemAdministrator getSystemAdminFromUsername(String username) {
 		SystemAdministrator s = (SystemAdministrator) getSubscriberFromUsername(username);
 

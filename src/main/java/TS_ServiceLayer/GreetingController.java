@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+
 import TS_SharedClasses.*;
 
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -454,6 +455,18 @@ public class GreetingController {
 			case getSubscriberFromUsername:
 				if(args.length == 1)
 					ret.setContentAsJson(gson.toJson(BlMain.getSubscriberFromUsername(gson.fromJson(args[0], String.class))));
+				break;
+			case getProduct:
+				if(args.length == 1){
+					int pid = gson.fromJson(args[0], Integer.class);
+					
+					List<Product> pList = BlMain.getAllProducts();
+					for (Product p : pList) {
+						if(p.getId() == pid){
+							ret.setContentAsJson(gson.toJson(p));
+							break;
+					}
+				}}
 				break;
 			case getProductAndAmountPerStoreId:
 				if(args.length == 1){

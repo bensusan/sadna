@@ -202,7 +202,7 @@ public class DalIntegressionTest {
 			dal.addProductToStore(store, prod, 30, "newCategory");
 			
 			boolean isContain=false;
-			for(Product p:dal.getStoreProduct(store).keySet()){
+			for(Product p:dal.getProductAmount(store.getStoreId()).keySet()){
 				if(p.equals(prod))
 				{
 					isContain=true;
@@ -236,7 +236,7 @@ public class DalIntegressionTest {
 			dal.updateProductDetails(store, prod, newProduct, 30, "newCategory");
 			
 			boolean isContain=false;
-			for(Product p:dal.getStoreProduct(store).keySet()){
+			for(Product p:dal.getProductAmount(store.getStoreId()).keySet()){
 				if(p.equals(newProduct))
 				{
 					isContain=true;
@@ -269,7 +269,7 @@ public class DalIntegressionTest {
 			dal.deleteProductFromStore(store, prod);
 			
 			boolean isContain=false;
-			for(Product p:dal.getStoreProduct(store).keySet()){
+			for(Product p:dal.getProductAmount(store.getStoreId()).keySet()){
 				if(p.equals(prod))
 				{
 					isContain=true;
@@ -363,7 +363,7 @@ public class DalIntegressionTest {
 			dal.addProductToStore(store, prod, 40, "newCategory");
 			
 			dal.stockUpdate(prod, 35, store);
-			Map<Product,Integer>map=dal.getStoreProduct(store);
+			Map<Product,Integer>map=dal.getProductAmount(store.getStoreId());
 			boolean found=false;
 			for(Product newP:map.keySet())
 			{

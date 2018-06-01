@@ -721,6 +721,9 @@ public class DAL {
 	public void removePurchase(Subscriber s, Purchase p) {
 		// TODO remove purchase from purchase table
 	}
+	public void deleteStore(int storeId){
+		// TODO remove store from store table
+	}
 	
 	public DiscountPolicy getDiscountPolicy(int policyId) throws Exception{
 		String query = "USE TradingSystem";

@@ -59,7 +59,16 @@ function connect() {
 					case "addDiscountAndPolicyPage":
 						recieveAddDiscountAndPolicyPage(body.functionName, obj);
 						break;
-						
+					case "loadProductPage":
+						recieveGetProductMsg(body.functionName, obj);
+						break;
+					case "productPage":
+						recieveAddToSubCart(body.functionName, obj);
+						break;
+					case "subCartPage":
+						recieveRemFromSubCart(body.functionName, obj);
+					case "purchaseSubCart":
+						recieveSubCartPurchase(body.functionName, obj);
                     default:
                         break;
                 }
@@ -69,7 +78,9 @@ function connect() {
 }
 
 
-//****RECIEVE MESSAGE FROM SERVER****//
+/*********************************************************************************/
+//**************************RECIEVE MESSAGE FROM SERVER*************************//
+/********************************************************************************/
 function recieveMainPageMsg(funcName, obj) {
     switch (funcName){
         case "getAllStoresWithThierProductsAndAmounts":
@@ -267,6 +278,35 @@ function recieveUpdateCurrentSubscriber(funcName, obj) {
     }
 }
 
+function recieveGetProductMsg(funcName, obj) {
+    switch (funcName){
+        case "getProduct":
+        	localStorage.setItem('currentProduct' , JSON.stringify(obj));
+			loadProductPage();
+            break;
+        default:
+            break;
+    }
+}
+
+function recieveAddToSubCart(funcName, obj){
+	switch (funcName){
+        case "addToSubCart":
+        	localStorage.setItem('myCart' , JSON.stringify(obj));
+        	window.alert('Product was added to cart!');
+			setTimeout(function(){
+			loadMainPage();
+			}, 2000);
+       		break;
+        default:
+            break;
+    }
+}
+
+/******************************************************************************/
+/**********************************END RECIEVE*********************************/
+/******************************************************************************/
+
 //****SEND MESSAGE TO SERVER****//
 function signIn() {
     stompClient.send("/app/hello", {},
@@ -341,7 +381,64 @@ function addProductToStore(){
 	));
 }
 
-/***LOAD FUNCTIONS***/
+function getProduct(productId){
+	productId = Number(productId);
+	stompClient.send("/app/hello", {},
+    JSON.stringify(
+        {	'pageName': "loadProductPage",
+            'functionName': "getProduct",
+            'paramsAsJSON': [productId]				
+        }
+    ));
+}
+
+function purchaseAllCart(){
+	var creditCard = document.getElementById('creditCardInput').value;
+	var address = document.getElementById('addressInput').value;
+	
+	if( creditCard === '' ){
+	      window.alert("Please Insert Valid Credit Card Number");
+	      return;
+    }
+    
+    if( address === '' ){
+	      window.alert("Please Insert Valid Address");
+	      return;
+    }
+    
+    if(JSON.parse(localStorage.getItem('isSubscriber')) === false){				
+				  stompClient.send("/app/hello", {},
+					JSON.stringify(
+						{	'pageName': "cartPage",
+							'functionName': "purchaseCart",
+							'paramsAsJSON': [
+											 JSON.parse(localStorage.getItem('myCart')),
+											 creditCart,
+											 address,
+											 JSON.parse(localStorage.getItem('isEmpty'))
+											 ]
+					}));
+    }
+    
+    else{
+	  	stompClient.send("/app/hello", {},
+				JSON.stringify(
+					{	'pageName': "purchaseSubCart",
+						'functionName': "purchaseCart",
+						'paramsAsJSON': [
+										 JSON.parse(localStorage.getItem('currentUser'))['username'],
+										 creditCard,
+										 address
+										 ]
+				}));
+    }
+	    
+	
+}
+
+/******************************************************************************/
+/********************************LOAD FUNCTIONS********************************/
+/******************************************************************************/
 function loadStoreDetails(){
 	var store = JSON.parse(localStorage.getItem('currentStore'));
 	var sid = document.getElementById('storeIdInStorePage');
@@ -406,21 +503,47 @@ function hideButtonsToManager(){
 
 function mainTableOnLoad() {
     var obj = JSON.parse(localStorage.getItem('mapForTable'));
-    // obj = {s:{p:1}}; //example for the loop
+    var tableRef = document.getElementById('mainProductsTable');
     var found = false;
     Object.entries(obj).map(([s, pAndA]) => {
+		var newRow = tableRef.insertRow(-1);
+		var newCell = newRow.insertCell(0);
+		var newElem = document.createElement( 'button' );
+		newElem.setAttribute('class', 'btn');
+		newElem.innerHTML = "Store: " + s;
+		newCell.appendChild(newElem);
         Object.entries(pAndA).map(([p, amount]) => {
-            if (amount > 0) {
-                var toShow = "Store - id: " + s.storeId + " name: " + s.name + " Product - id: " + p.id + " name: " + p.name;
-                var pAsJson = JSON.stringify(p);
-                $('#myTable').append('<button onclick="loadProductPage("+ pAsJson + ")">toShow</button>');
-                found = true;
+            if (amount > 0) 
+            {
+            	var newRow = tableRef.insertRow(-1);
+				var newCell = newRow.insertCell(0);
+				var newElem = document.createElement( 'button' );
+				newElem.setAttribute('class', 'btn');
+				newElem.innerHTML = p + ", Amount:" + amount;
+				var pID = p.substring(p.indexOf(" "), p.indexOf(","));
+				newElem.setAttribute('onclick', 'getProduct(' + pID + ')');
+				newCell.appendChild(newElem);
+                found = true; 
             }
         });
     });
 
     if(!found)
         window.alert("No Products");
+    else
+    	$('#loadProducts').hide();
+}
+
+function loadProduct(){
+	var product = JSON.parse(localStorage.getItem('currentProduct'));
+	var pid = document.getElementById("productIdInProductPage");
+	pid.innerHTML = product.id;
+	var pn = document.getElementById('productNameInProductPage');
+	pn.innerHTML = product.name;
+	var pg = document.getElementById('productGradingInProductPage');
+	pg.innerHTML = product.grading;
+	var pc = document.getElementById('productCategoryInProductPage');
+	pc.innerHTML = product.category.name;
 }
 
 function loadProductsOfStore(){
@@ -474,6 +597,10 @@ function loadStores(){
 	}
 }
 
+/**********************************************************************************/
+/********************************END LOAD FUNCTIONS********************************/
+/**********************************************************************************/
+
 function addNewStoreOwner(usernameToAdd){
 	stompClient.send("/app/hello", {},
     JSON.stringify(
@@ -498,13 +625,6 @@ function removeSubscriber(usernameToRemove){
 							]
 							
         }));
-}
-
-function addNewStoreManager(usernameToAdd){
-	localStorage.setItem('usernameToAddAsManager', usernameToAdd);
-	stompClient.disconnect();
-    stompClient = null;
-    window.location.href = "permissionsToManager.html";
 }
 
 function sendAddNewStoreManager(){
@@ -681,6 +801,98 @@ function loadAllStoresPage(action){
         }));
 }
 
+function addToCart(){
+	 var product = JSON.parse(localStorage.getItem('currentProduct'));
+	 var amount = document.getElementById("productAmount").value;
+	 var discountCode = document.getElementById("discountCode").value;
+	 
+	 if(JSON.parse(localStorage.getItem('isSubscriber')) === false) {
+		 stompClient.send("/app/hello", {},
+			JSON.stringify(
+				{	'pageName': "productPage",
+					'functionName': "addToGuestCart",
+					'paramsAsJSON': [JSON.parse(localStorage.getItem('isEmpty')),
+									 product.id,
+									 amount,
+									 discountCode,
+									 JSON.parse(localStorage.getItem('myCart'))
+									 ]				
+			}));
+	}
+	else{
+		stompClient.send("/app/hello", {},
+			JSON.stringify(
+				{	'pageName': "productPage",
+					'functionName': "addToSubCart",
+					'paramsAsJSON': [
+									 JSON.parse(localStorage.getItem('currentUser'))['username'],
+									 product.id,
+									 amount,
+									 discountCode
+									 ]
+			}));
+		}	
+}
+
+function deleteFromCart(pid){
+	if(JSON.parse(localStorage.getItem('isSubscriber')) === false) {
+		stompClient.send("/app/hello", {},
+				JSON.stringify(
+					{	'pageName': "productPage",
+						'functionName': "removeProductFromGuestCart",
+						'paramsAsJSON': [
+										 JSON.parse(localStorage.getItem('myCart')),
+										 pid
+										 ]
+				}));
+	}
+	
+	else{
+		stompClient.send("/app/hello", {},
+				JSON.stringify(
+					{	'pageName': "subCartPage",
+						'functionName': "removeProductFromCart",
+						'paramsAsJSON': [
+										 JSON.parse(localStorage.getItem('currentUser'))['username'],
+										 pid
+										 ]
+				}));
+		}
+}
+
+function recieveRemFromSubCart(funcName, obj){
+   switch (funcName){ 
+       	case "removeProductFromCart":
+	       		localStorage.setItem('myCart' , JSON.stringify(obj));
+	       		window.alert('Product was deleted !!!!');
+				setTimeout(function(){
+				loadMainPage();
+				}, 2000);
+			break;
+		default:
+			break;
+		}
+}
+
+function recieveSubCartPurchase(funcName, obj){
+   switch (funcName){ 
+       	case "purchaseCart":
+	       		localStorage.setItem('myCart' , JSON.stringify(obj));
+	       		window.alert('Cart was purchased!');
+				setTimeout(function(){
+				loadMainPage();
+				}, 2000);
+			break;
+		default:
+			break;
+		}
+}
+
+
+/******************************************************************************/
+/********************************LOAD PAGES************************************/
+/******************************************************************************/
+
 function loadEditOwnStore(store){
 	localStorage.setItem('currentStore', JSON.stringify(store));
 	localStorage.setItem('isOwner', JSON.stringify(true));
@@ -727,7 +939,7 @@ function loadOpenStorePage(){
 function loadCartPage(){
     stompClient.disconnect();
     stompClient = null;
-    window.location.href = "cartPage.html";
+    window.location.href = "myCart.html";
 }
 
 function loadProductPage(product) {
@@ -764,6 +976,51 @@ function loadAddDiscountAndPolicyPage(id){
     stompClient = null;
 	window.location.href = "addDiscountAndPolicyPage.html";
 }
+
+function addNewStoreManager(usernameToAdd){
+	localStorage.setItem('usernameToAddAsManager', usernameToAdd);
+	stompClient.disconnect();
+    stompClient = null;
+    window.location.href = "permissionsToManager.html";
+}
+
+function loadMyCart(){
+	var cart = JSON.parse(localStorage.getItem('myCart'));
+	var tableRef = document.getElementById('myCartTable');
+    var found = false;
+	var productsInCart = cart.products;
+	
+	if(productsInCart.length == 0){
+		$('#purchaseCartbtn').hide();
+		$('#creditCardInput').hide();
+		$('#inCC').hide();
+		window.alert("empty cart!");
+	}
+	
+	window.alert("length: " + productsInCart.length);
+	
+	for(var i = 0; i < productsInCart.length; i++){
+		var p = productsInCart[i].myProduct;
+		
+		var newRow = tableRef.insertRow(-1);
+		var newCell  = newRow.insertCell(0);
+		var newElem = document.createElement( 'button' );
+		newElem.setAttribute('class', 'btn');
+		newElem.setAttribute('onclick', 'deleteFromCart('+ p.id +');');
+		newElem.innerHTML = "id: " + p.id + " ,name: " + p.name + " ,price: " + p.price + " ,grading: " + p.grading
+							 + " ,category: " + p.category.name + " ,policy: " + p.policy + " ,type: " + p.type;
+		newCell.appendChild(newElem);
+	}
+	
+}
+
+/******************************************************************************/
+/********************************END LOAD PAGES********************************/
+/******************************************************************************/
+
+/******************************************************************************/
+/***********************************POLICY*************************************/
+/******************************************************************************/
 
 function changeStorePurchasePolicy(){
 	if ($("input[type=radio]:checked").length == 0 ) {
@@ -985,6 +1242,10 @@ function addNewPurchaseTypeToProdcut(){
 		}));
 	}
 }
+
+/******************************************************************************/
+/*******************************END POLICY*************************************/
+/******************************************************************************/
 
 function loadMyStoresPage() {
 	updateCurrentSubscriber();

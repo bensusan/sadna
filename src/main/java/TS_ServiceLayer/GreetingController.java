@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+
 import TS_SharedClasses.*;
 
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -57,12 +58,6 @@ public class GreetingController {
 							gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class))));
 				}
 				break;
-			case removeProductFromCart:
-				if (args.length == 2){
-					ret.setContentAsJson(gson.toJson(BlMain.removeProductFromCart(gson.fromJson(args[0], Guest.class),
-							gson.fromJson(args[1], Product.class))));
-				}
-				break;
 			case editProductAmount:
 				if (args.length == 2){
 					ret.setContentAsJson(gson.toJson(BlMain.editProductAmount(gson.fromJson(args[0], Guest.class),
@@ -84,12 +79,6 @@ public class GreetingController {
 			case editCart:
 				if (args.length == 2){
 					ret.setContentAsJson(gson.toJson(BlMain.editCart(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], Cart.class))));
-				}
-				break;
-			case purchaseCart:
-				if (args.length == 3){
-					ret.setContentAsJson(gson.toJson(BlMain.purchaseCart(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], String.class),
-							gson.fromJson(args[2], String.class))));
 				}
 				break;
 			case addProductToStore:
@@ -439,6 +428,36 @@ public class GreetingController {
 					
 				}
 				break;
+				
+			case addToSubCart:
+				if (args.length == 4) {
+					Subscriber sub = BlMain.getSubscriberFromUsername(gson.fromJson(args[0], String.class));
+					int pid = gson.fromJson(args[1], Integer.class);
+					Product p = BlMain.getProductFromProdId(pid);
+					int amount = gson.fromJson(args[2], Integer.class);
+					int discountCode = gson.fromJson(args[3], Integer.class);
+					BlMain.addImmediatelyProduct((Guest)sub, p, amount, discountCode);
+					
+					ret.setContentAsJson(gson.toJson(sub.getCart()));
+				}
+				break;
+			case removeProductFromCart:
+				if (args.length == 2){
+					Subscriber s = BlMain.getSubscriberFromUsername(gson.fromJson(args[0], String.class));
+					Product p = BlMain.getProductFromProdId(gson.fromJson(args[1], Integer.class));
+					BlMain.removeProductFromCart((Guest)s, p);
+					ret.setContentAsJson(gson.toJson(s.getCart()));	
+				}
+				break;
+			case purchaseCart:
+				if (args.length == 3){
+					Subscriber s = BlMain.getSubscriberFromUsername(gson.fromJson(args[0], String.class));
+					String creditCard = gson.fromJson(args[1], String.class);
+					String address = gson.fromJson(args[2], String.class);
+					BlMain.purchaseCart((Guest)s,creditCard,address);
+					ret.setContentAsJson(gson.toJson(s.getCart()));
+				}
+				break;	
 			case getAllStoresWithThierProductsAndAmounts:
 				if(args.length == 0)
 					ret.setContentAsJson(gson.toJson(BlMain.getAllStoresWithThierProductsAndAmounts()));
@@ -455,6 +474,18 @@ public class GreetingController {
 			case getSubscriberFromUsername:
 				if(args.length == 1)
 					ret.setContentAsJson(gson.toJson(BlMain.getSubscriberFromUsername(gson.fromJson(args[0], String.class))));
+				break;
+			case getProduct:
+				if(args.length == 1){
+					int pid = gson.fromJson(args[0], Integer.class);
+					
+					List<Product> pList = BlMain.getAllProducts();
+					for (Product p : pList) {
+						if(p.getId() == pid){
+							ret.setContentAsJson(gson.toJson(p));
+							break;
+					}
+				}}
 				break;
 			case getProductAndAmountPerStoreId:
 				if(args.length == 1){

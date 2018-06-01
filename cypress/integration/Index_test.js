@@ -1,11 +1,15 @@
 describe('Index Tests', function() {
     beforeEach( ()=> {
-        cy.visit('/')
+        cy.visit('http://localhost:8080')
     })
 
-    it('Enter Welcome page', function() {
-        cy.contains('title', 'Trading system')
+    it('Title', function() {
+        cy.get('head').contains('title', 'Sadna')
     })
 
+    it('Button', function() {
+        cy.contains('Connect to Trading System').click()
+        cy.url().should('include', '/mainPage.html')
+    })
 
 })

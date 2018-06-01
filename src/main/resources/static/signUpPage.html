@@ -33,7 +33,7 @@ Seems your browser doesn't support Javascript! Websocket relies on Javascript be
     <input type="text" id="address" class="form-control" placeholder="type here...">
 </div>
 <div class="form-group5">
-    <label for="phonenume">phone please:</label>
+    <label for="phonenum">phone please:</label>
     <input type="text" id="phonenum" class="form-control" placeholder="type here...">
 </div>
 
@@ -42,9 +42,9 @@ Seems your browser doesn't support Javascript! Websocket relies on Javascript be
     <input type="text" id="creditCardNumber" class="form-control" placeholder="type here..." value="123456789">
 </div> 
 
-<button onclick="updatePaswordToMD5(); signUp();">Sign Up</button>
-<input type="reset" value="Reset" onClick="window.location.reload()">
-<button onclick="loadMainPage()">Back</button>
+<button id="signUpBtn" onclick="updatePaswordToMD5(); signUp();">Sign Up</button>
+<input id="signUpBackResetBtn" type="reset" value="Reset" onClick="window.location.reload()">
+<button id="signUpBack" onclick="loadMainPage()">Back</button>
 </form>
 
 <script type="text/javascript">

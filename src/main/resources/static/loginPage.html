@@ -23,7 +23,7 @@
     <label for="password">Password please:</label>
     <input type="text" id="password" class="form-control" placeholder="type here...">
 </div>
-<button onclick="updatePaswordToMD5(); signIn();">Login</button>
+<button id="loginBtn" onclick="updatePaswordToMD5(); signIn();">Login</button>
 <script type="text/javascript">
 	function updatePaswordToMD5(){
 		var pass = $('#password').val();

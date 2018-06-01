@@ -1,57 +1,65 @@
 describe('Login Tests', function() {
     beforeEach( ()=> {
-        cy.visit('/Login')
+        cy.visit('http://localhost:8080')
+        cy.contains('Connect to Trading System').click().then(()=>{
+            cy.get('#loginMBtn').click()
+            cy.wait(100)
         })
 
+    })
+
     it('Enter Login page', function() {
-        cy.contains('title', 'Login')
+        cy.get('head').title().should('include', 'Login')
     })
 
     it('Blank username', function () {
-        cy.contains('Login').click()
-        cy.get('.error-messages')
-            .should('contains', 'User name can\'t be blank')
+        const stub = cy.stub()
+        cy.on('window:alert', stub)
+        cy.get('#loginBtn').click().then(() => {
+            expect(stub.getCall(0)).to.be.calledWith('User name can\'t be blank')
+        })
     })
 
     it('Blank password', function () {
-        cy.get('.action-username')
+        cy.get('#userName')
             .type('fakeUserName')
             .should('have.value', 'fakeUserName')
 
-        cy.contains('Login').click()
-
-        cy.get('.error-messages')
-            .should('contains', 'Password can\'t be blank')
+        const stub = cy.stub()
+        cy.on('window:alert', stub)
+        cy.get('#loginBtn').click().then(() => {
+            expect(stub.getCall(0)).to.be.calledWith('Password can\'t be blank')
+        })
     })
 
     it('Subscriber does not exists', function () {
-        cy.get('.action-username')
+        cy.get('#userName')
             .type('fakeUserName')
             .should('have.value', 'fakeUserName')
 
-        cy.get('.action-password')
+        cy.get('#password')
             .type('fakePassword')
             .should('have.value', 'fakePassword')
 
-        cy.contains('Login').click()
-
-        cy.get('.error-messages')
-            .should('contains', 'Incorrect username or password')
+        const stub = cy.stub()
+        cy.on('window:alert', stub)
+        cy.get('#loginBtn').click().then(() => {
+            expect(stub.getCall(0)).to.be.calledWith('Incorrect username or password')
+        })
     })
 
     it('Subscriber exists', function () {
 
-        cy.get('.action-username')
+        cy.get('#userName')
             .type('itzik')
             .should('have.value', 'itzik')
 
-        cy.get('.action-password')
+        cy.get('#password')
             .type('11111111')
             .should('have.value', '11111111')
 
-        cy.contains('Login').click()
-
-        //TODO - need to understand whats happen now. maybe go to home page.
-
-    });
+        cy.get('#loginBtn').click().then(() => {
+            cy.url().should('include', '/mainPage.html')
+        })
+    })
 })

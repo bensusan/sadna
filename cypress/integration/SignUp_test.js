@@ -59,6 +59,7 @@ function typeFakePhone(){
 describe('Sign Up Tests', function() {
     beforeEach( ()=> {
         cy.visit('http://localhost:8080')
+        cy.wait(500)
         cy.contains('Connect to Trading System').click().then(()=>{
             cy.wait(2000)
             cy.get('#signUpMBtn').click()
@@ -106,7 +107,7 @@ describe('Sign Up Tests', function() {
         typeFakeFullName()
         typeFakeAddress()
         typeFakePhone()
-        signUpButton('username exists')
+        signUpButton('the username is already taken, try again')
     })
 
     it('Illegal password', function () {

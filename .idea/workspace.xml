@@ -17,8 +17,8 @@
       <file leaf-file-name="mainPage_test.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cypress/integration/mainPage_test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret lean-forward="true" />
+            <state relative-caret-position="306">
+              <caret line="152" lean-forward="true" selection-start-line="152" selection-start-column="3" selection-end-line="215" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -26,7 +26,7 @@
       <file leaf-file-name="signUpPage.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/static/signUpPage.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="316">
+            <state relative-caret-position="217">
               <caret line="46" column="22" selection-start-line="46" selection-start-column="12" selection-end-line="46" selection-end-column="22" />
             </state>
           </provider>
@@ -35,8 +35,8 @@
       <file leaf-file-name="SignUp_test.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cypress/integration/SignUp_test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="165" column="10" lean-forward="true" selection-start-line="163" selection-start-column="8" selection-end-line="165" selection-end-column="10" />
+            <state relative-caret-position="102">
+              <caret line="61" column="8" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -53,7 +53,7 @@
       <file leaf-file-name="mainPage.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/static/mainPage.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="82">
+            <state relative-caret-position="357">
               <caret line="21" column="7" lean-forward="true" selection-start-line="21" selection-start-column="7" selection-end-line="21" selection-end-column="7" />
             </state>
           </provider>
@@ -67,8 +67,8 @@
       <file leaf-file-name="Login_test.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cypress/integration/Login_test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="15" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="15" />
+            <state relative-caret-position="102">
+              <caret line="6" column="40" selection-start-line="6" selection-start-column="40" selection-end-line="6" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -111,9 +111,9 @@
         <option value="$PROJECT_DIR$/src/main/resources/static/mainPage.html" />
         <option value="$PROJECT_DIR$/cypress/integration/Index_test.js" />
         <option value="$PROJECT_DIR$/src/main/resources/static/loginPage.html" />
-        <option value="$PROJECT_DIR$/cypress/integration/Login_test.js" />
         <option value="$PROJECT_DIR$/src/main/resources/static/signUpPage.html" />
         <option value="$PROJECT_DIR$/cypress/integration/SignUp_test.js" />
+        <option value="$PROJECT_DIR$/cypress/integration/Login_test.js" />
         <option value="$PROJECT_DIR$/cypress/integration/mainPage_test.js" />
       </list>
     </option>
@@ -128,8 +128,8 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-314" />
-    <option name="y" value="-20" />
+    <option name="x" value="-315" />
+    <option name="y" value="-21" />
     <option name="width" value="1890" />
     <option name="height" value="930" />
   </component>
@@ -138,7 +138,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -187,6 +186,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -226,14 +226,16 @@
       <workItem from="1526052412632" duration="31042000" />
       <workItem from="1526119727324" duration="6418000" />
       <workItem from="1527792913587" duration="31845000" />
+      <workItem from="1527856896852" duration="2175000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="80559000" />
+    <option name="totallyTimeSpent" value="82734000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22872755" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -261,6 +263,51 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/cypress/integration/mainPage_test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret lean-forward="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/static/signUpPage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="782">
+          <caret line="46" column="22" selection-start-line="46" selection-start-column="12" selection-end-line="46" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cypress/integration/SignUp_test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2805">
+          <caret line="165" column="10" lean-forward="true" selection-start-line="163" selection-start-column="8" selection-end-line="165" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cypress/integration/Index_test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="41" lean-forward="true" selection-start-line="2" selection-start-column="41" selection-end-line="2" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/static/mainPage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="7" lean-forward="true" selection-start-line="21" selection-start-column="7" selection-end-line="21" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/static/loginPage.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cypress/integration/Login_test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="15" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/static/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1054">
@@ -410,13 +457,6 @@
     <entry file="file://$PROJECT_DIR$/src/main/resources/static/loginPage.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/cypress/integration/Login_test.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="15" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cypress/integration/Index_test.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -426,29 +466,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/static/mainPage.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="82">
+        <state relative-caret-position="357">
           <caret line="21" column="7" lean-forward="true" selection-start-line="21" selection-start-column="7" selection-end-line="21" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cypress/integration/SignUp_test.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="165" column="10" lean-forward="true" selection-start-line="163" selection-start-column="8" selection-end-line="165" selection-end-column="10" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/static/signUpPage.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
+        <state relative-caret-position="217">
           <caret line="46" column="22" selection-start-line="46" selection-start-column="12" selection-end-line="46" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cypress/integration/SignUp_test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="61" column="8" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cypress/integration/Login_test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="40" selection-start-line="6" selection-start-column="40" selection-end-line="6" selection-end-column="40" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cypress/integration/mainPage_test.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret lean-forward="true" />
+        <state relative-caret-position="306">
+          <caret line="152" lean-forward="true" selection-start-line="152" selection-start-column="3" selection-end-line="215" selection-end-column="5" />
         </state>
       </provider>
     </entry>

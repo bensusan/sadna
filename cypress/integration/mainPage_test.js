@@ -1,10 +1,9 @@
-var count = 0;
-
 //Describe 1
 function openMainPage() {
     cy.visit('http://localhost:8080')
+    cy.wait(500)
     cy.contains('Connect to Trading System').click()
-    cy.wait(100)
+    cy.wait(2000)
 }
 
 function titleTest () {
@@ -66,7 +65,7 @@ function signUp(){
 //TODO
     cy.get('#signUpMBtn').click().then(()=> {
         cy.get('#newuserName')
-            .type('newUser'.concat(count.toString()))
+            .type('newUser'.concat((Math.round(Math.random()*1000000)).toString()))
 
         cy.get('#newpassword')
             .type('correctPassword')
@@ -81,10 +80,10 @@ function signUp(){
             .type('0501234567')
 
         cy.get('#signUpBtn').click().then(() => {
+            cy.wait(2000)
             cy.url().should('include', '/mainPage.html')
         })
     })
-    count = count + 1;
 }
 
 function openStoreTest() {
@@ -151,70 +150,70 @@ function loginAsSystemAdministrator(){
     cy.get('#loginBtn').click()
 }
 
-describe('MainPage Tests Initial', function() {
-    beforeEach( ()=> {
-        openMainPage()
-    })
-
-    it('Title', function() {
-        titleTest()
-    })
-
-    it('Visibility', function () {
-        guestVisibility()
-    })
-
-    it('Load Products', function () {
-        loadProductsTest()
-    })
-
-    //TODO - When finish
-    it('Cart', function () {
-        cartTest()
-    })
-
-    it('Login', function () {
-        loginTest()
-    })
-
-    it('Sign up', function () {
-        signUpTest()
-    })
-
-})
-
-
-describe('MainPage Tests After Sign up', function() {
-    beforeEach( ()=> {
-        openMainPage()
-        signUp()
-    })
-
-    it('Title', function() {
-        titleTest()
-    })
-
-    it('Visibility', function () {
-        subscriberVisibility()
-    })
-
-    it('Load Products', function () {
-        loadProductsTest()
-    })
-
-    it('Cart', function () {
-        cartTest()
-    })
-
-    it('My stores', function () {
-        myStoresEmptyTest()
-    })
-
-    it('Open Store', function () {
-        openStoreTest()
-    })
-
-})
+// describe('MainPage Tests Initial', function() {
+//     beforeEach( ()=> {
+//         openMainPage()
+//     })
+//
+//     it('Title', function() {
+//         titleTest()
+//     })
+//
+//     it('Visibility', function () {
+//         guestVisibility()
+//     })
+//
+//     it('Load Products', function () {
+//         loadProductsTest()
+//     })
+//
+//     //TODO - When finish
+//     it('Cart', function () {
+//         cartTest()
+//     })
+//
+//     it('Login', function () {
+//         loginTest()
+//     })
+//
+//     it('Sign up', function () {
+//         signUpTest()
+//     })
+//
+// })
+//
+//
+// describe('MainPage Tests After Sign up', function() {
+//     beforeEach( ()=> {
+//         openMainPage()
+//         signUp()
+//     })
+//
+//     it('Title', function() {
+//         titleTest()
+//     })
+//
+//     it('Visibility', function () {
+//         subscriberVisibility()
+//     })
+//
+//     it('Load Products', function () {
+//         loadProductsTest()
+//     })
+//
+//     it('Cart', function () {
+//         cartTest()
+//     })
+//
+//     it('My stores', function () {
+//         myStoresEmptyTest()
+//     })
+//
+//     it('Open Store', function () {
+//         openStoreTest()
+//     })
+//
+// })
 
 // //TODO LATER
 // describe('MainPage Tests After Login as subscriber', function() {

@@ -213,13 +213,13 @@ public class DAL {
 		List<StoreOwner>ans=new LinkedList<StoreOwner>();
 		while(rs.next())
 		{
-			StoreOwner so=new StoreOwner(getStoreByStoreId(rs.getString("storeId")));
+			StoreOwner so=new StoreOwner(getStoreByStoreId(rs.getInt("storeId")));
 			ans.add(so);
 		}
 		return ans;
 	}
 
-	public Store getStoreByStoreId(String storeId) {
+	public Store getStoreByStoreId(int storeId) {
 		// TODO return Store by store id
 		return null;
 	}
@@ -354,7 +354,7 @@ public class DAL {
 		return s;
 	}
 
-	public Map<Store,Product> getStoreProduct(Store store){
+	public Map<Product,Integer> getStoreProduct(Store store){
 		return null;
 	}
 
@@ -503,7 +503,15 @@ public class DAL {
 	public void addStore(Store s){
 
 	}
+	//########### or new function ###########
+	public void removePurchase(Subscriber s, Purchase p) {
+		// TODO remove purchase from purchase table
+	}
 
+	public void deleteStore(int storeId) {
+		// TODO delete store from store table
+		
+	}
 	
 
 	protected static Connection getConnection() throws Exception {
@@ -518,6 +526,8 @@ public class DAL {
 	public static void main(String[] args){
 		
 	}
+	
+	
 
 
 }

@@ -11,13 +11,13 @@ import java.util.Map;
 import org.junit.Test;
 
 import TS_SharedClasses.*;
-import TS_DAL.DAL;
+import TS_DAL.DALProxy;
 
 public class DalIntegressionTest {
 
 	@Test
 	public void testAddSubscriber() {
-		DAL dal=DAL.getInstance();
+		DALProxy dal=new DALProxy();
 		Subscriber s=new Subscriber(new Cart(), "newUser", "newPass", "newFullName", "newAddress", "newPhone", "newCreditCard", new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>());
 		try {
 			dal.addSubscriber(s);
@@ -40,7 +40,7 @@ public class DalIntegressionTest {
 	
 	@Test
 	public void testRemoveSubscriber() {
-		DAL dal=DAL.getInstance();
+		DALProxy dal=new DALProxy();
 		Subscriber s=new Subscriber(new Cart(), "newUser", "newPass", "newFullName", "newAddress", "newPhone", "newCreditCard", new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>());
 		try{
 			dal.addSubscriber(s);
@@ -61,7 +61,7 @@ public class DalIntegressionTest {
 
 	@Test
 	public void testAddPurchaseToHistory() {
-		DAL dal=DAL.getInstance();
+		DALProxy dal=new DALProxy();
 		Subscriber s=new Subscriber(new Cart(), "newUser", "newPass", "newFullName", "newAddress", "newPhone", "newCreditCard", new LinkedList<Purchase>(), null, null);
 		try {
 			Product prod = new Product("name", 5, 4, new EmptyPolicy(),new ImmediatelyPurchase());
@@ -90,7 +90,7 @@ public class DalIntegressionTest {
 
 	@Test
 	public void testAddNewStoreOwner() {
-		DAL dal=DAL.getInstance();
+		DALProxy dal=new DALProxy();
 		Subscriber s=new Subscriber(new Cart(), "newUser", "newPass", "newFullName", "newAddress", "newPhone", "newCreditCard", new LinkedList<Purchase>(), null, null);
 		Store store=new Store("newStore", "newAddress", "newPhone", 3, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), false);
 		try{
@@ -114,7 +114,7 @@ public class DalIntegressionTest {
 
 	@Test
 	public void testAddNewStoreManager() {
-		DAL dal=DAL.getInstance();
+		DALProxy dal=new DALProxy();
 		Subscriber s=new Subscriber(new Cart(), "newUser", "newPass", "newFullName", "newAddress", "newPhone", "newCreditCard", new LinkedList<Purchase>(), null, null);
 		Store store=new Store("newStore", "newAddress", "newPhone", 3, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), false);
 		StoreManager sm=new StoreManager(store);
@@ -142,7 +142,7 @@ public class DalIntegressionTest {
 
 	@Test
 	public void testRemoveStoreOwner() {
-		DAL dal=DAL.getInstance();
+		DALProxy dal=new DALProxy();
 		Subscriber s=new Subscriber(new Cart(), "newUser", "newPass", "newFullName", "newAddress", "newPhone", "newCreditCard", new LinkedList<Purchase>(), null, null);
 		Store store=new Store("newStore", "newAddress", "newPhone", 3, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), false);
 		try{
@@ -166,7 +166,7 @@ public class DalIntegressionTest {
 
 	@Test
 	public void testDeleteStoreManager() {
-		DAL dal=DAL.getInstance();
+		DALProxy dal=new DALProxy();
 		Subscriber s=new Subscriber(new Cart(), "newUser", "newPass", "newFullName", "newAddress", "newPhone", "newCreditCard", new LinkedList<Purchase>(), null, null);
 		Store store=new Store("newStore", "newAddress", "newPhone", 3, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), false);
 		try{
@@ -192,7 +192,7 @@ public class DalIntegressionTest {
 	//product
 	@Test
 	public void testAddProductToStore() {
-		DAL dal=DAL.getInstance();
+		DALProxy dal=new DALProxy();
 		Subscriber s=new Subscriber(new Cart(), "newUser", "newPass", "newFullName", "newAddress", "newPhone", "newCreditCard", new LinkedList<Purchase>(), null, null);
 		Store store=new Store("newStore", "newAddress", "newPhone", 3, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), false);
 		try{
@@ -222,7 +222,7 @@ public class DalIntegressionTest {
 	
 	@Test
 	public void testUpdateProductDetails() {
-		DAL dal=DAL.getInstance();
+		DALProxy dal=new DALProxy();
 		Subscriber s=new Subscriber(new Cart(), "newUser", "newPass", "newFullName", "newAddress", "newPhone", "newCreditCard", new LinkedList<Purchase>(), null, null);
 		Store store=new Store("newStore", "newAddress", "newPhone", 3, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), false);
 		try{
@@ -258,7 +258,7 @@ public class DalIntegressionTest {
 	
 	@Test
 	public void testDeleteProductFromStore() {
-		DAL dal=DAL.getInstance();
+		DALProxy dal=new DALProxy();
 		Subscriber s=new Subscriber(new Cart(), "newUser", "newPass", "newFullName", "newAddress", "newPhone", "newCreditCard", new LinkedList<Purchase>(), null, null);
 		Store store=new Store("newStore", "newAddress", "newPhone", 3, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), false);
 			try{
@@ -288,7 +288,7 @@ public class DalIntegressionTest {
 	//store
 	@Test
 	public void testUpdateCloseStore() {
-		DAL dal=DAL.getInstance();
+		DALProxy dal=new DALProxy();
 		Subscriber s=new Subscriber(new Cart(), "newUser", "newPass", "newFullName", "newAddress", "newPhone", "newCreditCard", new LinkedList<Purchase>(), null, null);
 		Store store=new Store("newStore", "newAddress", "newPhone", 3, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true);
 		try{
@@ -310,7 +310,7 @@ public class DalIntegressionTest {
 	
 	@Test
 	public void testUpadteOpenStore() {
-		DAL dal=DAL.getInstance();
+		DALProxy dal=new DALProxy();
 		Subscriber s=new Subscriber(new Cart(), "newUser", "newPass", "newFullName", "newAddress", "newPhone", "newCreditCard", new LinkedList<Purchase>(), null, null);
 		Store store=new Store("newStore", "newAddress", "newPhone", 3, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), false);
 		try{
@@ -331,7 +331,7 @@ public class DalIntegressionTest {
 	
 	@Test
 	public void testUpdateMoneyEarned() {
-		DAL dal=DAL.getInstance();
+		DALProxy dal=new DALProxy();
 		Subscriber s=new Subscriber(new Cart(), "newUser", "newPass", "newFullName", "newAddress", "newPhone", "newCreditCard", new LinkedList<Purchase>(), null, null);
 		Store store=new Store("newStore", "newAddress", "newPhone", 3, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true);
 		try{
@@ -353,7 +353,7 @@ public class DalIntegressionTest {
 	
 	@Test
 	public void testStockUpdate() {
-		DAL dal=DAL.getInstance();
+		DALProxy dal=new DALProxy();
 		Subscriber s=new Subscriber(new Cart(), "newUser", "newPass", "newFullName", "newAddress", "newPhone", "newCreditCard", new LinkedList<Purchase>(), null, null);
 		Store store=new Store("newStore", "newAddress", "newPhone", 3, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true);
 		try{

@@ -15,7 +15,7 @@ public class DAL {
 	private Statement stmt = null;
 
 	private final static int emptyPolicyTypeCode = 0, andPolicyTypeCode = 1, orPolicyTypeCode = 2,
-			notPolicyTypeCode = 3, maxPolicyTypeCode = 4, minPolicyTypeCode = 5;
+			notPolicyTypeCode = 3, maxPolicyTypeCode = 4, minPolicyTypeCode = 5,addressPolicyTypeCode=6;
 	
 	
 	private static DAL dal = new DAL();
@@ -717,6 +717,10 @@ public class DAL {
 		return false;
 		return null;
 	}
+	//########### or new function ###########
+	public void removePurchase(Subscriber s, Purchase p) {
+		// TODO remove purchase from purchase table
+	}
 	
 	public DiscountPolicy getDiscountPolicy(int policyId) throws Exception{
 		String query = "USE TradingSystem";
@@ -781,5 +785,7 @@ public class DAL {
 		Connection conn = DriverManager.getConnection(url, username, password);
 		return conn;
 	}
+	
+	
 
 }

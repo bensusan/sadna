@@ -67,6 +67,8 @@ function connect() {
 						break;
 					case "subCartPage":
 						recieveRemFromSubCart(body.functionName, obj);
+					case "purchaseSubCart":
+						recieveSubCartPurchase(body.functionName, obj);
                     default:
                         break;
                 }
@@ -388,6 +390,50 @@ function getProduct(productId){
             'paramsAsJSON': [productId]				
         }
     ));
+}
+
+function purchaseAllCart(){
+	var creditCard = document.getElementById('creditCardInput').value;
+	var address = document.getElementById('addressInput').value;
+	
+	if( creditCard === '' ){
+	      window.alert("Please Insert Valid Credit Card Number");
+	      return;
+    }
+    
+    if( address === '' ){
+	      window.alert("Please Insert Valid Address");
+	      return;
+    }
+    
+    if(JSON.parse(localStorage.getItem('isSubscriber')) === false){				
+				  stompClient.send("/app/hello", {},
+					JSON.stringify(
+						{	'pageName': "cartPage",
+							'functionName': "purchaseCart",
+							'paramsAsJSON': [
+											 JSON.parse(localStorage.getItem('myCart')),
+											 creditCart,
+											 address,
+											 JSON.parse(localStorage.getItem('isEmpty'))
+											 ]
+					}));
+    }
+    
+    else{
+	  	stompClient.send("/app/hello", {},
+				JSON.stringify(
+					{	'pageName': "purchaseSubCart",
+						'functionName': "purchaseCart",
+						'paramsAsJSON': [
+										 JSON.parse(localStorage.getItem('currentUser'))['username'],
+										 creditCard,
+										 address
+										 ]
+				}));
+    }
+	    
+	
 }
 
 /******************************************************************************/
@@ -827,6 +873,21 @@ function recieveRemFromSubCart(funcName, obj){
 			break;
 		}
 }
+
+function recieveSubCartPurchase(funcName, obj){
+   switch (funcName){ 
+       	case "purchaseCart":
+	       		localStorage.setItem('myCart' , JSON.stringify(obj));
+	       		window.alert('Cart was purchased!');
+				setTimeout(function(){
+				loadMainPage();
+				}, 2000);
+			break;
+		default:
+			break;
+		}
+}
+
 
 /******************************************************************************/
 /********************************LOAD PAGES************************************/

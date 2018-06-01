@@ -80,12 +80,6 @@ public class GreetingController {
 					ret.setContentAsJson(gson.toJson(BlMain.editCart(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], Cart.class))));
 				}
 				break;
-			case purchaseCart:
-				if (args.length == 3){
-					ret.setContentAsJson(gson.toJson(BlMain.purchaseCart(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], String.class),
-							gson.fromJson(args[2], String.class))));
-				}
-				break;
 			case addProductToStore:
 				if (args.length == 7) {
 					boolean isOwner = gson.fromJson(args[6], Boolean.class);
@@ -454,6 +448,15 @@ public class GreetingController {
 					ret.setContentAsJson(gson.toJson(s.getCart()));	
 				}
 				break;
+			case purchaseCart:
+				if (args.length == 3){
+					Subscriber s = BlMain.getSubscriberFromUsername(gson.fromJson(args[0], String.class));
+					String creditCard = gson.fromJson(args[1], String.class);
+					String address = gson.fromJson(args[2], String.class);
+					BlMain.purchaseCart((Guest)s,creditCard,address);
+					ret.setContentAsJson(gson.toJson(s.getCart()));
+				}
+				break;	
 			case getAllStoresWithThierProductsAndAmounts:
 				if(args.length == 0)
 					ret.setContentAsJson(gson.toJson(BlMain.getAllStoresWithThierProductsAndAmounts()));

@@ -1,388 +1,198 @@
+function signUpButton(msg){
+    const stub = cy.stub()
+    cy.on('window:alert', stub)
+    cy.get('#signUpBtn').click().then(() => {
+        expect(stub.getCall(0)).to.be.calledWith(msg)
+    })
+}
+
+function typeUserName(username){
+    cy.get('#newuserName')
+        .type(username)
+        .should('have.value', username)
+}
+
+function typeFakeUserName(){
+    typeUserName('fakeUserName')
+}
+
+function typePassword(password){
+    cy.get('#newpassword')
+        .type(password)
+        .should('have.value', password)
+}
+
+function typeFakePassword() {
+    typePassword('fakePassword')
+}
+
+function typeFullName(name){
+    cy.get('#fullname')
+        .type(name)
+        .should('have.value', name)
+}
+
+function typeFakeFullName(){
+    typeFullName('fakeFullName')
+}
+
+function typeAddress(address){
+    cy.get('#address')
+        .type(address)
+        .should('have.value', address)
+}
+
+function typeFakeAddress() {
+    typeAddress('fakeAddress')
+}
+
+function typePhone(phonenumber){
+    cy.get('#phonenum')
+        .type(phonenumber)
+        .should('have.value', phonenumber)
+}
+
+function typeFakePhone(){
+    typePhone('fakePhone')
+}
+
 describe('Sign Up Tests', function() {
     beforeEach( ()=> {
-        cy.visit('/SignUp')
+        cy.visit('http://localhost:8080')
+        cy.contains('Connect to Trading System').click().then(()=>{
+            cy.wait(2000)
+            cy.get('#signUpMBtn').click()
+            // cy.wait(1000)
+        })
     })
 
     it('Enter Sign Up page', function() {
-        cy.contains('title', 'Sign Up')
+        cy.get('head').title().should('include', 'Sign Up')
     })
 
     it('Blank username', function () {
-        cy.contains('Sign Up').click()
-        cy.get('.error-messages')
-            .should('contains', 'User name can\'t be blank')
+        signUpButton('User name can\'t be blank')
     })
 
     it('Blank password', function () {
-        cy.get('.action-username')
-            .type('fakeUserName')
-            .should('have.value', 'fakeUserName')
-
-        cy.contains('Sign Up').click()
-
-        cy.get('.error-messages')
-            .should('contains', 'Password can\'t be blank')
+        typeFakeUserName()
+        signUpButton('Password can\'t be blank')
     })
 
     it('Blank fullName', function () {
-        cy.get('.action-username')
-            .type('fakeUserName')
-            .should('have.value', 'fakeUserName')
-
-        cy.get('.action-password')
-            .type('fakePassword')
-            .should('have.value', 'fakePassword')
-
-        cy.contains('Sign Up').click()
-
-        cy.get('.error-messages')
-            .should('contains', 'fullName can\'t be blank')
+        typeFakeUserName()
+        typeFakePassword()
+        signUpButton('fullName can\'t be blank')
     })
 
     it('Blank address', function () {
-        cy.get('.action-username')
-            .type('fakeUserName')
-            .should('have.value', 'fakeUserName')
-
-        cy.get('.action-password')
-            .type('fakePassword')
-            .should('have.value', 'fakePassword')
-
-        cy.get('.action-fullName')
-            .type('fakeFullName')
-            .should('have.value', 'fakeFullName')
-
-        cy.contains('Sign Up').click()
-
-        cy.get('.error-messages')
-            .should('contains', 'address can\'t be blank')
+        typeFakeUserName()
+        typeFakePassword()
+        typeFakeFullName()
+        signUpButton('address can\'t be blank')
     })
 
     it('Blank phone', function () {
-        cy.get('.action-username')
-            .type('fakeUserName')
-            .should('have.value', 'fakeUserName')
-
-        cy.get('.action-password')
-            .type('fakePassword')
-            .should('have.value', 'fakePassword')
-
-        cy.get('.action-fullName')
-            .type('fakeFullName')
-            .should('have.value', 'fakeFullName')
-
-        cy.get('.action-address')
-            .type('fakeAddress')
-            .should('have.value', 'fakeAddress')
-
-        cy.contains('Sign Up').click()
-
-        cy.get('.error-messages')
-            .should('contains', 'phone can\'t be blank')
-    })
-
-    it('Blank creditCardNumber', function () {
-        cy.get('.action-username')
-            .type('fakeUserName')
-            .should('have.value', 'fakeUserName')
-
-        cy.get('.action-password')
-            .type('fakePassword')
-            .should('have.value', 'fakePassword')
-
-        cy.get('.action-fullName')
-            .type('fakeFullName')
-            .should('have.value', 'fakeFullName')
-
-        cy.get('.action-address')
-            .type('fakeAddress')
-            .should('have.value', 'fakeAddress')
-
-        cy.get('.action-phone')
-            .type('fakePhone')
-            .should('have.value', 'fakePhone')
-
-        cy.contains('Sign Up').click()
-
-        cy.get('.error-messages')
-            .should('contains', 'creditCardNumber can\'t be blank')
+        typeFakeUserName()
+        typeFakePassword()
+        typeFakeFullName()
+        typeFakeAddress()
+        signUpButton('phone can\'t be blank')
     })
 
     it('Existing username', function () {
-        cy.get('.action-username')
-            .type('itzik')
-            .should('have.value', 'itzik')
-
-        cy.get('.action-password')
-            .type('fakePassword')
-            .should('have.value', 'fakePassword')
-
-        cy.get('.action-fullName')
-            .type('fakeFullName')
-            .should('have.value', 'fakeFullName')
-
-        cy.get('.action-address')
-            .type('fakeAddress')
-            .should('have.value', 'fakeAddress')
-
-        cy.get('.action-phone')
-            .type('fakePhone')
-            .should('have.value', 'fakePhone')
-
-        cy.get('.action-creditCardNumber')
-            .type('fakeCreditCardNumber')
-            .should('have.value', 'fakeCreditCardNumber')
-
-        cy.contains('Sign Up').click()
-
-        cy.get('.error-messages')
-            .should('contains', 'username exists')
-    })
-
-    it('Existing username', function () {
-        cy.get('.action-username')
-            .type('itzik')
-            .should('have.value', 'itzik')
-
-        cy.get('.action-password')
-            .type('fakePassword')
-            .should('have.value', 'fakePassword')
-
-        cy.get('.action-fullName')
-            .type('fakeFullName')
-            .should('have.value', 'fakeFullName')
-
-        cy.get('.action-address')
-            .type('fakeAddress')
-            .should('have.value', 'fakeAddress')
-
-        cy.get('.action-phone')
-            .type('fakePhone')
-            .should('have.value', 'fakePhone')
-
-        cy.get('.action-creditCardNumber')
-            .type('fakeCreditCardNumber')
-            .should('have.value', 'fakeCreditCardNumber')
-
-        cy.contains('Sign Up').click()
-
-        cy.get('.error-messages')
-            .should('contains', 'the username is already taken, try again')
+        typeUserName('itzik')
+        typeFakePassword()
+        typeFakeFullName()
+        typeFakeAddress()
+        typeFakePhone()
+        signUpButton('username exists')
     })
 
     it('Illegal password', function () {
-        cy.get('.action-username')
-            .type('newUser')
-            .should('have.value', 'newUser')
-
-        cy.get('.action-password')
-            .type('fake!!')
-            .should('have.value', 'fake!!')
-
-        cy.get('.action-fullName')
-            .type('fakeFullName')
-            .should('have.value', 'fakeFullName')
-
-        cy.get('.action-address')
-            .type('fakeAddress')
-            .should('have.value', 'fakeAddress')
-
-        cy.get('.action-phone')
-            .type('fakePhone')
-            .should('have.value', 'fakePhone')
-
-        cy.get('.action-creditCardNumber')
-            .type('fakeCreditCardNumber')
-            .should('have.value', 'fakeCreditCardNumber')
-
-        cy.contains('Sign Up').click()
-
-        cy.get('.error-messages')
-            .should('contains', 'illegal password')
+        typeUserName('newUser')
+        typePassword('fake!!')
+        typeFakeFullName()
+        typeFakeAddress()
+        typeFakePhone()
+        signUpButton('illegal password')
     })
 
     it('Illegal username', function () {
-        cy.get('.action-username')
-            .type('newUser!')
-            .should('have.value', 'newUser!')
-
-        cy.get('.action-password')
-            .type('correctPassword')
-            .should('have.value', 'correctPassword')
-
-        cy.get('.action-fullName')
-            .type('fakeFullName')
-            .should('have.value', 'fakeFullName')
-
-        cy.get('.action-address')
-            .type('fakeAddress')
-            .should('have.value', 'fakeAddress')
-
-        cy.get('.action-phone')
-            .type('fakePhone')
-            .should('have.value', 'fakePhone')
-
-        cy.get('.action-creditCardNumber')
-            .type('fakeCreditCardNumber')
-            .should('have.value', 'fakeCreditCardNumber')
-
-        cy.contains('Sign Up').click()
-
-        cy.get('.error-messages')
-            .should('contains', 'problem with one of the fields,check spelling try again')
+        typeUserName('newUser!')
+        typePassword('correctPassword')
+        typeFakeFullName()
+        typeFakeAddress()
+        typeFakePhone()
+        signUpButton('problem with one of the fields,check spelling try again')
     })
 
     it('Illegal fullname', function () {
-        cy.get('.action-username')
-            .type('newUser')
-            .should('have.value', 'newUser')
-
-        cy.get('.action-password')
-            .type('correctPassword')
-            .should('have.value', 'correctPassword')
-
-        cy.get('.action-fullName')
-            .type('fakeFullName!')
-            .should('have.value', 'fakeFullName!')
-
-        cy.get('.action-address')
-            .type('fakeAddress')
-            .should('have.value', 'fakeAddress')
-
-        cy.get('.action-phone')
-            .type('fakePhone')
-            .should('have.value', 'fakePhone')
-
-        cy.get('.action-creditCardNumber')
-            .type('fakeCreditCardNumber')
-            .should('have.value', 'fakeCreditCardNumber')
-
-        cy.contains('Sign Up').click()
-
-        cy.get('.error-messages')
-            .should('contains', 'problem with one of the fields,check spelling try again')
+        typeUserName('newUser')
+        typePassword('correctPassword')
+        typeFakeFullName()
+        typeFakeAddress()
+        typeFakePhone()
+        signUpButton('problem with one of the fields,check spelling try again')
     })
 
     it('Illegal address', function () {
-        cy.get('.action-username')
-            .type('newUser')
-            .should('have.value', 'newUser')
-
-        cy.get('.action-password')
-            .type('correctPassword')
-            .should('have.value', 'correctPassword')
-
-        cy.get('.action-fullName')
-            .type('FullName')
-            .should('have.value', 'FullName')
-
-        cy.get('.action-address')
-            .type('fakeAddress!')
-            .should('have.value', 'fakeAddress!')
-
-        cy.get('.action-phone')
-            .type('fakePhone')
-            .should('have.value', 'fakePhone')
-
-        cy.get('.action-creditCardNumber')
-            .type('fakeCreditCardNumber')
-            .should('have.value', 'fakeCreditCardNumber')
-
-        cy.contains('Sign Up').click()
-
-        cy.get('.error-messages')
-            .should('contains', 'problem with one of the fields,check spelling try again')
+        typeUserName('newUser')
+        typePassword('correctPassword')
+        typeFullName('FullName')
+        typeFakeAddress()
+        typeFakePhone()
+        signUpButton('problem with one of the fields,check spelling try again')
     })
 
     it('Illegal phone', function () {
-        cy.get('.action-username')
-            .type('newUser')
-            .should('have.value', 'newUser')
-
-        cy.get('.action-password')
-            .type('correctPassword')
-            .should('have.value', 'correctPassword')
-
-        cy.get('.action-fullName')
-            .type('FullName')
-            .should('have.value', 'fakeFullName')
-
-        cy.get('.action-address')
-            .type('Address')
-            .should('have.value', 'Address')
-
-        cy.get('.action-phone')
-            .type('fakePhone')
-            .should('have.value', 'fakePhone')
-
-        cy.get('.action-creditCardNumber')
-            .type('fakeCreditCardNumber')
-            .should('have.value', 'fakeCreditCardNumber')
-
-        cy.contains('Sign Up').click()
-
-        cy.get('.error-messages')
-            .should('contains', 'problem with one of the fields,check spelling try again')
-    })
-
-    it('Illegal creditCardNumber', function () {
-        cy.get('.action-username')
-            .type('newUser')
-            .should('have.value', 'newUser')
-
-        cy.get('.action-password')
-            .type('correctPassword')
-            .should('have.value', 'correctPassword')
-
-        cy.get('.action-fullName')
-            .type('FullName')
-            .should('have.value', 'FullName')
-
-        cy.get('.action-address')
-            .type('Address')
-            .should('have.value', 'Address')
-
-        cy.get('.action-phone')
-            .type('0501234567')
-            .should('have.value', '0501234567')
-
-        cy.get('.action-creditCardNumber')
-            .type('fakeCreditCardNumber')
-            .should('have.value', 'fakeCreditCardNumber')
-
-        cy.contains('Sign Up').click()
-
-        cy.get('.error-messages')
-            .should('contains', 'problem with one of the fields,check spelling try again')
+        typeUserName('newUser')
+        typePassword('correctPassword')
+        typeFakeFullName()
+        typeAddress('Address')
+        typeFakePhone()
+        signUpButton('problem with one of the fields,check spelling try again')
     })
 
     it('Success Sign Up', function () {
-        cy.get('.action-username')
-            .type('newUser')
-            .should('have.value', 'newUser')
+        typeUserName('newUser')
+        typePassword('correctPassword')
+        typeFullName('FullName')
+        typeAddress('Address')
+        typePhone('0501234567')
 
-        cy.get('.action-password')
-            .type('correctPassword')
-            .should('have.value', 'correctPassword')
+        cy.get('#signUpBtn').click().then(() => {
+            cy.url().should('include', '/mainPage.html')
+        })
+    })
 
-        cy.get('.action-fullName')
-            .type('FullName')
-            .should('have.value', 'FullName')
+    it('Reset', function () {
+        typeFakeUserName()
+        typeFakePassword()
+        typeFakeFullName()
+        typeFakeAddress()
+        typeFakePhone()
+        cy.get('#signUpBackResetBtn').click().then(()=>{
+            cy.get('#newuserName')
+                .should('have.value', '')
 
-        cy.get('.action-address')
-            .type('Address')
-            .should('have.value', 'Address')
+            cy.get('#newpassword')
+                .should('have.value', '')
 
-        cy.get('.action-phone')
-            .type('0501234567')
-            .should('have.value', '0501234567')
+            cy.get('#fullname')
+                .should('have.value', '')
 
-        cy.get('.action-creditCardNumber')
-            .type('0123456789')
-            .should('have.value', '0123456789')
+            cy.get('#address')
+                .should('have.value', '')
 
-        cy.contains('Sign Up').click()
+            cy.get('#phonenum')
+                .should('have.value', '')
+        })
+    })
 
-        //TODO - need to understand whats happen now. maybe go to home page.
+    it('Back', function () {
+        cy.get('#signUpBack').click().then(()=>{
+            cy.url().should('include', '/mainPage.html')
+        })
     })
 })

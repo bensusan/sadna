@@ -150,70 +150,70 @@ function loginAsSystemAdministrator(){
     cy.get('#loginBtn').click()
 }
 
-// describe('MainPage Tests Initial', function() {
-//     beforeEach( ()=> {
-//         openMainPage()
-//     })
-//
-//     it('Title', function() {
-//         titleTest()
-//     })
-//
-//     it('Visibility', function () {
-//         guestVisibility()
-//     })
-//
-//     it('Load Products', function () {
-//         loadProductsTest()
-//     })
-//
-//     //TODO - When finish
-//     it('Cart', function () {
-//         cartTest()
-//     })
-//
-//     it('Login', function () {
-//         loginTest()
-//     })
-//
-//     it('Sign up', function () {
-//         signUpTest()
-//     })
-//
-// })
-//
-//
-// describe('MainPage Tests After Sign up', function() {
-//     beforeEach( ()=> {
-//         openMainPage()
-//         signUp()
-//     })
-//
-//     it('Title', function() {
-//         titleTest()
-//     })
-//
-//     it('Visibility', function () {
-//         subscriberVisibility()
-//     })
-//
-//     it('Load Products', function () {
-//         loadProductsTest()
-//     })
-//
-//     it('Cart', function () {
-//         cartTest()
-//     })
-//
-//     it('My stores', function () {
-//         myStoresEmptyTest()
-//     })
-//
-//     it('Open Store', function () {
-//         openStoreTest()
-//     })
-//
-// })
+describe('MainPage Tests Initial', function() {
+    beforeEach( ()=> {
+        openMainPage()
+    })
+
+    it('Title', function() {
+        titleTest()
+    })
+
+    it('Visibility', function () {
+        guestVisibility()
+    })
+
+    it('Load Products', function () {
+        loadProductsTest()
+    })
+
+    //TODO - When finish
+    it('Cart', function () {
+        cartTest()
+    })
+
+    it('Login', function () {
+        loginTest()
+    })
+
+    it('Sign up', function () {
+        signUpTest()
+    })
+
+})
+
+
+describe('MainPage Tests After Sign up', function() {
+    beforeEach( ()=> {
+        openMainPage()
+        signUp()
+    })
+
+    it('Title', function() {
+        titleTest()
+    })
+
+    it('Visibility', function () {
+        subscriberVisibility()
+    })
+
+    it('Load Products', function () {
+        loadProductsTest()
+    })
+
+    it('Cart', function () {
+        cartTest()
+    })
+
+    it('My stores', function () {
+        myStoresEmptyTest()
+    })
+
+    it('Open Store', function () {
+        openStoreTest()
+    })
+
+})
 
 // //TODO LATER
 // describe('MainPage Tests After Login as subscriber', function() {

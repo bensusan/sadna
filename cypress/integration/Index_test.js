@@ -11,5 +11,4 @@ describe('Index Tests', function() {
         cy.contains('Connect to Trading System').click()
         cy.url().should('include', '/mainPage.html')
     })
-
 })

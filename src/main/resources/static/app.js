@@ -99,7 +99,7 @@ function recieveMainPageMsg(funcName, obj) {
 function recieveAddPurchaseTypeToProductPage(funcName, obj) {
 	switch (funcName){
         case "changeProductType":
-            window.alert("Product new purchase type added succesfully!");
+            window.alert("Product new purchase type added successfully!");
             stompClient.disconnect();
             stompClient = null;
             window.location.href = "storePage.html";
@@ -112,25 +112,25 @@ function recieveAddPurchaseTypeToProductPage(funcName, obj) {
 function recieveAddDiscountAndPolicyPage(funcName, obj) {
 	switch (funcName){
         case "addDiscountToProduct":
-            window.alert("New discount added succesfully!");
+            window.alert("New discount added successfully!");
             stompClient.disconnect();
             stompClient = null;
             window.location.href = "storePage.html";
             break;
 		case "addPolicyToProduct":
-			window.alert("New Policy added succesfully!");
+			window.alert("New Policy added successfully!");
             stompClient.disconnect();
             stompClient = null;
             window.location.href = "storePage.html";
 			break;
 		case "changeStorePurchasePolicy":
-			window.alert("New Policy to store added succesfully!");
+			window.alert("New Policy to store added successfully!");
             stompClient.disconnect();
             stompClient = null;
             window.location.href = "storePage.html";
 			break;
 		case "addDiscountToCategoryStore":
-			window.alert("New Discount to category in store added succesfully!");
+			window.alert("New Discount to category in store added successfully!");
             stompClient.disconnect();
             stompClient = null;
             window.location.href = "storePage.html";
@@ -143,7 +143,7 @@ function recieveAddDiscountAndPolicyPage(funcName, obj) {
 function recieveEditProductsPage(funcName, obj) {
 	switch (funcName){
         case "updateProductDetails":
-            window.alert("Product Update succesfully");
+            window.alert("Product Update successfully");
             stompClient.disconnect();
             stompClient = null;
             window.location.href = "storePage.html";
@@ -161,7 +161,7 @@ function recieveStoreProductsPage(funcName, obj) {
             window.location.href = "storeProductsPage.html";
             break;
 		case "deleteProductFromStore":
-			window.alert("Product was deleted succesfully!");
+			window.alert("Product was deleted successfully!");
 			stompClient.disconnect();
             stompClient = null;
             window.location.href = "storePage.html";
@@ -181,19 +181,19 @@ function recieveSubscribersPage (funcName, obj) {
             window.location.href = "subscribersPage.html";
             break;
 		case "addNewStoreOwner":
-			window.alert("New Store Owner added succesfully!");
+			window.alert("New Store Owner added successfully!");
 			stompClient.disconnect();
             stompClient = null;
             window.location.href = "storePage.html";
 			break;
 		case "addNewManager":
-			window.alert("New Store Manager added succesfully!");
+			window.alert("New Store Manager added successfully!");
 			stompClient.disconnect();
             stompClient = null;
             window.location.href = "storePage.html";
 			break;
 		case "removeSubscriber":
-			window.alert("Subscriber removed succesfully!");
+			window.alert("Subscriber removed successfully!");
             loadMainPage();
 			break;
 		case "viewSubscriberHistory":
@@ -255,7 +255,7 @@ function recieveStoresPage (funcName, obj) {
 function recieveAddProduct(funcName, obj) {
     switch (funcName){
         case "addProductToStore":
-			window.alert("New Product was added succesfully!");
+			window.alert("New Product was added successfully!");
             stompClient.disconnect();
             stompClient = null;
             window.location.href = "storePage.html";
@@ -295,7 +295,7 @@ function recieveSignUpMsg(funcName, obj) {
 function recieveOpenStoreMsg(funcName, obj) {
     switch (funcName){
         case "openStore":
-			window.alert("Store " + JSON.stringify(obj['name']) + " opened succesfuly!");
+			window.alert("Store " + JSON.stringify(obj['name']) + " opened successfully!");
 			updateCurrentSubscriber();
 			setTimeout(function(){
 			loadMainPage();
@@ -1117,7 +1117,7 @@ function loadMyCart(){
 
 function changeStorePurchasePolicy(){
 	if ($("input[type=radio]:checked").length == 0 ) {
-		window.alert("Please chooooooose Policy.");
+		window.alert("Please choose Policy.");
 	}else if($('#minPolicy').is(':checked') && (isNaN($("#minAmountVal").val()) || $("#minAmountVal").val() == ""))
 		window.alert("Wrong min amount");
 	else if($('#maxPolicy').is(':checked') && (isNaN($("#maxAmountVal").val()) || $("#maxAmountVal").val() == ""))
@@ -1155,7 +1155,7 @@ function changeStorePurchasePolicy(){
 
 function addPolicyToProduct(){
 	if ($("input[type=radio]:checked").length == 0 ) {
-		window.alert("Please chooooooose Policy.");
+		window.alert("Please choose Policy.");
 	}else if($('#minPolicy').is(':checked') && (isNaN($("#minAmountVal").val()) || $("#minAmountVal").val() == ""))
 		window.alert("Wrong min amount");
 	else if($('#maxPolicy').is(':checked') && (isNaN($("#maxAmountVal").val()) || $("#maxAmountVal").val() == ""))

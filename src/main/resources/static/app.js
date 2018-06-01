@@ -62,6 +62,11 @@ function connect() {
 					case "loadProductPage":
 						recieveGetProductMsg(body.functionName, obj);
 						break;
+					case "productPage":
+						recieveAddToSubCart(body.functionName, obj);
+						break;
+					case "subCartPage":
+						recieveRemFromSubCart(body.functionName, obj);
                     default:
                         break;
                 }
@@ -277,6 +282,20 @@ function recieveGetProductMsg(funcName, obj) {
         	localStorage.setItem('currentProduct' , JSON.stringify(obj));
 			loadProductPage();
             break;
+        default:
+            break;
+    }
+}
+
+function recieveAddToSubCart(funcName, obj){
+	switch (funcName){
+        case "addToSubCart":
+        	localStorage.setItem('myCart' , JSON.stringify(obj));
+        	window.alert('Product was added to cart!');
+			setTimeout(function(){
+			loadMainPage();
+			}, 2000);
+       		break;
         default:
             break;
     }
@@ -736,6 +755,79 @@ function loadAllStoresPage(action){
         }));
 }
 
+function addToCart(){
+	 var product = JSON.parse(localStorage.getItem('currentProduct'));
+	 var amount = document.getElementById("productAmount").value;
+	 var discountCode = document.getElementById("discountCode").value;
+	 
+	 if(JSON.parse(localStorage.getItem('isSubscriber')) === false) {
+		 stompClient.send("/app/hello", {},
+			JSON.stringify(
+				{	'pageName': "productPage",
+					'functionName': "addToGuestCart",
+					'paramsAsJSON': [JSON.parse(localStorage.getItem('isEmpty')),
+									 product.id,
+									 amount,
+									 discountCode,
+									 JSON.parse(localStorage.getItem('myCart'))
+									 ]				
+			}));
+	}
+	else{
+		stompClient.send("/app/hello", {},
+			JSON.stringify(
+				{	'pageName': "productPage",
+					'functionName': "addToSubCart",
+					'paramsAsJSON': [
+									 JSON.parse(localStorage.getItem('currentUser'))['username'],
+									 product.id,
+									 amount,
+									 discountCode
+									 ]
+			}));
+		}	
+}
+
+function deleteFromCart(pid){
+	if(JSON.parse(localStorage.getItem('isSubscriber')) === false) {
+		stompClient.send("/app/hello", {},
+				JSON.stringify(
+					{	'pageName': "productPage",
+						'functionName': "removeProductFromGuestCart",
+						'paramsAsJSON': [
+										 JSON.parse(localStorage.getItem('myCart')),
+										 pid
+										 ]
+				}));
+	}
+	
+	else{
+		stompClient.send("/app/hello", {},
+				JSON.stringify(
+					{	'pageName': "subCartPage",
+						'functionName': "removeProductFromCart",
+						'paramsAsJSON': [
+										 JSON.parse(localStorage.getItem('currentUser'))['username'],
+										 pid
+										 ]
+				}));
+		}
+}
+
+function recieveRemFromSubCart(funcName, obj){
+   switch (funcName){ 
+       	case "removeProductFromCart":
+	       		localStorage.setItem('myCart' , JSON.stringify(obj));
+	       		window.alert('Product was deleted !!!!');
+				setTimeout(function(){
+				loadMainPage();
+				}, 2000);
+			break;
+		default:
+			break;
+		}
+}
+
 /******************************************************************************/
 /********************************LOAD PAGES************************************/
 /******************************************************************************/
@@ -829,6 +921,36 @@ function addNewStoreManager(usernameToAdd){
 	stompClient.disconnect();
     stompClient = null;
     window.location.href = "permissionsToManager.html";
+}
+
+function loadMyCart(){
+	var cart = JSON.parse(localStorage.getItem('myCart'));
+	var tableRef = document.getElementById('myCartTable');
+    var found = false;
+	var productsInCart = cart.products;
+	
+	if(productsInCart.length == 0){
+		$('#purchaseCartbtn').hide();
+		$('#creditCardInput').hide();
+		$('#inCC').hide();
+		window.alert("empty cart!");
+	}
+	
+	window.alert("length: " + productsInCart.length);
+	
+	for(var i = 0; i < productsInCart.length; i++){
+		var p = productsInCart[i].myProduct;
+		
+		var newRow = tableRef.insertRow(-1);
+		var newCell  = newRow.insertCell(0);
+		var newElem = document.createElement( 'button' );
+		newElem.setAttribute('class', 'btn');
+		newElem.setAttribute('onclick', 'deleteFromCart('+ p.id +');');
+		newElem.innerHTML = "id: " + p.id + " ,name: " + p.name + " ,price: " + p.price + " ,grading: " + p.grading
+							 + " ,category: " + p.category.name + " ,policy: " + p.policy + " ,type: " + p.type;
+		newCell.appendChild(newElem);
+	}
+	
 }
 
 /******************************************************************************/

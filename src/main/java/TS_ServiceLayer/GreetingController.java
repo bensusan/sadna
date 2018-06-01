@@ -14,6 +14,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import TS_SharedClasses.*;
 
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import com.google.gson.Gson;
@@ -557,8 +558,11 @@ public class GreetingController {
 			}
 		} catch (Exception e) {
 			ret.setException();
-			ret.setContentAsJson(e.getMessage());
+			ret.setContentAsJson(gson.toJson(e.getMessage()));
 		}
+		
+		SimpMessagingTemplate simpMessagingTemplate;
+		
 		return ret;
 	}
 }

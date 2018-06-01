@@ -9,11 +9,19 @@
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <script src="/app.js"></script>
 </head>
-<body onload="setUPOnce()">
+<body onload="falsyfyIsAdmin();setUPOnce();">
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
     enabled. Please enable
     Javascript and reload this page!</h2></noscript>
 
 <button id="connect" onclick="loadMainPage()">Connect to Trading System</button>
 </body>
+<script>
+function falsyfyIsAdmin(){
+	localStorage.setItem('isAdmin', JSON.stringify(false));
+}
+</script>
+
+
+
 </html>

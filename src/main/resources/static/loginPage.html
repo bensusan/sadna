@@ -21,7 +21,7 @@
 </div>
 <div class="form-group2">
     <label for="password">Password please:</label>
-    <input type="text" id="password" class="form-control" placeholder="type here...">
+    <input type="password" id="password" class="form-control" placeholder="type here...">
 </div>
 <button onclick="updatePaswordToMD5(); signIn();">Login</button>
 <script type="text/javascript">
@@ -30,7 +30,7 @@
 		var enctyptedpass = hex_md5(pass);
 		document.getElementById("password").value = enctyptedpass;
 	}
-
+	
 </script>
 
 

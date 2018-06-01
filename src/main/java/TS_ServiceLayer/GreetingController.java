@@ -347,8 +347,9 @@ public class GreetingController {
 				break;
 			case viewSubscriberHistory:
 				if (args.length == 2){
-					ret.setContentAsJson(gson.toJson(BlMain.viewSubscriberHistory(gson.fromJson(args[0], SystemAdministrator.class),
-							gson.fromJson(args[1], Subscriber.class))));
+					SystemAdministrator sa = BlMain.getSystemAdminFromUsername(gson.fromJson(args[0], String.class));
+					Subscriber subs = BlMain.getSubscriberFromUsername(gson.fromJson(args[1], String.class));
+					ret.setContentAsJson(gson.toJson(BlMain.viewSubscriberHistory(sa,subs)));
 				}
 				break;
 			case viewStoreHistory:

@@ -194,6 +194,16 @@ function recieveSubscribersPage (funcName, obj) {
 			window.alert("Subscriber removed succesfully!");
             loadMainPage();
 			break;
+		case "viewSubscriberHistory":
+			if(obj.length == 0){
+				window.alert("No Purchase made yes.");
+			}else{
+				localStorage.setItem('purchaseList', JSON.stringify(obj));
+				stompClient.disconnect();
+				stompClient = null;
+				window.location.href = "purchaseListPage.html";
+			}
+			break;
         default:
             break;
     }
@@ -581,6 +591,22 @@ function loadSubscribers(){
 	}
 }
 
+function loadPurchaseList(){
+	var purchaseList = JSON.parse(localStorage.getItem('purchaseList'));
+	var stringToBeInner = "";
+	for(var i = 0; i < purchaseList.length; i++){
+		stringToBeInner = stringToBeInner + "<tr>" + 
+						"<td>" + JSON.stringify(purchaseList[i].whenPurchased) + "</td>" +
+						"<td>" + JSON.stringify(purchaseList[i].purchaseID) + "</td>" +
+						"<td>" + JSON.stringify(purchaseList[i].purchased.myProduct.name) + "</td>" +
+						"<td>" + JSON.stringify(purchaseList[i].purchased.myProduct.price) + "</td>" +
+						"<td>" + JSON.stringify(purchaseList[i].purchased.amount) + "</td>" +
+						"</tr>";
+	}
+	var tableRef = document.getElementById('purchaseHistoryTableBody');
+	tableRef.innerHTML = stringToBeInner;
+}
+
 function loadStores(){
 	var subs = JSON.parse(localStorage.getItem('allStores'));
 	var tableRef = document.getElementById('storesInSystemTable');
@@ -626,6 +652,20 @@ function removeSubscriber(usernameToRemove){
 							
         }));
 }
+
+function viewSubscriberHistory(usernameToViewHistory){
+	stompClient.send("/app/hello", {},
+    JSON.stringify(
+        {	'pageName': "subscribersPage",
+            'functionName': "viewSubscriberHistory",
+            'paramsAsJSON': [JSON.parse(localStorage.getItem('currentUser'))['username'],
+							usernameToViewHistory
+							]
+							
+        }));
+}
+
+
 
 function sendAddNewStoreManager(){
 	var toSend = '';

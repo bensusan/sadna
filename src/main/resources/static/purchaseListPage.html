@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Purchase history Page</title>
+    <h3>Purchase history Page..</h3>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+	<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+	
+</head>
+
+<body onload="loadPurchaseList();">
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div>Purchase history:</div>
+<div class="row">
+    <div class="col-md-12">
+        <table id="purchaseHistoryTable">
+            <thead>
+            <tr>
+                <th>Purchase Time</th>
+				<th>Purchase Id</th>
+				<th>Product Name</th>
+				<th>Purchase Price</th>
+				<th>Amount</th>
+            </tr>
+            </thead>
+            <tbody id="purchaseHistoryTableBody">
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+
+
+</html>

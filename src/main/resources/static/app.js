@@ -69,6 +69,8 @@ function connect() {
 						recieveRemFromSubCart(body.functionName, obj);
 					case "purchaseSubCart":
 						recieveSubCartPurchase(body.functionName, obj);
+					case "storePage":
+						recieveStorePage(body.functionName, obj);
                     default:
                         break;
                 }
@@ -209,6 +211,23 @@ function recieveSubscribersPage (funcName, obj) {
     }
 }
 
+function recieveStorePage(funcName, obj){
+	switch (funcName){
+		case "getPurchaseHistory":
+			if(obj.length == 0){
+				window.alert("No Purchase made yes.");
+			}else{
+				localStorage.setItem('purchaseList', JSON.stringify(obj));
+				stompClient.disconnect();
+				stompClient = null;
+				window.location.href = "purchaseListPage.html";
+			}
+			break;
+        default:
+            break;
+    }
+}
+
 function recieveStoresPage (funcName, obj) {
     switch (funcName){
 		
@@ -218,6 +237,16 @@ function recieveStoresPage (funcName, obj) {
             stompClient = null;
             window.location.href = "storesPage.html";
             break;
+		case "viewStoreHistory":
+			if(obj.length == 0){
+				window.alert("No Purchase made yes.");
+			}else{
+				localStorage.setItem('purchaseList', JSON.stringify(obj));
+				stompClient.disconnect();
+				stompClient = null;
+				window.location.href = "purchaseListPage.html";
+			}
+			break;
         default:
             break;
     }
@@ -665,6 +694,30 @@ function viewSubscriberHistory(usernameToViewHistory){
         }));
 }
 
+function watchCurrentStorePurchaseHistory(){
+	stompClient.send("/app/hello", {},
+    JSON.stringify(
+        {	'pageName': "storePage",
+            'functionName': "getPurchaseHistory",
+            'paramsAsJSON': [localStorage.getItem('isOwner'),
+							JSON.parse(localStorage.getItem('currentUser'))['username'],
+							JSON.parse(localStorage.getItem('currentStore'))['storeId']
+							]
+							
+        }));
+}
+
+function viewStoreHistory(storeIdToWatch){
+	stompClient.send("/app/hello", {},
+    JSON.stringify(
+        {	'pageName': "storesPage",
+            'functionName': "viewStoreHistory",
+            'paramsAsJSON': [JSON.parse(localStorage.getItem('currentUser'))['username'],
+							storeIdToWatch
+							]
+							
+        }));
+}
 
 
 function sendAddNewStoreManager(){

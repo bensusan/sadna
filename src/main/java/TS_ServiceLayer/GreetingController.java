@@ -330,12 +330,18 @@ public class GreetingController {
 				}
 				break;
 			case getPurchaseHistory:
-				if (args.length == 1) {
-					try {
-						ret.setContentAsJson(gson.toJson(BlMain.getPurchaseHistory(gson.fromJson(args[0], StoreManager.class))));
-					} catch (JsonSyntaxException j) {
-						ret.setContentAsJson(gson.toJson(BlMain.getPurchaseHistory(gson.fromJson(args[0], StoreOwner.class))));
+				if (args.length == 3) {
+					boolean isOwner = gson.fromJson(args[0], Boolean.class);
+					if(isOwner){
+						StoreOwner so = BlMain.getStoreOwnerFromUsername(gson.fromJson(args[1], String.class),
+														gson.fromJson(args[2], Integer.class));
+						ret.setContentAsJson(gson.toJson(BlMain.getPurchaseHistory(so)));
+					}else{
+						StoreManager so = BlMain.getStoreManagerFromUsername(gson.fromJson(args[1], String.class),
+																			gson.fromJson(args[2], Integer.class));
+						ret.setContentAsJson(gson.toJson(BlMain.getPurchaseHistory(so)));
 					}
+					
 				}
 				break;
 			case removeSubscriber:
@@ -354,8 +360,9 @@ public class GreetingController {
 				break;
 			case viewStoreHistory:
 				if (args.length == 2){
-					ret.setContentAsJson(gson.toJson(BlMain.viewStoreHistory(gson.fromJson(args[0], SystemAdministrator.class),
-							gson.fromJson(args[1], Store.class))));
+					SystemAdministrator sa = BlMain.getSystemAdminFromUsername(gson.fromJson(args[0], String.class));
+					Store subs = BlMain.getStoreFromStoreId(gson.fromJson(args[1], Integer.class));
+					ret.setContentAsJson(gson.toJson(BlMain.viewStoreHistory(sa,subs)));
 				}
 				break;
 			case signUp:

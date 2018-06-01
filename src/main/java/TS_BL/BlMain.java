@@ -523,4 +523,13 @@ public class BlMain {
 		return s;
 	}
 	
+	public static Store getStoreFromStoreId(int storeId){
+		List<Store> stores = BlMain.getAllStores();
+		for (Store store : stores) {
+			if(store.getStoreId() == storeId)
+				return store;
+		}
+		return null;
+	}
+	
 }

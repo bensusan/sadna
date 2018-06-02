@@ -62,7 +62,6 @@ function guestVisibility(){
 
 //Describe 2
 function signUp(){
-//TODO
     cy.get('#signUpMBtn').click().then(()=> {
         cy.get('#newuserName')
             .type('newUser'.concat((Math.round(Math.random()*1000000)).toString()))

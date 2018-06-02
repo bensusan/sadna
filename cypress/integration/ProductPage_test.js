@@ -1,5 +1,4 @@
-var isExist = false
-
+var pName = "";
 function gotoStoresPage() {
     cy.visit('http://localhost:8080')
     cy.wait(500)
@@ -26,7 +25,7 @@ describe('ProductPage tests', function() {
     beforeEach(() => {
         gotoStoresPage()
     })
-    var pName = "";
+
     it('Add Product', function () {
         //take the number of products in store before
         cy.get('#2').click()

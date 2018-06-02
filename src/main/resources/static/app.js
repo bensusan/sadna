@@ -91,6 +91,16 @@ function recieveMainPageMsg(funcName, obj) {
             stompClient = null;
             window.location.href = "mainPage.html";
             break;
+		case "findProductByName":
+		case "findProductByCategory":
+            if(obj.length == 0){
+				window.alert("No such Products in the System!");
+			}else{
+				localStorage.setItem('searchProductsResult', JSON.stringify(obj));				
+				loadMainPage();
+				
+			}
+            break;
         default:
             break;
     }
@@ -601,6 +611,72 @@ function loadProductsOfStore(){
 	}
 }
 
+function loadStoresIOwn(){
+	
+	var storeOwners = JSON.parse(localStorage.getItem('currentUser')).owner;
+	var tableRef = document.getElementById('storeIOwnTable');
+	for(var i = 0; i < storeOwners.length; i++){
+		
+		var store = storeOwners[i].store;
+		
+		var newRow   = tableRef.insertRow(-1);
+		var newCell  = newRow.insertCell(0);
+		var newElem = document.createElement( 'button' );
+		newElem.setAttribute('class', 'btn');
+		newElem.setAttribute('onclick', 'loadEditOwnStore('+ JSON.stringify(storeOwners[i].store) +');');
+		newElem.innerHTML = "Store - id: " + store.storeId + ", Name: " + store.name + ", Grading: " + store.gradeing;
+		newCell.appendChild(newElem);
+
+	}
+}
+
+function loadSearchProducts(){
+	var foundProds = JSON.parse(localStorage.getItem('searchProductsResult'));
+	var tableRef = document.getElementById('searchProductResultTable');
+	if(foundProds.length != 0){
+		for(var i = 0; i < foundProds.length; i++){
+			var newRow   = tableRef.insertRow(-1);
+			var newCell  = newRow.insertCell(0);
+			var newElem = document.createElement( 'button' );
+			newElem.setAttribute('class', 'btn');
+			newElem.setAttribute('onclick', 'getProduct('+ JSON.stringify(foundProds[i].id) +');');
+			newElem.innerHTML = "Product - id: " + foundProds[i].id + ", Name: " + foundProds[i].name + ", Price: " + foundProds[i].price +", Grading: " + foundProds[i].grading + ", Policy: " + foundProds[i].purchasePolicy + ", Type: " + foundProds[i].type;
+			newCell.appendChild(newElem);
+		}
+	}
+
+}
+
+function searchProducts(){
+	if ($("input[type=radio]:checked").length == 0 ) {
+		window.alert("Please choose Search Type.");
+	}else if($("#searchValue").val() == ""){
+		window.alert("Please enter Search Valllue.");
+	}else{
+		if($('#nameSearchButton').is(':checked')){
+			stompClient.send("/app/hello", {},
+			JSON.stringify(
+				{	'pageName': "mainPage",
+					'functionName': "findProductByName",
+					'paramsAsJSON': [
+									JSON.stringify($("#searchValue").val())
+									]
+									
+			}));
+		}else if($('#categorySearchButton').is(':checked')){
+			stompClient.send("/app/hello", {},
+			JSON.stringify(
+				{	'pageName': "mainPage",
+					'functionName': "findProductByCategory",
+					'paramsAsJSON': [
+									JSON.stringify($("#searchValue").val())
+									]
+									
+			}));
+		}
+	}
+}
+
 
 function loadSubscribers(){
 	var subs = JSON.parse(localStorage.getItem('allSubscribers'));
@@ -827,24 +903,7 @@ function editProductInStore(){
 
 
 
-function loadStoresIOwn(){
-	
-	var storeOwners = JSON.parse(localStorage.getItem('currentUser')).owner;
-	var tableRef = document.getElementById('storeIOwnTable');
-	for(var i = 0; i < storeOwners.length; i++){
-		
-		var store = storeOwners[i].store;
-		
-		var newRow   = tableRef.insertRow(-1);
-		var newCell  = newRow.insertCell(0);
-		var newElem = document.createElement( 'button' );
-		newElem.setAttribute('class', 'btn');
-		newElem.setAttribute('onclick', 'loadEditOwnStore('+ JSON.stringify(storeOwners[i].store) +');');
-		newElem.innerHTML = "Store - id: " + store.storeId + ", Name: " + store.name + ", Grading: " + store.gradeing;
-		newCell.appendChild(newElem);
 
-	}
-}
 
 function loadStoresIManage(){
 	var storeManagers = JSON.parse(localStorage.getItem('currentUser')).manager;
@@ -1153,6 +1212,8 @@ function changeStorePurchasePolicy(){
 	}
 }
 
+
+
 function addPolicyToProduct(){
 	if ($("input[type=radio]:checked").length == 0 ) {
 		window.alert("Please choose Policy.");
@@ -1244,8 +1305,7 @@ function addDiscountToCategoryStore(){
 								$("#minAmountVal").val(),
 								$("#maxAmountVal").val()
 								
-								]
-								
+								]				
 		}));
 	}
 }

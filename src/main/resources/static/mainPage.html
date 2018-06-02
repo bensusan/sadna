@@ -12,7 +12,7 @@
     <script src="/app.js"></script>
 </head>
 
-<body onload="manageSysAdminPermissions()">
+<body onload="manageSysAdminPermissions(); loadSearchProducts();">
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
     enabled. Please enable
     Javascript and reload this page!</h2></noscript>
@@ -46,6 +46,30 @@
         </table>
     </div>
 </div>
+
+<div id="searchProductsSection">
+	<form>
+		<input type="radio" name="searchType" id="nameSearchButton"> Name search<br>
+		<input type="radio" name="searchType" id="categorySearchButton"> Category search<br>
+		Input: <input type="text" id="searchValue"><br>
+		<button onclick="searchProducts()">Search!</button>
+	</form>
+	<div class="row">
+		<div class="col-md-12">
+			<table id="searchProductResultTable">
+				<thead>
+				<tr>
+					<th id="divToAppendAction">Search Results:</th>
+				</tr>
+				</thead>
+				<tbody id="searchProductResultTableBody" class="clickable-row">
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
 	<script>
 		function manageSysAdminPermissions() {
 		   if(localStorage.getItem('isAdmin') == "true")

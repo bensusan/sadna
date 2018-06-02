@@ -592,6 +592,22 @@ public class GreetingController {
 				}
 				break;
 				
+			case findProductByName:
+				if (args.length == 1) {
+					String storeName = gson.fromJson(args[0], String.class);
+					List<Product> prods =  BlMain.findProductByName(storeName);
+					ret.setContentAsJson(gson.toJson(prods));
+				}
+				break;
+				
+			case findProductByCategory:
+				if (args.length == 1) {
+					String categoryName = gson.fromJson(args[0], String.class);
+					List<Product> prods =  BlMain.findProductByCategory(categoryName);
+					ret.setContentAsJson(gson.toJson(prods));
+				}
+				break;
+				
 			default:
 				throw new Exception("NO SUCH FUNCTION");
 			}

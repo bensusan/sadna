@@ -384,7 +384,7 @@ function openStore() {
 				    {	'pageName': "openStorePage",
 				    	'functionName': "openStore",
 				    	'paramsAsJSON': [	localStorage.getItem('currentUser'),	//logged in sub turns to store owner
-				    						$("#newStoreName").val()			//store name
+				    						JSON.stringify($("#newStoreName").val())			//store name
 				    					]
 				    }
 	));
@@ -410,9 +410,9 @@ function addProductToStore(){
 				    	'functionName': "addProductToStore",
 				    	'paramsAsJSON': [	JSON.parse(localStorage.getItem('currentUser'))['username'],	//logged in sub turns to store owner
 											JSON.parse(localStorage.getItem('currentStore'))['storeId'],
-				    						$("#newProductName").val(),			//store name
+				    						JSON.stringify($("#newProductName").val()),			//store name
 											$("#newProductPrice").val(),
-											$("#newProductCategory").val(),
+											JSON.stringify($("#newProductCategory").val()),
 											$("#newProductAmount").val(),
 											localStorage.getItem('isOwner')
 				    					]
@@ -814,9 +814,9 @@ function editProductInStore(){
 							JSON.parse(localStorage.getItem('currentProduct')),
 							JSON.parse(localStorage.getItem('currentStore'))['storeId'],
 							JSON.parse(localStorage.getItem('currentUser'))['username'],
-							$("#editnewProductName").val(),
+							JSON.stringify($("#editnewProductName").val()),
 							$("#editnewProductPrice").val(),
-							$("#editnewProductCategory").val(),
+							JSON.stringify($("#editnewProductCategory").val()),
 							$("#editnewProductAmount").val()
 							]
 							
@@ -1233,7 +1233,7 @@ function addDiscountToCategoryStore(){
 			{	'pageName': "addDiscountAndPolicyPage",
 				'functionName': "addDiscountToCategoryStore",
 				'paramsAsJSON': [localStorage.getItem('isOwner'),
-								$("#categoryNameForDiscount").val(),
+								JSON.stringify($("#categoryNameForDiscount").val()),
 								JSON.parse(localStorage.getItem('currentUser'))['username'],
 								JSON.parse(localStorage.getItem('currentStore'))['storeId'],
 								discountType,

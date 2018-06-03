@@ -7,11 +7,29 @@ var products = [];
 var MAX_STORES = 5;
 var stores = [];
 
+function tomorrowDate(){
+    var currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + 1);
+    var day = currentDate.getDate();
+    var month = currentDate.getMonth()+1; //January is 0!
+    var year = currentDate.getFullYear();
+    if(month<10)
+        month = '0'+month;
+    else
+        month = ''+month;
+    if(day<10)
+        day = '0'+day;
+    else
+        day = ''+day;
+    year = ''+year;
+    return year.concat('-').concat(month).concat('-').concat(day);
+}
+
 function openMainPage() {
     cy.visit('http://localhost:8080')
     cy.wait(500)
     cy.contains('Connect to Trading System').click()
-    cy.wait(2000)
+    cy.wait(3000)
 }
 
 function loginAsSystemAdministrator(){
@@ -20,16 +38,20 @@ function loginAsSystemAdministrator(){
     cy.get('#userName').type('itzik')
     cy.get('#password').type('11111111')
     cy.get('#loginBtn').click()
+    cy.wait(3000)
 }
 
 function openStore(sName) {
     cy.get('#openStoreMBtn').click()
     cy.get('#newStoreName').type(sName)
     cy.get('#openStoreBtn').click()
+    cy.wait(3000)
 }
 function addProduct(pName, sName) {
     cy.get('#myStores').click()
-    cy.get('#storeIOwnTableBody').contains(sName).click()
+    cy.wait(3000)
+    cy.get('#storeIOwnTable').contains(sName).click()
+    cy.wait(3000)
     cy.get('#0').click()
     cy.get('#newProductName').type(pName)
     var price = (Math.round(Math.random() * 1000000)).toString()
@@ -39,68 +61,85 @@ function addProduct(pName, sName) {
     var amount = '10'
     cy.get('#newProductAmount').type(amount)
     cy.get('#addProductBtn').click()
+    cy.wait(3000)
 }
 
 function typeDiscount(discount) {
     if(discount !== false){
         cy.get('#precentageOfDiscount').type('10')
-        //TODO - check it
-        cy.get('#endDate').type(moment().add(1, 'days').calendar())
+        cy.get('#endDate').type(tomorrowDate())
         if(discount === 'hidden'){
-            cy.get('#hiddenDiscountButton').checked()
+            cy.get('#hiddenDiscountButton').check()
+            cy.get('#codeOfDiscount').clear()
             cy.get('#codeOfDiscount').type('1')
         }
+        else
+            cy.get('#overtDiscountButton').check()
     }
 }
 
 function typePolicy(policy, val1, val2) {
-    cy.get('#'.concat(policy).concat('Policy')).checked()
-    if(cy.get('#minAmountVal').is(':visible')) {
-        cy.get('#minAmountVal').type(val1)
-        if(cy.get('#maxAmountVal').is(':visible'))
+    cy.get('#'.concat(policy).concat('Policy')).check()
+    if(policy !== 'empty'){
+        if(policy !== 'max' && val1 !== '-1')
+            cy.get('#minAmountVal').type(val1)
+        if(policy !== 'min' && val2 !== '-1')
             cy.get('#maxAmountVal').type(val2)
     }
-    else if(cy.get('#maxAmountVal').is(':visible'))
-        cy.get('#maxAmountVal').type(val1)
 }
 
 function addDiscountToProduct(pName, discount, policy, val1, val2){
     cy.get('#4').click()
-    cy.get('#ProductsInStoreTableBody').contains(pName).click() //should be there
+    cy.wait(3000)
+    cy.get('#ProductsInStoreTable').contains(pName).click() //should be there
+    cy.wait(3000)
     typeDiscount(discount)
     typePolicy(policy, val1, val2)
-    cy.get('#addDiscountToProduct').click()
+    cy.get('#addDiscountToProductButton').click()
+    cy.wait(3000)
 }
 
 function addToCart(pName, amount, code) {
     cy.get('#loadProducts').click()
-    cy.get('#myTable').contains(pName).click()
+    cy.wait(3000)
+    cy.get('#mainProductsTable').contains(pName).click()
+    cy.wait(3000)
+    cy.get('#productAmount').clear()
     cy.get('#productAmount').type(amount)
+    cy.get('#discountCode').clear()
     cy.get('#discountCode').type(code)
     cy.get('#addToCartBtn').click()
-    cy.get('#goToMainPageBtn').click()
+    cy.wait(3000)
 }
 
 function buyCart() {
     cy.get('#myCartBtn').click()
+    cy.wait(3000)
     cy.url().should('include', '/myCart.html')
+
+    cy.get('#creditCardInput').type('012345678901234') //valid credit card
+    cy.get('#addressInput').type('TestAddress') //valid address
     cy.get('#purchaseCartbtn').click()
-    cy.wait(2000)
+    cy.wait(3000)
     cy.url().should('include', '/mainPage.html')
 }
 
 function checkSubscriberHistory(pName) {
     cy.get('#viewSubscriberHistoryBtn').click()
-    cy.get('#subscribersInSystemTableBody').contains('itzik').click()
-    cy.get('#purchaseHistoryTableBody').should('include', pName)
-    cy.get('#goToMainPageBtn').click()
+    cy.wait(3000)
+    cy.get('#subscribersInSystemTable').contains('itzik').click()
+    cy.wait(3000)
+    cy.get('#purchaseHistoryTable').should('include', pName)
+    cy.contains('Main Menu').click()
 }
 
 function checkStoreHistory(sName, pName) {
     cy.get('#viewStoreHistoryBtn').click()
-    cy.get('#storesInSystemTableBody').contains(sName).click()
-    cy.get('#purchaseHistoryTableBody').should('include', pName)
-    cy.get('#goToMainPageBtn').click()
+    cy.wait(3000)
+    cy.get('#storesInSystemTable').contains(sName).click()
+    cy.wait(3000)
+    cy.get('#purchaseHistoryTable').should('include', pName)
+    cy.contains('Main Menu').click()
 }
 
 function purchaseItemFromStore(pName, amount, code, sName){
@@ -112,28 +151,30 @@ function purchaseItemFromStore(pName, amount, code, sName){
 
 function addDiscountToStore(discount, policy, val1, val2){
     cy.get('#12').click()
+    cy.wait(3000)
     cy.get('#categoryNameForDiscount').type('a')
     typeDiscount(discount)
     typePolicy(policy, val1, val2)
     cy.get('#addDiscountToCategoryStoreButton').click()
+    cy.wait(3000)
 }
 
 //GOOD TESTS
-describe('Regular - Purchase Tests', function() {
-    beforeEach(() => {
-        openMainPage()
-        loginAsSystemAdministrator()
-        sName1 = 'randStore'.concat((Math.round(Math.random()*1000000)).toString())
-        openStore(sName1)
-        pName1 = 'pro'.concat((Math.round(Math.random()*1000000)).toString())
-        addProduct(pName1, sName1)
-        cy.get('#goToMainPageBtn').click()
-    })
-
-    it('Make the purchase', function () {
-        purchaseItemFromStore(pName1, '1', '-1', sName1)
-    })
-})
+// describe('Regular - Purchase Tests', function() {
+//     beforeEach(() => {
+//         openMainPage()
+//         loginAsSystemAdministrator()
+//         sName1 = 'randStore'.concat((Math.round(Math.random()*1000000)).toString())
+//         openStore(sName1)
+//         pName1 = 'pro'.concat((Math.round(Math.random()*1000000)).toString())
+//         addProduct(pName1, sName1)
+//         cy.contains('Main Menu').click()
+//     })
+//
+//     it('Make the purchase', function () {
+//         purchaseItemFromStore(pName1, '1', '-1', sName1)
+//     })
+// })
 
 describe('Discount to Products - Purchase Tests', function() {
     beforeEach(() => {
@@ -143,32 +184,33 @@ describe('Discount to Products - Purchase Tests', function() {
         openStore(sName1)
         pName1 = 'pro'.concat((Math.round(Math.random()*1000000)).toString())
         addProduct(pName1, sName1)
-        addDiscountToProduct(pName1, 'overt', 'empty', -1, -1)
+        addDiscountToProduct(pName1, 'overt', 'empty', '-1', '-1')
+        cy.contains('Main Menu').click()
         pName2 = 'pro'.concat((Math.round(Math.random()*1000000)).toString())
         addProduct(pName2, sName1)
-        addDiscountToProduct(pName2, 'hidden', 'and', 1, 5)
+        addDiscountToProduct(pName2, 'hidden', 'and', '1', '5')
     })
 
-    it('Overt Discount', function () {
-        cy.get('#goToMainPageBtn').click()
-        purchaseItemFromStore(pName1, '1', '-1', sName1)
-    })
+    // it('Overt Discount', function () {
+    //     cy.contains('Main Menu').click()
+    //     purchaseItemFromStore(pName1, '1', '-1', sName1)
+    // })
 
-    it('Hidden Discount', function () {
-        cy.get('#goToMainPageBtn').click()
-        purchaseItemFromStore(pName2, '2', '1', sName1)
-    })
+    // it('Hidden Discount', function () {
+    //     cy.contains('Main Menu').click()
+    //     purchaseItemFromStore(pName2, '2', '1', sName1)
+    // })
 
-    it('Add also Overt Discount To Store', function () {
-        addDiscountToStore('overt', 'empty','-1', '-1')
-        cy.get('#goToMainPageBtn').click()
-        purchaseItemFromStore(pName1, '1', '-1', sName1)
-        purchaseItemFromStore(pName2, '2', '1', sName1)
-    })
+    // it('Add also Overt Discount To Store', function () {
+    //     addDiscountToStore('overt', 'empty','-1', '-1')
+    //     cy.contains('Main Menu').click()
+    //     purchaseItemFromStore(pName1, '1', '-1', sName1)
+    //     purchaseItemFromStore(pName2, '2', '1', sName1)
+    // })
 
     it('Add also Hidden Discount To Store', function () {
         addDiscountToStore('hidden', 'and', '1', '5')
-        cy.get('#goToMainPageBtn').click()
+        cy.contains('Main Menu').click()
         purchaseItemFromStore(pName1, '1', '-1', sName1)
         purchaseItemFromStore(pName2, '2', '1', sName1)
     })
@@ -186,13 +228,13 @@ describe('Discount to Store - Purchase Tests', function() {
 
     it('Overt Discount', function () {
         addDiscountToStore('overt', 'empty','-1', '-1')
-        cy.get('#goToMainPageBtn').click()
+        cy.contains('Main Menu').click()
         purchaseItemFromStore(pName1, '1', '-1', sName1)
     })
 
     it('Hidden Discount', function () {
         addDiscountToStore('hidden', 'and', '1', '5')
-        cy.get('#goToMainPageBtn').click()
+        cy.contains('Main Menu').click()
         purchaseItemFromStore(pName1, '2', '1', sName1)
     })
 })
@@ -212,29 +254,35 @@ describe('Buy from all the kinds 4 Different Stores - Purchase Tests', function(
 
         openStore(stores[0]) //Regular store
         addProduct(products[0], stores[0])
+        cy.contains('Main Menu').click()
         addProduct(products[1], stores[0])
-        addDiscountToProduct(products[1], 'overt', 'empty', -1, -1)
+        addDiscountToProduct(products[1], 'overt', 'empty', '-1', '-1')
+        cy.contains('Main Menu').click()
         addProduct(products[2], stores[0])
-        addDiscountToProduct(products[2], 'hidden', 'and', 1, 5)
-        cy.get('#goToMainPageBtn').click()
+        addDiscountToProduct(products[2], 'hidden', 'and', '1', '5')
+        cy.contains('Main Menu').click()
 
         openStore(stores[1]) //Overt Discount to 'a' category store
         addProduct(products[3], stores[1])
+        cy.contains('Main Menu').click()
         addProduct(products[4], stores[1])
-        addDiscountToProduct(products[4], 'overt', 'empty', -1, -1)
+        addDiscountToProduct(products[4], 'overt', 'empty', '-1', '-1')
+        cy.contains('Main Menu').click()
         addProduct(products[5], stores[1])
-        addDiscountToProduct(products[5], 'hidden', 'and', 1, 5)
+        addDiscountToProduct(products[5], 'hidden', 'and', '1', '5')
         addDiscountToStore('overt', 'empty','-1', '-1')
-        cy.get('#goToMainPageBtn').click()
+        cy.contains('Main Menu').click()
 
         openStore(stores[2]) //Hidden Discount to 'a' category store
         addProduct(products[6], stores[2])
+        cy.contains('Main Menu').click()
         addProduct(products[7], stores[2])
-        addDiscountToProduct(products[7], 'overt', 'empty', -1, -1)
+        addDiscountToProduct(products[7], 'overt', 'empty', '-1', '-1')
+        cy.contains('Main Menu').click()
         addProduct(products[8], stores[2])
-        addDiscountToProduct(products[8], 'hidden', 'and', 1, 5)
+        addDiscountToProduct(products[8], 'hidden', 'and', '1', '5')
         addDiscountToStore('hidden', 'and', '1', '5')
-        cy.get('#goToMainPageBtn').click()
+        cy.contains('Main Menu').click()
     })
 
     it('Purchase all the products separately', function () {
@@ -271,12 +319,15 @@ describe('Buy from all the kinds 4 Different Stores - Purchase Tests', function(
 //TODO - Next version
 // //BAD TESTS
 
-describe('Regular - Purchase Tests', function() {
-    it('Buy empty cart', function () {
-        cy.get('#myCartBtn').click()
-        cy.url().should('include', '/mainPage.html')
-    });
-})
+
+//TODO - Should add it!!!!!!
+// describe('Regular - Purchase Tests', function() {
+//     it('Buy empty cart', function () {
+//         cy.get('#myCartBtn').click()
+//         cy.wait(3000)
+//         cy.url().should('include', '/mainPage.html')
+//     });
+// })
 
 // describe('Amount out of Product\'s Range - Purchase Tests', function() {
 //     beforeEach(() => {

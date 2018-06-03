@@ -46,6 +46,14 @@ public class Cart  {
 		return true;
 	}
 	
-	
+	public String toString(){
+		String ret = "";
+		List<ProductInCart> pic = this.getProducts();
+		for (ProductInCart productInCart : pic) {
+			ret += productInCart.toString();
+		}
+		
+		return ret;
+	}
 	
 }

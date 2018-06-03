@@ -6,6 +6,8 @@ function setUPOnce(){
     localStorage.setItem('currentUser', JSON.stringify({'cart': {'products': []}})); //New Guest for start
     localStorage.setItem('isSubscriber', JSON.stringify(false));
     localStorage.setItem('specificProduct', JSON.stringify(null));
+    localStorage.setItem('isEmpty' , JSON.stringify(0));
+    localStorage.setItem('myCart' , JSON.stringify(null));
 }
 
 function connect() {
@@ -65,12 +67,18 @@ function connect() {
 					case "productPage":
 						recieveAddToSubCart(body.functionName, obj);
 						break;
-					case "subCartPage":
-						recieveRemFromSubCart(body.functionName, obj);
+					case "cartPage":
+						recieveRemCart(body.functionName, obj);
+						break;
+					case "purchaseGuestCart":
+						recieveCartAfterPurchase(body.functionName, obj);
+						break;
 					case "purchaseSubCart":
-						recieveSubCartPurchase(body.functionName, obj);
+						recieveCartAfterPurchase(body.functionName, obj);
+						break;
 					case "storePage":
 						recieveStorePage(body.functionName, obj);
+						break;
                     default:
                         break;
                 }
@@ -279,8 +287,10 @@ function recieveLoginPageMsg(funcName, obj) {
     switch (funcName){
         case "signIn":
             localStorage.setItem('currentUser', JSON.stringify(obj));
+            localStorage.setItem('mySubCart' , JSON.stringify(obj.cart));
             localStorage.setItem('isSubscriber', JSON.stringify(true));
 			localStorage.setItem('isAdmin', JSON.stringify(false));
+			
 			if(obj.isAdmin == true){
 				localStorage.setItem('isAdmin', JSON.stringify(true));
 			}
@@ -341,12 +351,21 @@ function recieveGetProductMsg(funcName, obj) {
 function recieveAddToSubCart(funcName, obj){
 	switch (funcName){
         case "addToSubCart":
-        	localStorage.setItem('myCart' , JSON.stringify(obj));
+        	localStorage.setItem('mySubCart' , JSON.stringify(obj));
         	window.alert('Product was added to cart!');
 			setTimeout(function(){
 			loadMainPage();
 			}, 2000);
        		break;
+       	case "addToGuestCart":
+        	localStorage.setItem('myCartToPrint' , JSON.stringify(obj));
+        	localStorage.setItem('myCart',obj);
+        	localStorage.setItem('isEmpty' , JSON.stringify(1));
+        	window.alert('Product was added to cart!');
+			setTimeout(function(){
+			loadMainPage();
+			}, 2000);
+       		break;   		
         default:
             break;
     }
@@ -455,16 +474,17 @@ function purchaseAllCart(){
 	      return;
     }
     
-    if(JSON.parse(localStorage.getItem('isSubscriber')) === false){				
+    if(JSON.parse(localStorage.getItem('isSubscriber')) === false){
+ 	
 				  stompClient.send("/app/hello", {},
 					JSON.stringify(
-						{	'pageName': "cartPage",
+						{	'pageName': "purchaseGuestCart",
 							'functionName': "purchaseCart",
 							'paramsAsJSON': [
-											 JSON.parse(localStorage.getItem('myCart')),
-											 creditCart,
+											 localStorage.getItem('myCart'),
+											 creditCard,
 											 address,
-											 JSON.parse(localStorage.getItem('isEmpty'))
+											 0
 											 ]
 					}));
     }
@@ -991,11 +1011,12 @@ function deleteFromCart(pid){
 	if(JSON.parse(localStorage.getItem('isSubscriber')) === false) {
 		stompClient.send("/app/hello", {},
 				JSON.stringify(
-					{	'pageName': "productPage",
-						'functionName': "removeProductFromGuestCart",
+					{	'pageName': "cartPage",
+						'functionName': "removeProductFromCart",
 						'paramsAsJSON': [
-										 JSON.parse(localStorage.getItem('myCart')),
-										 pid
+										 localStorage.getItem('myCart'),
+										 pid,
+										 0
 										 ]
 				}));
 	}
@@ -1003,7 +1024,7 @@ function deleteFromCart(pid){
 	else{
 		stompClient.send("/app/hello", {},
 				JSON.stringify(
-					{	'pageName': "subCartPage",
+					{	'pageName': "cartPage",
 						'functionName': "removeProductFromCart",
 						'paramsAsJSON': [
 										 JSON.parse(localStorage.getItem('currentUser'))['username'],
@@ -1013,10 +1034,17 @@ function deleteFromCart(pid){
 		}
 }
 
-function recieveRemFromSubCart(funcName, obj){
+function recieveRemCart(funcName, obj){
    switch (funcName){ 
        	case "removeProductFromCart":
-	       		localStorage.setItem('myCart' , JSON.stringify(obj));
+       			if(JSON.parse(localStorage.getItem('isSubscriber'))){
+	       			localStorage.setItem('mySubCart' , JSON.stringify(obj));
+	       		}
+	       		else{
+	       			localStorage.setItem('myCart' , obj);
+	       			localStorage.setItem('myCartToPrint' , JSON.stringify(obj));
+	       		}
+	       		
 	       		window.alert('Product was deleted !!!!');
 				setTimeout(function(){
 				loadMainPage();
@@ -1027,10 +1055,17 @@ function recieveRemFromSubCart(funcName, obj){
 		}
 }
 
-function recieveSubCartPurchase(funcName, obj){
+function recieveCartAfterPurchase(funcName, obj){
    switch (funcName){ 
        	case "purchaseCart":
-	       		localStorage.setItem('myCart' , JSON.stringify(obj));
+       			if(JSON.parse(localStorage.getItem('isSubscriber'))){
+	       			localStorage.setItem('mySubCart' , JSON.stringify(obj));
+	       		}
+	       		else{
+	       			localStorage.setItem('myCart' , obj);
+	       			localStorage.setItem('myCartToPrint' , JSON.stringify(obj));
+	       		}
+	       		
 	       		window.alert('Cart was purchased!');
 				setTimeout(function(){
 				loadMainPage();
@@ -1138,21 +1173,32 @@ function addNewStoreManager(usernameToAdd){
 }
 
 function loadMyCart(){
-	var cart = JSON.parse(localStorage.getItem('myCart'));
-	var tableRef = document.getElementById('myCartTable');
-    var found = false;
-	var productsInCart = cart.products;
+	var cart;
 	
-	if(productsInCart.length == 0){
-		$('#purchaseCartbtn').hide();
-		$('#creditCardInput').hide();
-		$('#inCC').hide();
+	if(JSON.parse(localStorage.getItem('isSubscriber'))){
+		cart = JSON.parse(localStorage.getItem('mySubCart'));
+		}
+	else{
+		cart = JSON.parse(localStorage.getItem('myCartToPrint'));
+	}	
+	
+	var productsInCart;
+	var size = 0;
+	if(cart != null){
+		productsInCart = cart.products;
+		size = productsInCart.length;
+	}
+
+	var tableRef = document.getElementById('myCartTable');
+	
+	if(size === 0){
 		window.alert("empty cart!");
+		setTimeout(function(){
+			loadMainPage();
+			}, 2000);
 	}
 	
-	window.alert("length: " + productsInCart.length);
-	
-	for(var i = 0; i < productsInCart.length; i++){
+	for(var i = 0; i < size; i++){
 		var p = productsInCart[i].myProduct;
 		
 		var newRow = tableRef.insertRow(-1);

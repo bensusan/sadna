@@ -449,6 +449,25 @@ public class GreetingController {
 					ret.setContentAsJson(gson.toJson(sub.getCart()));
 				}
 				break;
+			case addToGuestCart:
+				if(args.length == 5){
+					int init = gson.fromJson(args[0], Integer.class);
+					int pid = gson.fromJson(args[1], Integer.class);
+					Product p = BlMain.getProductFromProdId(pid);
+					int amount = gson.fromJson(args[2], Integer.class);
+					int discountCode = gson.fromJson(args[3], Integer.class);
+					
+					Cart cart;
+					if(init == 0)
+						cart = new Cart();
+					else
+						cart = gson.fromJson(args[4], Cart.class);
+					
+					Guest g = new Guest(cart);
+					BlMain.addImmediatelyProduct(g, p, amount, discountCode);
+					ret.setContentAsJson(gson.toJson(g.getCart()));	
+				}
+				break;
 			case removeProductFromCart:
 				if (args.length == 2){
 					Subscriber s = BlMain.getSubscriberFromUsername(gson.fromJson(args[0], String.class));
@@ -456,14 +475,47 @@ public class GreetingController {
 					BlMain.removeProductFromCart((Guest)s, p);
 					ret.setContentAsJson(gson.toJson(s.getCart()));	
 				}
+				else if (args.length == 3){
+					Cart cart = (gson.fromJson(args[0], Cart.class));
+					Product p = BlMain.getProductFromProdId(gson.fromJson(args[1], Integer.class));
+					Guest g = new Guest();
+					g.setCart(cart);
+					
+					try{
+						BlMain.removeProductFromCart(g, p);
+					}
+					catch(Exception e){
+						ret.setContentAsJson(gson.toJson(e));
+					}
+					ret.setContentAsJson(gson.toJson(g.getCart()));	
+				}
 				break;
 			case purchaseCart:
 				if (args.length == 3){
 					Subscriber s = BlMain.getSubscriberFromUsername(gson.fromJson(args[0], String.class));
 					String creditCard = gson.fromJson(args[1], String.class);
 					String address = gson.fromJson(args[2], String.class);
+					try{
 					BlMain.purchaseCart((Guest)s,creditCard,address);
+					}
+					catch(Exception e){
+						ret.setContentAsJson(gson.toJson(e));
+					}
 					ret.setContentAsJson(gson.toJson(s.getCart()));
+				}
+				if (args.length == 4){
+					Cart cart = (gson.fromJson(args[0], Cart.class));
+					String creditCard = gson.fromJson(args[1], String.class);
+					String address = gson.fromJson(args[2], String.class);
+					Guest g = new Guest();
+					g.setCart(cart);
+					try{
+					BlMain.purchaseCart(g,creditCard,address);
+					}
+					catch(Exception e){
+						ret.setContentAsJson(gson.toJson(e));
+					}
+					ret.setContentAsJson(gson.toJson(g.getCart()));
 				}
 				break;	
 			case getAllStoresWithThierProductsAndAmounts:

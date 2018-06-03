@@ -76,11 +76,6 @@ public class GreetingController {
 							gson.fromJson(args[1], Product.class), gson.fromJson(args[2], Integer.class))));
 				}
 				break;
-			case editCart:
-				if (args.length == 2){
-					ret.setContentAsJson(gson.toJson(BlMain.editCart(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], Cart.class))));
-				}
-				break;
 			case addProductToStore:
 				if (args.length == 7) {
 					boolean isOwner = gson.fromJson(args[6], Boolean.class);
@@ -483,6 +478,40 @@ public class GreetingController {
 					
 					try{
 						BlMain.removeProductFromCart(g, p);
+					}
+					catch(Exception e){
+						ret.setContentAsJson(gson.toJson(e));
+					}
+					ret.setContentAsJson(gson.toJson(g.getCart()));	
+				}
+				break;
+			case editCart:
+				if (args.length == 3){
+					Subscriber s = BlMain.getSubscriberFromUsername(gson.fromJson(args[0], String.class));
+					Product p = BlMain.getProductFromProdId(gson.fromJson(args[1], Integer.class));
+					int newAmount = gson.fromJson(args[2], Integer.class);
+					
+					try{
+					//BlMain.removeProductFromCart((Guest)s, p);
+					BlMain.addImmediatelyProduct((Guest)s, p, newAmount);
+					}
+					catch(Exception e){
+						ret.setContentAsJson(gson.toJson(e));
+					}
+					
+					ret.setContentAsJson(gson.toJson(s.getCart()));	
+				}
+				else if (args.length == 4){
+					Cart cart = (gson.fromJson(args[0], Cart.class));
+					Product p = BlMain.getProductFromProdId(gson.fromJson(args[1], Integer.class));
+					int newAmount = gson.fromJson(args[2], Integer.class);
+					
+					Guest g = new Guest();
+					g.setCart(cart);
+					
+					try{
+						//BlMain.removeProductFromCart(g, p);
+						BlMain.addImmediatelyProduct(g, p, newAmount);
 					}
 					catch(Exception e){
 						ret.setContentAsJson(gson.toJson(e));

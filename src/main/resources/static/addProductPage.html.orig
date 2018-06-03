@@ -14,9 +14,14 @@
 <noscript><h2 style="color: #ff0000">
 Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable Javascript and reload this page!
 </h2></noscript>
+<<<<<<< HEAD
+<div>
+<button id="goToMainPageBtn" onclick="loadMainPage()">Main Menu</button>
+=======
 <div align="right">
 <button onclick="loadMainPage()" align="right">
 <img src="https://image.flaticon.com/icons/svg/2/2144.svg" height="30" width="30" align="right"></button>
+>>>>>>> Alex
 </div>
 <form name="addProductForm">
 <div class="form-group1">

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Product Page</title>
-    <h3>Add Product</h3>
+    <title>Edit Product Page</title>
+    <h3>Edit Product</h3>
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/main.css" rel="stylesheet">
     <script src="/webjars/jquery/jquery.min.js"></script>
@@ -14,28 +14,33 @@
 <noscript><h2 style="color: #ff0000">
 Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable Javascript and reload this page!
 </h2></noscript>
+<<<<<<< HEAD
+<div>
+<button id="goToMainPageBtn" onclick="loadMainPage()">Main Menu</button>
+=======
 <div align="right">
 <button onclick="loadMainPage()" align="right">
 <img src="https://image.flaticon.com/icons/svg/2/2144.svg" height="30" width="30" align="right"></button>
+>>>>>>> Alex
 </div>
 <form name="addProductForm">
 <div class="form-group1">
-    <label for="newProductName">Product Name:</label>
-    <input type="text" id="newProductName" class="form-control" placeholder="type here...">
+    <label for="editnewProductName">New Product Name:</label>
+    <input type="text" id="editnewProductName" class="form-control" placeholder="type here...">
 </div>
 <div class="form-group2">
-    <label for="newProductPrice">Price:</label>
-    <input type="text" id="newProductPrice" class="form-control" placeholder="type here...">
+    <label for="editnewProductPrice">New Price:</label>
+    <input type="text" id="editnewProductPrice" class="form-control" placeholder="type here...">
 </div>
 <div class="form-group3">
-    <label for="newProductCategory">Category:</label>
-    <input type="text" id="newProductCategory" class="form-control" placeholder="type here...">
+    <label for="editnewProductCategory">New Category:</label>
+    <input type="text" id="editnewProductCategory" class="form-control" placeholder="type here...">
 </div>
 <div class="form-group4">
-    <label for="newProductAmount">Amount:</label>
-    <input type="text" id="newProductAmount" class="form-control" placeholder="type here...">
+    <label for="editnewProductAmount">New Amount:</label>
+    <input type="text" id="editnewProductAmount" class="form-control" placeholder="type here...">
 </div>
-<button id="addProductBtn" onclick="addProductToStore()">Add product</button>
+<button id="editBtn" onclick="editProductInStore()">Edit product</button>
 
 </form>
 </body>

@@ -70,6 +70,9 @@ function connect() {
 					case "cartPage":
 						recieveRemCart(body.functionName, obj);
 						break;
+					case "editCartPage":
+						recieveEditCart(body.functionName, obj);
+						break;
 					case "purchaseGuestCart":
 						recieveCartAfterPurchase(body.functionName, obj);
 						break;
@@ -1007,6 +1010,18 @@ function addToCart(){
 		}	
 }
 
+function editProductInCart(pid){
+    var newAmount = prompt("Please enter new amount:", "here");
+    if (newAmount == null || newAmount == "") {
+        window.alert("User cancelled the prompt.");
+        setTimeout(function(){
+				loadMainPage();
+				}, 2000);
+    } else {
+        editCart(pid,newAmount);  
+    }
+}
+
 function deleteFromCart(pid){
 	if(JSON.parse(localStorage.getItem('isSubscriber')) === false) {
 		stompClient.send("/app/hello", {},
@@ -1034,6 +1049,37 @@ function deleteFromCart(pid){
 		}
 }
 
+function editCart(pid,newAmount){
+	window.alert(newAmount);
+	
+	if(JSON.parse(localStorage.getItem('isSubscriber')) === false) {
+		stompClient.send("/app/hello", {},
+				JSON.stringify(
+					{	'pageName': "editCartPage",
+						'functionName': "editCart",
+						'paramsAsJSON': [
+										 localStorage.getItem('myCart'),
+										 pid,
+										 newAmount,
+										 0
+										 ]
+				}));
+	}
+	
+	else{
+		stompClient.send("/app/hello", {},
+				JSON.stringify(
+					{	'pageName': "editCartPage",
+						'functionName': "editCart",
+						'paramsAsJSON': [
+										 JSON.parse(localStorage.getItem('currentUser'))['username'],
+										 pid,
+										 newAmount
+										 ]
+				}));
+		}
+}
+
 function recieveRemCart(funcName, obj){
    switch (funcName){ 
        	case "removeProductFromCart":
@@ -1046,6 +1092,27 @@ function recieveRemCart(funcName, obj){
 	       		}
 	       		
 	       		window.alert('Product was deleted !!!!');
+				setTimeout(function(){
+				loadMainPage();
+				}, 2000);
+			break;
+		default:
+			break;
+		}
+}
+
+function recieveEditCart(funcName, obj){
+   switch (funcName){ 
+       	case "editCart":
+       			if(JSON.parse(localStorage.getItem('isSubscriber'))){
+	       			localStorage.setItem('mySubCart' , JSON.stringify(obj));
+	       		}
+	       		else{
+	       			localStorage.setItem('myCart' , obj);
+	       			localStorage.setItem('myCartToPrint' , JSON.stringify(obj));
+	       		}
+	       		
+	       		window.alert('Product was edited !!!!');
 				setTimeout(function(){
 				loadMainPage();
 				}, 2000);
@@ -1203,11 +1270,18 @@ function loadMyCart(){
 		
 		var newRow = tableRef.insertRow(-1);
 		var newCell  = newRow.insertCell(0);
-		var newElem = document.createElement( 'button' );
-		newElem.setAttribute('class', 'btn');
-		newElem.setAttribute('onclick', 'deleteFromCart('+ p.id +');');
-		newElem.innerHTML = "id: " + p.id + " ,name: " + p.name + " ,price: " + p.price + " ,grading: " + p.grading
-							 + " ,category: " + p.category.name + " ,policy: " + p.policy + " ,type: " + p.type;
+		var newElem = document.createElement( 'div' );
+		newElem.setAttribute('class', 'dropdown');
+
+		newElem.innerHTML = "<button class='dropbtn'>" + "id: " + p.id + " ,name: " + p.name + " ,price: " + p.price + " ,grading: " + p.grading
+							 + " ,category: " + p.category.name + " ,policy: " + p.policy + " ,type: " + p.type + 
+							 + " ,amount: " +  productsInCart[i].amount
+							 + " </button>"
+							 + "<div class='dropdown-content'>"
+							 + "<button onclick=deleteFromCart(" + p.id + ");> delete </button>"
+							 + "<button onclick=editProductInCart(" + p.id + ");> edit </button>" 
+							 + "</div>";
+							 
 		newCell.appendChild(newElem);
 	}
 	

@@ -31,6 +31,7 @@ function loginAsItzik(){
 }
 
 function openStore(){
+    cy.get('#openStoreMBtn').click()
     storeName = 'randomStore'.concat((Math.round(Math.random()*1000000)).toString())
     cy.get('#newStoreName').type(storeName)
     cy.get('#openStoreBtn').click()

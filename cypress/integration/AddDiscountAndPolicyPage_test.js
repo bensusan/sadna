@@ -23,6 +23,7 @@ function loginAsItzik(){
 }
 
 function openStore(){
+    cy.get('#openStoreMBtn').click()
     storeName = 'randomStore'.concat((Math.round(Math.random()*1000000)).toString())
     cy.get('#newStoreName').type(storeName)
     cy.get('#openStoreBtn').click()
@@ -233,7 +234,7 @@ describe('Add Policy or Discount Tests', function() {
         cy.get('#addDiscountToProductButton').should('not.exist')
         cy.get('#addDiscountToCategoryStoreButton').should('be.visible')
         policiesCheck()
-        functions('#12', '#changeStorePurchasePolicyButton', false, 'overt', 'a')
-        functions('#12', '#changeStorePurchasePolicyButton', false, 'hidden', 'a')
+        functions('#12', '#addDiscountToCategoryStoreButton', false, 'overt', 'a')
+        functions('#12', '#addDiscountToCategoryStoreButton', false, 'hidden', 'a')
     })
 })

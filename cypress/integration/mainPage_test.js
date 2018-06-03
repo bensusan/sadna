@@ -1,3 +1,4 @@
+var sub = ""
 //Describe 1
 function openMainPage() {
     cy.visit('http://localhost:8080')
@@ -24,24 +25,8 @@ function signUpTest(){
 
 function cartTest(){
     cy.contains('My Cart').click().then(()=>{
-        cy.url().should('include', '/cartPage.html')
+        cy.url().should('include', '/myCart.html')
     })
-}
-
-function loadProductsEmptyTest() {
-    const stub = cy.stub()
-    cy.on('window:alert', stub)
-    cy.contains('Load products').click().then(() => {
-        expect(stub.getCall(0)).to.be.calledWith('No Products')
-        cy.get('#myTable').should('have.length', 0)
-    })
-}
-
-function loadProductsTest() {
-    //TODO - think good in this case
-    // cy.contains('Load products').click().then(()=>{
-    //     cy.get('#myTable').to.be.at.least(1)
-    // })
 }
 
 function guestVisibility(){
@@ -57,14 +42,15 @@ function guestVisibility(){
     cy.get('#loginMBtn').should('be.visible')
     cy.get('#signUpMBtn').should('be.visible')
     cy.contains('My Cart').should('be.visible')         //TODO Change to get when they create id for that button
-    cy.contains('Load products').should('be.visible')   //TODO Change to get when they create id for that button
+    cy.get('#loadProducts').should('be.visible')
 }
 
 //Describe 2
 function signUp(){
     cy.get('#signUpMBtn').click().then(()=> {
+        sub = 'newUser'.concat((Math.round(Math.random()*1000000)).toString());
         cy.get('#newuserName')
-            .type('newUser'.concat((Math.round(Math.random()*1000000)).toString()))
+            .type(sub)
 
         cy.get('#newpassword')
             .type('correctPassword')
@@ -80,7 +66,6 @@ function signUp(){
 
         cy.get('#signUpBtn').click().then(() => {
             cy.wait(2000)
-            cy.url().should('include', '/mainPage.html')
         })
     })
 }
@@ -119,25 +104,29 @@ function subscriberVisibility(){
     cy.get('#openStoreMBtn').should('be.visible')
     cy.get('#myStores').should('be.visible')
     cy.contains('My Cart').should('be.visible')         //TODO Change to get when they create id for that button
-    cy.contains('Load products').should('be.visible')   //TODO Change to get when they create id for that button
+    cy.get('#loadProducts').should('be.visible')   //TODO Change to get when they create id for that button
 }
 
 //Describe 3
 function loginAsSubscriber(){
-//TODO
-    expect(false).to.be.true
+    cy.get('#loginMBtn').click()
+    cy.wait(100)
+    cy.get('#userName').type(sub)
+    cy.get('#password').type('correctPassword')
+    cy.get('#loginBtn').click()
 }
 
 //Describe 4
-function loginAsStoreOwner(){
-//TODO
-    expect(false).to.be.true
-}
 
-//Describe 5
-function loginAsStoreManager(){
-//TODO
-    expect(false).to.be.true
+function openNewStore() {
+    cy.get('#openStoreMBtn').click()
+    var sName = 'randomStore'.concat((Math.round(Math.random()*1000000)).toString())
+    cy.get('#newStoreName').type(sName)
+    cy.get('#openStoreBtn').click()
+}
+function loginAsStoreOwnerManager(){
+    loginAsSubscriber()
+    openNewStore()
 }
 
 //Describe 6
@@ -162,11 +151,6 @@ describe('MainPage Tests Initial', function() {
         guestVisibility()
     })
 
-    it('Load Products', function () {
-        loadProductsTest()
-    })
-
-    //TODO - When finish
     it('Cart', function () {
         cartTest()
     })
@@ -193,11 +177,35 @@ describe('MainPage Tests After Sign up', function() {
     })
 
     it('Visibility', function () {
-        subscriberVisibility()
+        guestVisibility()
     })
 
-    it('Load Products', function () {
-        loadProductsTest()
+    it('Cart', function () {
+        cartTest()
+    })
+
+    it('Login', function () {
+        loginTest()
+    })
+
+    it('Sign up', function () {
+        signUpTest()
+    })
+})
+
+// //TODO LATER
+describe('MainPage Tests After Login as subscriber', function() {
+    beforeEach( ()=> {
+        openMainPage()
+        loginAsSubscriber()
+    })
+
+    it('Title', function() {
+        titleTest()
+    })
+
+    it('Visibility', function () {
+        subscriberVisibility()
     })
 
     it('Cart', function () {
@@ -205,6 +213,7 @@ describe('MainPage Tests After Sign up', function() {
     })
 
     it('My stores', function () {
+        //assume does not have stores
         myStoresEmptyTest()
     })
 
@@ -214,102 +223,33 @@ describe('MainPage Tests After Sign up', function() {
 
 })
 
-// //TODO LATER
-// describe('MainPage Tests After Login as subscriber', function() {
-//     beforeEach( ()=> {
-//         openMainPage()
-//         loginAsSubscriber()
-//     })
-//
-//     it('Title', function() {
-//         titleTest()
-//     })
-//
-//     it('Visibility', function () {
-//         subscriberVisibility()
-//     })
-//
-//     it('Load Products', function () {
-//         loadProductsTest()
-//     })
-//
-//     it('Cart', function () {
-//         cartTest()
-//     })
-//
-//     it('My stores', function () {
-//         //assume does not have stores
-//         myStoresEmptyTest()
-//     })
-//
-//     it('Open Store', function () {
-//         openStoreTest()
-//     })
-//
-// })
-//
-// describe('MainPage Tests After Login as Store Owner', function() {
-//     beforeEach( ()=> {
-//         openMainPage()
-//     })
-//
-//     it('Title', function() {
-//         titleTest()
-//     })
-//
-//     it('Visibility', function () {
-//         subscriberVisibility()
-//     })
-//
-//     it('Load Products', function () {
-//         loadProductsTest()
-//     })
-//
-//     it('Cart', function () {
-//         cartTest()
-//     })
-//
-//     it('My stores', function () {
-//         myStoresTest()
-//     })
-//
-//     it('Open Store', function () {
-//         openStoreTest()
-//     })
-//
-// })
-//
-// describe('MainPage Tests After Login as Store Manager', function() {
-//     beforeEach( ()=> {
-//         openMainPage()
-//         loginAsStoreManager()
-//     })
-//
-//     it('Title', function() {
-//         titleTest()
-//     })
-//
-//     it('Visibility', function () {
-//         subscriberVisibility()
-//     })
-//
-//     it('Load Products', function () {
-//         loadProductsTest()
-//     })
-//
-//     it('Cart', function () {
-//         cartTest()
-//     })
-//
-//     it('My stores', function () {
-//         myStoresTest()
-//     })
-//
-//     it('Open Store', function () {
-//         openStoreTest()
-//     })
-//
-// })
+describe('MainPage Tests After Login as Store Owner/Manager', function() {
+    beforeEach( ()=> {
+        openMainPage()
+        loginAsStoreOwnerManager()
+    })
+
+    it('Title', function() {
+        titleTest()
+    })
+
+    it('Visibility', function () {
+        subscriberVisibility()
+    })
+
+    it('Cart', function () {
+        cartTest()
+    })
+
+    it('My stores', function () {
+        myStoresTest()
+    })
+
+    it('Open Store', function () {
+        openStoreTest()
+    })
+
+})
 
 describe('MainPage Tests After Login as System Administrator', function() {
     beforeEach( ()=> {
@@ -335,10 +275,6 @@ describe('MainPage Tests After Login as System Administrator', function() {
         cy.get('#myStores').should('be.visible')
         cy.contains('My Cart').should('be.visible')         //TODO Change to get when they create id for that button
         cy.contains('Load products').should('be.visible')   //TODO Change to get when they create id for that button
-    })
-
-    it('Load Products', function () {
-        loadProductsTest()
     })
 
     it('Cart', function () {

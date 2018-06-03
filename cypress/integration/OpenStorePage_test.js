@@ -26,11 +26,7 @@ describe('Open Store tests', function() {
     it('Success', function () {
         var sName = 'randomStore'.concat((Math.round(Math.random()*1000000)).toString())
         cy.get('#newStoreName').type(sName)
-        const stub = cy.stub()
-        cy.on('window:alert', stub)
         cy.get('#openStoreBtn').click()
-        // cy.wait(2000)
-        // expect(stub.getCall(0)).to.be.calledWith('Store \"'.concat(sName).concat('\" opened succesfuly!'))
         cy.url().should('include', '/mainPage.html')
     })
 

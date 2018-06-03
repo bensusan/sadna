@@ -3,22 +3,24 @@ describe('Open Store tests', function() {
         cy.visit('http://localhost:8080')
         cy.wait(500)
         cy.contains('Connect to Trading System').click().then(()=>{
-            cy.wait(2000)
+            cy.wait(3000)
             cy.get('#loginMBtn').click().then(()=>{
-                cy.wait(2000)
+                cy.wait(100)
                 cy.get('#userName').type('itzik')
                 cy.get('#password').type('11111111')
-                cy.get('#loginBtn').click().then(()=>{
-                    cy.get('#openStoreMBtn').click()
-                })
+                cy.get('#loginBtn').click()
+                    // .then(()=>{
+                cy.wait(3000)
+                cy.get('#openStoreMBtn').click()
+                // })
             })
         })
     })
 
     it('Bad open', function () {
         cy.get('#newStoreName').type('!##@$\'')
-        const stub = cy.stub()
-        cy.on('window:alert', stub)
+        // const stub = cy.stub()
+        // cy.on('window:alert', stub)
         cy.get('#openStoreBtn').click()
         cy.url().should('include', '/openStorePage.html')
     })
@@ -27,6 +29,7 @@ describe('Open Store tests', function() {
         var sName = 'randomStore'.concat((Math.round(Math.random()*1000000)).toString())
         cy.get('#newStoreName').type(sName)
         cy.get('#openStoreBtn').click()
+        cy.wait(3000)
         cy.url().should('include', '/mainPage.html')
     })
 
@@ -39,8 +42,9 @@ describe('Open Store tests', function() {
     })
 
     it('Back', function () {
-        cy.get('#openStoreBackBtn').click().then(()=>{
-            cy.url().should('include', '/mainPage.html')
-        })
+        cy.get('#openStoreBackBtn').click()
+            // .then(()=>{
+        cy.url().should('include', '/mainPage.html')
+        // })
     })
 })

@@ -1,4 +1,10 @@
 var sName = "";
+
+function backToStorePage(){
+    cy.get('#goToMainPageBtn').click()
+    cy.get('#myStores').click()
+    cy.get('#storeIOwnTable').contains(sName).click()
+}
 describe('Storage Page tests', function() {
     beforeEach(() => {
         cy.visit('http://localhost:8080')
@@ -16,57 +22,57 @@ describe('Storage Page tests', function() {
                     cy.get('#openStoreBtn').click()
                     cy.wait(2000)
                     cy.get('#myStores').click()
-                    cy.get('#storeIOwnTableBody').contains(sName).click()
+                    cy.get('#storeIOwnTable').contains(sName).click()
                 })
             })
         })
     })
 
     it('Store Name correct', function () {
-        cy.get('#storeNameInStorePage').should('include', sName)
+        cy.get('#storeNameInStorePage').contains(sName)
     })
 
     it('Move between pages using buttons', function () {
         cy.get('#0').click().then(()=>{
             cy.url().should('include', '/addProductPage.html')
         })
-        cy.get('backBtn').click() //TODO - change when will create
+        backToStorePage()
         cy.get('#1').click().then(()=>{
             cy.url().should('include', '/storeProductsPage.html')
         })
-        cy.get('backBtn').click() //TODO - change when will create
+        backToStorePage()
         cy.get('#2').click().then(()=>{
             cy.url().should('include', '/storeProductsPage.html')
         })
-        cy.get('backBtn').click() //TODO - change when will create
+        backToStorePage()
         cy.get('#3').click().then(()=>{
             cy.url().should('include', '/storeProductsPage.html')
         })
-        cy.get('backBtn').click() //TODO - change when will create
+        backToStorePage()
         cy.get('#4').click().then(()=>{
             cy.url().should('include', '/storeProductsPage.html')
         })
-        cy.get('backBtn').click() //TODO - change when will create
+        backToStorePage()
         cy.get('#5').click().then(()=>{
             cy.url().should('include', '/subscribersPage.html')
         })
-        cy.get('backBtn').click() //TODO - change when will create
+        backToStorePage()
         cy.get('#6').click().then(()=>{
             cy.url().should('include', '/subscribersPage.html')
         })
-        cy.get('backBtn').click() //TODO - change when will create
+        backToStorePage()
         cy.get('#9').click().then(()=>{
             cy.url().should('include', '/purchaseHistoryOfStorePage.html')  //TODO - change to the real name
         })
-        cy.get('backBtn').click() //TODO - change when will create
+        backToStorePage()
         cy.get('#11').click().then(()=>{
             cy.url().should('include', '/addDiscountAndPolicyPage.html')
         })
-        cy.get('backBtn').click() //TODO - change when will create
+        backToStorePage()
         cy.get('#12').click().then(()=>{
             cy.url().should('include', '/addDiscountAndPolicyPage.html')
         })
-        cy.get('backBtn').click() //TODO - change when will create
+        backToStorePage()
         cy.get('#13').click().then(()=>{
             cy.url().should('include', '/storeProductsPage.html')
         })

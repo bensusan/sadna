@@ -635,12 +635,13 @@ function loadSearchProducts(){
 	var tableRef = document.getElementById('searchProductResultTable');
 	if(foundProds.length != 0){
 		for(var i = 0; i < foundProds.length; i++){
+			window.alert(JSON.stringify(foundProds[i]));
 			var newRow   = tableRef.insertRow(-1);
 			var newCell  = newRow.insertCell(0);
 			var newElem = document.createElement( 'button' );
 			newElem.setAttribute('class', 'btn');
 			newElem.setAttribute('onclick', 'getProduct('+ JSON.stringify(foundProds[i].id) +');');
-			newElem.innerHTML = "Product - id: " + foundProds[i].id + ", Name: " + foundProds[i].name + ", Price: " + foundProds[i].price +", Grading: " + foundProds[i].grading + ", Policy: " + foundProds[i].purchasePolicy + ", Type: " + foundProds[i].type;
+			newElem.innerHTML = "Product - id: " + foundProds[i].id + ", Name: " + foundProds[i].name + ", Price: " + foundProds[i].price +", Grading: " + foundProds[i].grading + ", Policy: " + JSON.stringify(foundProds[i].purchasePolicy) + ", Type: " + JSON.stringify(foundProds[i].type);
 			newCell.appendChild(newElem);
 		}
 	}

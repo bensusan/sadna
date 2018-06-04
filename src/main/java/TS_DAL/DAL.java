@@ -16,8 +16,8 @@ public class DAL {
 
 	private final static int emptyPolicyTypeCode = 0, andPolicyTypeCode = 1, orPolicyTypeCode = 2,
 			notPolicyTypeCode = 3, maxPolicyTypeCode = 4, minPolicyTypeCode = 5,addressPolicyTypeCode=6;
-	
-	
+
+
 	private static DAL dal = new DAL();
 	private DAL(){
 
@@ -111,7 +111,7 @@ public class DAL {
 					+ "productId INTEGER REFERENCES Products(productId),"
 					+ "lotteryId INTEGER UNIQUE,"
 					+ "actualEndDate DATE,"
-					+ "lottaryEndDate DATE,"
+					+ "lotteryEndDate DATE,"
 					+ "winnerUserName VARCHAR(50),"
 					+ "hasEnd TINYINT(1),"
 					+ "PRIMARY KEY (productId));";
@@ -236,8 +236,8 @@ public class DAL {
 		}
 		return null;
 	}
-	
-	
+
+
 
 	public  List<StoreManager> getSubscriberManagers(String username) throws Exception {
 		String query = "USE TradingSystem";
@@ -255,7 +255,7 @@ public class DAL {
 		return ret;
 	}
 
-	
+
 	public  List<Purchase> getMyPurchase(String username) throws Exception {
 		String query = "USE TradingSystem";
 		Connection c=getConnection();
@@ -269,13 +269,44 @@ public class DAL {
 		List <Purchase> ret = new LinkedList<Purchase>();
 		while(rs.next())
 		{
-			PurchasePolicy pp = getPurchasePolicy(rs.getInt("policyType"), 0);
-			Product p = new Product(rs.getString("name"), rs.getInt("price"), rs.getInt("grading"), null, null);
+			int policyId = rs.getInt("policyId");
+			int type = rs.getInt("policyType");
+			int maxOrMin = rs.getInt("IValue");
+			String address = rs.getString("SValue");
+			PurchasePolicy pp = null;
+			switch(rs.getInt("policyType")){
+			case 0:{
+				pp = getPurchasePolicyAtomic(policyId, type, maxOrMin, address);
+			}
+			case 1:{
+				List<PurchasePolicy> sub = getPurchasePolicyNotAtomic(policyId, type, maxOrMin, address);
+				pp = new AndPolicy(getDiscountPolicy(policyId), sub);
+			}
+			case 2:{
+				List<PurchasePolicy> sub = getPurchasePolicyNotAtomic(policyId, type, maxOrMin, address);
+				pp = new OrPolicy(getDiscountPolicy(policyId), sub);
+			}
+			case3:{
+				List<PurchasePolicy> sub = getPurchasePolicyNotAtomic(policyId, type, maxOrMin, address);
+				pp = new NotPolicy(getDiscountPolicy(policyId), sub.get(0));
+			}
+			case 4:{
+				pp = getPurchasePolicyAtomic(policyId, type, maxOrMin, address);
+			}
+			case 5:{
+				pp = getPurchasePolicyAtomic(policyId, type, maxOrMin, address);
+			}
+			case 6:{
+				pp = getPurchasePolicyAtomic(policyId, type, maxOrMin, address);
+			}
+			}
+			PurchaseType pt = new PurchaseType();
+			Product p = new Product(rs.getString("name"), rs.getInt("price"), rs.getInt("grading"), pp, null);
 			ProductInCart pic = new ProductInCart(p, rs.getInt("price"), rs.getInt("amount"));
 			Purchase purchase = new Purchase(rs.getDate("whenPurchased"), pic);
 			ret.add(purchase);
 		}
-	//	return ret;
+		//	return ret;
 	}
 
 	public boolean isSubscriberExist(String username) throws Exception{
@@ -315,11 +346,11 @@ public class DAL {
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
 		query = "DELETE FROM Subscribers " +
-                "WHERE username = " + sub.getUsername();
+				"WHERE username = " + sub.getUsername();
 		statement.executeUpdate(query);
 	}
 
-	
+
 	///problem with policies...
 	public List<Purchase> getStorePurchase(Store store){
 		return null;
@@ -331,10 +362,10 @@ public class DAL {
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
 		query = "INSERT INTO Purchased " +
-                "VALUES (" + sub.getUsername() + " , " + p.getPurchased().getMyProduct().getId() 
-                + " , " + p.getPurchased().getMyProduct().getStore().getStoreId() + 
-                " , " + p.getWhenPurchased() + " , " + p.getPurchased().getDiscountOrPrice() + 
-                " , " + p.getPurchased().getAmount() + ")";
+				"VALUES (" + sub.getUsername() + " , " + p.getPurchased().getMyProduct().getId() 
+				+ " , " + p.getPurchased().getMyProduct().getStore().getStoreId() + 
+				" , " + p.getWhenPurchased() + " , " + p.getPurchased().getDiscountOrPrice() + 
+				" , " + p.getPurchased().getAmount() + ")";
 		statement.executeUpdate(query);
 	}
 
@@ -402,19 +433,19 @@ public class DAL {
 
 	//policies.....
 	public List<Product> getAllProductsOfStore(Store store) throws Exception{
-//		String query = "USE TradingSystem";
-//		Connection c=getConnection();
-//		Statement statement=c.createStatement();
-//		statement.executeQuery(query);
-//		query ="SELECT * FROM ProductsInStores WHERE storeId = " +store.getStoreId()+ ";";
-//		ResultSet rs=statement.executeQuery(query);
-//		List<Product>ans=new LinkedList<Product>();
-//		while(rs.next())
-//		{
-//			Product prod = new Product(rs.getString("name"), rs.getInt("price"), rs.getInt("grading"), );
-//			ans.add(prod);
-//		}
-//		return ans;
+		//		String query = "USE TradingSystem";
+		//		Connection c=getConnection();
+		//		Statement statement=c.createStatement();
+		//		statement.executeQuery(query);
+		//		query ="SELECT * FROM ProductsInStores WHERE storeId = " +store.getStoreId()+ ";";
+		//		ResultSet rs=statement.executeQuery(query);
+		//		List<Product>ans=new LinkedList<Product>();
+		//		while(rs.next())
+		//		{
+		//			Product prod = new Product(rs.getString("name"), rs.getInt("price"), rs.getInt("grading"), );
+		//			ans.add(prod);
+		//		}
+		//		return ans;
 		return null;
 	}
 
@@ -576,8 +607,8 @@ public class DAL {
 				"VALUES (" + username + " , " + productId + " , " + amount + " , " + code + ")";
 		statement.executeUpdate(query);
 	}
-	
-	
+
+
 	public void removeProductFromCart(String username, int productId) throws Exception{
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
@@ -588,8 +619,8 @@ public class DAL {
 				"AND username = " + username;
 		statement.executeUpdate(query);
 	}
-	
-	
+
+
 	public void editProductAmount(String username, int productId, int amount) throws Exception{
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
@@ -601,8 +632,8 @@ public class DAL {
 				"AND username = " + username;
 		statement.executeUpdate(query);
 	}
-	
-	
+
+
 	public void editProductCode(String username, int productId, int code) throws Exception{
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
@@ -614,8 +645,8 @@ public class DAL {
 				"AND username = " + username;
 		statement.executeUpdate(query);
 	}
-	
-	
+
+
 	public void editProductPrice(int productId, int price) throws Exception{
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
@@ -655,12 +686,12 @@ public class DAL {
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
 		query = "INSERT INTO Stores " +
-                "VALUES (" + s.getStoreId() + " , " + s.getStoreName() 
-                + " , " + s.getAddress() + 
-                " , " + s.getPhone() + " , " + s.getGradeing() + 
-                " , " + s.getIsOpen() + 
-                " , " + s.getMoneyEarned() + 
-                " , " + s.getStorePolicy()+ ")"; //policy id , need to check last param!!!!!!!!!
+				"VALUES (" + s.getStoreId() + " , " + s.getStoreName() 
+				+ " , " + s.getAddress() + 
+				" , " + s.getPhone() + " , " + s.getGradeing() + 
+				" , " + s.getIsOpen() + 
+				" , " + s.getMoneyEarned() + 
+				" , " + s.getStorePolicy()+ ")"; //policy id , need to check last param!!!!!!!!!
 		statement.executeUpdate(query);
 	}
 
@@ -686,42 +717,13 @@ public class DAL {
 		// TODO return all purchase of Subscriber with given username
 		return null;
 	}
-	
-	public PurchasePolicy getPurchasePolicy(int policyId, int type) throws Exception{
-		switch(type){
-			case 0: return new EmptyPolicy(getDiscountPolicy(policyId));
-			case 1: return new AndPolicy(getDiscountPolicy(policyId), null);
-			case 2: return new OrPolicy(getDiscountPolicy(policyId), null);
-			case 3: return new NotPolicy(getDiscountPolicy(policyId), null);
-			case 4: return new MaxPolicy(getDiscountPolicy(policyId), -1);
-			case 5: return new MinPolicy(getDiscountPolicy(policyId), -1);
-		}
-		return null;
-	}
-	
-	public List<PurchasePolicy> getSubPolicies(int policyId){
-		String query = "USE TradingSystem";
-		Connection c = getConnection();
-		Statement statement=c.createStatement();
-		statement.executeUpdate(query);
-		query = "SELECT *  "
-				+ "FROM SubPolicies"
-				+ "INNER JOIN Carts ON ProductsInStores.productId = Carts.productId"
-				+ "WHERE ProductsInStores.productId = " + productId+ ";";
-		statement.executeUpdate(query);
-		ResultSet res=statement.executeQuery(query);
-		while(res.next()){
-			if(res.getInt("amount") >= amount)
-				return true;
-		}
-		return false;
-		return null;
-	}
+
+
 	//########### or new function ###########
 	public void removePurchase(Subscriber s, Purchase p) {
 		// TODO remove purchase from purchase table
 	}
-	
+
 	public DiscountPolicy getDiscountPolicy(int policyId) throws Exception{
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
@@ -746,36 +748,83 @@ public class DAL {
 		}
 		return null;
 	}
+
+	public PurchasePolicy getPurchasePolicyAtomic(int policyId, int type, int maxOrMin, String address) throws Exception{
+		PurchasePolicy pp = null;
+		switch(type){
+		case 0: {
+			pp = new EmptyPolicy(getDiscountPolicy(policyId)); 
+		}
+		case 4: {
+			pp = new MaxPolicy(getDiscountPolicy(policyId), maxOrMin); 
+		}
+		case 5: {
+			pp = new MinPolicy(getDiscountPolicy(policyId), maxOrMin); 
+		}
+		case 6: {
+			pp = new AddressPolicy(getDiscountPolicy(policyId), address); 
+		}
+		}
+		return pp;
+	}
 	
-	public PurchaseType getPurchaseType(int productId){
+	public List<Integer> getNumbersOfSubPolicies(int policyId) throws Exception{
+		String query = "USE TradingSystem";
+		Connection c = getConnection();
+		Statement statement=c.createStatement();
+		stmt.executeUpdate(query);
+		query = "SELECT * "
+				+ "FROM SubPolicies "
+				+ "WHERE SubPolicies.fatherPolicyId = " + policyId + ";" ;
+		stmt.executeUpdate(query);
+		ResultSet res=statement.executeQuery(query);
+		List<Integer> lst = new LinkedList<Integer>();
+		while(res.next()){
+			lst.add(res.getInt("sonPolicyId"));
+		}
+		return lst;
+	}
+	
+	public List<PurchasePolicy> getPurchasePolicyNotAtomic(int policyId, int type, int maxOrMin, String address) throws Exception{
+		List<PurchasePolicy> ret = new LinkedList<PurchasePolicy>();
+		List<Integer> lst = getNumbersOfSubPolicies(policyId);
+		switch(policyId){
+		case 1:{
+			while(!lst.isEmpty()){
+				PurchasePolicy pp = getPurchasePolicyAtomic(lst.get(0), type, maxOrMin, address);
+				ret.add(pp);
+				lst.remove(0);
+			}
+		}
+		case 2:{
+			while(!lst.isEmpty()){
+				PurchasePolicy pp = getPurchasePolicyAtomic(lst.get(0), type, maxOrMin, address);
+				ret.add(pp);
+				lst.remove(0);
+			}
+		}
+		case 3:{
+				PurchasePolicy pp = getPurchasePolicyAtomic(lst.get(0), type, maxOrMin, address);
+				ret.add(pp);
+				lst.remove(0);
+		}
+		}
+		return ret;
+	}
+	
+	public void deleteStore(int storeId) throws Exception{
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
-		query = "SELECT *  "
-				+ "FROM ImmediatelyPurchases"
-				+ "WHERE ImmediatelyPurchases.productId = " + productId+ ";";
+		query = "DELETE FROM Stores " +
+				"WHERE storeId = " + storeId;
 		statement.executeUpdate(query);
-		ResultSet res=statement.executeQuery(query);
-		if(res.next()){
-			PurchaseType pt = new ImmediatelyPurchase(discountTree);
-			if(pt.equals(null)){
-				query = "SELECT *  "
-						+ "FROM LotteryPurchases"
-						+ "INNER JOIN SubscribersInLottery ON LotteryPurchases.lotteryId = SubscribersInLottery.lotteryId"
-						+ "WHERE LotteryPurchases.productId = " + productId+ ";";
-				statement.executeUpdate(query);
-				res=statement.executeQuery(query);
-				PurchaseType pl = new LotteryPurchase(res.getDate("lotteryEndDate"), participants)
-			}
-		}
-		
-			
-		return false;
-		return null;
+		query = "DELETE FROM ProductsInStores " +
+				"WHERE storeId = " + storeId;
+		statement.executeUpdate(query);
 	}
-	
-	
+
 	protected static Connection getConnection() throws Exception {
 		String driver = "com.mysql.cj.jdbc.Driver";
 		String url = "jdbc:mysql://localhost:3306/?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
@@ -785,7 +834,7 @@ public class DAL {
 		Connection conn = DriverManager.getConnection(url, username, password);
 		return conn;
 	}
-	
-	
+
+
 
 }

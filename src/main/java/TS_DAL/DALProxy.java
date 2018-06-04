@@ -284,19 +284,9 @@ public class DALProxy implements DAL{
 		return real.getStorePurchase(storeId);
 	}
 
-	public PurchasePolicy getPurchasePolicy(int policyId, int type) throws Exception {
-		if (real == null) {
-			real = DALReal.getInstance();
-	    }
-		return real.getPurchasePolicy(policyId,type);
-	}
 
-	public List<PurchasePolicy> getSubPolicies(int policyId) {
-		if (real == null) {
-			real = DALReal.getInstance();
-	    }
-		return real.getSubPolicies(policyId);
-	}
+
+	
 
 	public void removePurchase(Subscriber s, Purchase p) {
 		if (real == null) {
@@ -305,12 +295,7 @@ public class DALProxy implements DAL{
 		real.removePurchase(s,p);
 	}
 
-	public void deleteStore(int storeId) {
-		if (real == null) {
-			real = DALReal.getInstance();
-	    }
-		real.deleteStore(storeId);
-	}
+	
 
 	public DiscountPolicy getDiscountPolicy(int policyId) throws Exception {
 		if (real == null) {
@@ -319,11 +304,13 @@ public class DALProxy implements DAL{
 		return real.getDiscountPolicy(policyId);
 	}
 
-	public PurchaseType getPurchaseType(int productId) {
+	public void deleteStore(int storeId) throws Exception {
 		if (real == null) {
 			real = DALReal.getInstance();
 	    }
-		return real.getPurchaseType(productId);
+		real.deleteStore(storeId);
 	}
+
+	
 
 }

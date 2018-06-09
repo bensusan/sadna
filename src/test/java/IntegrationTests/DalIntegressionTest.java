@@ -12,12 +12,13 @@ import org.junit.Test;
 
 import TS_SharedClasses.*;
 import TS_DAL.DALProxy;
+import TS_DAL.DALTestProxy;
 
 public class DalIntegressionTest {
 
 	@Test
 	public void testAddSubscriber() {
-		DALProxy dal=new DALProxy();
+		DALTestProxy dal=new DALTestProxy();
 		Subscriber s=new Subscriber(new Cart(), "newUser", "newPass", "newFullName", "newAddress", "newPhone", "newCreditCard", new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>());
 		try {
 			dal.addSubscriber(s);

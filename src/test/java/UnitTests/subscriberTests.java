@@ -41,11 +41,12 @@ public class subscriberTests {
 		try{
 			BlMain.openStore(null,"ofir's store", 3, true);
 			BlMain.openStore(ofir,"ofir's store", -1,  true);
-			//fail();
+			fail();
 		}
 		catch (Exception e) {}
 		try {
-			assertNotNull(BlMain.openStore(ofir,"ofir's store", 3,  true));
+			Store s=BlMain.openStore(ofir,"ofir's store", 3,  true);
+			assertNotNull(s);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();

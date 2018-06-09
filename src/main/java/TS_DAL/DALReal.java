@@ -12,29 +12,38 @@ public class DALReal implements DAL {
 	private Connection conn = null;
 	private Statement stmt = null;
 
+	private String DataBaseName="TradingSystem";
+	
 	private final static int emptyPolicyTypeCode = 0, andPolicyTypeCode = 1, orPolicyTypeCode = 2,
 			notPolicyTypeCode = 3, maxPolicyTypeCode = 4, minPolicyTypeCode = 5,addressPolicyTypeCode=6;
 
 
-	private static DALReal dal = new DALReal();
-	private DALReal(){
-
+	private static DALReal dal = new DALReal(1);
+	private static DALReal Testdal = new DALReal(2);
+	
+	private DALReal(int Type){
+		if(Type==1){
+			DataBaseName="TradingSystem";
+		}
+		else{
+			DataBaseName="TradingSystemTest";
+		}
 		try {
 			conn = getConnection();
 			stmt = conn.createStatement();
 			String sql;
 			try{
-				sql = "CREATE DATABASE TradingSystem";
+				sql = "CREATE DATABASE "+DataBaseName;
 				stmt.executeUpdate(sql);
 			}
 			catch (SQLException sqlException) {
 				if (sqlException.getErrorCode() == 1007) {
 					// Database already exists error
-					sql = "DROP DATABASE TradingSystem";
+					sql = "DROP DATABASE "+DataBaseName;
 					stmt.executeUpdate(sql);
 				}
 			}
-			sql = "USE TradingSystem";
+			sql = "USE "+DataBaseName;
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE Subscribers(username VARCHAR(50),"
 					+ " password VARCHAR(50),"
@@ -168,13 +177,17 @@ public class DALReal implements DAL {
 			}
 		}
 	}
-	public static DALReal getInstance(){
-		return dal;
+	public static DALReal getInstance(int type){
+		if(type==1){
+			return dal;
+		}
+		return Testdal;
+		
 	}
 	//or
 	public List<Subscriber> allSubscribers() throws Exception
 	{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c=getConnection();
 		Statement statement = c.createStatement();
 		statement.executeQuery(query);
@@ -202,7 +215,7 @@ public class DALReal implements DAL {
 	}
 
 	public List<StoreOwner> getStoreOwners(String username) throws Exception {
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeQuery(query);
@@ -218,7 +231,7 @@ public class DALReal implements DAL {
 	}
 
 	public Store getStoreByStoreId(int storeId) throws Exception {
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c=getConnection();
 		Statement statement = c.createStatement();
 		statement.executeQuery(query);
@@ -238,7 +251,7 @@ public class DALReal implements DAL {
 
 
 	public  List<StoreManager> getSubscriberManagers(String username) throws Exception {
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c=getConnection();
 		Statement statement = c.createStatement();
 		statement.executeQuery(query);
@@ -255,7 +268,7 @@ public class DALReal implements DAL {
 
 
 	public  List<Purchase> getMyPurchase(String username) throws Exception {
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c=getConnection();
 		Statement statement = c.createStatement();
 		statement.executeQuery(query);
@@ -309,7 +322,7 @@ public class DALReal implements DAL {
 	}
 
 	public boolean isSubscriberExist(String username) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -325,7 +338,7 @@ public class DALReal implements DAL {
 
 	public boolean isAdmin(String username) throws Exception 
 	{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -340,7 +353,7 @@ public class DALReal implements DAL {
 	}
 
 	public void removeSubscriber(Subscriber sub) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -356,7 +369,7 @@ public class DALReal implements DAL {
 	}
 
 	public void addPurchaseToHistory(Subscriber sub, Purchase p) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -370,7 +383,7 @@ public class DALReal implements DAL {
 
 	//removes owner named "username" from store with storeId
 	public void removeStoreOwner(String username, int storeId) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -382,7 +395,7 @@ public class DALReal implements DAL {
 
 	//removes manager named "username" from store with storeId
 	public void deleteStoreManager(String username, int storeId) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -394,7 +407,7 @@ public class DALReal implements DAL {
 
 	//checks if there is at least "amount" of this product with productId in store
 	public boolean checkInStock(int productId, int amount) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -413,7 +426,7 @@ public class DALReal implements DAL {
 
 
 	public Store getProductStore(Product p) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		stmt.executeUpdate(query);
@@ -432,7 +445,7 @@ public class DALReal implements DAL {
 
 	//policies.....
 	public List<Product> getAllProductsOfStore(Store store) throws Exception{
-		//		String query = "USE TradingSystem";
+		//		String query = "USE "+DataBaseName;
 		//		Connection c=getConnection();
 		//		Statement statement=c.createStatement();
 		//		statement.executeQuery(query);
@@ -449,7 +462,7 @@ public class DALReal implements DAL {
 	}
 
 	public void stockUpdate(Product p, int amount,Store s) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -462,7 +475,7 @@ public class DALReal implements DAL {
 	}
 
 	public void updateMoneyEarned(Store s, int newMoneyEarend) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -484,7 +497,7 @@ public class DALReal implements DAL {
 	}
 
 	public void addProductToStore(Store s, Product product, int amount,String category) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -497,7 +510,7 @@ public class DALReal implements DAL {
 	}
 
 	public void deleteProductFromStore(Store s, Product product) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -513,7 +526,7 @@ public class DALReal implements DAL {
 	}
 
 	public void addNewStoreOwner(Store s, Subscriber owner) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -523,7 +536,7 @@ public class DALReal implements DAL {
 	}
 
 	public void addNewStoreManager(Store s, Subscriber newMan, int permission) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -534,7 +547,7 @@ public class DALReal implements DAL {
 
 	//if isOpen insert 1 to store to the isOpen(TinyInt) field, else insert 0
 	public void updateStore(Store s) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -554,7 +567,7 @@ public class DALReal implements DAL {
 	}
 
 	public void addSubscriber(Subscriber s) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -570,7 +583,7 @@ public class DALReal implements DAL {
 	}
 
 	public Subscriber getSubscriber(String username, String password) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -598,7 +611,7 @@ public class DALReal implements DAL {
 	///////////////////////////////////////////////////////////////////////////////////////
 	//add product to cart
 	public void addImeddiatleyProductToCart(String username, int productId, int amount, int code) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -609,7 +622,7 @@ public class DALReal implements DAL {
 
 
 	public void removeProductFromCart(String username, int productId) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -621,7 +634,7 @@ public class DALReal implements DAL {
 
 
 	public void editProductAmount(String username, int productId, int amount) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -634,7 +647,7 @@ public class DALReal implements DAL {
 
 
 	public void editProductCode(String username, int productId, int code) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -647,7 +660,7 @@ public class DALReal implements DAL {
 
 
 	public void editProductPrice(int productId, int price) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -658,7 +671,7 @@ public class DALReal implements DAL {
 	}
 	//isOpen = false
 	public void closeStore(int storeId) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -669,7 +682,7 @@ public class DALReal implements DAL {
 	}
 	//is
 	public void openStore(int storeId) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -680,7 +693,7 @@ public class DALReal implements DAL {
 	}
 
 	public void addStore(Store s) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
@@ -696,7 +709,7 @@ public class DALReal implements DAL {
 
 	//policies
 	public  Map<Product,Integer> getProductAmount(int storeId) throws Exception {
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		stmt.executeUpdate(query);
@@ -724,7 +737,7 @@ public class DALReal implements DAL {
 	}
 
 	public DiscountPolicy getDiscountPolicy(int policyId) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		stmt.executeUpdate(query);
@@ -768,7 +781,7 @@ public class DALReal implements DAL {
 	}
 	
 	public List<Integer> getNumbersOfSubPolicies(int policyId) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		stmt.executeUpdate(query);
@@ -812,7 +825,7 @@ public class DALReal implements DAL {
 	}
 	
 	public void deleteStore(int storeId) throws Exception{
-		String query = "USE TradingSystem";
+		String query = "USE "+DataBaseName;
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);

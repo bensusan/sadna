@@ -3,66 +3,72 @@ package TS_DAL;
 import java.util.List;
 import java.util.Map;
 
-import TS_SharedClasses.*;
+import TS_SharedClasses.Category;
+import TS_SharedClasses.DiscountPolicy;
+import TS_SharedClasses.Product;
+import TS_SharedClasses.Purchase;
+import TS_SharedClasses.Store;
+import TS_SharedClasses.StoreManager;
+import TS_SharedClasses.StoreOwner;
+import TS_SharedClasses.Subscriber;
 
-public class DALProxy implements DAL{
-
-	private DALReal real = null;
+public class DALTestProxy implements DAL {
+private DALReal real = null;
 	
-	public DALProxy() {}
+	public DALTestProxy() {}
 	
 	public List<Subscriber> allSubscribers() throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		return real.allSubscribers();
 	}
 
 	public List<StoreOwner> getStoreOwners(String username) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		return real.getStoreOwners(username);
 	}
 
 	public Store getStoreByStoreId(int storeId) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		return real.getStoreByStoreId(storeId);
 	}
 
 	public List<StoreManager> getSubscriberManagers(String username) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		return real.getSubscriberManagers(username);
 	}
 
 	public List<Purchase> getMyPurchase(String username) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		return real.getMyPurchase(username);
 	}
 
 	public boolean isSubscriberExist(String username) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		return real.isSubscriberExist(username);
 	}
 
 	public boolean isAdmin(String username) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		return real.isAdmin(username);
 	}
 
 	public void removeSubscriber(Subscriber sub) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.removeSubscriber(sub);
 		
@@ -70,14 +76,14 @@ public class DALProxy implements DAL{
 
 	public List<Purchase> getStorePurchase(Store store) {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		return real.getStorePurchase(store);
 	}
 
 	public void addPurchaseToHistory(Subscriber sub, Purchase p) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.addPurchaseToHistory(sub,p);
 		
@@ -85,7 +91,7 @@ public class DALProxy implements DAL{
 
 	public void removeStoreOwner(String username, int storeId) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.removeStoreOwner(username,storeId);
 		
@@ -93,7 +99,7 @@ public class DALProxy implements DAL{
 
 	public void deleteStoreManager(String username, int storeId) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.deleteStoreManager(username, storeId);
 		
@@ -101,28 +107,28 @@ public class DALProxy implements DAL{
 
 	public boolean checkInStock(int productId, int amount) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		return real.checkInStock(productId,amount);
 	}
 
 	public Store getProductStore(Product p) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		return real.getProductStore(p);
 	}
 
 	public List<Product> getAllProductsOfStore(Store store) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		return real.getAllProductsOfStore(store);
 	}
 
 	public void stockUpdate(Product p, int amount, Store s) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.stockUpdate(p,amount,s);
 		
@@ -130,7 +136,7 @@ public class DALProxy implements DAL{
 
 	public void updateMoneyEarned(Store s, int newMoneyEarend) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.updateMoneyEarned(s,newMoneyEarend);
 		
@@ -138,21 +144,21 @@ public class DALProxy implements DAL{
 
 	public List<Category> getAllCategory() {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		return real.getAllCategory();
 	}
 
 	public Category getCategory(String categoryName) {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		return real.getCategory(categoryName);
 	}
 
 	public void addProductToStore(Store s, Product product, int amount, String category) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.addProductToStore(s,product,amount,category);
 		
@@ -160,7 +166,7 @@ public class DALProxy implements DAL{
 
 	public void deleteProductFromStore(Store s, Product product) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.deleteProductFromStore(s,product);
 		
@@ -169,7 +175,7 @@ public class DALProxy implements DAL{
 	public void updateProductDetails(Store s, Product oldProduct, Product newProduct, int amount,
 			String newProductCategory) {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.updateProductDetails(s,oldProduct,newProduct,amount,newProductCategory);
 		
@@ -177,7 +183,7 @@ public class DALProxy implements DAL{
 
 	public void addNewStoreOwner(Store s, Subscriber owner) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.addNewStoreOwner(s,owner);
 		
@@ -185,7 +191,7 @@ public class DALProxy implements DAL{
 
 	public void addNewStoreManager(Store s, Subscriber newMan, int permission) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.addNewStoreManager(s,newMan,permission);
 		
@@ -193,7 +199,7 @@ public class DALProxy implements DAL{
 
 	public void updateStore(Store s) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.updateStore(s);
 		
@@ -201,7 +207,7 @@ public class DALProxy implements DAL{
 
 	public void addSubscriber(Subscriber s) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.addSubscriber(s);
 		
@@ -209,77 +215,77 @@ public class DALProxy implements DAL{
 
 	public Subscriber getSubscriber(String username, String password) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		return real.getSubscriber(username,password);
 	}
 
 	public void addImeddiatleyProductToCart(String username, int productId, int amount, int code) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.addImeddiatleyProductToCart(username, productId, amount, code);
 	}
 
 	public void removeProductFromCart(String username, int productId) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.removeProductFromCart(username,productId);
 	}
 
 	public void editProductAmount(String username, int productId, int amount) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.editProductAmount(username, productId, amount);
 	}
 
 	public void editProductCode(String username, int productId, int code) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.editProductCode(username, productId, code);
 	}
 
 	public void editProductPrice(int productId, int price) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.editProductPrice(productId, price);
 	}
 
 	public void closeStore(int storeId) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.closeStore(storeId);
 	}
 
 	public void openStore(int storeId) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.openStore(storeId);
 	}
 
 	public void addStore(Store s) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.addStore(s);
 	}
 
 	public Map<Product, Integer> getProductAmount(int storeId) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		return real.getProductAmount(storeId);
 	}
 
 	public List<Purchase> getStorePurchase(int storeId) {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		return real.getStorePurchase(storeId);
 	}
@@ -290,7 +296,7 @@ public class DALProxy implements DAL{
 
 	public void removePurchase(Subscriber s, Purchase p) {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.removePurchase(s,p);
 	}
@@ -299,18 +305,16 @@ public class DALProxy implements DAL{
 
 	public DiscountPolicy getDiscountPolicy(int policyId) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		return real.getDiscountPolicy(policyId);
 	}
 
 	public void deleteStore(int storeId) throws Exception {
 		if (real == null) {
-			real = DALReal.getInstance(1);
+			real = DALReal.getInstance(2);
 	    }
 		real.deleteStore(storeId);
 	}
-
-	
 
 }

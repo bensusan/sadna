@@ -46,6 +46,8 @@ public class guestTests {
 	@Test
 	public void mainTest()
 	{
+		testFindProductByName();
+		testFindProductByCategory();
 		testAddImmediatelyProduct();
 		testAddImmediatelyProductWithCode();
 		testAddLotteryProduct();
@@ -55,6 +57,74 @@ public class guestTests {
 		testPurchaseCart();
 		testSignUp();
 		testSignIn();
+	}
+	private void testFindProductByName(){
+		try{
+			BlMain.findProductByName(null);
+		}
+		catch (Exception e) {
+			assertEquals(e.getMessage() , "something went wrong");
+		}
+		try{
+			BlMain.findProductByName("17^*&%");
+		}
+		catch (Exception e) {
+			assertEquals(e.getMessage() , "something went wrong");
+		}
+		
+		List<Product> lst=BlMain.findProductByName("ball");
+		boolean iscontain=false;
+		for(Product p:lst){
+			if(p.getName()=="ball with Discount")
+			{
+				iscontain = true;
+			}
+		}
+		assertTrue(iscontain);
+		lst=BlMain.findProductByName("ball with Discount");
+		iscontain=false;
+		for(Product p:lst){
+			if(p.getName()=="ball")
+			{
+				iscontain = true;
+			}
+		}
+		assertFalse(iscontain);
+		
+	}
+	private void testFindProductByCategory(){
+		try{
+			BlMain.findProductByCategory(null);
+		}
+		catch (Exception e) {
+			assertEquals(e.getMessage() , "something went wrong");
+		}
+		try{
+			BlMain.findProductByCategory("17^*&%");
+		}
+		catch (Exception e) {
+			assertEquals(e.getMessage() , "something went wrong");
+		}
+		
+		List<Product> lst=BlMain.findProductByCategory("toys");
+		boolean iscontain=false;
+		for(Product p:lst){
+			if(p.getName()=="ball")
+			{
+				iscontain = true;
+			}
+		}
+		assertTrue(iscontain);
+		lst=BlMain.findProductByCategory("food");
+		iscontain=false;
+		for(Product p:lst){
+			if(p.getName()=="ball")
+			{
+				iscontain = true;
+			}
+		}
+		assertFalse(iscontain);
+		
 	}
 	
 	private void testAddImmediatelyProduct() {

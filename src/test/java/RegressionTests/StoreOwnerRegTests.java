@@ -188,6 +188,26 @@ public class StoreOwnerRegTests {
 			}
 		}
 		assertEquals(ofirStore.getMyOwners().size(),storeown+1);
+		
+		try {
+			BlMain.addNewStoreOwner(ofirOwnership, sagiv);//owner that already exist
+			fail();
+		} catch (Exception e) {
+			assertEquals(e.getMessage() , "");//TODO write the right error message
+		}
+		try{
+			BlMain.addNewManager(ofirOwnership,sagiv);//sagiv is owner, he cant be manager to
+			fail();
+		}
+		catch (Exception e) {
+			assertEquals(e.getMessage() , "");//TODO write the right error message
+		}
+		try {
+			BlMain.addNewStoreOwner(sagiv.getOwner().get(0),sagiv);//cannot owner himself
+			fail();
+		} catch (Exception e) {
+			assertEquals(e.getMessage() , "");//TODO write the right error message
+		}
 	}
 	private void testAddNewManager() {
 		try {
@@ -213,6 +233,27 @@ public class StoreOwnerRegTests {
 			}
 		}
 		assertEquals(ofirStore.getMyManagers().size(),manBef+1);
+		
+		try {
+			BlMain.addNewManager(ofirOwnership, or);//owner that already exist
+			fail();
+		} catch (Exception e) {
+			assertEquals(e.getMessage() , "");//TODO write the right error message
+		}
+		try{
+			BlMain.addNewStoreOwner(ofirOwnership,or);//or is manager, he cant be owner to
+			fail();
+		}
+		catch (Exception e) {
+			assertEquals(e.getMessage() , "");//TODO write the right error message
+		}
+		try {
+			BlMain.addNewManager(or.getManager().get(0),or);//cannot manager himself
+			fail();
+		} catch (Exception e) {
+			assertEquals(e.getMessage() , "");//TODO write the right error message
+		}
+		
 	}
 
 	@AfterClass

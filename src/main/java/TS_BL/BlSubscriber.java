@@ -31,6 +31,7 @@ public class BlSubscriber {
 		
 		List<StoreOwner> own=sub.getOwner();
 		Store s = new Store(storeName, sub.getAddress(), sub.getPhone(), gradeing, products, purchaseHistory, isOpen);
+		
 		StoreOwner so=new StoreOwner(s);
 		own.add(so);
 		

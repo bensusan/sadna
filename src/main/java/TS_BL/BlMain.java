@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import TS_DAL.*;
 import TS_SharedClasses.*;
 
 public class BlMain {
@@ -30,6 +31,8 @@ public class BlMain {
 			//....
 		}
 	};
+	
+	public final static DAL dal = new DALProxy();
 	public static Map<Guest, LinkedList<String>> allUsersWithTheirCreditCards = new HashMap<Guest, LinkedList<String>>();
 	
 	// need to insert to here all guests that payed with their credit card for pay back

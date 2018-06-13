@@ -32,7 +32,7 @@ public class BlMain {
 		}
 	};
 	
-	public final static DAL dal = new DALProxy();
+	public final static DAL dalRef = new DALProxy();
 	public static Map<Guest, LinkedList<String>> allUsersWithTheirCreditCards = new HashMap<Guest, LinkedList<String>>();
 	
 	// need to insert to here all guests that payed with their credit card for pay back

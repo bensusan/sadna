@@ -502,6 +502,7 @@ public class DALReal implements DAL {
 		statement.executeUpdate(query);
 	}
 
+	//TODO - Missing updates... policies for example
 	//if isOpen insert 1 to store to the isOpen(TinyInt) field, else insert 0
 	public void updateStore(Store s) throws Exception{
 		String query = "USE TradingSystem";
@@ -554,7 +555,7 @@ public class DALReal implements DAL {
 			List<Purchase> myPurchase=getMyPurchase(res.getString("username"));
 			List<StoreManager>managers=getSubscriberManagers(res.getString("username"));
 			List<StoreOwner>owners=getStoreOwners(res.getString("username"));
-			Subscriber s = new Subscriber(res.getString("username"),
+			return new Subscriber(res.getString("username"),
 					res.getString("password"),
 					res.getString("fullname"),
 					res.getString("address"),
@@ -778,6 +779,49 @@ public class DALReal implements DAL {
 		return null;
 	}
 	
+	public Subscriber getSubscriberIfExists(String username) throws Exception{
+		String query = "USE TradingSystem";
+		Connection c = getConnection();
+		Statement statement=c.createStatement();
+		statement.executeUpdate(query);
+		query = "SELECT username "
+				+ "FROM Subscribers "
+				+ "WHERE username = " + username+ ";";
+		statement.executeUpdate(query);
+		ResultSet res=statement.executeQuery(query);
+		if(res.next()){
+			List<Purchase> myPurchase=getMyPurchase(res.getString("username"));
+			List<StoreManager>managers=getSubscriberManagers(res.getString("username"));
+			List<StoreOwner>owners=getStoreOwners(res.getString("username"));
+			return new Subscriber(res.getString("username"),
+					res.getString("password"),
+					res.getString("fullname"),
+					res.getString("address"),
+					res.getString("phone"), 
+					res.getString("creditCardNumber"),
+					myPurchase, managers, owners);
+		}
+		return null;
+	}
+	
+	public List<Store> getStores() throws Exception {
+		String query = "USE TradingSystem";
+		Connection c=getConnection();
+		Statement statement = c.createStatement();
+		statement.executeQuery(query);
+		query ="SELECT * FROM Stores";
+		ResultSet rs = statement.executeQuery(query);
+		List <Store> ret = new LinkedList<Store>();
+		while(rs.next())
+		{
+			boolean isOpen = false;
+			if(rs.getInt("isOpen") == 1)
+				isOpen = true;
+			Store s = new Store(rs.getString("name"), rs.getString("address"), rs.getString("phone"), rs.getInt("grading"), getProductAmount(rs.getInt("storeId")), getStorePurchase(rs.getInt("storeId")), isOpen);
+			ret.add(s);
+		}
+		return ret;
+	}
 	
 	protected static Connection getConnection() throws Exception {
 		String driver = "com.mysql.cj.jdbc.Driver";
@@ -790,5 +834,4 @@ public class DALReal implements DAL {
 	}
 	
 	
-
 }

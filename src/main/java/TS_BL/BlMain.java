@@ -18,19 +18,23 @@ public class BlMain {
 			openStore = 8, getPurchaseHistory = 9, expiredProducts = 10, changeStorePurchasePolicy = 11,
 			addDiscountToCategoryStore=12, changeProductType=13;
 
-	public static List<Subscriber> allSubscribers = new ArrayList<Subscriber>(){
-		{
-			add(((Subscriber)new SystemAdministrator("itzik", BlGuest.md5Hash("11111111"), "shmulik", "bait shel or", "0522222222", "111111111111", new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>())));
-		}		
-	};
-	public static List<Category> allCategory=new ArrayList<Category>(){
-		{
-			add(new Category("toys"));
-			add(new Category("food"));
-			add(new Category("a"));
-			//....
-		}
-	};
+
+	/** DONT DELETE THE COMMENTS - NEED TO SUPPORT THE DELETION FIRST!!!*/
+	//TODO - delete the data and put it in the database.
+//	public static List<Subscriber> allSubscribers = new ArrayList<Subscriber>(){
+//		{
+//			add(((Subscriber)new SystemAdministrator("itzik", BlGuest.md5Hash("11111111"), "shmulik", "bait shel or", "0522222222", "111111111111", new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>())));
+//		}		
+//	};
+	//TODO - delete the data and put it in the database.
+//	public static List<Category> allCategory=new ArrayList<Category>(){
+//		{
+//			add(new Category("toys"));
+//			add(new Category("food"));
+//			add(new Category("a"));
+//			//....
+//		}
+//	};
 	
 	public final static DAL dalRef = new DALProxy();
 	public static Map<Guest, LinkedList<String>> allUsersWithTheirCreditCards = new HashMap<Guest, LinkedList<String>>();
@@ -195,7 +199,6 @@ public class BlMain {
 	public static Subscriber signUp(Guest g, String username, String password, String fullName, String address,
 			String phone, String creditCardNumber) throws Exception {
 		Subscriber toReturn = BlGuest.signUp(g, username, password, fullName, address, phone, creditCardNumber);
-		List<Subscriber> toView = allSubscribers;
 		return toReturn;
 	}
 
@@ -220,12 +223,8 @@ public class BlMain {
 	}
 
 	////////////////////////////////////// Help functions for everyone
-	static Subscriber checkIfSubscriberExists(String username) {
-		for (Subscriber subscriber : allSubscribers) {
-			if (subscriber.getUsername().equals(username))
-				return subscriber;
-		}
-		return null;
+	static Subscriber checkIfSubscriberExists(String username) throws Exception {		
+		return dalRef.getSubscriberIfExists(username);
 	}
 
 	static boolean correctSpelledLettersSpacesNumbers(String str) {
@@ -262,7 +261,7 @@ public class BlMain {
 		return true;
 	}
 
-	public static Map<Store, Map<Product, Integer>> getAllStoresWithThierProductsAndAmounts() {
+	public static Map<Store, Map<Product, Integer>> getAllStoresWithThierProductsAndAmounts() throws Exception{
 		Map<Store, Map<Product, Integer>> res = new HashMap<Store, Map<Product, Integer>>();
 		List<Store> stores = getAllStores();
 		for (Store store : stores) {
@@ -271,23 +270,24 @@ public class BlMain {
 		return res;
 	}
 
-	public static List<Store> getAllStores() {
-		List<Store> res = new LinkedList<Store>();
-		Store newStore;
-		for (Subscriber subscriber : allSubscribers) {
-			for (StoreOwner owner : subscriber.getOwner()) {
-				newStore = owner.getStore();
-				for (Store store : res) {
-					if (store.equals(owner.getStore()))
-						newStore = null;
-					break;
-				}
-				if (newStore != null)
-					res.add(newStore);
-				newStore = null;
-			}
-		}
-		return res;
+	public static List<Store> getAllStores() throws Exception{
+//		List<Store> res = new LinkedList<Store>();
+//		Store newStore;
+//		dalRef.getSt
+//		for (Subscriber subscriber : allSubscribers) {
+//			for (StoreOwner owner : subscriber.getOwner()) {
+//				newStore = owner.getStore();
+//				for (Store store : res) {
+//					if (store.equals(owner.getStore()))
+//						newStore = null;
+//					break;
+//				}
+//				if (newStore != null)
+//					res.add(newStore);
+//				newStore = null;
+//			}
+//		}
+		return dalRef.getStores();
 	}
 	
 	public static List<Store> getAllSubscriberStores(Subscriber sub){
@@ -305,15 +305,15 @@ public class BlMain {
 		return stores;
 	}
 
-	public static List<Product> findProductByName(String name) {
+	public static List<Product> findProductByName(String name) throws Exception{
 		return findProductByCriterion("Name", name);
 	}
 
-	public static List<Product> findProductByCategory(String category) {
+	public static List<Product> findProductByCategory(String category) throws Exception{
 		return findProductByCriterion("Category", category);
 	}
 
-	private static List<Product> findProductByCriterion(String criterion, String str) {
+	private static List<Product> findProductByCriterion(String criterion, String str) throws Exception{
 		List<Product> res = new LinkedList<Product>();
 		Map<Store, Map<Product, Integer>> swithpanda = getAllStoresWithThierProductsAndAmounts();
 		for (Map<Product, Integer> panda : swithpanda.values()) {
@@ -388,22 +388,17 @@ public class BlMain {
 		return true;
 	}
 	
+	//TODO - think how to call to dal - credit cards should not store in dal.
 	static String getCreditCard(Guest g){
 		return allUsersWithTheirCreditCards.get(g).get(0);
 	}
 	
-	public static Subscriber getSubscriberFromUsername(String usrname){
-		Subscriber to_return = null;
-		for(Subscriber s : allSubscribers){
-			if(s.getUsername().equals(usrname)){
-				to_return = s;
-				break;
-			}
-		}
-		return to_return;
+	public static Subscriber getSubscriberFromUsername(String usrname) throws Exception{
+		return dalRef.getSubscriberIfExists(usrname);
 	}
 	
 	
+	//TODO - SHOULD DELETE AFTER DAL WILL APPEAR
 	public static int getIndexByUN(Subscriber sub){
 		int ans = 0;
 		for (Subscriber s : allSubscribers) {
@@ -415,22 +410,17 @@ public class BlMain {
 		return -1;
 	}
 
-	public static StoreOwner getStoreOwnerForStorePerUsername(int storeId, String username) {
-		for (Subscriber s : allSubscribers) {
-			if(s.getUsername().equals(username)){
-				List<StoreOwner> owner = s.getOwner();
-				for (StoreOwner storeOwner : owner) {
-					if(storeOwner.getStore().getStoreId() == storeId){
-						return storeOwner;
-					}
-				}
+	public static StoreOwner getStoreOwnerForStorePerUsername(int storeId, String username) throws Exception{
+		List<StoreOwner> myStoreOwners = dalRef.getStoreOwners(username);
+		for (StoreOwner storeOwner : myStoreOwners) {
+			if(storeOwner.getStore().getStoreId() == storeId){
+				return storeOwner;
 			}
-		}
+		} 
 		return null;
-		
 	}
 	
-	public static Map<Product, Integer> getProductAndAmountPerStoreId(int storeId){
+	public static Map<Product, Integer> getProductAndAmountPerStoreId(int storeId) throws Exception{
 		Map<Store, Map<Product, Integer>> m = getAllStoresWithThierProductsAndAmounts();
 		for (Map.Entry<Store, Map<Product, Integer>> entry : m.entrySet())
 		{
@@ -441,7 +431,7 @@ public class BlMain {
 		return null;
 	}
 
-	public static Product getProductFromProdId(int prodId) {
+	public static Product getProductFromProdId(int prodId) throws Exception{
 		Map<Store, Map<Product, Integer>> m = getAllStoresWithThierProductsAndAmounts();
 		for (Map.Entry<Store, Map<Product, Integer>> entry : m.entrySet())
 		{
@@ -455,7 +445,7 @@ public class BlMain {
 		return null;
 	}
 	
-	public static int getAmountFromProdId(int prodId) {
+	public static int getAmountFromProdId(int prodId) throws Exception{
 		Map<Store, Map<Product, Integer>> m = getAllStoresWithThierProductsAndAmounts();
 		for (Map.Entry<Store, Map<Product, Integer>> entry : m.entrySet())
 		{
@@ -469,7 +459,8 @@ public class BlMain {
 		return 0;
 	}
 	
-	public static List<Subscriber> getAllSubscribersWithPotential(){
+
+	public static List<Subscriber> getAllSubscribersWithPotential() throws Exception{
 		List<Subscriber> toReturn = new ArrayList<Subscriber>();
 		for (Subscriber subscriber : allSubscribers) {
 			toReturn.add(subscriber);
@@ -478,19 +469,13 @@ public class BlMain {
 	}
 	
 
-	public static StoreOwner getStoreOwnerFromUsername(String username, int storeId) {
-		Subscriber s = getSubscriberFromUsername(username);
-		List<StoreOwner> soList = s.getOwner();
-		for (StoreOwner storeOwner : soList) {
-			if(storeOwner.getStore().getStoreId() == storeId)
-				return storeOwner;
-		}
-		return null;
+	//TODO - Delete this or the second function.
+	public static StoreOwner getStoreOwnerFromUsername(String username, int storeId) throws Exception {
+		return getStoreOwnerForStorePerUsername(storeId, username);
 	}
 	
-	public static StoreManager getStoreManagerFromUsername(String username, int storeId) {
-		Subscriber s = getSubscriberFromUsername(username);
-		List<StoreManager> smList = s.getManager();
+	public static StoreManager getStoreManagerFromUsername(String username, int storeId) throws Exception{
+		List<StoreManager> smList = dalRef.getSubscriberManagers(username);
 		for (StoreManager storeManager : smList) {
 			if(storeManager.getStore().getStoreId() == storeId)
 				return storeManager;
@@ -510,9 +495,8 @@ public class BlMain {
 		return toRet;
 	}
 	
-	public static List<Product> getAllProducts(){
+	public static List<Product> getAllProducts() throws Exception{
 		List<Product> ans = new ArrayList<Product>();
-		
 		Map<Store,Map<Product, Integer>> fmap = BlMain.getAllStoresWithThierProductsAndAmounts();
 		for (Store s : fmap.keySet())
 			ans.addAll(fmap.get(s).keySet());
@@ -520,19 +504,14 @@ public class BlMain {
 		return ans;
 	}
 	
-	public static SystemAdministrator getSystemAdminFromUsername(String username) {
+	public static SystemAdministrator getSystemAdminFromUsername(String username) throws Exception{
 		SystemAdministrator s = (SystemAdministrator) getSubscriberFromUsername(username);
 
 		return s;
 	}
 	
-	public static Store getStoreFromStoreId(int storeId){
-		List<Store> stores = BlMain.getAllStores();
-		for (Store store : stores) {
-			if(store.getStoreId() == storeId)
-				return store;
-		}
-		return null;
+	public static Store getStoreFromStoreId(int storeId) throws Exception{
+		return dalRef.getStoreByStoreId(storeId);
 	}
 	
 }

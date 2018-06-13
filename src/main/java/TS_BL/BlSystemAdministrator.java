@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import TS_SharedClasses.*;
+import static TS_BL.BlMain.dalRef;
 
 public class BlSystemAdministrator {
 
@@ -40,6 +41,7 @@ public class BlSystemAdministrator {
 		}
 		subList.remove(s);
 		BlMain.allSubscribers = subList;
+		dalRef.removeSubscriber(s);
 		return true;
 	}
 
@@ -53,12 +55,11 @@ public class BlSystemAdministrator {
 			throw new Exception("invalid admin");
 		if(s == null)
 			throw new Exception("invalid subscriber");
-
-		List<Subscriber> subList = BlMain.allSubscribers;
-		if (!subList.contains(s))
+		
+		if (!dalRef.isSubscriberExist(s.getUsername()))
 			throw new Exception("this subscriber doesn't appear in the list of subscribers");
 
-		return subList.get(subList.indexOf(s)).getPurchaseHistory();
+		return dalRef.getMyPurchase(s.getUsername());
 	}
 
 	/**
@@ -66,16 +67,12 @@ public class BlSystemAdministrator {
 	 * @return the purchase history that made in the store
 	 * @throws Exception 
 	 */
-	static List<Purchase> viewStoreHistory(SystemAdministrator sa, Store store) throws Exception
-	{
+	static List<Purchase> viewStoreHistory(SystemAdministrator sa, Store store) throws Exception{
 		if(sa == null)
 			throw new Exception("invalid admin");
 		if(store == null)
 			throw new Exception("invalid store");
-
-		
-			return store.getPurchaseHistory();
-		
+		return dalRef.getStorePurchase(store);
 	}
 
 }

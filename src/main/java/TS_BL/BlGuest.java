@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import TS_SharedClasses.*;
+import static TS_BL.BlMain.dalRef;
 
 public class BlGuest {
 	private final static String salt="DGE$5SGr@3VsHYUMas2323E4d57vfBfFSTRU@!DSH(*%FDSdfg13sgfsg";
@@ -211,11 +212,11 @@ public class BlGuest {
 		if(!BlMain.correctSpelledLettersSpacesNumbers(username) || !BlMain.correctSpelledLettersSpaces(fullName) || !BlMain.correctSpelledLettersSpacesNumbers(address) || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.correctSpelledNumbers(phone))
 			throw new Exception("problem with one of the fields,check spelling try again"); //exception spell in user name | full name | address
 		
-		
 		Subscriber newSub = new Subscriber(g.getCart(), username, password, fullName, address, phone, creditCardNumber, new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>()); 
 		BlMain.allSubscribers.add(newSub);
-		return newSub;
 		
+		dalRef.addSubscriber(newSub);
+		return newSub;
 	}
 	
 	static Subscriber signIn(Guest g, String username, String password) throws Exception{

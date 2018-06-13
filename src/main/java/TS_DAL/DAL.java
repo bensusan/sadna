@@ -49,5 +49,6 @@ public interface DAL {
 	public void deleteStore(int storeId);
 	public DiscountPolicy getDiscountPolicy(int policyId) throws Exception;
 	public PurchaseType getPurchaseType(int productId);
-
+	public Subscriber getSubscriberIfExists(String username) throws Exception;
+	public List<Store> getStores() throws Exception;
 }

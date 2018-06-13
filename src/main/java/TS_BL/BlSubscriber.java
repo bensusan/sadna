@@ -28,7 +28,6 @@ public class BlSubscriber {
 			throw new Exception("invalid subscriber");
 		if(gradeing < 0 || gradeing > 5)
 			throw new Exception("something went wrong with the grading");
-		List<Subscriber> sub1 = BlMain.allSubscribers;
 		
 		List<StoreOwner> own=sub.getOwner();
 		Store s = new Store(storeName, sub.getAddress(), sub.getPhone(), gradeing, products, purchaseHistory, isOpen);
@@ -43,7 +42,7 @@ public class BlSubscriber {
 		own.add(so);
 		s.setMyOwners(own);
 		
-		List<Subscriber> sub2 = BlMain.allSubscribers;
+		dalRef.addNewStoreOwner(s, sub);
 		return s;
 	}
 	

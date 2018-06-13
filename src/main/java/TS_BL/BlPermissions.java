@@ -1,10 +1,12 @@
 package TS_BL;
 
 import java.util.Calendar;
+
 import java.util.List;
 import java.util.Map;
 
 import TS_SharedClasses.*;
+import static TS_BL.BlMain.dalRef;
 
 public class BlPermissions {
 
@@ -160,9 +162,9 @@ public class BlPermissions {
 		if(s == null || pp == null)
 			throw new Exception("something went wrong");
 		s.setStorePolicy(pp);
-		return true;
+		dalRef.updateStore(s);
+ 		return true;
 	}
-
 
 	public static boolean addDiscountToCategoryStore(Store store, PurchasePolicy discountTree, String category) throws Exception {
 		if(store == null || !BlMain.getAllCategorys().contains(category)||discountTree==null)

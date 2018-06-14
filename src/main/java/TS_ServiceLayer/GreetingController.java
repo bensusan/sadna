@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -30,6 +34,25 @@ import TS_BL.BlMain;
 @Controller
 public class GreetingController {
 
+	static Logger logger = Logger.getLogger("Log");
+	static Logger errorLogger = Logger.getLogger("ErrorLog");
+    static FileHandler fh,errFH;
+    static SimpleFormatter formatter = new SimpleFormatter();
+    static SimpleFormatter errFormatter = new SimpleFormatter();
+	{
+		Locale.setDefault(new Locale("en", "US"));
+		try {
+			fh = new FileHandler("LogFile.log");
+			errFH = new FileHandler("ErrorLogFile.log");
+		}catch (SecurityException e) {  
+	        e.printStackTrace();  
+	    } catch (IOException e) {  
+	        e.printStackTrace();  
+	    }  
+		logger.addHandler(fh);fh.setFormatter(formatter); errorLogger.addHandler(errFH); errFH.setFormatter(errFormatter);
+	}
+	
+	
 	@MessageMapping("/hello")
 	@SendTo("/topic/greetings")
 	public Greeting greeting(HelloMessage message) throws Exception {
@@ -38,6 +61,17 @@ public class GreetingController {
 		
 		String[] args = message.getParamsAsJSON();
 		String fName = message.getFunctionName();
+			
+		String msg = "\nGET:\nFunction's name: " + fName;
+		if(args != null && args.length > 0){
+			msg += "\nParams:";
+		}
+		for (String s: args) {
+			msg += "\n" + s.toString();  
+		}
+		msg += "\n";
+		logger.info(msg);
+		
 		HelloMessage.functionNames f = HelloMessage.functionNames.valueOf(fName);
 		Greeting ret = new Greeting(message.getPageName(), fName);
 		try {
@@ -692,7 +726,9 @@ public class GreetingController {
 			default:
 				throw new Exception("NO SUCH FUNCTION");
 			}
+			logger.info("\nSEND:\nPage's name: " + ret.getPageName() + "\nFunction's name: " + ret.getFunctionName() + "\nContent:\n" + ret.getContentAsJson() + "\n");
 		} catch (Exception e) {
+			errorLogger.info("\nError Content:\n" + e.getMessage() + "\n");
 			ret.setException();
 			ret.setContentAsJson(gson.toJson(e.getMessage()));
 		}

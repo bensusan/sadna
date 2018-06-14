@@ -1,16 +1,21 @@
 package TS_BL;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import TS_DAL.*;
 import TS_SharedClasses.*;
 
 public class BlMain {
-
+	
+	
 	public final static int NUM_OF_PERMISSIONS = 14; 
 	// constants according to BlPermission's functions order.
 	public final static int addProductToStore = 0, deleteProductFromStore = 1, updateProductDetails = 2,
@@ -35,8 +40,22 @@ public class BlMain {
 	public final static DAL dalRef = new DALProxy();
 	public static Map<Guest, LinkedList<String>> allUsersWithTheirCreditCards = new HashMap<Guest, LinkedList<String>>();
 	
+	
+//	public static void  writeToLogFile(String function, Object args[]){
+//		String msg = function;
+//		if(args != null && args.length > 0){
+//			msg += " Params:";
+//		}
+//		for (Object o : args) {
+//			msg += " " + o.toString();  
+//		}
+//		logger.info(msg);
+//	}
+	
 	// need to insert to here all guests that payed with their credit card for pay back
 	public static List<String> getAllCategorys() {
+//		writeToLogFile(new Object(){}.getClass().getEnclosingMethod().getName(), null);
+//		logger.info("getAllCategorys");
 		List<String>ans=new LinkedList<String>();
 		for(Category c:allCategory){
 			ans.add(c.getName());
@@ -45,50 +64,68 @@ public class BlMain {
 	}
 	
 	public static boolean addImmediatelyProduct(Guest g, Product p, int amount) throws Exception {
+//		writeToLogFile(new Object(){}.getClass().getEnclosingMethod().getName(), new Object[]{g, p, amount});
+//		logger.info("addImmediatelyProduct: Guest - " + g.toString() + " Product - " + p.toString() + " amount - " + amount);
 		return BlGuest.addImmediatelyProduct(g, p, amount, -1);
 	}
 
 	public static boolean addImmediatelyProduct(Guest g, Product p, int amount, int discountCode) throws Exception {
+//		writeToLogFile(new Object(){}.getClass().getEnclosingMethod().getName(), new Object[]{g, p, amount, discountCode});
+//		logger.info("addImmediatelyProduct: Guest - " + g.toString() + " Product - " + p.toString() + " amount - " + amount + "discountCode - " + discountCode);
 		return BlGuest.addImmediatelyProduct(g, p, amount, discountCode);
 	}
 
 	public static boolean addLotteryProduct(Guest g, Product p, int money) throws Exception {
+//		writeToLogFile(new Object(){}.getClass().getEnclosingMethod().getName(), new Object[]{g, p, money});
+//		logger.info("addLotteryProduct: Guest - " + g.toString() + " Product - " + p.toString() + " money - " + money);
 		return BlGuest.addLotteryProduct(g, p, money);
 	}
 
 	public static boolean removeProductFromCart(Guest g, Product p) throws Exception {
+//		writeToLogFile(new Object(){}.getClass().getEnclosingMethod().getName(), new Object[]{g, p});
+//		logger.info("removeProductFromCart: Guest - " + g.toString() + " Product - " + p.toString());
 		return BlGuest.removeProductFromCart(g, p);
 	}
 
 	public static boolean editProductAmount(Guest g, Product p, int amount) throws Exception {
+//		writeToLogFile(new Object(){}.getClass().getEnclosingMethod().getName(), new Object[]{g, p, amount});
+//		logger.info("editProductAmount: Guest - " + g.toString() + " Product - " + p.toString() + " amount - " + amount);
 		return BlGuest.editProductAmount(g, p, amount);
 	}
 
 	public static boolean editProductDiscount(Guest g, Product p, int discountCode) throws Exception {
+//		writeToLogFile(new Object(){}.getClass().getEnclosingMethod().getName(), new Object[]{g, p});
+//		logger.info("editProductDiscount: Guest - " + g.toString() + " Product - " + p.toString() + " discountCode - " + discountCode);
 		return BlGuest.editProductDiscount(g, p, discountCode);
 	}
 
 	public static boolean editProductPrice(Guest g, Product p, int money) throws Exception {
+//		logger.info("editProductPrice: Guest - " + g.toString() + " Product - " + p.toString() + " money - " + money);
 		return BlGuest.editProductPrice(g, p, money);
 	}
 
 	public static boolean editCart(Guest g, Cart newCart) throws Exception {
+//		logger.info("editCart: Guest - " + g.toString() + " newCart - " + newCart.toString());
 		return BlGuest.editCart(g, newCart);
 	}
 
 	public static boolean purchaseCart(Guest g, String creditCardNumber, String buyerAddress) throws Exception {
+//		logger.info("purchaseCart: Guset - " + g.toString() + " creditCardNumber - " + creditCardNumber + " buyerAddress - " + buyerAddress);
 		return BlGuest.puchaseCart(g, creditCardNumber, buyerAddress);
 	}
 
 	public static boolean addProductToStore(StoreManager sm, Product product, int amount,String category) throws Exception {
+//		logger.info("addProductToStore: StoreManager - " + sm.toString() + " Product - " + product.toString() + " amount - " + amount + " category - " + category);
 		return BlStoreManager.addProductToStore(sm, product, amount,category);
 	}
 
 	public static boolean deleteProductFromStore(StoreManager sm, Product product) throws Exception {
+//		logger.info("deleteProductFromStore: StoreManager - " + sm.toString() + " Product - " + product.toString());
 		return BlStoreManager.deleteProductFromStore(sm, product);
 	}
 
 	public static boolean updateProductDetails(StoreManager sm, Product oldProduct, Product newProduct, int amount,String newProductCategory) throws Exception {
+//		logger.info("addProductToStore: StoreManager - " + sm.toString() + " new Product - " + newProduct.toString() + " amount - " + amount + " newProductCategory - " + newProductCategory);
 		return BlStoreManager.updateProductDetails(sm, oldProduct, newProduct, amount,newProductCategory);
 	}
 

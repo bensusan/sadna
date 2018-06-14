@@ -6,8 +6,9 @@ function setUPOnce(){
     localStorage.setItem('currentUser', JSON.stringify({'cart': {'products': []}})); //New Guest for start
     localStorage.setItem('isSubscriber', JSON.stringify(false));
     localStorage.setItem('specificProduct', JSON.stringify(null));
-    localStorage.setItem('isEmpty' , JSON.stringify(0));
+    localStorage.setItem('init' , JSON.stringify(-1));
     localStorage.setItem('myCart' , JSON.stringify(null));
+    localStorage.setItem('msgToPrint' , JSON.stringify(5));
 }
 
 function connect() {
@@ -97,7 +98,11 @@ function connect() {
 function recieveMainPageMsg(funcName, obj) {
     switch (funcName){
         case "getAllStoresWithThierProductsAndAmounts":
-            localStorage.setItem('mapForTable', JSON.stringify(obj));
+        	var data = JSON.parse(obj);
+        	var data1=data[0], data2=data[1];
+       		
+            localStorage.setItem('mapForTable', JSON.stringify(data2));
+            localStorage.setItem('msgToPrint',data1);
             stompClient.disconnect();
             stompClient = null;
             window.location.href = "mainPage.html";
@@ -361,18 +366,21 @@ function recieveAddToSubCart(funcName, obj){
 			}, 2000);
        		break;
        	case "addToGuestCart":
-        	localStorage.setItem('myCartToPrint' , JSON.stringify(obj));
-        	localStorage.setItem('myCart',obj);
-        	localStorage.setItem('isEmpty' , JSON.stringify(1));
+       		var data = JSON.parse(obj);
+        	var data1=data[0], data2=data[1];
+        	localStorage.setItem('myCartToPrint' , JSON.stringify(data2));
+        	localStorage.setItem('myCart',data2);
+        	localStorage.setItem('init' , JSON.stringify(data1));
         	window.alert('Product was added to cart!');
 			setTimeout(function(){
 			loadMainPage();
-			}, 2000);
+			}, 2000);   
        		break;   		
         default:
             break;
     }
 }
+
 
 /******************************************************************************/
 /**********************************END RECIEVE*********************************/
@@ -484,7 +492,7 @@ function purchaseAllCart(){
 						{	'pageName': "purchaseGuestCart",
 							'functionName': "purchaseCart",
 							'paramsAsJSON': [
-											 localStorage.getItem('myCart'),
+											 localStorage.getItem('init'),
 											 creditCard,
 											 address,
 											 0
@@ -987,11 +995,10 @@ function addToCart(){
 			JSON.stringify(
 				{	'pageName': "productPage",
 					'functionName': "addToGuestCart",
-					'paramsAsJSON': [JSON.parse(localStorage.getItem('isEmpty')),
+					'paramsAsJSON': [JSON.parse(localStorage.getItem('init')),
 									 product.id,
 									 amount,
-									 discountCode,
-									 JSON.parse(localStorage.getItem('myCart'))
+									 discountCode
 									 ]				
 			}));
 	}
@@ -1029,7 +1036,7 @@ function deleteFromCart(pid){
 					{	'pageName': "cartPage",
 						'functionName': "removeProductFromCart",
 						'paramsAsJSON': [
-										 localStorage.getItem('myCart'),
+										 localStorage.getItem('init'),
 										 pid,
 										 0
 										 ]
@@ -1050,15 +1057,13 @@ function deleteFromCart(pid){
 }
 
 function editCart(pid,newAmount){
-	window.alert(newAmount);
-	
 	if(JSON.parse(localStorage.getItem('isSubscriber')) === false) {
 		stompClient.send("/app/hello", {},
 				JSON.stringify(
 					{	'pageName': "editCartPage",
 						'functionName': "editCart",
 						'paramsAsJSON': [
-										 localStorage.getItem('myCart'),
+										 localStorage.getItem('init'),
 										 pid,
 										 newAmount,
 										 0
@@ -1165,12 +1170,27 @@ function loadEditManageStore(store){
 }
 
 function loadMainPage() {
-    stompClient.send("/app/hello", {},
-    JSON.stringify(
-        {	'pageName': "mainPage",
-            'functionName': "getAllStoresWithThierProductsAndAmounts",
-            'paramsAsJSON': []
-        }));
+	if(JSON.parse(localStorage.getItem('isSubscriber')) === false){
+	    stompClient.send("/app/hello", {},
+	    JSON.stringify(
+	        {	'pageName': "mainPage",
+	            'functionName': "getAllStoresWithThierProductsAndAmounts",
+	            'paramsAsJSON': [
+	            				localStorage.getItem('init'),
+	            				0
+	            				]
+	        }));
+	}
+	else{
+		stompClient.send("/app/hello", {},
+	    JSON.stringify(
+	        {	'pageName': "mainPage",
+	            'functionName': "getAllStoresWithThierProductsAndAmounts",
+	            'paramsAsJSON': [
+	            				JSON.parse(localStorage.getItem('currentUser'))['username'],
+	            				]
+	        }));
+	}
 }
 
 function loadLoginPage(){
@@ -1290,6 +1310,21 @@ function loadMyCart(){
 /******************************************************************************/
 /********************************END LOAD PAGES********************************/
 /******************************************************************************/
+
+function logOut(){
+	localStorage.setItem('currentUser', JSON.stringify({'cart': {'products': []}}));
+    localStorage.setItem('mySubCart' , JSON.stringify(null));
+    localStorage.setItem('isSubscriber', JSON.stringify(false));
+	localStorage.setItem('isAdmin', JSON.stringify(false));
+	
+	window.alert("Logged out!");
+	
+    loadMainPage();
+}
+
+function loadMsg(){
+	document.getElementById("msgDiv").innerHtml = "ALEX";
+}
 
 /******************************************************************************/
 /***********************************POLICY*************************************/
@@ -1547,6 +1582,7 @@ function makeMainPage(){
         $('#signUpMBtn').show();
         $('#openStoreMBtn').hide();
         $('#myStores').hide();
+        $('#logOutBtn').hide();
     }
     else
     {
@@ -1554,6 +1590,9 @@ function makeMainPage(){
         $('#signUpMBtn').hide();
         $('#openStoreMBtn').show();
         $('#myStores').show();
+        $('#logOutBtn').show();
+        document.getElementById("unameLbl").innerHTML ="username:\n" + JSON.parse(localStorage.getItem('currentUser'))['username'];
+        
     }
 }
 

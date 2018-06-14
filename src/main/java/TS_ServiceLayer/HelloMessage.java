@@ -2,7 +2,7 @@ package TS_ServiceLayer;
 
 public class HelloMessage {
 
-	public static enum functionNames {addImmediatelyProduct, addLotteryProduct, addToSubCart,addToGuestCart, removeProductFromCart, editProductAmount, editProductDiscount, editProductPrice, editCart, purchaseCart, addProductToStore, deleteProductFromStore, updateProductDetails, addPolicyToProduct, addDiscountToProduct, addNewStoreOwner, addNewManager, closeStore, openStore, getPurchaseHistory, removeSubscriber, viewSubscriberHistory, viewStoreHistory, signUp, signIn, expiredProducts, changeStorePurchasePolicy, getAllStoresWithThierProductsAndAmounts, getAllStores, getAllSubscriberStores, getProduct, getSubscriberFromUsername, getProductAndAmountPerStoreId, getAllSubscribersWithPotential, changeProductType, addDiscountToCategoryStore, findProductByName, findProductByCategory};
+	public static enum functionNames {addImmediatelyProduct, addLotteryProduct, addToSubCart,addToGuestCart, removeProductFromCart, editProductAmount, editProductDiscount, editProductPrice, editCart, purchaseCart, addProductToStore, deleteProductFromStore, updateProductDetails, addPolicyToProduct, addDiscountToProduct, addNewStoreOwner, addNewManager, closeStore, openStore, getPurchaseHistory, removeSubscriber, viewSubscriberHistory, viewStoreHistory, signUp, signIn, expiredProducts, changeStorePurchasePolicy, getAllStoresWithThierProductsAndAmounts ,getSubMsg ,getAllStores, getAllSubscriberStores, getProduct, getSubscriberFromUsername, getProductAndAmountPerStoreId, getAllSubscribersWithPotential, changeProductType, addDiscountToCategoryStore, findProductByName, findProductByCategory};
 	
 	private String pageName;
 	private String functionName;

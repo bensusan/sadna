@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
@@ -14,30 +15,32 @@
 
 <body onload="manageSysAdminPermissions(); loadSearchProducts();">
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
-    enabled. Please enable
-    Javascript and reload this page!</h2></noscript>
-
+    enabled. Please enable Javascript and reload this page!</h2></noscript>
+    
 <div id="systemAdminSection">
 	<button id="removeSubscriberBtn"  onclick="loadAllUsersPage('removeSubscriber');">Remove subscriber</button>
     <button id="viewSubscriberHistoryBtn" onclick="loadAllUsersPage('viewSubscriberHistory');">Watch Subscriber Purchase History</button>
     <button id="viewStoreHistoryBtn" onclick="loadAllStoresPage('viewStoreHistory')">Watch Store Purchase History</button>
 </div>
-	
+
 <div>
     <button id="loginMBtn" onclick="loadLoginPage()">Login</button>
     <button id="signUpMBtn" onclick="loadSignUpPage()">Sign up</button>
     <button id="openStoreMBtn" onclick="loadOpenStorePage()">Open Store</button>
     <button id="myStores" onclick="loadMyStoresPage()">My Stores</button>
     <button id="myCartBtn" onclick="loadCartPage()">My Cart</button>
-     <button id="loadProducts" onclick="mainTableOnLoad()">Load products</button>
+    <button id="loadProducts" onclick="mainTableOnLoad()">Load products</button>
+    
+     <p id="unameLbl" style="position: absolute;right: 5%;"></p>
+    <button id="logOutBtn" onclick="logOut()" style="position: absolute;right:5%;" align="right">Log out</button>
 </div>
-
+<br><br><hr><br><br>
 <div class="row">
     <div class="col-md-12">
         <table id="mainProductsTable" class="fixed" align="center" cellspacing="2">
             <thead>
             <tr>
-                <th>Products sort by Store</th>
+                <th><u>Products sort by Store</u></th>
             </tr>
             </thead>
             <tbody id="myTable" class="clickable-row">
@@ -45,7 +48,12 @@
         </table>
     </div>
 </div>
-
+<br><hr><br>
+<div>
+<th><u><center>Massages</center></u></th>
+<p id="msgDiv" onload="loadMsg()"></p>
+</div>
+<br><hr>
 <div id="searchProductsSection">
 	<form>
 		<input type="radio" name="searchType" id="nameSearchButton"> Name search<br>
@@ -53,6 +61,7 @@
 		Input: <input type="text" id="searchValue"><br>
 		<button onclick="searchProducts()">Search!</button>
 	</form>
+
 	<div class="row">
 		<div class="col-md-12">
 			<table id="searchProductResultTable">
@@ -66,9 +75,8 @@
 			</table>
 		</div>
 	</div>
+
 </div>
-
-
 	<script>
 		function manageSysAdminPermissions() {
 		   if(localStorage.getItem('isAdmin') == "true")
@@ -76,8 +84,7 @@
 			else
 				$('#systemAdminSection').hide();
 		}
-
 	</script>
-
 </body>
+
 </html>

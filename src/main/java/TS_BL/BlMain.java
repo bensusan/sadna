@@ -37,11 +37,13 @@ public class BlMain {
 //	};
 	
 	public final static DAL dalRef = new DALProxy();
+	//TODO need to remove after Lottery will be done
 	public static Map<Guest, LinkedList<String>> allUsersWithTheirCreditCards = new HashMap<Guest, LinkedList<String>>();
 	
 	// need to insert to here all guests that payed with their credit card for pay back
 	public static List<String> getAllCategorys() {
 		List<String>ans=new LinkedList<String>();
+		List<Category> allCategory = dalRef.getAllCategory(); 
 		for(Category c:allCategory){
 			ans.add(c.getName());
 		}
@@ -120,11 +122,11 @@ public class BlMain {
 		return BlStoreManager.addNewManager(oldMan, newMan);
 	}
 
-	public static boolean closeStore(StoreManager sm) {
+	public static boolean closeStore(StoreManager sm) throws Exception {
 		return BlStoreManager.closeStore(sm);
 	}
 
-	public static boolean openStore(StoreManager sm) {
+	public static boolean openStore(StoreManager sm) throws Exception{
 		return BlStoreManager.openStore(sm);
 	}
 
@@ -206,11 +208,11 @@ public class BlMain {
 		return BlGuest.signIn(g, username, password);
 	}
 
-	public static void expiredProducts(StoreOwner so) {
+	public static void expiredProducts(StoreOwner so) throws Exception{
 		BlStoreOwner.expiredProducts(so);
 	}
 
-	public static void expiredProducts(StoreManager sm) {
+	public static void expiredProducts(StoreManager sm) throws Exception{
 		BlStoreManager.expiredProducts(sm);
 	}
 
@@ -399,7 +401,8 @@ public class BlMain {
 	
 	
 	//TODO - SHOULD DELETE AFTER DAL WILL APPEAR
-	public static int getIndexByUN(Subscriber sub){
+	public static int getIndexByUN(Subscriber sub) throws Exception{
+		List<Subscriber> allSubscribers = dalRef.allSubscribers();
 		int ans = 0;
 		for (Subscriber s : allSubscribers) {
 			if(s.getUsername().equals(sub.getUsername()))
@@ -461,6 +464,7 @@ public class BlMain {
 	
 
 	public static List<Subscriber> getAllSubscribersWithPotential() throws Exception{
+		List<Subscriber> allSubscribers = dalRef.allSubscribers();
 		List<Subscriber> toReturn = new ArrayList<Subscriber>();
 		for (Subscriber subscriber : allSubscribers) {
 			toReturn.add(subscriber);

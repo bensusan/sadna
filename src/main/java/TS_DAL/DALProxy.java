@@ -125,20 +125,20 @@ public class DALProxy implements DAL {
 		return getReal().getSubscriber(username, password);
 	}
 
-	public void addImeddiatleyProductToCart(String username, int productId, int amount, int code) throws Exception {
-		getReal().addImeddiatleyProductToCart(username, productId, amount, code);
+	public void addImeddiatleyProductToCart(String username, Product p, int amount, int code) throws Exception {
+		getReal().addImeddiatleyProductToCart(username, p, amount, code);
 	}
 
-	public void removeProductFromCart(String username, int productId) throws Exception {
-		getReal().removeProductFromCart(username, productId);
+	public void removeProductFromCart(String username, Product p) throws Exception {
+		getReal().removeProductFromCart(username, p);
 	}
 
-	public void editProductAmount(String username, int productId, int amount) throws Exception {
-		getReal().editProductAmount(username, productId, amount);
+	public void editProductAmount(String username, Product p, int amount) throws Exception {
+		getReal().editProductAmount(username, p, amount);
 	}
 
-	public void editProductCode(String username, int productId, int code) throws Exception {
-		getReal().editProductCode(username, productId, code);
+	public void editProductCode(String username, Product p, int code) throws Exception {
+		getReal().editProductCode(username, p, code);
 	}
 
 	public void editProductPrice(int productId, int price) throws Exception {
@@ -194,8 +194,39 @@ public class DALProxy implements DAL {
 	}
 
 	public List<Store> getStores() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return getReal().getStores();
+	}
+
+	public void addLotteryProductToCart(String username, Product p, int money) {
+		getReal().addLotteryProductToCart(username, p, money);
+	}
+
+	public void setNewCartForSubscriber(String username, Cart cart) {
+		getReal().setNewCartForSubscriber(username, cart);
+	}
+
+	public int getAmountOfProduct(Product myProduct) {
+		return getReal().getAmountOfProduct(myProduct);
+	}
+
+	public boolean isCategoryExists(String category) {
+		return getReal().isCategoryExists(category);
+	}
+
+	public boolean isProductExistsInStore(Store s, Product product) {
+		return getReal().isProductExistsInStore(s, product);
+	}
+
+	public boolean isStoreOwnerExists(Store s, Subscriber owner) {
+		return getReal().isStoreOwnerExists(s, owner);
+	}
+
+	public boolean isStoreManagerExists(Store s, Subscriber newMan) {
+		return getReal().isStoreManagerExists(s, newMan);
+	}
+
+	public List<Purchase> getStoreHistory(Store s) {
+		return getReal().getStoreHistory(s);
 	}
 
 }

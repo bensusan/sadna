@@ -21,14 +21,15 @@ public class BlSystemAdministrator {
 		if(s == null)
 			throw new Exception("invalid subscriber");
 
-		List<Subscriber> subList = BlMain.allSubscribers;
-		if (!subList.contains(s))
+		if(!dalRef.isSubscriberExist(s.getUsername()))
 			return false;
+		s = dalRef.getSubscriber(s.getUsername(), s.getPassword());
+		List<Subscriber> subList = dalRef.allSubscribers();
 		
 		if (s instanceof SystemAdministrator){
 			boolean canRemoveAdmin = false;
-			for (Subscriber subs : BlMain.allSubscribers){
-				if(!subs.equals(s) && subs instanceof SystemAdministrator){
+			for (Subscriber subs : subList){
+				if(!subs.getUsername().equals(s.getUsername()) && subs instanceof SystemAdministrator){
 					canRemoveAdmin = true;
 					break;
 				}
@@ -36,11 +37,9 @@ public class BlSystemAdministrator {
 			if(!canRemoveAdmin)
 				throw new Exception("something went wrong");
 		}
-		if(!s.getOwner().isEmpty() && s.getOwner().size() == 1){
-			s.getOwner().get(0).getStore().setMyManagers(new LinkedList<StoreManager>());
-		}
-		subList.remove(s);
-		BlMain.allSubscribers = subList;
+//		if(!s.getOwner().isEmpty() && s.getOwner().size() == 1){
+//			s.getOwner().get(0).getStore().setMyManagers(new LinkedList<StoreManager>());
+//		}
 		dalRef.removeSubscriber(s);
 		return true;
 	}

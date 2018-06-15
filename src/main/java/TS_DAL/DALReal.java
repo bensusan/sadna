@@ -832,6 +832,54 @@ public class DALReal implements DAL {
 		Connection conn = DriverManager.getConnection(url, username, password);
 		return conn;
 	}
+	public void addImeddiatleyProductToCart(String username, Product p, int amount, int code) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	public void removeProductFromCart(String username, Product p) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	public void editProductAmount(String username, Product p, int amount) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	public void editProductCode(String username, Product p, int code) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	public void addLotteryProductToCart(String username, Product p, int money) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void setNewCartForSubscriber(String username, Cart cart) {
+		// TODO Auto-generated method stub
+		
+	}
+	public int getAmountOfProduct(Product myProduct) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	public boolean isCategoryExists(String category) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public boolean isProductExistsInStore(Store s, Product product) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public boolean isStoreOwnerExists(Store s, Subscriber owner) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public boolean isStoreManagerExists(Store s, Subscriber newMan) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public List<Purchase> getStoreHistory(Store s) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }

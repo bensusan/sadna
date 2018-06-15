@@ -88,14 +88,14 @@ public class BlStoreManager {
 	/**
 	 * @return true if the store close false otherwise
 	 */
-	static boolean closeStore(StoreManager sm) {
+	static boolean closeStore(StoreManager sm) throws Exception{
 		return sm != null && sm.getPremisions()[BlMain.closeStore] && BlPermissions.closeStore(sm.getStore());
 	}
 
 	/**
 	 * @return true if the store reopen false otherwise
 	 */
-	static boolean openStore(StoreManager sm) {
+	static boolean openStore(StoreManager sm) throws Exception{
 		return sm != null && sm.getPremisions()[BlMain.openStore] && BlPermissions.openStore(sm.getStore());
 	}
 
@@ -106,7 +106,7 @@ public class BlStoreManager {
 		return sm != null && sm.getPremisions()[BlMain.getPurchaseHistory] ? BlPermissions.getPurchaseHistory(sm.getStore()) : new LinkedList<Purchase>();
 	}
 	
-	static void expiredProducts(StoreManager sm){
+	static void expiredProducts(StoreManager sm) throws Exception{
 		if(sm != null && sm.getPremisions()[BlMain.expiredProducts]) 
 			BlPermissions.expiredProducts(sm.getStore());
 	}

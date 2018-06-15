@@ -8,10 +8,11 @@ import java.util.Map;
 import java.util.Random;
 
 import TS_SharedClasses.*;
+import static TS_BL.BlMain.dalRef;
 
 public class BlLotteryPurchase {
 
-	public static boolean purchase(LotteryPurchase lp, Guest g, ProductInCart pic,String buyerAddress) throws Exception {
+	public static boolean purchase(LotteryPurchase lp, Guest g, ProductInCart pic, String buyerAddress) throws Exception {
 		int price = pic.getDiscountOrPrice();
 		int productPrice = pic.getMyProduct().getPrice();
 		Date date = new Date(); 
@@ -27,10 +28,16 @@ public class BlLotteryPurchase {
 			lp.setLotteryEndDate(date);
 			startLottery(lp);
 			lp.endLottery(true);
+			Guest winner = lp.getWinner();
+			int currentAmount = pic.getMyProduct().getStore().getProducts().get(pic.getMyProduct());
+//			int currentAmount = dalRef.getAmountProductsAmount(pic.getMyProduct());
+			BlStore.stockUpdate(pic.getMyProduct(), currentAmount - 1);
+			BlStore.addProductToHistory(pic);
+			if(winner instanceof Subscriber)
+				BlSubscriber.addPurchaseToHistory((Subscriber)(lp.getWinner()), new Purchase(date, pic));
 			BlStore.sendTheProducts(lp.getWinner(), buyerAddress);
-			
 		}
-
+//		dalRef.setLottery(pic.getMyProduct(), lp);
 		return true;
 	}
 

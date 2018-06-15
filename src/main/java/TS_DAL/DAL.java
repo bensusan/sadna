@@ -33,10 +33,10 @@ public interface DAL {
 	public void updateStore(Store s) throws Exception;
 	public void addSubscriber(Subscriber s) throws Exception;
 	public Subscriber getSubscriber(String username, String password)throws Exception;
-	public void addImeddiatleyProductToCart(String username, int productId, int amount, int code) throws Exception;
-	public void removeProductFromCart(String username, int productId) throws Exception;
-	public void editProductAmount(String username, int productId, int amount) throws Exception;
-	public void editProductCode(String username, int productId, int code) throws Exception;
+	public void addImeddiatleyProductToCart(String username, Product p, int amount, int code) throws Exception;
+	public void removeProductFromCart(String username, Product p) throws Exception;
+	public void editProductAmount(String username, Product p, int amount) throws Exception;
+	public void editProductCode(String username, Product p, int code) throws Exception;
 	public void editProductPrice(int productId, int price) throws Exception;
 	public void closeStore(int storeId) throws Exception;
 	public void openStore(int storeId) throws Exception;
@@ -51,4 +51,12 @@ public interface DAL {
 	public PurchaseType getPurchaseType(int productId);
 	public Subscriber getSubscriberIfExists(String username) throws Exception;
 	public List<Store> getStores() throws Exception;
+	public void addLotteryProductToCart(String username, Product p, int money);
+	public void setNewCartForSubscriber(String username, Cart cart);
+	public int getAmountOfProduct(Product myProduct);
+	public boolean isCategoryExists(String category);
+	public boolean isProductExistsInStore(Store s, Product product);
+	public boolean isStoreOwnerExists(Store s, Subscriber owner);
+	public boolean isStoreManagerExists(Store s, Subscriber newMan);
+	public List<Purchase> getStoreHistory(Store s);
 }

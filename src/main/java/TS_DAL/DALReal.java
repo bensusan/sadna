@@ -1,4 +1,4 @@
-package TS_DAL;
+package TS_DAL;-
 
 import java.sql.*;
 import java.util.HashMap;
@@ -46,7 +46,7 @@ public class DALReal implements DAL {
 					+ " credidCardNumber VARCHAR(50),"
 					+ " PRIMARY KEY (username));";
 			stmt.executeUpdate(sql);
-			sql = "CREATE TABLE Admins(username VARCHAR(50),"
+			sql = "CREATE TABLE SystemAdministrators(username VARCHAR(50),"
 					+ " PRIMARY KEY (username));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE StoreOwners(username VARCHAR(50) REFERENCES Subscribers(username),"
@@ -56,17 +56,17 @@ public class DALReal implements DAL {
 			sql = "CREATE TABLE Stores(storeId INTEGER,"
 					+ " name VARCHAR(50),"
 					+ " address VARCHAR(50),"
-					+ " phone VARCHAR (50), "
-					+ "grading INTEGER, "
-					+ "isOpen TINYINT(1), "
-					+ "moneyEarned INTEGER,"
-					+ "policyId INTEGER REFERENCES Policies(policyId),"
-					+ "PRIMARY KEY (storeId));";
+					+ " phone VARCHAR (50),"
+					+ " grading INTEGER,"
+					+ " isOpen TINYINT(1),"
+					+ " moneyEarned INTEGER,"
+					+ " policyId INTEGER REFERENCES Policies(policyId),"
+					+ " PRIMARY KEY (storeId));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE ProductsInStores(storeId INTEGER REFERENCES Stores(storeId),"
-					+ "productId INTEGER REFERENCES Products(productId),"
-					+ "amount INTEGER, "
-					+ "PRIMARY KEY (storeId, productId));";
+					+ " productId INTEGER REFERENCES Products(productId),"
+					+ " amount INTEGER, "
+					+ " PRIMARY KEY (storeId, productId));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE Purchased(username VARCHAR(50) REFERENCES Subscribers(username),"
 					+ " productId INTEGER REFERENCES Products(productId),"
@@ -74,25 +74,25 @@ public class DALReal implements DAL {
 					+ " whenPurchased DATE,"
 					+ " price INTEGER,"
 					+ " amount INTEGER,"
-					+ "PRIMARY KEY (username, productId, whenPurchased));";
+					+ " PRIMARY KEY (username, productId, whenPurchased));";
 			stmt.executeUpdate(sql);
 			sql="CREATE TABLE Policies("
-					+ "policyId INTEGER,"
+					+ " policyId INTEGER,"
 					+ " policyType INTEGER,"
 					+ " IValue INTEGER,"//save int value such max,min...
 					+ " SValue VARCHAR(50),"//save string value such username,address...
-					+ "PRIMARY KEY (policyId));";
+					+ " PRIMARY KEY (policyId));";
 			stmt.executeUpdate(sql);
 			sql="CREATE TABLE SubPolicies("
-					+ "fatherPolicyId INTEGER REFERENCES Policies(policyId),"
-					+ "sonPolicyId INTEGER REFERENCES Policies(policyId),"
-					+ "PRIMARY KEY (fatherPolicyId, sonPolicyId));";
+					+ " fatherPolicyId INTEGER REFERENCES Policies(policyId),"
+					+ " sonPolicyId INTEGER REFERENCES Policies(policyId),"
+					+ " PRIMARY KEY (fatherPolicyId, sonPolicyId));";
 			stmt.executeUpdate(sql);
 			sql="CREATE TABLE CategoryDiscont("
-					+ "storeId INTEGER REFERENCES Stores(storeId),"
-					+ "categoryName INTEGER,"
-					+ "policyId INTEGER REFERENCES Policies(policyId),"
-					+ "PRIMARY KEY (storeId, categoryName));";
+					+ " storeId INTEGER REFERENCES Stores(storeId),"
+					+ " categoryName INTEGER,"
+					+ " policyId INTEGER REFERENCES Policies(policyId),"
+					+ " PRIMARY KEY (storeId, categoryName));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE Products(productId INTEGER,"
 					+ " name VARCHAR(50),"
@@ -100,55 +100,55 @@ public class DALReal implements DAL {
 					+ " grading INTEGER ,"
 					+ " category VARCHAR(50),"
 					+ " policyId INTEGER REFERENCES Policies(policyId),"
-					+ "PRIMARY KEY (productId));";
+					+ " PRIMARY KEY (productId));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE ImmediatelyPurchases("
-					+ "productId INTEGER REFERENCES Products(productId),"
-					+ "policyId INTEGER REFERENCES Policies(policyId),"
-					+ "PRIMARY KEY (productId));";
+					+ " productId INTEGER REFERENCES Products(productId),"
+					+ " policyId INTEGER REFERENCES Policies(policyId),"
+					+ " PRIMARY KEY (productId));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE LotteryPurchases("
-					+ "productId INTEGER REFERENCES Products(productId),"
-					+ "lotteryId INTEGER UNIQUE,"
-					+ "actualEndDate DATE,"
-					+ "lottaryEndDate DATE,"
-					+ "winnerUserName VARCHAR(50),"
-					+ "hasEnd TINYINT(1),"
-					+ "PRIMARY KEY (productId));";
+					+ " productId INTEGER REFERENCES Products(productId),"
+					+ " lotteryId INTEGER UNIQUE,"
+					+ " actualEndDate DATE,"
+					+ " lottaryEndDate DATE,"
+					+ " winnerUserName VARCHAR(50),"
+					+ " hasEnd TINYINT(1),"
+					+ " PRIMARY KEY (productId));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE StoreManagers(username VARCHAR(50) REFERENCES Subscribers(username),"
-					+ "storeId INTEGER REFERENCES Stores(storeId) ,"
+					+ " storeId INTEGER REFERENCES Stores(storeId) ,"
 					+ " permission INTEGER,"
-					+ "PRIMARY KEY (username, storeId, permission));";
+					+ " PRIMARY KEY (username, storeId, permission));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE Carts(username VARCHAR(50) REFERENCES Subscribers(username),"
-					+ "productId INTEGER REFERENCES Products(productId),"
-					+ "amount INTEGER,"
-					+ "code INTEGER,"
-					+ "PRIMARY KEY (username, productId));";
+					+ " productId INTEGER REFERENCES Products(productId),"
+					+ " amount INTEGER,"
+					+ " code INTEGER,"
+					+ " PRIMARY KEY (username, productId));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE ProductsInCategory(categoryName VARCHAR(50),"
 					+ " productId INTEGER REFERENCES Products(productId),"
-					+ "PRIMARY KEY (categoryName, productId));";
+					+ "	PRIMARY KEY (categoryName, productId));";
 			stmt.executeUpdate(sql); 
 			sql = "CREATE TABLE HiddenDiscount("
-					+ "policyId INTEGER REFERENCES Policies(policyId),"
-					+ "code INTEGER,"
+					+ "	policyId INTEGER REFERENCES Policies(policyId),"
+					+ "	code INTEGER,"
 					+ " discountEndDate DATE,"
 					+ " discountPercentage DATE,"
-					+ "PRIMARY KEY (policyId));";
+					+ "	PRIMARY KEY (policyId));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE OvertDiscount("
-					+ "policyId INTEGER REFERENCES Policies(policyId),"
+					+ "	policyId INTEGER REFERENCES Policies(policyId),"
 					+ " discountEndDate DATE,"
 					+ " discountPercentage DATE,"
-					+ "PRIMARY KEY (policyId));";
+					+ "	PRIMARY KEY (policyId));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE SubscribersInLottery("
-					+ "lotteryId INTEGER REFERENCES LotteryPurchases(lottaryId),"
-					+ "username VARCHAR(50) REFERENCES Subscribers(username),"
-					+ "moneyPayed INTEGER,"
-					+ "PRIMARY KEY (lotaryId, username));";
+					+ "	lotteryId INTEGER REFERENCES LotteryPurchases(lottaryId),"
+					+ "	username VARCHAR(50) REFERENCES Subscribers(username),"
+					+ "	moneyPayed INTEGER,"
+					+ "	PRIMARY KEY (lotaryId, username));";
 			stmt.executeUpdate(sql);
 
 			System.out.println("Created Tables");
@@ -180,7 +180,7 @@ public class DALReal implements DAL {
 		Connection c=getConnection();
 		Statement statement = c.createStatement();
 		statement.executeQuery(query);
-		query ="SELECT * FROM Subscribers";
+		query = "SELECT * FROM Subscribers";
 		ResultSet rs = statement.executeQuery(query);
 		List<Subscriber>ans = new LinkedList<Subscriber>();
 		while(rs.next())
@@ -241,7 +241,7 @@ public class DALReal implements DAL {
 
 	public  List<StoreManager> getSubscriberManagers(String username) throws Exception {
 		String query = "USE TradingSystem";
-		Connection c=getConnection();
+		Connection c = getConnection();
 		Statement statement = c.createStatement();
 		statement.executeQuery(query);
 		query ="SELECT * FROM StoreManagers WHERE username = " + username;
@@ -300,7 +300,7 @@ public class DALReal implements DAL {
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
 		query = "SELECT *  "
-				+ "FROM Admins "
+				+ "FROM SystemAdministrators "
 				+ "WHERE username = " + username+ ";";
 		statement.executeUpdate(query);
 		ResultSet res=statement.executeQuery(query);
@@ -534,7 +534,7 @@ public class DALReal implements DAL {
 				+ s.getAddress() + s.getPhone() + s.getCreditCardNumber()+ ")";
 		statement.executeUpdate(query);
 		if(s.isAdmin()){
-			query = "INSERT INTO Admins " +
+			query = "INSERT INTO SystemAdministrators " +
 					"VALUES (" + s.getUsername() + ")";
 			statement.executeUpdate(query);
 		}

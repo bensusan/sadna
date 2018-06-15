@@ -598,11 +598,11 @@ public class GreetingController {
 							List<StoreOwner> subSo = sub.getOwner();
 							storeSo.retainAll(subSo);
 							if(!storeSo.isEmpty()){
-								String msg = "";
+								String msg1 = "";
 								if(holdMyData.masseges.containsKey(subSo))
-									msg = holdMyData.masseges.get(sub);
+									msg1 = holdMyData.masseges.get(sub);
 									
-								holdMyData.masseges.put(sub.getUsername(), msg +
+								holdMyData.masseges.put(sub.getUsername(), msg1 +
 										"Product: " + pic.getMyProduct().getId() + " ,amount: " + pic.getAmount()
 										+ " , was purchased!\n");
 							}
@@ -620,11 +620,11 @@ public class GreetingController {
 					String uname = gson.fromJson(args[0], String.class);
 					Subscriber sub = BlMain.getSubscriberFromUsername(uname);
 					
-					String msg = "";
+					String msg2 = "";
 					if(holdMyData.masseges.containsKey(uname))
-						msg = holdMyData.masseges.get(uname);
+						msg2 = holdMyData.masseges.get(uname);
 					
-					String json1 = new Gson().toJson(msg); 
+					String json1 = new Gson().toJson(msg2); 
 					String json2 = new Gson().toJson(BlMain.getAllStoresWithThierProductsAndAmounts()); 
 					
 					String bothJson = "["+json1+","+json2+"]"; //Put both objects in an array of 2 elements
@@ -633,7 +633,7 @@ public class GreetingController {
 				}
 				else if(args.length == 2){
 					int init = gson.fromJson(args[0], Integer.class);
-					String msg = "";
+					String msg3 = "";
 					
 					if(init == -1){
 						Cart cart = new Cart();
@@ -641,13 +641,13 @@ public class GreetingController {
 						init = holdMyData.guestNum;
 						holdMyData.guests.put(++holdMyData.guestNum, g);
 						holdMyData.guests.put(init,g);
-						msg = "welcome";
+						msg3 = "welcome";
 					}
 					else{
-						msg = "keep enjoying!";
+						msg3 = "keep enjoying!";
 					}
 						
-					String json1 = new Gson().toJson(msg); 
+					String json1 = new Gson().toJson(msg3); 
 					String json2 = new Gson().toJson(BlMain.getAllStoresWithThierProductsAndAmounts());
 					String bothJson = "["+json1+","+json2+"]"; //Put both objects in an array of 2 elements
 					

@@ -11,12 +11,12 @@ import TS_SharedClasses.*;
 
 public class BlMain {
 
-	public final static int NUM_OF_PERMISSIONS = 14; 
+	public final static int NUM_OF_PERMISSIONS = 15; 
 	// constants according to BlPermission's functions order.
 	public final static int addProductToStore = 0, deleteProductFromStore = 1, updateProductDetails = 2,
 			addPolicyToProduct = 3, addDiscountToProduct = 4, addNewStoreOwner = 5, addNewManager = 6, closeStore = 7,
 			openStore = 8, getPurchaseHistory = 9, expiredProducts = 10, changeStorePurchasePolicy = 11,
-			addDiscountToCategoryStore=12, changeProductType=13;
+			addDiscountToCategoryStore=12, changeProductType=13,addPolicyToCategoryStore=14;
 
 
 	/** DONT DELETE THE COMMENTS - NEED TO SUPPORT THE DELETION FIRST!!!*/
@@ -153,7 +153,12 @@ public class BlMain {
 	public static boolean addDiscountToProduct(StoreOwner so, PurchasePolicy discountTree, Product product) throws Exception {
 		return BlStoreOwner.addDiscountToProduct(so, discountTree, product);
 	}
-	
+	public static boolean addPolicyToCategoryStore(StoreOwner so,PurchasePolicy policy,String category) throws Exception{
+		return BlStoreOwner.addPolicyToCategoryStore(so, policy, category);
+	}
+	public static boolean addPolicyToCategoryStore(StoreManager sm,PurchasePolicy policy,String category) throws Exception{
+		return BlStoreManager.addPolicyToCategoryStore(sm,policy,category);
+	}
 	public static boolean addDiscountToCategoryStore(StoreOwner so, PurchasePolicy discountTree, String category) throws Exception {
 		return BlStoreOwner.addDiscountToCategoryStore(so, discountTree, category);
 	}

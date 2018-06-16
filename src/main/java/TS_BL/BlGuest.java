@@ -160,13 +160,14 @@ public class BlGuest {
 			}
 		}//check if cart comply the category policy
 		for(ProductInCart pic:g.getCart().getProducts()){
-			List<ProductInCart>CategoryProducts=new ArrayList<ProductInCart>();
+			List<ProductInCart>CategoryStoreProducts=new ArrayList<ProductInCart>();
 			for (ProductInCart pic2 : g.getCart().getProducts()) {
-				if(pic.getMyProduct().getCategory().equals(pic2.getMyProduct().getCategory())){
-					CategoryProducts.add(pic2);
+				if(pic.getMyProduct().getCategory().equals(pic2.getMyProduct().getCategory())&&
+						pic.getMyProduct().getStore().equals(pic2.getMyProduct().getStore())){
+					CategoryStoreProducts.add(pic2);
 				}
 			}
-			if (!pic.getMyProduct().getCategory().getPurchasePolicy().isCorrectProduct(CategoryProducts.size(), buyerAddress)){
+			if (!pic.getMyProduct().getStore().getCategoryPolicy().get(pic.getMyProduct().getCategory()).isCorrectProduct(CategoryStoreProducts.size(), buyerAddress)){
 				throw new Exception("the cart does not comply with "+pic.getMyProduct().getStore().getStoreName()+" store policy");
 			}
 		}

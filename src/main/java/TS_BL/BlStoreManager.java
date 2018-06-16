@@ -124,4 +124,8 @@ public class BlStoreManager {
 	public static boolean changeProductType(StoreManager sm, PurchaseType type, Product product) throws Exception {
 		return sm!=null &&sm.getPremisions()[BlMain.changeProductType] && BlPermissions.changeProductType(sm.getStore(),type,product);
 	}
+
+	public static boolean addPolicyToCategoryStore(StoreManager sm, PurchasePolicy policy, String category) throws Exception {
+		return sm != null && sm.getPremisions()[BlMain.addPolicyToCategoryStore] && BlPermissions.addPolicyToCategoryStore(sm.getStore(), policy, category);
+	}
 }

@@ -25,6 +25,7 @@ public class Store {
 	private int moneyEarned;
 	private PurchasePolicy storePolicy;
 	private Map<Category,PurchasePolicy> categoryDiscounts;
+	private Map<Category,PurchasePolicy> categoryPolicy;
 
 	public Store(String name, String address, String phone, int gradeing, Map<Product, Integer> products,
 			List<Purchase> purchaseHistory, boolean isOpen) {
@@ -46,20 +47,23 @@ public class Store {
 		this.moneyEarned = 0;
 		this.setStorePolicy(null);
 		this.categoryDiscounts=new HashMap<Category,PurchasePolicy>();
+		this.categoryPolicy=new HashMap<Category,PurchasePolicy>();
 	}
 	
 	public Store(String name, String address, String phone, int gradeing, Map<Product, Integer> products,
-			List<Purchase> purchaseHistory, boolean isOpen, PurchasePolicy storePolicy,Map<Category,PurchasePolicy> categoryDiscounts) {
+			List<Purchase> purchaseHistory, boolean isOpen, PurchasePolicy storePolicy,
+			Map<Category,PurchasePolicy> categoryDiscounts, Map<Category,PurchasePolicy> categoryPolicy) {
 		this(name, address, phone, gradeing, products, purchaseHistory, isOpen);
 		this.setStorePolicy(storePolicy);
 		this.categoryDiscounts=categoryDiscounts;
+		this.categoryPolicy=categoryPolicy;
 	}
 	
 	
 	//WARNING FOR DAL!!!!!!!!
 	public Store(int storeId, String name, String address, String phone, int gradeing, Map<Product, Integer> products,
 			List<Purchase> purchaseHistory, boolean isOpen, List<StoreOwner> myOwners, List<StoreManager> myManagers,
-			int moneyEarned, PurchasePolicy storePolicy, Map<Category, PurchasePolicy> categoryDiscounts) {
+			int moneyEarned, PurchasePolicy storePolicy, Map<Category, PurchasePolicy> categoryDiscounts,Map<Category, PurchasePolicy> categoryPolicy) {
 		super();
 		this.storeId = storeId;
 		this.name = name;
@@ -74,6 +78,7 @@ public class Store {
 		this.moneyEarned = moneyEarned;
 		this.storePolicy = storePolicy;
 		this.categoryDiscounts = categoryDiscounts;
+		this.categoryPolicy=categoryPolicy;
 	}
 
 	public int getStoreId() {
@@ -180,6 +185,13 @@ public class Store {
 
 	public void setCategoryDiscounts(Map<Category, PurchasePolicy> categoryDiscounts) {
 		this.categoryDiscounts = categoryDiscounts;
+	}
+	public Map<Category, PurchasePolicy> getCategoryPolicy() {
+		return categoryPolicy;
+	}
+
+	public void setCategoryPolicy(Map<Category, PurchasePolicy> categoryPolicy) {
+		this.categoryPolicy = categoryPolicy;
 	}
 
 	@Override

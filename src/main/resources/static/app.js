@@ -126,9 +126,7 @@ function recieveAddPurchaseTypeToProductPage(funcName, obj) {
 	switch (funcName){
         case "changeProductType":
             window.alert("Product new purchase type added successfully!");
-            stompClient.disconnect();
-            stompClient = null;
-            window.location.href = "storePage.html";
+            loadStoreProducts();
             break;
         default:
             break;
@@ -139,15 +137,11 @@ function recieveAddDiscountAndPolicyPage(funcName, obj) {
 	switch (funcName){
         case "addDiscountToProduct":
             window.alert("New discount added successfully!");
-            stompClient.disconnect();
-            stompClient = null;
-            window.location.href = "storePage.html";
+            loadStoreProducts();
             break;
 		case "addPolicyToProduct":
 			window.alert("New Policy added successfully!");
-            stompClient.disconnect();
-            stompClient = null;
-            window.location.href = "storePage.html";
+            loadStoreProducts();
 			break;
 		case "changeStorePurchasePolicy":
 			window.alert("New Policy to store added successfully!");
@@ -170,9 +164,7 @@ function recieveEditProductsPage(funcName, obj) {
 	switch (funcName){
         case "updateProductDetails":
             window.alert("Product Update successfully");
-            stompClient.disconnect();
-            stompClient = null;
-            window.location.href = "storePage.html";
+            loadStoreProducts();
             break;
         default:
             break;
@@ -188,9 +180,7 @@ function recieveStoreProductsPage(funcName, obj) {
             break;
 		case "deleteProductFromStore":
 			window.alert("Product was deleted successfully!");
-			stompClient.disconnect();
-            stompClient = null;
-            window.location.href = "storePage.html";
+			loadStoreProducts();
             break;
         default:
             break;
@@ -249,6 +239,12 @@ function recieveStorePage(funcName, obj){
 				window.location.href = "purchaseListPage.html";
 			}
 			break;
+		case "getProductAndAmountPerStoreId":
+			localStorage.setItem('storeProducts', JSON.stringify(obj));
+			stompClient.disconnect();
+			stompClient = null;
+			window.location.href = "storePage.html";
+			break;
         default:
             break;
     }
@@ -282,9 +278,7 @@ function recieveAddProduct(funcName, obj) {
     switch (funcName){
         case "addProductToStore":
 			window.alert("New Product was added successfully!");
-            stompClient.disconnect();
-            stompClient = null;
-            window.location.href = "storePage.html";
+			loadStoreProducts();
             break;
         default:
             break;
@@ -326,7 +320,7 @@ function recieveOpenStoreMsg(funcName, obj) {
 			window.alert("Store " + JSON.stringify(obj['name']) + " opened successfully!");
 			updateCurrentSubscriber();
 			setTimeout(function(){
-			loadMainPage();
+			loadMyStoresPage();
 			}, 2000);
             
             break;
@@ -965,6 +959,17 @@ function loadStoreProductsPage(action){
         }));
 }
 
+function loadStoreProducts(){
+	stompClient.send("/app/hello", {},
+    JSON.stringify(
+        {	'pageName': "storePage",
+            'functionName': "getProductAndAmountPerStoreId",
+            'paramsAsJSON': [JSON.parse(localStorage.getItem('currentStore'))['storeId']]
+        }));
+}
+
+
+
 function loadAllUsersPage(action){
 	localStorage.setItem('actionOnSubscriber', action);
 	stompClient.send("/app/hello", {},
@@ -1156,17 +1161,19 @@ function recieveCartAfterPurchase(funcName, obj){
 function loadEditOwnStore(store){
 	localStorage.setItem('currentStore', JSON.stringify(store));
 	localStorage.setItem('isOwner', JSON.stringify(true));
-	stompClient.disconnect();
+	loadStoreProducts();
+	/*stompClient.disconnect();
     stompClient = null;
-    window.location.href = "storePage.html";
+    window.location.href = "storePage.html";*/
 }
 
 function loadEditManageStore(store){
 	localStorage.setItem('currentStore', JSON.stringify(store));
 	localStorage.setItem('isOwner', JSON.stringify(false));
-	stompClient.disconnect();
+	loadStoreProducts();
+	/*stompClient.disconnect();
     stompClient = null;
-    window.location.href = "storePage.html";
+    window.location.href = "storePage.html";*/
 }
 
 function loadMainPage() {

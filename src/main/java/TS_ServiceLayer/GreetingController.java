@@ -152,7 +152,7 @@ public class GreetingController {
 					int newAmount = BlMain.getAmountFromProdId(gson.fromJson(args[1], Integer.class).intValue());
 					
 					String newName = gson.fromJson(args[4], String.class);
-					if(newName == null)
+					if(newName.equals(""))
 						newName = oldProduct.getName();
 					
 					int newPrice;
@@ -163,7 +163,7 @@ public class GreetingController {
 						newPrice = gson.fromJson(args[5], Integer.class);
 					
 					String newCategory = gson.fromJson(args[6], String.class);
-					if(newCategory == null)
+					if(newCategory.equals(""))
 						newCategory = oldProduct.getCategory().getName();
 					
 					checkval = gson.fromJson(args[7], String.class);

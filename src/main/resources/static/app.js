@@ -99,10 +99,9 @@ function recieveMainPageMsg(funcName, obj) {
     switch (funcName){
         case "getAllStoresWithThierProductsAndAmounts":
         	var data = JSON.parse(obj);
-        	var data1=data[0], data2=data[1];
-       		
+        	var data1=data[0], data2=data[1];       		
             localStorage.setItem('mapForTable', JSON.stringify(data2));
-            localStorage.setItem('msgToPrint',data1);
+            localStorage.setItem('msgToPrint',JSON.stringify(data1));
             stompClient.disconnect();
             stompClient = null;
             window.location.href = "mainPage.html";
@@ -126,9 +125,7 @@ function recieveAddPurchaseTypeToProductPage(funcName, obj) {
 	switch (funcName){
         case "changeProductType":
             window.alert("Product new purchase type added successfully!");
-            stompClient.disconnect();
-            stompClient = null;
-            window.location.href = "storePage.html";
+            loadStoreProducts();
             break;
         default:
             break;
@@ -139,15 +136,11 @@ function recieveAddDiscountAndPolicyPage(funcName, obj) {
 	switch (funcName){
         case "addDiscountToProduct":
             window.alert("New discount added successfully!");
-            stompClient.disconnect();
-            stompClient = null;
-            window.location.href = "storePage.html";
+            loadStoreProducts();
             break;
 		case "addPolicyToProduct":
 			window.alert("New Policy added successfully!");
-            stompClient.disconnect();
-            stompClient = null;
-            window.location.href = "storePage.html";
+            loadStoreProducts();
 			break;
 		case "changeStorePurchasePolicy":
 			window.alert("New Policy to store added successfully!");
@@ -170,9 +163,7 @@ function recieveEditProductsPage(funcName, obj) {
 	switch (funcName){
         case "updateProductDetails":
             window.alert("Product Update successfully");
-            stompClient.disconnect();
-            stompClient = null;
-            window.location.href = "storePage.html";
+            loadStoreProducts();
             break;
         default:
             break;
@@ -188,9 +179,7 @@ function recieveStoreProductsPage(funcName, obj) {
             break;
 		case "deleteProductFromStore":
 			window.alert("Product was deleted successfully!");
-			stompClient.disconnect();
-            stompClient = null;
-            window.location.href = "storePage.html";
+			loadStoreProducts();
             break;
         default:
             break;
@@ -249,6 +238,12 @@ function recieveStorePage(funcName, obj){
 				window.location.href = "purchaseListPage.html";
 			}
 			break;
+		case "getProductAndAmountPerStoreId":
+			localStorage.setItem('storeProducts', JSON.stringify(obj));
+			stompClient.disconnect();
+			stompClient = null;
+			window.location.href = "storePage.html";
+			break;
         default:
             break;
     }
@@ -282,9 +277,7 @@ function recieveAddProduct(funcName, obj) {
     switch (funcName){
         case "addProductToStore":
 			window.alert("New Product was added successfully!");
-            stompClient.disconnect();
-            stompClient = null;
-            window.location.href = "storePage.html";
+			loadStoreProducts();
             break;
         default:
             break;
@@ -326,7 +319,7 @@ function recieveOpenStoreMsg(funcName, obj) {
 			window.alert("Store " + JSON.stringify(obj['name']) + " opened successfully!");
 			updateCurrentSubscriber();
 			setTimeout(function(){
-			loadMainPage();
+			loadMyStoresPage();
 			}, 2000);
             
             break;
@@ -624,6 +617,26 @@ function loadProduct(){
 	pg.innerHTML = product.grading;
 	var pc = document.getElementById('productCategoryInProductPage');
 	pc.innerHTML = product.category.name;
+	var pt = document.getElementById('productTypeInProductPage');
+	if(JSON.stringify(product.type) == "{}"){
+		pt.innerHTML = "Immediatly Purchase";
+	}else{
+		pt.innerHTML = "Lottery Purchase: End Date: " + product.type.lotteryEndDate + ", Has Ended: " + JSON.stringify(product.type.hasEnded);
+	}
+	var pp = document.getElementById('productPolicyInProductPage');
+	if(JSON.stringify(product.purchasePolicy) == "{}"){
+		pp.innerHTML = "Emplty Policy";
+	}else{
+		var toBeInner = "";
+		if(typeof product.purchasePolicy["min"] != "undefined"){
+			toBeInner = toBeInner + "Min amount: " + JSON.stringify(product.purchasePolicy["min"]) + ". ";
+		}
+		if(typeof product.purchasePolicy["max"] != "undefined"){
+			toBeInner = toBeInner + "Max amount: " + JSON.stringify(product.purchasePolicy["max"]) + ". ";
+		}
+		pp.innerHTML = toBeInner;
+	}
+	
 }
 
 function loadProductsOfStore(){
@@ -965,6 +978,17 @@ function loadStoreProductsPage(action){
         }));
 }
 
+function loadStoreProducts(){
+	stompClient.send("/app/hello", {},
+    JSON.stringify(
+        {	'pageName': "storePage",
+            'functionName': "getProductAndAmountPerStoreId",
+            'paramsAsJSON': [JSON.parse(localStorage.getItem('currentStore'))['storeId']]
+        }));
+}
+
+
+
 function loadAllUsersPage(action){
 	localStorage.setItem('actionOnSubscriber', action);
 	stompClient.send("/app/hello", {},
@@ -1156,17 +1180,19 @@ function recieveCartAfterPurchase(funcName, obj){
 function loadEditOwnStore(store){
 	localStorage.setItem('currentStore', JSON.stringify(store));
 	localStorage.setItem('isOwner', JSON.stringify(true));
-	stompClient.disconnect();
+	loadStoreProducts();
+	/*stompClient.disconnect();
     stompClient = null;
-    window.location.href = "storePage.html";
+    window.location.href = "storePage.html";*/
 }
 
 function loadEditManageStore(store){
 	localStorage.setItem('currentStore', JSON.stringify(store));
 	localStorage.setItem('isOwner', JSON.stringify(false));
-	stompClient.disconnect();
+	loadStoreProducts();
+	/*stompClient.disconnect();
     stompClient = null;
-    window.location.href = "storePage.html";
+    window.location.href = "storePage.html";*/
 }
 
 function loadMainPage() {
@@ -1322,9 +1348,6 @@ function logOut(){
     loadMainPage();
 }
 
-function loadMsg(){
-	document.getElementById("msgDiv").innerHtml = "ALEX";
-}
 
 /******************************************************************************/
 /***********************************POLICY*************************************/

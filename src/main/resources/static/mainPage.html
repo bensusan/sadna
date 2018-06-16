@@ -13,7 +13,7 @@
     <script src="/app.js"></script>
 </head>
 
-<body onload="manageSysAdminPermissions(); loadSearchProducts();">
+<body onload="loadMMMMsg(); manageSysAdminPermissions(); loadSearchProducts();">
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
     enabled. Please enable Javascript and reload this page!</h2></noscript>
     
@@ -51,7 +51,7 @@
 <br><hr><br>
 <div>
 <th><u><center>Massages</center></u></th>
-<p id="msgDiv" onload="loadMsg()"></p>
+<p id="msgDiv"></p>
 </div>
 <br><hr>
 <div id="searchProductsSection">
@@ -83,6 +83,14 @@
 				$('#systemAdminSection').show();
 			else
 				$('#systemAdminSection').hide();
+		}
+		
+		
+		function loadMMMMsg(){
+			var msg = document.getElementById('msgDiv');
+			var toBeInner = localStorage.getItem('msgToPrint');
+			msg.innerHTML = toBeInner;
+			
 		}
 	</script>
 </body>

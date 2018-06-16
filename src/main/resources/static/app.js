@@ -99,10 +99,9 @@ function recieveMainPageMsg(funcName, obj) {
     switch (funcName){
         case "getAllStoresWithThierProductsAndAmounts":
         	var data = JSON.parse(obj);
-        	var data1=data[0], data2=data[1];
-       		
+        	var data1=data[0], data2=data[1];       		
             localStorage.setItem('mapForTable', JSON.stringify(data2));
-            localStorage.setItem('msgToPrint',data1);
+            localStorage.setItem('msgToPrint',JSON.stringify(data1));
             stompClient.disconnect();
             stompClient = null;
             window.location.href = "mainPage.html";
@@ -1349,9 +1348,6 @@ function logOut(){
     loadMainPage();
 }
 
-function loadMsg(){
-	document.getElementById("msgDiv").innerHtml = "ALEX";
-}
 
 /******************************************************************************/
 /***********************************POLICY*************************************/

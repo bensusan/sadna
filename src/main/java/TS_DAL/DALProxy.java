@@ -97,7 +97,7 @@ public class DALProxy implements DAL {
 	}
 
 	public void updateProductDetails(Store s, Product oldProduct, Product newProduct, int amount,
-			String newProductCategory) {
+			String newProductCategory) throws Exception{
 		getReal().updateProductDetails(s, oldProduct, newProduct, amount, newProductCategory);
 	}
 
@@ -157,31 +157,27 @@ public class DALProxy implements DAL {
 		return getReal().getProductAmount(storeId);
 	}
 
-	public List<Purchase> getStorePurchase(int storeId) {
+	public List<Purchase> getStorePurchase(int storeId) throws Exception {
 		return getReal().getStorePurchase(storeId);
 	}
 
-	public PurchasePolicy getPurchasePolicy(int policyId, int type) throws Exception {
-		return getReal().getPurchasePolicy(policyId, type);
+	public PurchasePolicy getPurchasePolicy(int policyId) throws Exception {
+		return getReal().getPurchasePolicy(policyId);
 	}
 
 	public List<PurchasePolicy> getSubPolicies(int policyId) {
 		return getReal().getSubPolicies(policyId);
 	}
 
-	public void removePurchase(String username, int purchaseId) {
-		getReal().removePurchase(username, purchaseId);
-	}
-
-	public void deleteStore(int storeId) {
-		getReal().deleteStore(storeId);
+	public void removePurchase(int purchaseId) throws Exception{
+		getReal().removePurchase(purchaseId);
 	}
 
 	public DiscountPolicy getDiscountPolicy(int policyId) throws Exception {
 		return getReal().getDiscountPolicy(policyId);
 	}
 
-	public PurchaseType getPurchaseType(int productId) {
+	public PurchaseType getPurchaseType(int productId) throws Exception{
 		return getReal().getPurchaseType(productId);
 	}
 
@@ -197,19 +193,32 @@ public class DALProxy implements DAL {
 		getReal().addLotteryProductToCart(username, p, money);
 	}
 
-	public void setNewCartForSubscriber(String username, Cart cart) {
-		getReal().setNewCartForSubscriber(username, cart);
-	}
-
-	public int getAmountOfProduct(int productId) {
-		return getReal().getAmountOfProduct(productId);
+	public int getAmountOfProduct(int storeId, int productId) throws Exception{
+		return getReal().getAmountOfProduct(storeId, productId);
 	}
 
 	public boolean isCategoryExists(String category) {
 		return getReal().isCategoryExists(category);
 	}
-	public List<Purchase> getStoreHistory(int storeId) {
-		return getReal().getStoreHistory(storeId);
+
+	public List<StoreOwner> getStoreOwnersFromStore(int storeId) throws Exception{
+		return getReal().getStoreOwnersFromStore(storeId);
+	}
+
+	public List<StoreManager> getStoreManagersFromStore(int storeId) throws Exception{
+		return getReal().getStoreManagersFromStore(storeId);
+	}
+
+	public PurchasePolicy getStorePolicy(int storeId) throws Exception{
+		return getReal().getStorePolicy(storeId);
+	}
+
+	public Map<Category, PurchasePolicy> getStoreCategoryDiscount(int storeId) throws Exception{
+		return getReal().getStoreCategoryDiscount(storeId);
+	}
+
+	public Product getProductById(int productId) throws Exception{
+		return getReal().getProductById(productId);
 	}
 
 }

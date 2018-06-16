@@ -618,6 +618,26 @@ function loadProduct(){
 	pg.innerHTML = product.grading;
 	var pc = document.getElementById('productCategoryInProductPage');
 	pc.innerHTML = product.category.name;
+	var pt = document.getElementById('productTypeInProductPage');
+	if(JSON.stringify(product.type) == "{}"){
+		pt.innerHTML = "Immediatly Purchase";
+	}else{
+		pt.innerHTML = "Lottery Purchase: End Date: " + product.type.lotteryEndDate + ", Has Ended: " + JSON.stringify(product.type.hasEnded);
+	}
+	var pp = document.getElementById('productPolicyInProductPage');
+	if(JSON.stringify(product.purchasePolicy) == "{}"){
+		pp.innerHTML = "Emplty Policy";
+	}else{
+		var toBeInner = "";
+		if(typeof product.purchasePolicy["min"] != "undefined"){
+			toBeInner = toBeInner + "Min amount: " + JSON.stringify(product.purchasePolicy["min"]) + ". ";
+		}
+		if(typeof product.purchasePolicy["max"] != "undefined"){
+			toBeInner = toBeInner + "Max amount: " + JSON.stringify(product.purchasePolicy["max"]) + ". ";
+		}
+		pp.innerHTML = toBeInner;
+	}
+	
 }
 
 function loadProductsOfStore(){

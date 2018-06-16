@@ -3,7 +3,6 @@ package RegressionTests;
 import static org.junit.Assert.*;
 
 import java.sql.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -51,7 +50,12 @@ public class GuestRegTests {
 			e.printStackTrace();
 			fail();
 		}
-		assertTrue(BlMain.allSubscribers.contains(alex));
+		try {
+			assertNotNull(BlMain.getSubscriberFromUsername("alexuser"));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			fail();
+		}
 		try {
 			assertEquals(BlMain.signIn(alex, "alexuser", "alexpass"),alex);
 		} catch (Exception e) {
@@ -74,7 +78,12 @@ public class GuestRegTests {
 				assertEquals(p.getAmount(),10);
 			}
 		}
-		assertEquals(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).get(tennisProduct).intValue(),50);
+		try {
+			assertEquals(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).get(tennisProduct).intValue(),50);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			fail();
+		}
 		try {
 			BlMain.removeProductFromCart(alex, tennisProduct);
 		} catch (Exception e) {
@@ -130,7 +139,12 @@ public class GuestRegTests {
 			e.printStackTrace();
 			fail();
 		}
-		assertEquals(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).get(tennisProduct).intValue(),30);
+		try {
+			assertEquals(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).get(tennisProduct).intValue(),30);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			fail();
+		}
 		assertTrue(alex.getCart().getProducts().isEmpty());
 		SystemAdministrator amit=new SystemAdministrator("amit123", "amit123", "amit kaplan", "hatamar 3 Modiin", "0545818680", "1111111111111111",new LinkedList<Purchase>(),new LinkedList<StoreManager>(),new LinkedList<StoreOwner>());
 		

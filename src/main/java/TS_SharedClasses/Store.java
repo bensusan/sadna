@@ -54,6 +54,27 @@ public class Store {
 		this.setStorePolicy(storePolicy);
 		this.categoryDiscounts=categoryDiscounts;
 	}
+	
+	
+	//WARNING FOR DAL!!!!!!!!
+	public Store(int storeId, String name, String address, String phone, int gradeing, Map<Product, Integer> products,
+			List<Purchase> purchaseHistory, boolean isOpen, List<StoreOwner> myOwners, List<StoreManager> myManagers,
+			int moneyEarned, PurchasePolicy storePolicy, Map<Category, PurchasePolicy> categoryDiscounts) {
+		super();
+		this.storeId = storeId;
+		this.name = name;
+		this.address = address;
+		this.phone = phone;
+		this.gradeing = gradeing;
+		this.products = products;
+		this.purchaseHistory = purchaseHistory;
+		this.isOpen = isOpen;
+		this.myOwners = myOwners;
+		this.myManagers = myManagers;
+		this.moneyEarned = moneyEarned;
+		this.storePolicy = storePolicy;
+		this.categoryDiscounts = categoryDiscounts;
+	}
 
 	public int getStoreId() {
 		return storeId;

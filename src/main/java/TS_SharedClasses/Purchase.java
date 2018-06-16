@@ -16,6 +16,14 @@ public class Purchase {
 		this.purchaseID = nextID++;
 		this.purchased = purchased;
 	}
+	
+	//WARNING FOR DAL!!!!!!!
+	public Purchase(Date whenPurchased, int purchaseID, ProductInCart purchased) {
+		super();
+		this.whenPurchased = whenPurchased;
+		this.purchaseID = purchaseID;
+		this.purchased = purchased;
+	}
 
 	public int getPurchaseID() {
 		return purchaseID;

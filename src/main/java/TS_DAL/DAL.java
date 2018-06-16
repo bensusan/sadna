@@ -13,20 +13,19 @@ public interface DAL {
 	public List<Purchase> getMyPurchase(String username) throws Exception;
 	public boolean isSubscriberExist(String username) throws Exception;
 	public boolean isAdmin(String username) throws Exception;
-	public void removeSubscriber(Subscriber sub) throws Exception;
-	public List<Purchase> getStorePurchase(Store store);
+	public void removeSubscriber(String username) throws Exception;
 	public void addPurchaseToHistory(Subscriber sub, Purchase p) throws Exception;
 	public void removeStoreOwner(String username, int storeId) throws Exception;
 	public void deleteStoreManager(String username, int storeId) throws Exception;
 	public boolean checkInStock(int productId, int amount) throws Exception;
-	public Store getProductStore(Product p) throws Exception;
-	public List<Product> getAllProductsOfStore(Store store) throws Exception;
+	public Store getProductStore(int productId) throws Exception;
+	public List<Product> getAllProductsOfStore(int storeId) throws Exception;
 	public void stockUpdate(Product p, int amount,Store s) throws Exception;
 	public void updateMoneyEarned(Store s, int newMoneyEarend) throws Exception;
 	public List<Category>getAllCategory();
 	public Category getCategory(String categoryName);
-	public void addProductToStore(Store s, Product product, int amount,String category) throws Exception;
-	public void deleteProductFromStore(Store s, Product product) throws Exception;
+	public void addProductToStore(Store s, Product product, int amount,  String category) throws Exception;
+	public void deleteProductFromStore(int storeId, int productId) throws Exception;
 	public void updateProductDetails(Store s, Product oldProduct, Product newProduct, int amount,String newProductCategory);
 	public void addNewStoreOwner(Store s, Subscriber owner) throws Exception;
 	public void addNewStoreManager(Store s, Subscriber newMan, int permission) throws Exception;
@@ -34,7 +33,7 @@ public interface DAL {
 	public void addSubscriber(Subscriber s) throws Exception;
 	public Subscriber getSubscriber(String username, String password)throws Exception;
 	public void addImeddiatleyProductToCart(String username, Product p, int amount, int code) throws Exception;
-	public void removeProductFromCart(String username, Product p) throws Exception;
+	public void removeProductFromCart(String username, int productId) throws Exception;
 	public void editProductAmount(String username, Product p, int amount) throws Exception;
 	public void editProductCode(String username, Product p, int code) throws Exception;
 	public void editProductPrice(int productId, int price) throws Exception;
@@ -45,7 +44,7 @@ public interface DAL {
 	public  List<Purchase> getStorePurchase(int storeId);
 	public PurchasePolicy getPurchasePolicy(int policyId, int type) throws Exception;
 	public List<PurchasePolicy> getSubPolicies(int policyId);
-	public void removePurchase(Subscriber s, Purchase p);
+	public void removePurchase(String username, int purchaseId);
 	public void deleteStore(int storeId);
 	public DiscountPolicy getDiscountPolicy(int policyId) throws Exception;
 	public PurchaseType getPurchaseType(int productId);
@@ -53,10 +52,7 @@ public interface DAL {
 	public List<Store> getStores() throws Exception;
 	public void addLotteryProductToCart(String username, Product p, int money);
 	public void setNewCartForSubscriber(String username, Cart cart);
-	public int getAmountOfProduct(Product myProduct);
+	public int getAmountOfProduct(int productId);
 	public boolean isCategoryExists(String category);
-	public boolean isProductExistsInStore(Store s, Product product);
-	public boolean isStoreOwnerExists(Store s, Subscriber owner);
-	public boolean isStoreManagerExists(Store s, Subscriber newMan);
-	public List<Purchase> getStoreHistory(Store s);
+	public List<Purchase> getStoreHistory(int storeId);
 }

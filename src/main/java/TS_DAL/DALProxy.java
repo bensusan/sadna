@@ -44,12 +44,8 @@ public class DALProxy implements DAL {
 		return getReal().isAdmin(username);
 	}
 
-	public void removeSubscriber(Subscriber sub) throws Exception {
-		getReal().removeSubscriber(sub);
-	}
-
-	public List<Purchase> getStorePurchase(Store store) {
-		return getReal().getStorePurchase(store);
+	public void removeSubscriber(String username) throws Exception {
+		getReal().removeSubscriber(username);
 	}
 
 	public void addPurchaseToHistory(Subscriber sub, Purchase p) throws Exception {
@@ -68,12 +64,12 @@ public class DALProxy implements DAL {
 		return getReal().checkInStock(productId, amount);
 	}
 
-	public Store getProductStore(Product p) throws Exception {
-		return getReal().getProductStore(p);
+	public Store getProductStore(int productId) throws Exception {
+		return getReal().getProductStore(productId);
 	}
 
-	public List<Product> getAllProductsOfStore(Store store) throws Exception {
-		return getReal().getAllProductsOfStore(store);
+	public List<Product> getAllProductsOfStore(int storeId) throws Exception {
+		return getReal().getAllProductsOfStore(storeId);
 	}
 
 	public void stockUpdate(Product p, int amount, Store s) throws Exception {
@@ -96,8 +92,8 @@ public class DALProxy implements DAL {
 		getReal().addProductToStore(s, product, amount, category);
 	}
 
-	public void deleteProductFromStore(Store s, Product product) throws Exception {
-		getReal().deleteProductFromStore(s, product);
+	public void deleteProductFromStore(int storeId, int productId) throws Exception {
+		getReal().deleteProductFromStore(storeId, productId);
 	}
 
 	public void updateProductDetails(Store s, Product oldProduct, Product newProduct, int amount,
@@ -129,8 +125,8 @@ public class DALProxy implements DAL {
 		getReal().addImeddiatleyProductToCart(username, p, amount, code);
 	}
 
-	public void removeProductFromCart(String username, Product p) throws Exception {
-		getReal().removeProductFromCart(username, p);
+	public void removeProductFromCart(String username, int productId) throws Exception {
+		getReal().removeProductFromCart(username, productId);
 	}
 
 	public void editProductAmount(String username, Product p, int amount) throws Exception {
@@ -173,8 +169,8 @@ public class DALProxy implements DAL {
 		return getReal().getSubPolicies(policyId);
 	}
 
-	public void removePurchase(Subscriber s, Purchase p) {
-		getReal().removePurchase(s, p);
+	public void removePurchase(String username, int purchaseId) {
+		getReal().removePurchase(username, purchaseId);
 	}
 
 	public void deleteStore(int storeId) {
@@ -205,28 +201,15 @@ public class DALProxy implements DAL {
 		getReal().setNewCartForSubscriber(username, cart);
 	}
 
-	public int getAmountOfProduct(Product myProduct) {
-		return getReal().getAmountOfProduct(myProduct);
+	public int getAmountOfProduct(int productId) {
+		return getReal().getAmountOfProduct(productId);
 	}
 
 	public boolean isCategoryExists(String category) {
 		return getReal().isCategoryExists(category);
 	}
-
-	public boolean isProductExistsInStore(Store s, Product product) {
-		return getReal().isProductExistsInStore(s, product);
-	}
-
-	public boolean isStoreOwnerExists(Store s, Subscriber owner) {
-		return getReal().isStoreOwnerExists(s, owner);
-	}
-
-	public boolean isStoreManagerExists(Store s, Subscriber newMan) {
-		return getReal().isStoreManagerExists(s, newMan);
-	}
-
-	public List<Purchase> getStoreHistory(Store s) {
-		return getReal().getStoreHistory(s);
+	public List<Purchase> getStoreHistory(int storeId) {
+		return getReal().getStoreHistory(storeId);
 	}
 
 }

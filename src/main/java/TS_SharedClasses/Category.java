@@ -13,6 +13,17 @@ public class Category {
 		this.products=new LinkedList<Product>();
 	}
 	
+	
+	//WARNING FOR DAL!!!!!
+	public Category(String name, PurchasePolicy purchasePolicy, List<Product> products) {
+		super();
+		this.name = name;
+		this.purchasePolicy = purchasePolicy;
+		this.products = products;
+	}
+
+
+
 	public String getName() {
 		return name;
 	}

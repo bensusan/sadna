@@ -30,6 +30,17 @@ public class LotteryPurchase implements PurchaseType {
 	}
 
 	
+	//WARNING FOR DAL!!!!!!!!!!
+	public LotteryPurchase(Date actualEndDate, Date lotteryEndDate, Map<Guest, Integer> participants, Guest winner,
+			boolean hasEnded) {
+		super();
+		this.actualEndDate = actualEndDate;
+		this.lotteryEndDate = lotteryEndDate;
+		this.participants = participants;
+		this.winner = winner;
+		this.hasEnded = hasEnded;
+	}
+
 	public Date getLotteryEndDate() {
 		return lotteryEndDate;
 	}

@@ -45,7 +45,21 @@ public class Product  {
 		this.type=oldProduct.type;
 		
 	}
-
+	
+	
+	//WARNING FOR DAL!!!!!!!!
+	public Product(int id, String name, int price, int grading, PurchasePolicy purchasePolicy, Store store,
+			Category category, PurchaseType type) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.grading = grading;
+		this.purchasePolicy = purchasePolicy;
+		this.store = store;
+		this.category = category;
+		this.type = type;
+	}
 	public int getId() {
 		return id;
 	}

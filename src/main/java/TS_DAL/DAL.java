@@ -26,7 +26,7 @@ public interface DAL {
 	public Category getCategory(String categoryName);
 	public void addProductToStore(Store s, Product product, int amount,  String category) throws Exception;
 	public void deleteProductFromStore(int storeId, int productId) throws Exception;
-	public void updateProductDetails(Store s, Product oldProduct, Product newProduct, int amount,String newProductCategory);
+	public void updateProductDetails(Store s, Product oldProduct, Product newProduct, int amount,String newProductCategory) throws Exception;
 	public void addNewStoreOwner(Store s, Subscriber owner) throws Exception;
 	public void addNewStoreManager(Store s, Subscriber newMan, int permission) throws Exception;
 	public void updateStore(Store s) throws Exception;
@@ -41,18 +41,23 @@ public interface DAL {
 	public void openStore(int storeId) throws Exception;
 	public void addStore(Store s) throws Exception;
 	public  Map<Product,Integer> getProductAmount(int storeId) throws Exception;
-	public  List<Purchase> getStorePurchase(int storeId);
-	public PurchasePolicy getPurchasePolicy(int policyId, int type) throws Exception;
+	public  List<Purchase> getStorePurchase(int storeId) throws Exception;
+	public PurchasePolicy getPurchasePolicy(int policyId) throws Exception;
 	public List<PurchasePolicy> getSubPolicies(int policyId);
-	public void removePurchase(String username, int purchaseId);
-	public void deleteStore(int storeId);
+	public void removePurchase(int purchaseId) throws Exception;
 	public DiscountPolicy getDiscountPolicy(int policyId) throws Exception;
-	public PurchaseType getPurchaseType(int productId);
+	public PurchaseType getPurchaseType(int productId) throws Exception;
 	public Subscriber getSubscriberIfExists(String username) throws Exception;
 	public List<Store> getStores() throws Exception;
 	public void addLotteryProductToCart(String username, Product p, int money);
-	public void setNewCartForSubscriber(String username, Cart cart);
-	public int getAmountOfProduct(int productId);
+//	public void setNewCartForSubscriber(String username, Cart cart);
+	public int getAmountOfProduct(int storeId, int productId) throws Exception;
 	public boolean isCategoryExists(String category);
-	public List<Purchase> getStoreHistory(int storeId);
+	public List<StoreOwner> getStoreOwnersFromStore(int storeId) throws Exception;
+	public List<StoreManager> getStoreManagersFromStore(int storeId) throws Exception;
+	public PurchasePolicy getStorePolicy(int storeId) throws Exception;
+	public Map<Category, PurchasePolicy> getStoreCategoryDiscount(int storeId) throws Exception;
+	public Product getProductById(int productId) throws Exception;
+	
+	
 }

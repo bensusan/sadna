@@ -247,15 +247,31 @@ public class StoreManagerAT {
 	}
 
 	private void testCloseStore() {
-		assertFalse(BlMain.closeStore(sm));
+		try {
+			assertFalse(BlMain.closeStore(sm));
+		} catch (Exception e) {
+			fail();
+		}
 		sm.setSpecificPermission(BlMain.closeStore, true);
-		assertTrue(BlMain.closeStore(sm));
+		try {
+			assertTrue(BlMain.closeStore(sm));
+		} catch (Exception e) {
+			fail();
+		}
 	}
 
 	private void testOpenStore() {
-		assertFalse(BlMain.openStore(sm));
+		try {
+			assertFalse(BlMain.openStore(sm));
+		} catch (Exception e) {
+			fail();
+		}
 		sm.setSpecificPermission(BlMain.openStore, true);
-		assertTrue(BlMain.openStore(sm));
+		try {
+			assertTrue(BlMain.openStore(sm));
+		} catch (Exception e) {
+			fail();
+		}
 	}
 
 	private void testGetPurchaseHistory() {

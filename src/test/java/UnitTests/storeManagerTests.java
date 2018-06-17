@@ -197,15 +197,35 @@ public class storeManagerTests {
 	}
 
 	private void testCloseStore() {
-		assertFalse(BlMain.closeStore(sm));
+		try {
+			assertFalse(BlMain.closeStore(sm));
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 		sm.setSpecificPermission(BlMain.closeStore, true);
-		assertTrue(BlMain.closeStore(sm));
+		try {
+			assertTrue(BlMain.closeStore(sm));
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
 
 	private void testOpenStore() {
-		assertFalse(BlMain.openStore(sm));
+		try {
+			assertFalse(BlMain.openStore(sm));
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 		sm.setSpecificPermission(BlMain.openStore, true);
-		assertTrue(BlMain.openStore(sm));
+		try {
+			assertTrue(BlMain.openStore(sm));
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
 
 	private void testGetPurchaseHistory() {

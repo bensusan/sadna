@@ -3,7 +3,6 @@ package RegressionTests;
 import static org.junit.Assert.*;
 
 
-import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.junit.BeforeClass;
@@ -35,7 +34,7 @@ public class systemAdministratorRegTests {
 				BlMain.addNewManager(s.getOwner().get(0), s3);
 				
 				BlMain.removeSubscriber(amit, s);
-				assertFalse(BlMain.allSubscribers.contains(s));
+				assertNull(BlMain.getSubscriberFromUsername(s.getUsername()));
 				try{
 					BlMain.signIn(s, "newUser", "newPass");
 					fail();
@@ -44,7 +43,7 @@ public class systemAdministratorRegTests {
 				assertTrue(BlMain.getAllStores().contains(newStore));
 				
 				BlMain.removeSubscriber(amit, s2);
-				assertFalse(BlMain.allSubscribers.contains(s2));
+				assertNull(BlMain.getSubscriberFromUsername(s2.getUsername()));
 				try{
 					BlMain.signIn(s2, "newUser2", "newPass2");
 					fail();
@@ -56,7 +55,8 @@ public class systemAdministratorRegTests {
 				BlMain.removeSubscriber(amit, s3);//just to clear data
 				
 				int numberOfAdmin=0;
-				for(Subscriber sub:BlMain.allSubscribers){
+			
+				for(Subscriber sub:BlMain.getAllSubscribersWithPotential()){
 					if(sub instanceof SystemAdministrator){
 						numberOfAdmin++;
 					}

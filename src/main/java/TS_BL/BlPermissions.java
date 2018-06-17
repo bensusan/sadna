@@ -191,6 +191,26 @@ public class BlPermissions {
 		dalRef.updateStore(s);
 		return true;
 	}
+	public static boolean addPolicyToCategoryStore(Store store, PurchasePolicy policy, String category)throws Exception {
+		if (store == null || !dalRef.isCategoryExists(category) || policy == null)
+			throw new Exception("something went wrong");
+		Store s = dalRef.getStoreByStoreId(store.getStoreId());
+		Map<Category, PurchasePolicy> categoryPolicys = s.getCategoryPolicy();
+		Category cat = null;
+		List<Category> allCategory = dalRef.getAllCategory();
+		for (Category c : allCategory) {
+			if (c.getName().equals(category)) {
+				cat = c;
+				break;
+			}
+		}
+		if (cat == null)
+			throw new Exception("something went wrong");
+		categoryPolicys.put(cat, policy);
+		dalRef.updateStore(s);
+		store = s;
+		return true;
+	}
 
 	public static boolean addDiscountToCategoryStore(Store store, PurchasePolicy discountTree, String category)
 			throws Exception {
@@ -226,4 +246,6 @@ public class BlPermissions {
 		}
 		return false;
 	}
+
+	
 }

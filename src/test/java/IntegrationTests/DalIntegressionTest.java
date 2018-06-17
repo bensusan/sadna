@@ -30,7 +30,8 @@ public class DalIntegressionTest {
 			}
 			assertTrue(isContain);
 			
-			dal.removeSubscriber(s);
+			
+			dal.removeSubscriber(s.getUsername());
 			fail("error remove Subscriber");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -44,7 +45,7 @@ public class DalIntegressionTest {
 		Subscriber s=new Subscriber(new Cart(), "newUser", "newPass", "newFullName", "newAddress", "newPhone", "newCreditCard", new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>());
 		try{
 			dal.addSubscriber(s);
-			dal.removeSubscriber(s);
+			dal.removeSubscriber(s.getUsername());
 			boolean isContain=false;
 			for(Subscriber newS:dal.allSubscribers()){
 				if(newS.getUsername().equals("newUser"))
@@ -80,8 +81,8 @@ public class DalIntegressionTest {
 			}
 			assertTrue(isContain);
 			
-			dal.removePurchase(s,p);
-			dal.removeSubscriber(s);
+			dal.removePurchase(s.getUsername(),p.getPurchaseID());
+			dal.removeSubscriber(s.getUsername());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -105,7 +106,7 @@ public class DalIntegressionTest {
 			
 			dal.removeStoreOwner(s.getUsername(), store.getStoreId());
 			dal.deleteStore(store.getStoreId());
-			dal.removeSubscriber(s);
+			dal.removeSubscriber(s.getUsername());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -133,7 +134,7 @@ public class DalIntegressionTest {
 			
 			dal.deleteStoreManager(s.getUsername(), store.getStoreId());
 			dal.deleteStore(store.getStoreId());
-			dal.removeSubscriber(s);
+			dal.removeSubscriber(s.getUsername());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -157,7 +158,7 @@ public class DalIntegressionTest {
 			assertEquals(s.getOwner().size()+1, storeOwnerCount);
 			
 			dal.deleteStore(store.getStoreId());
-			dal.removeSubscriber(s);
+			dal.removeSubscriber(s.getUsername());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -181,7 +182,7 @@ public class DalIntegressionTest {
 			assertEquals(s.getManager().size()+1, storeManagerCount);
 			
 			dal.deleteStore(store.getStoreId());
-			dal.removeSubscriber(s);
+			dal.removeSubscriber(s.getUsername());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -210,9 +211,9 @@ public class DalIntegressionTest {
 			}
 			assertTrue(isContain);
 			
-			dal.deleteProductFromStore(store, prod);
+			dal.deleteProductFromStore(store.getStoreId(), prod.getId());
 			dal.deleteStore(store.getStoreId());
-			dal.removeSubscriber(s);
+			dal.removeSubscriber(s.getUsername());
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -247,9 +248,9 @@ public class DalIntegressionTest {
 			}
 			assertTrue(isContain);
 			
-			dal.deleteProductFromStore(store, prod);
+			dal.deleteProductFromStore(store.getStoreId(), prod.getId());
 			dal.deleteStore(store.getStoreId());
-			dal.removeSubscriber(s);
+			dal.removeSubscriber(s.getUsername());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -266,7 +267,7 @@ public class DalIntegressionTest {
 			dal.addSubscriber(s);
 			dal.addStore(store);
 			dal.addProductToStore(store, prod, 30, "newCategory");
-			dal.deleteProductFromStore(store, prod);
+			dal.deleteProductFromStore(store.getStoreId(), prod.getId());
 			
 			boolean isContain=false;
 			for(Product p:dal.getProductAmount(store.getStoreId()).keySet()){
@@ -278,7 +279,7 @@ public class DalIntegressionTest {
 			assertFalse(isContain);
 			
 			dal.deleteStore(store.getStoreId());
-			dal.removeSubscriber(s);
+			dal.removeSubscriber(s.getUsername());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -301,7 +302,7 @@ public class DalIntegressionTest {
 			assertFalse(store.getIsOpen());
 			
 			dal.deleteStore(store.getStoreId());
-			dal.removeSubscriber(s);
+			dal.removeSubscriber(s.getUsername());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -322,7 +323,7 @@ public class DalIntegressionTest {
 			assertTrue(store.getIsOpen());
 			
 			dal.deleteStore(store.getStoreId());
-			dal.removeSubscriber(s);
+			dal.removeSubscriber(s.getUsername());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -344,7 +345,7 @@ public class DalIntegressionTest {
 			assertEquals(store.getMoneyEarned(),55);
 			
 			dal.deleteStore(store.getStoreId());
-			dal.removeSubscriber(s);
+			dal.removeSubscriber(s.getUsername());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -374,9 +375,9 @@ public class DalIntegressionTest {
 			}
 			assertTrue(found);
 			
-			dal.deleteProductFromStore(store, prod);
+			dal.deleteProductFromStore(store.getStoreId(), prod.getId());
 			dal.deleteStore(store.getStoreId());
-			dal.removeSubscriber(s);
+			dal.removeSubscriber(s.getUsername());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();

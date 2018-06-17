@@ -58,6 +58,10 @@ public interface DAL {
 	public PurchasePolicy getStorePolicy(int storeId) throws Exception;
 	public Map<Category, PurchasePolicy> getStoreCategoryDiscount(int storeId) throws Exception;
 	public Product getProductById(int productId) throws Exception;
+	public int getNextProductId() throws Exception;
+	public int getNextStoreId() throws Exception;
+	public int getNextPolicyId() throws Exception;
+	public int getNextPurchaseId() throws Exception;
 	
 	
 }

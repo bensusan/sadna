@@ -2,13 +2,23 @@ package TS_SharedClasses;
 
 public abstract class PurchasePolicy {
 
-	
+	private static int nextID = 0;
+	private int policyId;
 	private DiscountPolicy discount;
 
 	public PurchasePolicy(DiscountPolicy discount)
 	{
+		policyId = nextID ++;
 		this.discount=discount;
 	}
+
+	//WARNING FOR DAL!!!!!!
+	public PurchasePolicy(int policyId, DiscountPolicy discount) {
+		super();
+		this.policyId = policyId;
+		this.discount = discount;
+	}
+
 	public void setDiscount(DiscountPolicy discount) {
 		this.discount = discount;
 	}

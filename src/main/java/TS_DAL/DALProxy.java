@@ -221,4 +221,20 @@ public class DALProxy implements DAL {
 		return getReal().getProductById(productId);
 	}
 
+	public int getNextProductId() throws Exception {
+		return getReal().getNextProductId();
+	}
+
+	public int getNextStoreId() throws Exception {
+		return getReal().getNextStoreId();
+	}
+
+	public int getNextPolicyId() throws Exception {
+		return getReal().getNextPolicyId();
+	}
+
+	public int getNextPurchaseId() throws Exception {
+		return getReal().getNextPurchaseId();
+	}
+
 }

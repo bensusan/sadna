@@ -970,6 +970,24 @@ public class DALReal implements DAL {
 		return null;
 	}
 	
+	//AMIT WILL IMPLEMENT
+	public int getNextProductId() throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	public int getNextStoreId() throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	public int getNextPolicyId() throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	public int getNextPurchaseId() throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 	protected static Connection getConnection() throws Exception {
 		String driver = "com.mysql.cj.jdbc.Driver";
 		String url = "jdbc:mysql://localhost:3306/?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
@@ -994,6 +1012,7 @@ public class DALReal implements DAL {
 		statement.executeUpdate("USE TradingSystem");
 		statement.executeUpdate(otherQuery);
 	}
+	
 	
 	
 }

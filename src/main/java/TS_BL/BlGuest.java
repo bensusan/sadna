@@ -57,7 +57,7 @@ public class BlGuest {
 			throw new Exception("removeProductFromCart Failed");
 		if(BlCart.removeProduct(g.getCart(), p)){
 			if(g instanceof Subscriber)
-				dalRef.removeProductFromCart(((Subscriber)g).getUsername(), p);
+				dalRef.removeProductFromCart(((Subscriber)g).getUsername(), p.getId());
 			return true;
 		}
 		return false;
@@ -111,12 +111,14 @@ public class BlGuest {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
+	
+	//UNUSE SO I DONT SUPPORT IT IN DAL
 	static boolean editCart(Guest g, Cart newCart) throws Exception {
 		if(g == null)
 			throw new Exception("editProductPrice Failed");
 		if(BlCart.editCart(g.getCart(), newCart)){
 			if(g instanceof Subscriber)
-				dalRef.setNewCartForSubscriber(((Subscriber)g).getUsername(), g.getCart()); //guest cart changed thats why g.getCart()
+//				dalRef.setNewCartForSubscriber(((Subscriber)g).getUsername(), g.getCart()); //guest cart changed thats why g.getCart()
 			return true;
 		}
 		return false;
@@ -279,11 +281,11 @@ public class BlGuest {
 		
 		if(ans != null && ans.getPassword().toString().equals(password.toString()))
 		{
-			if(ans.getCart().getProducts().isEmpty())
-			{
-				ans.setCart(g.getCart());
-				dalRef.setNewCartForSubscriber(((Subscriber)g).getUsername(), g.getCart());
-			}
+//			if(ans.getCart().getProducts().isEmpty())
+//			{
+//				ans.setCart(g.getCart());
+//				dalRef.setNewCartForSubscriber(((Subscriber)g).getUsername(), g.getCart());
+//			}
 			return ans;
 		}
 		

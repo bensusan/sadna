@@ -6,7 +6,7 @@ public class AndPolicy extends PurchasePolicy {
 	
 	private List<PurchasePolicy> subPolicy;
 	
-	public AndPolicy(DiscountPolicy discount,List<PurchasePolicy> subPolicy) {
+	public AndPolicy(DiscountPolicy discount,List<PurchasePolicy> subPolicy) throws Exception {
 		super(discount);
 		this.setSubPolicy(subPolicy);
 	}

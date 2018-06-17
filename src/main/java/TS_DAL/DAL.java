@@ -8,6 +8,7 @@ import TS_SharedClasses.*;
 public interface DAL {
 	public List<Subscriber> allSubscribers() throws Exception;
 	public List<StoreOwner> getStoreOwners(String username) throws Exception;
+	public List<StoreManager> getStoreManagers(String username) throws Exception;
 	public Store getStoreByStoreId(int storeId) throws Exception;
 	public List<StoreManager> getSubscriberManagers(String username) throws Exception;
 	public List<Purchase> getMyPurchase(String username) throws Exception;

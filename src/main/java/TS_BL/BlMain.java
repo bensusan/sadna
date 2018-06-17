@@ -130,7 +130,7 @@ public class BlMain {
 		return BlStoreManager.openStore(sm);
 	}
 
-	public static List<Purchase> getPurchaseHistory(StoreManager sm) {
+	public static List<Purchase> getPurchaseHistory(StoreManager sm) throws Exception {
 		return BlStoreManager.getPurchaseHistory(sm);
 	}
 

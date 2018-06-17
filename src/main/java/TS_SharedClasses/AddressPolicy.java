@@ -3,7 +3,7 @@ package TS_SharedClasses;
 public class AddressPolicy extends PurchasePolicy {
 
 	private String address;
-	public AddressPolicy(DiscountPolicy discount,String address) {
+	public AddressPolicy(DiscountPolicy discount,String address) throws Exception {
 		super(discount);
 		this.address=address;
 	}

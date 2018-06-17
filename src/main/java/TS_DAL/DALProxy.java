@@ -242,4 +242,8 @@ public class DALProxy implements DAL {
 		return getReal().getNextPurchaseId();
 	}
 
+	public List<StoreManager> getStoreManagers(String username) throws Exception {
+		return getReal().getStoreManagers(username);
+	}
+
 }

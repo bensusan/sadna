@@ -5,7 +5,7 @@ import java.util.List;
 public class OrPolicy extends PurchasePolicy {
 
 	private List<PurchasePolicy> subPolicy;
-	public OrPolicy(DiscountPolicy discount,List<PurchasePolicy> subPolicy) {
+	public OrPolicy(DiscountPolicy discount,List<PurchasePolicy> subPolicy) throws Exception {
 		super(discount);
 		this.setSubPolicy(subPolicy);
 	}

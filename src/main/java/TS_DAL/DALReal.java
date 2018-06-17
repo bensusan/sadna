@@ -722,10 +722,6 @@ public class DALReal implements DAL {
 		return ans;
 	}
 
-//	public void removePurchase(int purchaseId) throws Exception{
-//		String query = "DELETE * FROM Purchases WHERE purchaseID = " + purchaseId;
-//		otherQuery(query);
-//	}
 	
 	public DiscountPolicy getDiscountPolicy(int policyId) throws Exception{
 		String query = "USE TradingSystem";
@@ -905,23 +901,38 @@ public class DALReal implements DAL {
 		return null;
 	}
 	
-	
-	//AMIT WILL IMPLEMENT
 	public int getNextProductId() throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		String query="SELECT MAX(productId) FROM Products";
+		ResultSet res = selectQuery(query);
+		if(res.next()){
+			return res.getInt(1)+1;
+		}
+		return 155;
 	}
 	public int getNextStoreId() throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		String query="SELECT MAX(storeId) FROM Stores";
+		ResultSet res = selectQuery(query);
+		if(res.next()){
+			return res.getInt(1)+1;
+		}
+		return 144;
 	}
 	public int getNextPolicyId() throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		String query="SELECT MAX(policyId) FROM Policies";
+		ResultSet res = selectQuery(query);
+		if(res.next()){
+			return res.getInt(1)+1;
+		}
+		return 133;
 	}
+
 	public int getNextPurchaseId() throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		String query="SELECT MAX(purchaseID) FROM Purchases";
+		ResultSet res = selectQuery(query);
+		if(res.next()){
+			return res.getInt(1)+1;
+		}
+		return 122;
 	}
 	
 	protected static Connection getConnection() throws Exception {

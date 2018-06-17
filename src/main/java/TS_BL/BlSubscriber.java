@@ -4,10 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import TS_SharedClasses.*;
-<<<<<<< HEAD
-=======
-//import static TS_BL.BlMain.dalRef;
->>>>>>> 7ae9ea925e633d91636715c12f93b46c23b96666
+
 
 public class BlSubscriber {
 
@@ -35,11 +32,7 @@ public class BlSubscriber {
 		
 		List<StoreOwner> own=sub.getOwner();
 		Store s = new Store(storeName, sub.getAddress(), sub.getPhone(), gradeing, products, purchaseHistory, isOpen);
-<<<<<<< HEAD
-		
-=======
-		//dalRef.addStore(s);
->>>>>>> 7ae9ea925e633d91636715c12f93b46c23b96666
+
 		StoreOwner so=new StoreOwner(s);
 		own.add(so);
 		

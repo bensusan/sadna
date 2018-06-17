@@ -37,11 +37,8 @@ public class BlMain {
 		}
 	};
 	
-<<<<<<< HEAD
-	public final static DAL dal = new DALProxy();
-=======
+
 	//public final static DAL dalRef = new DALProxy();
->>>>>>> 7ae9ea925e633d91636715c12f93b46c23b96666
 	public static Map<Guest, LinkedList<String>> allUsersWithTheirCreditCards = new HashMap<Guest, LinkedList<String>>();
 	
 	

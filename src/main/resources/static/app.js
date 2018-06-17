@@ -17,7 +17,7 @@ function connect() {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (greeting) {
+        stompClient.subscribe('/user/topic/greetings', function (greeting) {
         	var body = JSON.parse(greeting.body);
         	var obj = JSON.parse(body.contentAsJson);
             if(body.isException) {
@@ -320,7 +320,7 @@ function recieveOpenStoreMsg(funcName, obj) {
 			updateCurrentSubscriber();
 			setTimeout(function(){
 			loadMyStoresPage();
-			}, 2000);
+			}, 500);
             
             break;
         default:
@@ -356,7 +356,7 @@ function recieveAddToSubCart(funcName, obj){
         	window.alert('Product was added to cart!');
 			setTimeout(function(){
 			loadMainPage();
-			}, 2000);
+			}, 500);
        		break;
        	case "addToGuestCart":
        		var data = JSON.parse(obj);
@@ -367,7 +367,7 @@ function recieveAddToSubCart(funcName, obj){
         	window.alert('Product was added to cart!');
 			setTimeout(function(){
 			loadMainPage();
-			}, 2000);   
+			}, 500);   
        		break;   		
         default:
             break;
@@ -1047,7 +1047,7 @@ function editProductInCart(pid){
         window.alert("User cancelled the prompt.");
         setTimeout(function(){
 				loadMainPage();
-				}, 2000);
+				}, 500);
     } else {
         editCart(pid,newAmount);  
     }
@@ -1123,7 +1123,7 @@ function recieveRemCart(funcName, obj){
 	       		window.alert('Product was deleted !!!!');
 				setTimeout(function(){
 				loadMainPage();
-				}, 2000);
+				}, 500);
 			break;
 		default:
 			break;
@@ -1144,7 +1144,7 @@ function recieveEditCart(funcName, obj){
 	       		window.alert('Product was edited !!!!');
 				setTimeout(function(){
 				loadMainPage();
-				}, 2000);
+				}, 500);
 			break;
 		default:
 			break;
@@ -1165,7 +1165,7 @@ function recieveCartAfterPurchase(funcName, obj){
 	       		window.alert('Cart was purchased!');
 				setTimeout(function(){
 				loadMainPage();
-				}, 2000);
+				}, 500);
 			break;
 		default:
 			break;
@@ -1226,8 +1226,8 @@ function loadLoginPage(){
 }
 
 function loadSignUpPage(){
-    stompClient.disconnect();
-    stompClient = null;
+    /*stompClient.disconnect();
+    stompClient = null;*/
     window.location.href = "signUpPage.html";
 }
 
@@ -1308,7 +1308,7 @@ function loadMyCart(){
 		window.alert("empty cart!");
 		setTimeout(function(){
 			loadMainPage();
-			}, 2000);
+			}, 500);
 	}
 	
 	for(var i = 0; i < size; i++){
@@ -1594,7 +1594,7 @@ function loadMyStoresPage() {
 		else{
 			window.alert("You don\'t own or manage any stores");
 		}
-	}, 2000);
+	}, 500);
     //assume current user is subscriber
     
 }

@@ -20,6 +20,7 @@ import TS_SharedClasses.*;
 
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
 import com.google.gson.Gson;
@@ -54,7 +55,7 @@ public class GreetingController {
 	
 	
 	@MessageMapping("/hello")
-	@SendTo("/topic/greetings")
+	@SendToUser("/topic/greetings")
 	public Greeting greeting(HelloMessage message) throws Exception {
 		Thread.sleep(1000); // simulated delay
 		Gson gson = new Gson();		
@@ -395,6 +396,7 @@ public class GreetingController {
 				}
 				break;
 			case signUp:
+
 				if (args.length == 7){
 					Subscriber subs = BlMain.signUp(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], String.class),
 							gson.fromJson(args[2], String.class), gson.fromJson(args[3], String.class),

@@ -316,12 +316,8 @@ function recieveSignUpMsg(funcName, obj) {
 function recieveOpenStoreMsg(funcName, obj) {
     switch (funcName){
         case "openStore":
-			window.alert("Store " + JSON.stringify(obj['name']) + " opened successfully!");
-			updateCurrentSubscriber();
-			setTimeout(function(){
+			window.alert("Store " + JSON.stringify(obj['name']) + " opened successfulllly!");
 			loadMyStoresPage();
-			}, 500);
-            
             break;
         default:
             break;
@@ -356,7 +352,7 @@ function recieveAddToSubCart(funcName, obj){
         	window.alert('Product was added to cart!');
 			setTimeout(function(){
 			loadMainPage();
-			}, 500);
+			}, 2000);
        		break;
        	case "addToGuestCart":
        		var data = JSON.parse(obj);
@@ -367,7 +363,7 @@ function recieveAddToSubCart(funcName, obj){
         	window.alert('Product was added to cart!');
 			setTimeout(function(){
 			loadMainPage();
-			}, 500);   
+			}, 2000);   
        		break;   		
         default:
             break;
@@ -1047,7 +1043,7 @@ function editProductInCart(pid){
         window.alert("User cancelled the prompt.");
         setTimeout(function(){
 				loadMainPage();
-				}, 500);
+				}, 2000);
     } else {
         editCart(pid,newAmount);  
     }
@@ -1123,7 +1119,7 @@ function recieveRemCart(funcName, obj){
 	       		window.alert('Product was deleted !!!!');
 				setTimeout(function(){
 				loadMainPage();
-				}, 500);
+				}, 2000);
 			break;
 		default:
 			break;
@@ -1144,7 +1140,7 @@ function recieveEditCart(funcName, obj){
 	       		window.alert('Product was edited !!!!');
 				setTimeout(function(){
 				loadMainPage();
-				}, 500);
+				}, 2000);
 			break;
 		default:
 			break;
@@ -1165,7 +1161,7 @@ function recieveCartAfterPurchase(funcName, obj){
 	       		window.alert('Cart was purchased!');
 				setTimeout(function(){
 				loadMainPage();
-				}, 500);
+				}, 2000);
 			break;
 		default:
 			break;
@@ -1308,7 +1304,7 @@ function loadMyCart(){
 		window.alert("empty cart!");
 		setTimeout(function(){
 			loadMainPage();
-			}, 500);
+			}, 2000);
 	}
 	
 	for(var i = 0; i < size; i++){
@@ -1594,7 +1590,7 @@ function loadMyStoresPage() {
 		else{
 			window.alert("You don\'t own or manage any stores");
 		}
-	}, 500);
+	}, 2000);
     //assume current user is subscriber
     
 }

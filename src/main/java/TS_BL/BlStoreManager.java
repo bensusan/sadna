@@ -101,8 +101,9 @@ public class BlStoreManager {
 
 	/**
 	 * @return history of pruchase in the store
+	 * @throws Exception 
 	 */
-	static List<Purchase> getPurchaseHistory(StoreManager sm) {
+	static List<Purchase> getPurchaseHistory(StoreManager sm) throws Exception {
 		return sm != null && sm.getPremisions()[BlMain.getPurchaseHistory] ? BlPermissions.getPurchaseHistory(sm.getStore()) : new LinkedList<Purchase>();
 	}
 	

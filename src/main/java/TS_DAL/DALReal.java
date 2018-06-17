@@ -972,20 +972,44 @@ public class DALReal implements DAL {
 	
 	//AMIT WILL IMPLEMENT
 	public int getNextProductId() throws Exception {
-		// TODO Auto-generated method stub
+		String query = "SELECT MAX(productId) AS maxId FROM Products;";
+		ResultSet res = selectQuery(query);
+		if(res.next())
+			return res.getInt("maxId") + 1;
 		return 0;
 	}
 	public int getNextStoreId() throws Exception {
-		// TODO Auto-generated method stub
+		String query = "SELECT MAX(storeId) AS maxId FROM Stores;";
+		ResultSet res = selectQuery(query);
+		if(res.next())
+			return res.getInt("maxId") + 1;
 		return 0;
 	}
 	public int getNextPolicyId() throws Exception {
-		// TODO Auto-generated method stub
+		String query = "SELECT MAX(policyId) AS maxId FROM Policies;";
+		ResultSet res = selectQuery(query);
+		if(res.next())
+			return res.getInt("maxId") + 1;
 		return 0;
 	}
 	public int getNextPurchaseId() throws Exception {
-		// TODO Auto-generated method stub
+		String query = "SELECT MAX(purchaseID) AS maxId FROM Purchases;";
+		ResultSet res = selectQuery(query);
+		if(res.next())
+			return res.getInt("maxId") + 1;
 		return 0;
+	}
+	
+	public List<StoreManager> getStoreManagers(String username) throws Exception {
+		String query = "SELECT * FROM StoreManagers WHERE username = " + username + ";";
+		ResultSet rs = selectQuery(query);
+		List<StoreManager>ans = new LinkedList<StoreManager>();
+		while(rs.next())
+		{
+			StoreManager sm = new StoreManager(getStoreByStoreId(rs.getInt("storeId")));
+			ans.add(sm);
+		}
+		return ans;
 	}
 	
 	protected static Connection getConnection() throws Exception {
@@ -1012,6 +1036,7 @@ public class DALReal implements DAL {
 		statement.executeUpdate("USE TradingSystem");
 		statement.executeUpdate(otherQuery);
 	}
+	
 	
 	
 	

@@ -30,8 +30,9 @@ public class BlPermissions {
 		}
 		product.setStore(s);
 
-		if (dalRef.isProductExistsInStore(s, product)) {
-			int currentAmount = dalRef.getAmountOfProduct(product);
+		
+		if (BlStore.checkInStock(product, 0)) {
+			int currentAmount = dalRef.getAmountOfProduct(product.getStore().getStoreId(), product.getId());
 			dalRef.updateProductDetails(s, product, product, currentAmount + amount, category);
 			return true;
 		}
@@ -40,9 +41,9 @@ public class BlPermissions {
 	}
 
 	static boolean deleteProductFromStore(Store s, Product product) throws Exception {
-		if (s == null || product == null || !dalRef.isProductExistsInStore(s, product))
+		if (s == null || product == null || !BlStore.checkInStock(product, 0))
 			throw new Exception("something went wrong");
-		dalRef.deleteProductFromStore(s, product);
+		dalRef.deleteProductFromStore(s.getStoreId(), product.getId());
 		// product.getCategory().getProducts().remove(product);
 		product.setStore(null);
 		product.setCategory(null);
@@ -55,10 +56,10 @@ public class BlPermissions {
 			throw new Exception("something went wrong");
 		if (amount <= 0)
 			throw new Exception("amount must be greater than 0");
-		if (!dalRef.isProductExistsInStore(s, oldProduct))
+		if (!BlStore.checkInStock(oldProduct, 0))
 			throw new Exception("this product doesn't belongs to this store");
 
-		int temp = dalRef.getAmountOfProduct(oldProduct);
+		int temp = dalRef.getAmountOfProduct(oldProduct.getStore().getStoreId(), oldProduct.getId());
 
 		try {
 			return deleteProductFromStore(s, oldProduct)
@@ -70,10 +71,10 @@ public class BlPermissions {
 	}
 
 	static boolean addPolicyToProduct(Store s, PurchasePolicy policy, Product product) throws Exception {
-		if (s == null || product == null || !dalRef.isProductExistsInStore(s, product))
+		if (s == null || product == null || !BlStore.checkInStock(product, 0))
 			throw new Exception("something went wrong");
 		String cTemp = product.getCategory().getName();
-		int temp = dalRef.getAmountOfProduct(product);
+		int temp = dalRef.getAmountOfProduct(product.getStore().getStoreId(), product.getId());
 		if (deleteProductFromStore(s, product)) {
 			product.setPurchasePolicy(policy);
 			addProductToStore(s, product, temp, cTemp);
@@ -83,13 +84,13 @@ public class BlPermissions {
 	}
 
 	static boolean addDiscountToProduct(Store s, PurchasePolicy discountTree, Product product) throws Exception {
-		if (s == null || product == null || discountTree == null || !dalRef.isProductExistsInStore(s, product))
+		if (s == null || product == null || discountTree == null || !BlStore.checkInStock(product, 0))
 			throw new Exception("something went wrong");
 //		PurchaseType pt = product.getType();
 		PurchaseType pt = dalRef.getPurchaseType(product.getId());
 		if (pt instanceof ImmediatelyPurchase) {
 			String cTemp = product.getCategory().getName();
-			int temp = dalRef.getAmountOfProduct(product);
+			int temp = dalRef.getAmountOfProduct(product.getStore().getStoreId(), product.getId());
 			if (deleteProductFromStore(s, product)) {
 				((ImmediatelyPurchase) pt).setDiscountTree(discountTree);
 				addProductToStore(s, product, temp, cTemp);
@@ -100,11 +101,20 @@ public class BlPermissions {
 		throw new Exception("Discount can be added only to products that are for immediate purchase");
 	}
 
+	private static boolean isStoreOwnerExistsInStore(Store s, Subscriber owner) throws Exception{
+		List<StoreOwner> so = dalRef.getStoreOwners(owner.getUsername());
+		for (StoreOwner storeOwner : so) {
+			if(storeOwner.getStore().getStoreId() == s.getStoreId())
+				return true;
+		}
+		return false;
+	}
+	
 	static boolean addNewStoreOwner(Store s, Subscriber owner) throws Exception {
 		if (s == null || owner == null)
 			throw new Exception("something went wrong");
 		// StoreOwner so = new StoreOwner(s);
-		if (dalRef.isStoreOwnerExists(s, owner))
+		if (isStoreOwnerExistsInStore(s, owner))
 			throw new Exception("couldn't add new owner");
 		dalRef.addNewStoreOwner(s, owner);
 		// List<StoreOwner> owners = s.getMyOwners();
@@ -118,12 +128,21 @@ public class BlPermissions {
 		// owner.setStore(s);
 		return true;
 	}
+	
+	private static boolean isStoreManagerExistsInStore(Store s, Subscriber newMan) throws Exception{
+		List<StoreManager> so = dalRef.getStoreManagers(newMan.getUsername());
+		for (StoreManager storeManager : so) {
+			if(storeManager.getStore().getStoreId() == s.getStoreId())
+				return true;
+		}
+		return false;
+	}
 
 	static boolean addNewManager(Store s, Subscriber newMan) throws Exception {
 		if (s == null || newMan == null)
 			throw new Exception("something went wrong");
 
-		if (dalRef.isStoreManagerExists(s, newMan))
+		if (isStoreManagerExistsInStore(s, newMan))
 			throw new Exception("couldn't add new owner");
 		dalRef.addNewStoreOwner(s, newMan);
 		// StoreManager sm = new StoreManager(s);
@@ -163,14 +182,14 @@ public class BlPermissions {
 			return false;
 	}
 
-	static List<Purchase> getPurchaseHistory(Store s) {
-		return s != null ? dalRef.getStoreHistory(s) : null;
+	static List<Purchase> getPurchaseHistory(Store s) throws Exception{
+		return s != null ? dalRef.getStorePurchase(s.getStoreId()) : null;
 	}
 
 	static void expiredProducts(Store s) throws Exception {
 		if (s == null)
 			return;
-		List<Product> allProducts = dalRef.getAllProductsOfStore(s);
+		List<Product> allProducts = dalRef.getAllProductsOfStore(s.getStoreId());
 		for (Product product : allProducts) {
 			PurchaseType pt = product.getType();
 			if (pt instanceof LotteryPurchase) {
@@ -235,10 +254,10 @@ public class BlPermissions {
 	}
 
 	public static boolean changeProductType(Store s, PurchaseType type, Product product) throws Exception {
-		if (s == null || type == null || product == null || !dalRef.isProductExistsInStore(s, product))
+		if (s == null || type == null || product == null || !BlStore.checkInStock(product, 0))
 			throw new Exception("something went wrong");
 		String cTemp = product.getCategory().getName();
-		int temp = dalRef.getAmountOfProduct(product);
+		int temp = dalRef.getAmountOfProduct(s.getStoreId(),product.getId());
 		if (deleteProductFromStore(s, product)) {
 			product.setType(type);
 			addProductToStore(s, product, temp, cTemp);

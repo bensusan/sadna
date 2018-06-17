@@ -18,7 +18,7 @@ public class Category {
 	public Category(String name, PurchasePolicy purchasePolicy, List<Product> products) {
 		super();
 		this.name = name;
-		this.purchasePolicy = purchasePolicy;
+//		this.purchasePolicy = purchasePolicy;
 		this.products = products;
 	}
 

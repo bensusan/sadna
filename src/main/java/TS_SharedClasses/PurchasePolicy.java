@@ -1,14 +1,16 @@
 package TS_SharedClasses;
 
+import TS_BL.BlMain;
+
 public abstract class PurchasePolicy {
 
-	private static int nextID = 0;
+//	private static int nextID = 0;
 	private int policyId;
 	private DiscountPolicy discount;
 
-	public PurchasePolicy(DiscountPolicy discount)
+	public PurchasePolicy(DiscountPolicy discount) throws Exception
 	{
-		policyId = nextID ++;
+		policyId = /*nextID ++;*/ BlMain.dalRef.getNextPolicyId();
 		this.discount=discount;
 	}
 
@@ -17,6 +19,15 @@ public abstract class PurchasePolicy {
 		super();
 		this.policyId = policyId;
 		this.discount = discount;
+	}
+
+	
+	public int getPolicyId() {
+		return policyId;
+	}
+
+	public void setPolicyId(int policyId) {
+		this.policyId = policyId;
 	}
 
 	public void setDiscount(DiscountPolicy discount) {

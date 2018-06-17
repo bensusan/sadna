@@ -4,9 +4,11 @@ import java.io.Serializable;
 
 import com.google.gson.Gson;
 
+import TS_BL.BlMain;
+
 public class Product  {
 
-	private static int nextID = 0;
+//	private static int nextID = 0;
 	private int id;
 	private String name;
 	private int price;
@@ -16,8 +18,8 @@ public class Product  {
 	private Category category;
 	private PurchaseType type;
 	
-	public Product(){
-		this.id = nextID++;
+	public Product() throws Exception{
+		this.id = /*nextID++;*/ BlMain.dalRef.getNextProductId();
 		this.name = "";
 		this.price = 0;
 		this.grading = 0;
@@ -25,8 +27,8 @@ public class Product  {
 		this.purchasePolicy = null;
 		this.type=null;
 	}
-	public Product(String name, int price, int grading, PurchasePolicy purchasePolicy,PurchaseType type) {
-		this.id = nextID++;
+	public Product(String name, int price, int grading, PurchasePolicy purchasePolicy,PurchaseType type) throws Exception {
+		this.id = /*nextID++;*/ BlMain.dalRef.getNextProductId();
 		this.name = name;
 		this.price = price;
 		this.grading = grading;

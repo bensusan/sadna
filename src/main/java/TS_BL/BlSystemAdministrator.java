@@ -40,7 +40,7 @@ public class BlSystemAdministrator {
 //		if(!s.getOwner().isEmpty() && s.getOwner().size() == 1){
 //			s.getOwner().get(0).getStore().setMyManagers(new LinkedList<StoreManager>());
 //		}
-		dalRef.removeSubscriber(s);
+		dalRef.removeSubscriber(s.getUsername());
 		return true;
 	}
 
@@ -71,7 +71,7 @@ public class BlSystemAdministrator {
 			throw new Exception("invalid admin");
 		if(store == null)
 			throw new Exception("invalid store");
-		return dalRef.getStorePurchase(store);
+		return dalRef.getStorePurchase(store.getStoreId());
 	}
 
 }

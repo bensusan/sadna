@@ -14,7 +14,9 @@ public class BlStore {
 	 * @return true if product in stock false otherwise
 	 */
 	static boolean checkInStock(Product p, int amount) throws Exception{
-		return dalRef.isProductExistsInStore(p.getStore(), p) && dalRef.getProductAmount(p.getStore().getStoreId()).get(p) >= amount;
+		Map<Product, Integer> pa = dalRef.getProductAmount(p.getStore().getStoreId());
+		Integer pAmount = pa.get(p);  
+		return pAmount != null && pAmount >= amount;
 	}
 
 	/**

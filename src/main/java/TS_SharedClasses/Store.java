@@ -10,7 +10,7 @@ import TS_BL.BlMain;
 
 public class Store {
 	
-	private static int nextID = 0;
+//	private static int nextID = 0;
 	
 	private int storeId;
 	private String name;
@@ -28,9 +28,9 @@ public class Store {
 	private Map<Category,PurchasePolicy> categoryPolicy;
 
 	public Store(String name, String address, String phone, int gradeing, Map<Product, Integer> products,
-			List<Purchase> purchaseHistory, boolean isOpen) {
+			List<Purchase> purchaseHistory, boolean isOpen) throws Exception {
 		super();
-		this.storeId = nextID++;
+		this.storeId = /*nextID++;*/ BlMain.dalRef.getNextStoreId();
 		this.name = name;
 		this.address = address;
 		this.phone = phone;
@@ -52,7 +52,7 @@ public class Store {
 	
 	public Store(String name, String address, String phone, int gradeing, Map<Product, Integer> products,
 			List<Purchase> purchaseHistory, boolean isOpen, PurchasePolicy storePolicy,
-			Map<Category,PurchasePolicy> categoryDiscounts, Map<Category,PurchasePolicy> categoryPolicy) {
+			Map<Category,PurchasePolicy> categoryDiscounts, Map<Category,PurchasePolicy> categoryPolicy) throws Exception {
 		this(name, address, phone, gradeing, products, purchaseHistory, isOpen);
 		this.setStorePolicy(storePolicy);
 		this.categoryDiscounts=categoryDiscounts;
@@ -165,7 +165,7 @@ public class Store {
 		this.moneyEarned = moneyEarned;
 	}
 
-	public PurchasePolicy getStorePolicy() {
+	public PurchasePolicy getStorePolicy() throws Exception {
 		if(storePolicy==null)
 		{
 			return new EmptyPolicy();

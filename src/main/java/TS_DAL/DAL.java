@@ -62,6 +62,4 @@ public interface DAL {
 	public int getNextStoreId() throws Exception;
 	public int getNextPolicyId() throws Exception;
 	public int getNextPurchaseId() throws Exception;
-	
-	
 }

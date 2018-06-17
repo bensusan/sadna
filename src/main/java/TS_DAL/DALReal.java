@@ -1,10 +1,12 @@
 package TS_DAL;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import TS_SharedClasses.*;
 
@@ -90,6 +92,12 @@ public class DALReal implements DAL {
 					+ " PRIMARY KEY (fatherPolicyId, sonPolicyId));";
 			stmt.executeUpdate(sql);
 			sql="CREATE TABLE CategoryDiscount("
+					+ " storeId INTEGER REFERENCES Stores(storeId),"
+					+ " categoryName INTEGER,"
+					+ " policyId INTEGER REFERENCES Policies(policyId),"
+					+ " PRIMARY KEY (storeId, categoryName));";
+			stmt.executeUpdate(sql);
+			sql="CREATE TABLE CategoryPolicy("
 					+ " storeId INTEGER REFERENCES Stores(storeId),"
 					+ " categoryName INTEGER,"
 					+ " policyId INTEGER REFERENCES Policies(policyId),"
@@ -240,7 +248,10 @@ public class DALReal implements DAL {
 			boolean isOpen = false;
 			if(rs.getInt("isOpen") == 1)
 				isOpen = true;
-			Store s = new Store(id, rs.getString("name"), rs.getString("address"), rs.getString("phone"), rs.getInt("grading"), getProductAmount(storeId), getStorePurchase(storeId), isOpen, getStoreOwnersFromStore(id), getStoreManagersFromStore(id), rs.getInt("moneyEarned"), getStorePolicy(id), getStoreCategoryDiscount(id));
+			Store s = new Store(id, rs.getString("name"), rs.getString("address"), rs.getString("phone"),
+					rs.getInt("grading"), getProductAmount(storeId), getStorePurchase(storeId), isOpen,
+					getStoreOwnersFromStore(id), getStoreManagersFromStore(id), rs.getInt("moneyEarned"),
+					getStorePolicy(id), getStoreCategoryDiscount(id),getStoreCategoryPolicy(id));
 			return s;
 		}
 		return null;
@@ -248,6 +259,7 @@ public class DALReal implements DAL {
 	
 	
 
+	
 	public  List<StoreManager> getSubscriberManagers(String username) throws Exception {
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
@@ -406,8 +418,6 @@ public class DALReal implements DAL {
 		return s;
 	}
 
-	//policies.....
-	//TODO
 	public List<Product> getAllProductsOfStore(int storeId) throws Exception{
 		String query = "USE TradingSystem";
 		Connection c=getConnection();
@@ -445,22 +455,6 @@ public class DALReal implements DAL {
 				"SET moneyEarned = " + newMoneyEarend +
 				" WHERE storeId = " + s.getStoreId() + ";";
 		statement.executeUpdate(query);
-	}
-
-	//policies....
-	//TODO ?????????????
-	public List<Category> getAllCategory(){
-		String query = "SELECT "
-		return null;
-
-	}
-	
-	//policies...
-	//TODO ????????????
-	public Category getCategory(String categoryName){
-		joijio
-		return null;
-
 	}
 
 	public void addProductToStore(Store s, Product product, int amount,String category) throws Exception{
@@ -530,17 +524,7 @@ public class DALReal implements DAL {
 		statement.executeUpdate(query);
 	}
 
-	private void updateStorePolicy(int storeId, PurchasePolicy newPolicy){
-		//TODO!!!!!!
-		String query = ""TODO;
-		otherQuery(query);
-	}
 	
-	private void updateStoreCategoryDiscount(int storeId, Map<Category, PurchasePolicy> categorys){
-		//TODO !!!!!!
-		String query = ""TODO;
-		otherQuery(query);
-	}
 	
 	//TODO - Missing updates... policies for example
 	//if isOpen insert 1 to store to the isOpen(TinyInt) field, else insert 0
@@ -737,46 +721,11 @@ public class DALReal implements DAL {
 		}
 		return ans;
 	}
-	
-	//TODO  ??????????
-	private PurchasePolicy getPurchasePolicy(int policyId, int type) throws Exception{
-		switch(type){
-			case 0: return new EmptyPolicy(getDiscountPolicy(policyId));
-			case 1: return new AndPolicy(getDiscountPolicy(policyId), null);
-			case 2: return new OrPolicy(getDiscountPolicy(policyId), null);
-			case 3: return new NotPolicy(getDiscountPolicy(policyId), null);
-			case 4: return new MaxPolicy(getDiscountPolicy(policyId), -1);
-			case 5: return new MinPolicy(getDiscountPolicy(policyId), -1);
-			default: throw new Exception("Error in policy type");
-		}
-		??????
-	}
-	
-	//TODO ?????????????
-	public List<PurchasePolicy> getSubPolicies(int policyId){
-		String query = "USE TradingSystem";
-		Connection c = getConnection();
-		Statement statement=c.createStatement();
-		statement.executeUpdate(query);
-		query = "SELECT *  "
-				+ "FROM SubPolicies "
-				+ "INNER JOIN Carts ON ProductsInStores.productId = Carts.productId "
-				+ "WHERE ProductsInStores.productId = " + policyId + ";";
-		statement.executeUpdate(query);
-		ResultSet res=statement.executeQuery(query);
-		while(res.next()){
-			if(res.getInt("amount") >= amount)
-				return true;
-		}
-		return false;
-		return null;
-	}
-	//########### or new function ###########
-	public void removePurchase(int purchaseId) throws Exception{
-		// TODO remove purchase from purchase table
-		String query = "DELETE * FROM Purchases WHERE purchaseID = " + purchaseId;
-		otherQuery(query);
-	}
+
+//	public void removePurchase(int purchaseId) throws Exception{
+//		String query = "DELETE * FROM Purchases WHERE purchaseID = " + purchaseId;
+//		otherQuery(query);
+//	}
 	
 	public DiscountPolicy getDiscountPolicy(int policyId) throws Exception{
 		String query = "USE TradingSystem";
@@ -832,7 +781,8 @@ public class DALReal implements DAL {
 			boolean hasEnded = false;
 			if(res.getInt("hasEnded") == 1) //TODO Need to check that 1 is true
 				hasEnded = true;
-			return new LotteryPurchase(res.getDate("actualEndDate"), res.getDate("lotteryEndDate"), getLotteryParticipants(res.getInt("lotteryId")), ????What about guests winner, hasEnded);
+			return new LotteryPurchase(res.getDate("actualEndDate"), res.getDate("lotteryEndDate"), getLotteryParticipants(res.getInt("lotteryId")), null, hasEnded);
+			//TODO ????What about guests winner
 		}
 		return null;
 	}
@@ -883,7 +833,10 @@ public class DALReal implements DAL {
 			if(rs.getInt("isOpen") == 1)
 				isOpen = true;
 			int storeId = rs.getInt("storeId");
-			Store s = new Store(storeId, rs.getString("name"), rs.getString("address"), rs.getString("phone"), rs.getInt("grading"),getProductAmount(storeId), getStorePurchase(storeId), isOpen, getStoreOwnersFromStore(storeId), getStoreManagersFromStore(storeId), rs.getInt("moneyEarned"), getStorePolicy(storeId), getStoreCategoryDiscount(storeId));	
+			Store s = new Store(storeId, rs.getString("name"), rs.getString("address"), rs.getString("phone"),
+					rs.getInt("grading"),getProductAmount(storeId), getStorePurchase(storeId), isOpen,
+					getStoreOwnersFromStore(storeId), getStoreManagersFromStore(storeId),
+					rs.getInt("moneyEarned"), getStorePolicy(storeId), getStoreCategoryDiscount(storeId),getStoreCategoryPolicy(storeId));	
 			ret.add(s);
 		}
 		return ret;
@@ -903,24 +856,12 @@ public class DALReal implements DAL {
 		otherQuery(query);
 	}
 	
-	//TODO WHEN LOTTERY WILL IMPLEMENTED
-	public void addLotteryProductToCart(String username, Product p, int money) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public int getAmountOfProduct(int storeId, int productId) throws Exception{
 		String query = "SELECT * FROM ProductsInStores WHERE storeId = " + storeId + " AND productId = " + productId + ";";
 		ResultSet res = selectQuery(query);
 		if(res.next())
 			return res.getInt("amount");
 		return 0;
-	}
-	
-	//TODO not sure about categories
-	public boolean isCategoryExists(String category) {
-		String query = "SELECT * FROM ?"
-		return false;
 	}
 	
 	public void addPurchaseToHistory(Subscriber sub, Purchase p) throws Exception {
@@ -936,25 +877,25 @@ public class DALReal implements DAL {
 		}
 		return ans;
 	}
+	
 	public List<StoreManager> getStoreManagersFromStore(int storeId) throws Exception{
 		String query = "SELECT * FROM StoreManagers WHERE storeId = " + storeId + ";" ;
 		ResultSet res = selectQuery(query);
-		List<StoreManager> ans = new LinkedList<StoreManager>();
+		Map<String,StoreManager>map=new HashMap<String, StoreManager>();
 		while(res.next()){
-			ans.add(new StoreManager(getStoreByStoreId(storeId))); //TODO - very strange need to check...
+			String username=res.getString("username");
+			if(map.containsKey(username)){
+				map.get(username).setSpecificPermission(res.getInt("permission"), true);
+			}
+			else{
+				StoreManager sm=new StoreManager(getStoreByStoreId(storeId));
+				sm.setSpecificPermission(res.getInt("permission"), true);
+				map.put(username,sm);
+			}
 		}
-		return ans;
+		return new LinkedList<StoreManager>(map.values());
 	}
-	//TODO?????????????????
-	public PurchasePolicy getStorePolicy(int storeId) throws Exception{
-		// TODO Auto-generated method stub
-		return null;
-	}
-	//TODO?????????????????
-	public Map<Category, PurchasePolicy> getStoreCategoryDiscount(int storeId) throws Exception{
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 	public Product getProductById(int productId) throws Exception{
 		String query = "SELECT * FROM Products WHERE ptoductId = " + productId + ";";
@@ -964,11 +905,6 @@ public class DALReal implements DAL {
 		return null;
 	}
 	
-	//TODO??????????????????????
-	public PurchasePolicy getPurchasePolicy(int policyId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	//AMIT WILL IMPLEMENT
 	public int getNextProductId() throws Exception {
@@ -1011,6 +947,233 @@ public class DALReal implements DAL {
 		Statement statement = c.createStatement();
 		statement.executeUpdate("USE TradingSystem");
 		statement.executeUpdate(otherQuery);
+	}
+	
+	////////////////////////////////////////////////////////////////////////////
+	public PurchasePolicy getPurchasePolicy(int policyId) throws Exception {
+		String query = "SELECT * FROM Policies WHERE policyId = " + policyId + ";";
+		ResultSet res = selectQuery(query);
+		if(res.next()){
+			DiscountPolicy discount=getDiscountPolicy(policyId);
+			switch(res.getInt("policyType"))
+			{
+				case emptyPolicyTypeCode: 
+					return new EmptyPolicy(discount);
+				case andPolicyTypeCode:
+					return new AndPolicy(discount, getSubPolicies(policyId));
+				case orPolicyTypeCode:
+					return new OrPolicy(discount, getSubPolicies(policyId));
+				case notPolicyTypeCode:
+					List<PurchasePolicy>lst=getSubPolicies(policyId);
+					if(lst.size()>0)
+						return new NotPolicy(discount, lst.get(0));
+					else
+						return new NotPolicy(discount, null);
+				case maxPolicyTypeCode:
+					return new MaxPolicy(discount, res.getInt("IValue"));
+				case minPolicyTypeCode:
+					return new MinPolicy(discount, res.getInt("IValue"));
+				case addressPolicyTypeCode:
+					return new AddressPolicy(discount, res.getString("SValue"));
+				default: throw new Exception("Error in policy type");
+			}
+		}
+		return null;
+	}
+	
+	public List<PurchasePolicy> getSubPolicies(int policyId) throws Exception{
+		String query = "SELECT * FROM SubPolicies WHERE fatherPolicyId = " + policyId + ";";
+		ResultSet res = selectQuery(query);
+		List<PurchasePolicy> ans=new ArrayList<PurchasePolicy>();
+		while(res.next()){
+			ans.add(getPurchasePolicy(res.getInt("sonPolicyId")));
+		}
+		return ans;
+	}
+	
+	public PurchasePolicy getStorePolicy(int storeId) throws Exception{
+		String query = "SELECT * FROM Stores WHERE storeId = " + storeId + ";";
+		ResultSet res = selectQuery(query);
+		if(res.next())
+		{
+			return getPurchasePolicy(res.getInt("policyId"));
+		}
+		return null;
+	}
+
+	public Map<Category, PurchasePolicy> getStoreCategoryDiscount(int storeId) throws Exception{
+		String query = "SELECT * FROM CategoryDiscount WHERE storeId = " + storeId + ";";
+		ResultSet res = selectQuery(query);
+		Map<Category, PurchasePolicy> ans=new HashMap<Category, PurchasePolicy>();
+		while(res.next())
+		{
+			ans.put(getCategory(res.getString("categoryName")), getPurchasePolicy(res.getInt("policyId")));
+		}
+		return ans;
+	}
+	
+	private Map<Category, PurchasePolicy> getStoreCategoryPolicy(int storeId) throws Exception {
+		String query = "SELECT * FROM CategoryPolicy WHERE storeId = " + storeId + ";";
+		ResultSet res = selectQuery(query);
+		Map<Category, PurchasePolicy> ans=new HashMap<Category, PurchasePolicy>();
+		while(res.next())
+		{
+			ans.put(getCategory(res.getString("categoryName")), getPurchasePolicy(res.getInt("policyId")));
+		}
+		return ans;
+	}
+
+	private void updateStorePolicy(int storeId, PurchasePolicy newPolicy) throws Exception{
+		int prevPolicyId=-1;
+		String query = "SELECT * FROM Stores WHERE storeId = " + storeId + ";";
+		ResultSet res = selectQuery(query);
+		if(res.next())
+		{
+			prevPolicyId= res.getInt("policyId");
+		}
+		int PolicyId=getNextPolicyId();
+		AddPolicy(newPolicy,PolicyId); 
+		
+		if(prevPolicyId!=-1){
+			query="UPDATE Stores "
+					+ " SET policyId = " +PolicyId
+					+ " WHERE storeId = "+ storeId +";";
+			otherQuery(query);
+			deletePolicy(prevPolicyId);
+		}
+	}
+
+	private void deletePolicy(int policyId) throws Exception {
+		String query = "SELECT * FROM SubPolicies WHERE fatherPolicyId = " + policyId + ";";
+		ResultSet res = selectQuery(query);
+		while(res.next()){
+			query = "DELETE * FROM SubPolicies WHERE fatherPolicyId = " + policyId +" AND sonPolicyId = "+res.getInt("sonPolicyId") +";";
+			otherQuery(query);
+			deletePolicy(res.getInt("sonPolicyId"));
+		}
+		query = "DELETE * FROM Policies WHERE policyId = " + policyId + " ;";
+		otherQuery(query);
+		
+	}
+
+	private void AddPolicy(PurchasePolicy newPolicy,int policyId) throws Exception{
+		if(newPolicy instanceof AndPolicy){
+			String query = "INSERT INTO Policies VALUES(" + policyId + ", " + andPolicyTypeCode + ", "
+					+ "" + ", " + "" + ");";
+			otherQuery(query);
+			for(PurchasePolicy policy:((AndPolicy)newPolicy).getSubPolicy()){
+				int sonPolicyId=getNextPolicyId();
+				AddPolicy(policy,sonPolicyId);
+				query = "INSERT INTO SubPolicies VALUES(" + policyId + ", " + sonPolicyId+ ");";
+				otherQuery(query);
+			}
+		}
+		if(newPolicy instanceof NotPolicy){
+			String query = "INSERT INTO Policies VALUES(" + policyId + ", " + notPolicyTypeCode + ", "
+					+ "" + ", " + "" + ");";
+			otherQuery(query);
+			PurchasePolicy policy=((NotPolicy)newPolicy).getSubPolicy();
+			int sonPolicyId=getNextPolicyId();
+			AddPolicy(policy,sonPolicyId);
+			query = "INSERT INTO SubPolicies VALUES(" + policyId + ", " + sonPolicyId+ ");";
+			otherQuery(query);
+		}
+		if(newPolicy instanceof OrPolicy){
+			String query = "INSERT INTO Policies VALUES(" + policyId + ", " + orPolicyTypeCode + ", "
+					+ "" + ", " + "" + ");";
+			otherQuery(query);
+			for(PurchasePolicy policy:((OrPolicy)newPolicy).getSubPolicy()){
+				int sonPolicyId=getNextPolicyId();
+				AddPolicy(policy,sonPolicyId);
+				query = "INSERT INTO SubPolicies VALUES(" + policyId + ", " + sonPolicyId+ ");";
+				otherQuery(query);
+			}
+		}
+		if(newPolicy instanceof EmptyPolicy){
+			String query = "INSERT INTO Policies VALUES(" + policyId + ", " + emptyPolicyTypeCode + ", "
+					+ "" + ", " + "" + ");";
+			otherQuery(query);
+		}
+		if(newPolicy instanceof MaxPolicy){
+			String query = "INSERT INTO Policies VALUES(" + policyId + ", " + maxPolicyTypeCode + ", "
+					+ ((MaxPolicy)newPolicy).getMax() + ", " + "" + ");";
+			otherQuery(query);
+		}
+		if(newPolicy instanceof MinPolicy){
+			String query = "INSERT INTO Policies VALUES(" + policyId + ", " + minPolicyTypeCode + ", "
+					+ ((MinPolicy)newPolicy).getMin() + ", " + "" + ");";
+			otherQuery(query);
+		}
+		if(newPolicy instanceof AddressPolicy){
+			String query = "INSERT INTO Policies VALUES(" + policyId + ", " + addressPolicyTypeCode + ", "
+								+ "" + ", " + ((AddressPolicy)newPolicy).getAddress() + ");";
+			otherQuery(query);
+		}
+	}
+
+	private void updateStoreCategoryDiscount(int storeId, Map<Category, PurchasePolicy> categorys) throws Exception{
+		for (Entry<Category, PurchasePolicy> cat:categorys.entrySet()){
+			int prevPolicyId=-1;
+			String query = "SELECT * FROM CategoryPolicy WHERE storeId = " + storeId + " AND categoryName = " 
+							+ cat.getKey().getName()+" ;";
+			ResultSet res = selectQuery(query);
+			if(res.next())
+			{
+				prevPolicyId= res.getInt("policyId");
+			}
+			int PolicyId=getNextPolicyId();
+			AddPolicy(cat.getValue(),PolicyId); 
+			
+			
+			if(prevPolicyId!=-1){
+				query="UPDATE CategoryPolicy "
+						+ " SET policyId = " +PolicyId
+						+ " WHERE storeId = "+ storeId +" AND categoryName = "+ cat.getKey().getName() +";";
+				otherQuery(query);
+				deletePolicy(prevPolicyId);
+			}
+			else{
+				query="INSERT INTO CategoryPolicy VALUES( "
+						+ storeId+" , "+cat.getKey().getName()+" , "+PolicyId+" );";
+				otherQuery(query);
+			}
+		}
+	}
+	
+	public boolean isCategoryExists(String category) {
+		//TODO not sure about categories
+		return false;
+	}
+	
+	public void addLotteryProductToCart(String username, Product p, int money) {
+		// TODO Auto-generated method stub
+	}
+	
+	//policies....
+	//TODO ?????????????
+	public List<Category> getAllCategory(){
+		return null;
+	}
+		
+	//policies...
+	//TODO ????????????
+	public Category getCategory(String categoryName){
+		return null;
+	}
+	
+
+	public void deleteStore(int storeId) {
+		// TODO Yadani
+	}
+	private Map<Guest, Integer> getLotteryParticipants(int int1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void removePurchase(int purchaseId) throws Exception {
+		String query = "DELETE * FROM Purchases WHERE purchaseID = " + purchaseId + " ;";
+		otherQuery(query);
+		
 	}
 	
 	

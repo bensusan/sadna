@@ -81,7 +81,7 @@ public class DalIntegressionTest {
 			}
 			assertTrue(isContain);
 			
-			dal.removePurchase(s.getUsername(),p.getPurchaseID());
+			dal.removePurchase(p.getPurchaseID());
 			dal.removeSubscriber(s.getUsername());
 		} catch (Exception e) {
 			e.printStackTrace();

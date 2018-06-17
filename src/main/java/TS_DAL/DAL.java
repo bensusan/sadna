@@ -43,7 +43,7 @@ public interface DAL {
 	public  Map<Product,Integer> getProductAmount(int storeId) throws Exception;
 	public  List<Purchase> getStorePurchase(int storeId) throws Exception;
 	public PurchasePolicy getPurchasePolicy(int policyId) throws Exception;
-	public List<PurchasePolicy> getSubPolicies(int policyId);
+	public List<PurchasePolicy> getSubPolicies(int policyId) throws Exception;
 	public void removePurchase(int purchaseId) throws Exception;
 	public DiscountPolicy getDiscountPolicy(int policyId) throws Exception;
 	public PurchaseType getPurchaseType(int productId) throws Exception;
@@ -58,6 +58,7 @@ public interface DAL {
 	public PurchasePolicy getStorePolicy(int storeId) throws Exception;
 	public Map<Category, PurchasePolicy> getStoreCategoryDiscount(int storeId) throws Exception;
 	public Product getProductById(int productId) throws Exception;
+	public void deleteStore(int storeId);
 	public int getNextProductId() throws Exception;
 	public int getNextStoreId() throws Exception;
 	public int getNextPolicyId() throws Exception;

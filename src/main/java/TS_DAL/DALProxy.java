@@ -165,7 +165,7 @@ public class DALProxy implements DAL {
 		return getReal().getPurchasePolicy(policyId);
 	}
 
-	public List<PurchasePolicy> getSubPolicies(int policyId) {
+	public List<PurchasePolicy> getSubPolicies(int policyId) throws Exception {
 		return getReal().getSubPolicies(policyId);
 	}
 
@@ -219,6 +219,11 @@ public class DALProxy implements DAL {
 
 	public Product getProductById(int productId) throws Exception{
 		return getReal().getProductById(productId);
+	}
+
+	public void deleteStore(int storeId) {
+		getReal().deleteStore(storeId);
+		
 	}
 
 	public int getNextProductId() throws Exception {

@@ -1,16 +1,37 @@
 package TS_BL;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import TS_DAL.*;
 import TS_SharedClasses.*;
 
 public class BlMain {
-
+	
+	
+	static Logger logger = Logger.getLogger("SecurityLog");
+    static FileHandler fh;
+    static SimpleFormatter formatter = new SimpleFormatter();
+	{
+		Locale.setDefault(new Locale("en", "US"));
+		try {
+			fh = new FileHandler("SecurityLogFile.log");
+		}catch (SecurityException e) {  
+	        e.printStackTrace();  
+	    } catch (IOException e) {  
+	        e.printStackTrace();  
+	    }  
+		logger.addHandler(fh);fh.setFormatter(formatter);
+	}
+	
 	public final static int NUM_OF_PERMISSIONS = 14; 
 	// constants according to BlPermission's functions order.
 	public final static int addProductToStore = 0, deleteProductFromStore = 1, updateProductDetails = 2,
@@ -36,8 +57,10 @@ public class BlMain {
 //		}
 //	};
 	
-	public final static DAL dalRef = new DALProxy();
+
+	//public final static DAL dalRef = new DALProxy();
 	public static Map<Guest, LinkedList<String>> allUsersWithTheirCreditCards = new HashMap<Guest, LinkedList<String>>();
+	
 	
 	// need to insert to here all guests that payed with their credit card for pay back
 	public static List<String> getAllCategorys() {
@@ -85,7 +108,7 @@ public class BlMain {
 	}
 
 	public static boolean addProductToStore(StoreManager sm, Product product, int amount,String category) throws Exception {
-		return BlStoreManager.addProductToStore(sm, product, amount,category);
+		return correctSpelledLettersSpacesNumbers(category) && BlStoreManager.addProductToStore(sm, product, amount,category);
 	}
 
 	public static boolean deleteProductFromStore(StoreManager sm, Product product) throws Exception {
@@ -93,7 +116,7 @@ public class BlMain {
 	}
 
 	public static boolean updateProductDetails(StoreManager sm, Product oldProduct, Product newProduct, int amount,String newProductCategory) throws Exception {
-		return BlStoreManager.updateProductDetails(sm, oldProduct, newProduct, amount,newProductCategory);
+		return correctSpelledLettersSpacesNumbers(newProductCategory) && BlStoreManager.updateProductDetails(sm, oldProduct, newProduct, amount,newProductCategory);
 	}
 
 	public static boolean addPolicyToProduct(StoreManager sm, PurchasePolicy policy, Product product) throws Exception {
@@ -133,7 +156,7 @@ public class BlMain {
 	}
 
 	public static boolean addProductToStore(StoreOwner so, Product product, int amount,String category) throws Exception {
-		return BlStoreOwner.addProductToStore(so, product, amount,category);
+		return correctSpelledLettersSpacesNumbers(category) && BlStoreOwner.addProductToStore(so, product, amount,category);
 	}
 
 	public static boolean deleteProductFromStore(StoreOwner so, Product product) throws Exception {
@@ -141,7 +164,7 @@ public class BlMain {
 	}
 
 	public static boolean updateProductDetails(StoreOwner so, Product oldProduct, Product newProduct, int amount,String newProductCategory) throws Exception {
-		return BlStoreOwner.updateProductDetails(so, oldProduct, newProduct, amount,newProductCategory);
+		return correctSpelledLettersSpacesNumbers(newProductCategory) && BlStoreOwner.updateProductDetails(so, oldProduct, newProduct, amount,newProductCategory);
 	}
 
 	public static boolean addPolicyToProduct(StoreOwner so, PurchasePolicy policy, Product product) throws Exception {
@@ -153,10 +176,10 @@ public class BlMain {
 	}
 	
 	public static boolean addDiscountToCategoryStore(StoreOwner so, PurchasePolicy discountTree, String category) throws Exception {
-		return BlStoreOwner.addDiscountToCategoryStore(so, discountTree, category);
+		return correctSpelledLettersSpacesNumbers(category) && BlStoreOwner.addDiscountToCategoryStore(so, discountTree, category);
 	}
 	public static boolean addDiscountToCategoryStore(StoreManager manager, PurchasePolicy discountTree, String category) throws Exception {
-		return BlStoreManager.addDiscountToCategoryStore(manager, discountTree, category);
+		return correctSpelledLettersSpacesNumbers(category) && BlStoreManager.addDiscountToCategoryStore(manager, discountTree, category);
 	}
 
 	public static boolean addNewStoreOwner(StoreOwner oldSo, Subscriber newSo) throws Exception {
@@ -181,7 +204,7 @@ public class BlMain {
 
 	public static Store openStore(Subscriber sub, String storeName,  int gradeing, boolean isOpen) throws Exception {
 		
-		return BlSubscriber.openStore(sub,storeName,gradeing,new HashMap<Product, Integer>(),new LinkedList<Purchase>(),isOpen);
+		return correctSpelledLettersSpacesNumbers(storeName) ? BlSubscriber.openStore(sub,storeName,gradeing,new HashMap<Product, Integer>(),new LinkedList<Purchase>(),isOpen) : null;
 	}
 
 	public static boolean removeSubscriber(SystemAdministrator sa, Subscriber s) throws Exception {
@@ -198,8 +221,12 @@ public class BlMain {
 
 	public static Subscriber signUp(Guest g, String username, String password, String fullName, String address,
 			String phone, String creditCardNumber) throws Exception {
+<<<<<<< HEAD
 		Subscriber toReturn = BlGuest.signUp(g, username, password, fullName, address, phone, creditCardNumber);
 		return toReturn;
+=======
+		return BlGuest.signUp(g, username, password, fullName, address, phone, creditCardNumber);
+>>>>>>> origin/amitLogFiles
 	}
 
 	public static Subscriber signIn(Guest g, String username, String password) throws Exception {
@@ -228,19 +255,27 @@ public class BlMain {
 	}
 
 	static boolean correctSpelledLettersSpacesNumbers(String str) {
-		return str != null && str.matches("[0-9a-zA-Z\\s]+");
+		boolean ok = str != null && str.matches("[0-9a-zA-Z\\s]+");
+		if(!ok)
+			logger.info("\ncorrectSpelledLettersSpacesNumbers FAIL\nString data - " + str + "\n");
+		return ok;
 	}
 
 	static boolean correctSpelledLettersSpaces(String str) {
-		return str != null && str.matches("[a-zA-Z\\s]+");
+		boolean ok = str != null && str.matches("[a-zA-Z\\s]+");
+		if(!ok)
+			logger.info("\ncorrectSpelledLettersSpaces FAIL\nString data - " + str + "\n");
+		return ok;
 	}
 
 	static boolean correctSpelledNumbers(String str){
-		return str != null && str.matches("[0-9]+");
+		boolean ok = str != null && str.matches("[0-9]+");
+		if(!ok)
+			logger.info("\ncorrectSpelledNumbers FAIL\nString data - " + str + "\n");
+		return ok;
 	}
 
 	static boolean legalPassword(String pass) {
-		//may change in the future
 		return correctSpelledLettersSpacesNumbers(pass);
 	}
 
@@ -249,16 +284,15 @@ public class BlMain {
 		if(creditCardNumber == null || creditCardNumber.length() < 8 || creditCardNumber.length() > 16)
 			return false;
 		String regex = "[0-9]+";
-		if(creditCardNumber.matches(regex))
-			return true;
-		return false;
+		boolean ok = creditCardNumber.matches(regex); 
+		if(!ok)
+			logger.info("\nlegalCreditCard FAIL\nCreditCard data - " + creditCardNumber+ "\n");
+		return ok;
 	}
 
 	//should be update in the future
 	static boolean legalAddress(String buyerAddress){
-		if(buyerAddress == null)
-			return false;
-		return true;
+		return correctSpelledLettersSpacesNumbers(buyerAddress);
 	}
 
 	public static Map<Store, Map<Product, Integer>> getAllStoresWithThierProductsAndAmounts() throws Exception{

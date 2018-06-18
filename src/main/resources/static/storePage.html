@@ -10,9 +10,26 @@
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <script src="/app.js"></script>
+		<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
 </head>
 
-<body onload="hideButtonsToManager(); loadStoreDetails();" style.margin= 10px>
+<body onload="hideButtonsToManager();loadStoreDetails(); loadProductsInStoreTable()" style.margin= 10px>
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
     enabled. Please enable
     Javascript and reload this page!</h2></noscript>
@@ -79,10 +96,43 @@
 	<div class="form-group11">
 		<button id="12" onclick="setPolicyAction('addDiscountToCategoryStore'); loadAddDiscountAndPolicyPage(1);">Add discount to category in Store</button>
 	</div>
+	
+	<div>Products in store:</div>
+<div class="row" id="productsInStoreTableDiv">
+    <div class="col-md-12">
+        <table id="productsInStoreTable">
+            <thead>
+            <tr>
+                <th>Product:</th>
+				<th>Amount:</th>
+            </tr>
+            </thead>
+            <tbody id="productsInStoreTableBody">
+            </tbody>
+        </table>
+    </div>
+</div>
 
 	<script>
 		function setPolicyAction(action) {
 		   localStorage.setItem('policyAction', action);
+		}
+		
+		function loadProductsInStoreTable(){
+			$('#productsInStoreTable').hide();
+			var productToAmountDict = JSON.parse(localStorage.getItem('storeProducts'));
+			if(Object.keys(productToAmountDict).length > 0){
+				$('#productsInStoreTable').show();
+				var stringToBeInner = "";
+				for(var product in productToAmountDict){
+					stringToBeInner = stringToBeInner + "<tr>" + 
+									"<td>" + JSON.stringify(product) + "</td>" +
+									"<td>" + JSON.stringify(productToAmountDict[product]) + "</td>" +
+									"</tr>";
+				}
+				var tableRef = document.getElementById('productsInStoreTableBody');
+				tableRef.innerHTML = stringToBeInner;
+			}
 		}
 
 	</script>

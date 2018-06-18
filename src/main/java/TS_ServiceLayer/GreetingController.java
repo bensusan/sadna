@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -16,6 +20,7 @@ import TS_SharedClasses.*;
 
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
 import com.google.gson.Gson;
@@ -30,14 +35,44 @@ import TS_BL.BlMain;
 @Controller
 public class GreetingController {
 
+	static Logger logger = Logger.getLogger("Log");
+	static Logger errorLogger = Logger.getLogger("ErrorLog");
+    static FileHandler fh,errFH;
+    static SimpleFormatter formatter = new SimpleFormatter();
+    static SimpleFormatter errFormatter = new SimpleFormatter();
+	{
+		Locale.setDefault(new Locale("en", "US"));
+		try {
+			fh = new FileHandler("LogFile.log");
+			errFH = new FileHandler("ErrorLogFile.log");
+		}catch (SecurityException e) {  
+	        e.printStackTrace();  
+	    } catch (IOException e) {  
+	        e.printStackTrace();  
+	    }  
+		logger.addHandler(fh);fh.setFormatter(formatter); errorLogger.addHandler(errFH); errFH.setFormatter(errFormatter);
+	}
+	
+	
 	@MessageMapping("/hello")
-	@SendTo("/topic/greetings")
+	@SendToUser("/topic/greetings")
 	public Greeting greeting(HelloMessage message) throws Exception {
 		Thread.sleep(1000); // simulated delay
 		Gson gson = new Gson();		
 		
 		String[] args = message.getParamsAsJSON();
 		String fName = message.getFunctionName();
+			
+		String msg = "\nGET:\nFunction's name: " + fName;
+		if(args != null && args.length > 0){
+			msg += "\nParams:";
+		}
+		for (String s: args) {
+			msg += "\n" + s.toString();  
+		}
+		msg += "\n";
+		logger.info(msg);
+		
 		HelloMessage.functionNames f = HelloMessage.functionNames.valueOf(fName);
 		Greeting ret = new Greeting(message.getPageName(), fName);
 		try {
@@ -118,7 +153,7 @@ public class GreetingController {
 					int newAmount = BlMain.getAmountFromProdId(gson.fromJson(args[1], Integer.class).intValue());
 					
 					String newName = gson.fromJson(args[4], String.class);
-					if(newName == null)
+					if(newName.equals(""))
 						newName = oldProduct.getName();
 					
 					int newPrice;
@@ -129,7 +164,7 @@ public class GreetingController {
 						newPrice = gson.fromJson(args[5], Integer.class);
 					
 					String newCategory = gson.fromJson(args[6], String.class);
-					if(newCategory == null)
+					if(newCategory.equals(""))
 						newCategory = oldProduct.getCategory().getName();
 					
 					checkval = gson.fromJson(args[7], String.class);
@@ -361,6 +396,7 @@ public class GreetingController {
 				}
 				break;
 			case signUp:
+
 				if (args.length == 7){
 					Subscriber subs = BlMain.signUp(gson.fromJson(args[0], Guest.class), gson.fromJson(args[1], String.class),
 							gson.fromJson(args[2], String.class), gson.fromJson(args[3], String.class),
@@ -445,7 +481,7 @@ public class GreetingController {
 				}
 				break;
 			case addToGuestCart:
-				if(args.length == 5){
+				if(args.length == 4){
 					int init = gson.fromJson(args[0], Integer.class);
 					int pid = gson.fromJson(args[1], Integer.class);
 					Product p = BlMain.getProductFromProdId(pid);
@@ -453,14 +489,25 @@ public class GreetingController {
 					int discountCode = gson.fromJson(args[3], Integer.class);
 					
 					Cart cart;
-					if(init == 0)
+					Guest g;
+					if(init == -1){
 						cart = new Cart();
+						g = new Guest(cart);
+						init = holdMyData.guestNum;
+						holdMyData.guests.put(++holdMyData.guestNum, g);
+					}
 					else
-						cart = gson.fromJson(args[4], Cart.class);
+						g = holdMyData.guests.get(init);
 					
-					Guest g = new Guest(cart);
 					BlMain.addImmediatelyProduct(g, p, amount, discountCode);
-					ret.setContentAsJson(gson.toJson(g.getCart()));	
+					holdMyData.guests.put(init,g);
+					
+					String json1 = new Gson().toJson(init); 
+					String json2 = new Gson().toJson(g.getCart()); 
+					
+					String bothJson = "["+json1+","+json2+"]"; //Put both objects in an array of 2 elements
+					
+					ret.setContentAsJson(gson.toJson(bothJson));
 				}
 				break;
 			case removeProductFromCart:
@@ -471,17 +518,17 @@ public class GreetingController {
 					ret.setContentAsJson(gson.toJson(s.getCart()));	
 				}
 				else if (args.length == 3){
-					Cart cart = (gson.fromJson(args[0], Cart.class));
+					int gId = gson.fromJson(args[0], Integer.class);
+					Guest g = holdMyData.guests.get(gId);
 					Product p = BlMain.getProductFromProdId(gson.fromJson(args[1], Integer.class));
-					Guest g = new Guest();
-					g.setCart(cart);
-					
+
 					try{
 						BlMain.removeProductFromCart(g, p);
 					}
 					catch(Exception e){
 						ret.setContentAsJson(gson.toJson(e));
 					}
+					
 					ret.setContentAsJson(gson.toJson(g.getCart()));	
 				}
 				break;
@@ -492,7 +539,7 @@ public class GreetingController {
 					int newAmount = gson.fromJson(args[2], Integer.class);
 					
 					try{
-					//BlMain.removeProductFromCart((Guest)s, p);
+					BlMain.removeProductFromCart((Guest)s, p);
 					BlMain.addImmediatelyProduct((Guest)s, p, newAmount);
 					}
 					catch(Exception e){
@@ -502,20 +549,21 @@ public class GreetingController {
 					ret.setContentAsJson(gson.toJson(s.getCart()));	
 				}
 				else if (args.length == 4){
-					Cart cart = (gson.fromJson(args[0], Cart.class));
+					int gId = gson.fromJson(args[0], Integer.class);
+					Guest g = holdMyData.guests.get(gId);
+					
 					Product p = BlMain.getProductFromProdId(gson.fromJson(args[1], Integer.class));
 					int newAmount = gson.fromJson(args[2], Integer.class);
 					
-					Guest g = new Guest();
-					g.setCart(cart);
-					
 					try{
-						//BlMain.removeProductFromCart(g, p);
+						BlMain.removeProductFromCart(g, p);
 						BlMain.addImmediatelyProduct(g, p, newAmount);
+						holdMyData.guests.put(gId, g);
 					}
 					catch(Exception e){
 						ret.setContentAsJson(gson.toJson(e));
 					}
+					
 					ret.setContentAsJson(gson.toJson(g.getCart()));	
 				}
 				break;
@@ -533,13 +581,35 @@ public class GreetingController {
 					ret.setContentAsJson(gson.toJson(s.getCart()));
 				}
 				if (args.length == 4){
-					Cart cart = (gson.fromJson(args[0], Cart.class));
+					int gId = gson.fromJson(args[0], Integer.class);
+					Guest g = holdMyData.guests.get(gId);
+					Cart cart = g.getCart();
 					String creditCard = gson.fromJson(args[1], String.class);
 					String address = gson.fromJson(args[2], String.class);
-					Guest g = new Guest();
-					g.setCart(cart);
+					
 					try{
 					BlMain.purchaseCart(g,creditCard,address);
+					
+					List<ProductInCart> p1 = cart.getProducts();
+					List<ProductInCart> p2 = g.getCart().getProducts();
+					p1.removeAll(p2);
+					
+					for (ProductInCart pic : p1) {
+						for (Subscriber sub : BlMain.allSubscribers) {
+							List<StoreOwner> storeSo = pic.getMyProduct().getStore().getMyOwners();
+							List<StoreOwner> subSo = sub.getOwner();
+							storeSo.retainAll(subSo);
+							if(!storeSo.isEmpty()){
+								String msg1 = "";
+								if(holdMyData.masseges.containsKey(subSo))
+									msg1 = holdMyData.masseges.get(sub);
+									
+								holdMyData.masseges.put(sub.getUsername(), msg1 +
+										"Product: " + pic.getMyProduct().getId() + " ,amount: " + pic.getAmount()
+										+ " , was purchased!\n");
+							}
+						}
+					}
 					}
 					catch(Exception e){
 						ret.setContentAsJson(gson.toJson(e));
@@ -548,8 +618,43 @@ public class GreetingController {
 				}
 				break;	
 			case getAllStoresWithThierProductsAndAmounts:
-				if(args.length == 0)
-					ret.setContentAsJson(gson.toJson(BlMain.getAllStoresWithThierProductsAndAmounts()));
+				if(args.length == 1){
+					String uname = gson.fromJson(args[0], String.class);
+					Subscriber sub = BlMain.getSubscriberFromUsername(uname);
+					
+					String msg2 = "";
+					if(holdMyData.masseges.containsKey(uname))
+						msg2 = holdMyData.masseges.get(uname);
+					
+					String json1 = new Gson().toJson(msg2); 
+					String json2 = new Gson().toJson(BlMain.getAllStoresWithThierProductsAndAmounts()); 
+					
+					String bothJson = "["+json1+","+json2+"]"; //Put both objects in an array of 2 elements
+					
+					ret.setContentAsJson(gson.toJson(bothJson));
+				}
+				else if(args.length == 2){
+					int init = gson.fromJson(args[0], Integer.class);
+					String msg3 = "";
+					
+					if(init == -1){
+						Cart cart = new Cart();
+						Guest g = new Guest(cart);
+						init = holdMyData.guestNum;
+						holdMyData.guests.put(++holdMyData.guestNum, g);
+						holdMyData.guests.put(init,g);
+						msg3 = "welcome";
+					}
+					else{
+						msg3 = "keep enjoying!";
+					}
+						
+					String json1 = new Gson().toJson(msg3); 
+					String json2 = new Gson().toJson(BlMain.getAllStoresWithThierProductsAndAmounts());
+					String bothJson = "["+json1+","+json2+"]"; //Put both objects in an array of 2 elements
+					
+					ret.setContentAsJson(gson.toJson(bothJson));
+				}
 				break;
 			case getAllStores:
 				if(args.length == 0)
@@ -692,7 +797,9 @@ public class GreetingController {
 			default:
 				throw new Exception("NO SUCH FUNCTION");
 			}
+			logger.info("\nSEND:\nPage's name: " + ret.getPageName() + "\nFunction's name: " + ret.getFunctionName() + "\nContent:\n" + ret.getContentAsJson() + "\n");
 		} catch (Exception e) {
+			errorLogger.info("\nError Content:\n" + e.getMessage() + "\n");
 			ret.setException();
 			ret.setContentAsJson(gson.toJson(e.getMessage()));
 		}
@@ -700,6 +807,12 @@ public class GreetingController {
 		SimpMessagingTemplate simpMessagingTemplate;
 		
 		return ret;
+	}
+	
+	public static class holdMyData{
+		static Map<String,String> masseges = new HashMap<String,String>();
+		static Map<Integer,Guest> guests = new HashMap<Integer,Guest>();
+		static int guestNum = 0;
 	}
 }
 

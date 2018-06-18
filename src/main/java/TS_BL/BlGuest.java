@@ -205,12 +205,17 @@ public class BlGuest {
 	static Subscriber signUp(Guest g, String username, String password, String fullName, String address, String phone, String creditCardNumber) throws Exception{
 		if(g == null)
 			throw new Exception("something went wrong");
+		if(!BlMain.correctSpelledLettersSpacesNumbers(username) || !BlMain.correctSpelledLettersSpaces(fullName) || !BlMain.correctSpelledLettersSpacesNumbers(address) || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.correctSpelledNumbers(phone))
+			throw new Exception("problem with one of the fields,check spelling try again"); //exception spell in user name | full name | address
 		if(BlMain.checkIfSubscriberExists(username) != null)
 			throw new Exception("the username is already taken, try again"); //user name exists
 		if(!BlMain.legalPassword(password))
 			throw new Exception("illegal password, try again"); //password rules failed.
+<<<<<<< HEAD
 		if(!BlMain.correctSpelledLettersSpacesNumbers(username) || !BlMain.correctSpelledLettersSpaces(fullName) || !BlMain.correctSpelledLettersSpacesNumbers(address) || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.correctSpelledNumbers(phone))
 			throw new Exception("problem with one of the fields,check spelling try again"); //exception spell in user name | full name | address
+=======
+>>>>>>> origin/amitLogFiles
 		
 		Subscriber newSub = new Subscriber(g.getCart(), username, password, fullName, address, phone, creditCardNumber, new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>()); 
 		BlMain.allSubscribers.add(newSub);

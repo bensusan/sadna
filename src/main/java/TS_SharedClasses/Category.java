@@ -6,21 +6,21 @@ import java.util.List;
 public class Category {
 	private String name;
 	
-	private transient List<Product>products;
+//	private transient List<Product>products;
 	
 	public Category(String name){
 		this.name=name;
-		this.products=new LinkedList<Product>();
+//		this.products=new LinkedList<Product>();
 	}
 	
 	
 	//WARNING FOR DAL!!!!!
-	public Category(String name, PurchasePolicy purchasePolicy, List<Product> products) {
-		super();
-		this.name = name;
+//	public Category(String name/*, PurchasePolicy purchasePolicy, List<Product> products*/) {
+//		super();
+//		this.name = name;
 //		this.purchasePolicy = purchasePolicy;
-		this.products = products;
-	}
+//		this.products = products;
+//	}
 
 
 
@@ -31,13 +31,10 @@ public class Category {
 		this.name = name;
 	}
 	
-	public List<Product> getProducts() {
-		return products;
-	}
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
-	
-	
-
+//	public List<Product> getProducts() {
+//		return products;
+//	}
+//	public void setProducts(List<Product> products) {
+//		this.products = products;
+//	}
 }

@@ -80,11 +80,11 @@ public class DALProxy implements DAL {
 		getReal().updateMoneyEarned(s, newMoneyEarend);
 	}
 
-	public List<Category> getAllCategory() {
+	public List<Category> getAllCategory() throws Exception {
 		return getReal().getAllCategory();
 	}
 
-	public Category getCategory(String categoryName) {
+	public Category getCategory(String categoryName) throws Exception {
 		return getReal().getCategory(categoryName);
 	}
 
@@ -197,7 +197,7 @@ public class DALProxy implements DAL {
 		return getReal().getAmountOfProduct(storeId, productId);
 	}
 
-	public boolean isCategoryExists(String category) {
+	public boolean isCategoryExists(String category) throws Exception {
 		return getReal().isCategoryExists(category);
 	}
 

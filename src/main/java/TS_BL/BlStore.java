@@ -1,6 +1,7 @@
 package TS_BL;
 
-import java.util.Date;
+
+import java.sql.Date;
 import java.util.Map;
 
 import TS_SharedClasses.*;
@@ -26,7 +27,7 @@ public class BlStore {
 	 * @return true if succseed false otherwise
 	 */
 	static Purchase addProductToHistory(ProductInCart pic) throws Exception{
-		Purchase newPur = new Purchase(new Date(), pic);
+		Purchase newPur = new Purchase(new Date(2018,8,8), pic);
 		Store s = dalRef.getStoreByStoreId(pic.getMyProduct().getStore().getStoreId());
 		s.getPurchaseHistory().add(newPur);
 		dalRef.updateStore(s);

@@ -257,6 +257,9 @@ public class DALReal implements DAL {
 					so,sm, rs.getInt("moneyEarned"),getStorePolicy(id), getStoreCategoryDiscount(id),getStoreCategoryPolicy(id));
 			s.setMyOwners(getStoreOwnersFromStore(s));
 			s.setMyManagers(getStoreManagersFromStore(s));
+			for(Product p:s.getProducts().keySet()){
+				p.setStore(s);
+			}
 			stmt.close();
 			conn.close();
 			return s;
@@ -507,23 +510,42 @@ public class DALReal implements DAL {
 	}
 
 	public void addProductToStore(Store s, Product product, int amount,String category) throws Exception{
+		addProduct(product);
 		Connection conn = getConnection();
 		Statement stmt = conn.createStatement();
 		stmt.executeUpdate("USE TradingSystem");
-		String query = "USE TradingSystem";
-		Connection c = getConnection();
-		Statement statement = c.createStatement();
-		statement.executeUpdate(query);
-		query = "INSERT INTO ProductsInStores " +
+		
+		String query = "INSERT INTO ProductsInStores " +
 				"VALUES ('" + s.getStoreId() + "', '" + product.getId() + "', '" + amount + "');";
-		statement.executeUpdate(query);
+		stmt.executeUpdate(query);
 		query = "INSERT INTO ProductsInCategory " +
 				"VALUES ('" + category + "', '" + product.getId() + "');";
-		statement.executeUpdate(query);
+		stmt.executeUpdate(query);
 		stmt.close();
 		conn.close();
 	}
 
+//	"CREATE TABLE Products(productId INTEGER,"
+//	+ " name VARCHAR(50),"
+//	+ " price INTEGER,"
+//	+ " grading INTEGER ,"
+//	+ " category VARCHAR(50),"
+//	+ " policyId INTEGER REFERENCES Policies(policyId),"
+//	+ " PRIMARY KEY (productId));";
+	private void addProduct(Product product) throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
+		int policyId=getNextPolicyId();
+		AddPolicy(product.getPurchasePolicy(), policyId);
+		String query = "INSERT INTO Products " +
+				"VALUES ('" + product.getId() + "', '" + product.getName() + "', '" + product.getPrice() 
+				+ "', '" + product.getGrading() +"', '" + product.getCategory()+"', '" + policyId +"');";
+		stmt.executeUpdate(query);
+		
+		stmt.close();
+		conn.close();
+	}
 	public void deleteProductFromStore(int storeId, int productId) throws Exception{
 		Connection conn = getConnection();
 		Statement stmt = conn.createStatement();
@@ -788,7 +810,7 @@ public class DALReal implements DAL {
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
-		query = "UPDATE Store " +
+		query = "UPDATE Stores " +
 				"SET isOpen = '" + 1 +
 				"' WHERE storeId = '" + storeId + "';";
 		statement.executeUpdate(query);
@@ -803,7 +825,7 @@ public class DALReal implements DAL {
 		stmt.executeUpdate("USE TradingSystem");
 		AddPolicy(s.getStorePolicy(), s.getStorePolicy().getPolicyId());
 		String query = "INSERT INTO Stores " +
-                "VALUES ('" + s.getStoreId() + 
+                "VALUES ( '" + s.getStoreId() + 
                 "', '" + s.getStoreName() + 
                 "', '" + s.getAddress() + 
                 "', '" + s.getPhone() + 
@@ -831,7 +853,9 @@ public class DALReal implements DAL {
 		ResultSet res = stmt.executeQuery(query);
 		Map <Product, Integer> prodAmount = new HashMap<Product, Integer>();
 		while(res.next()){
-			prodAmount.put(getProductById(res.getInt("productId")), res.getInt("amount"));
+			Product p=getProductById(res.getInt("productId"));
+			if(p!=null)
+				prodAmount.put(p, res.getInt("amount"));
 		}
 		stmt.close();
 		conn.close();
@@ -859,25 +883,26 @@ public class DALReal implements DAL {
 		Connection conn = getConnection();
 		Statement stmt = conn.createStatement();
 		stmt.executeUpdate("USE TradingSystem");
-		String query = "SELECT * "
-				+ "FROM HiddenDiscount "
-				+ " FULL OUTER JOIN OvertDiscount INNER JOIN Policies "
-				+ " ON HiddenDiscount.policyId = OvertDiscount.policyId "
-				+ " WHERE OvertDiscount.policyId = Policies.policyId "
-				+ " OR HiddenDiscount.policyId = Poilcies.policyId;" ;
+		String query="SELECT * FROM HiddenDiscount "
+				+" WHERE policyId = '" + policyId + "';";
 		ResultSet res = stmt.executeQuery(query);
 		if(res.next()){
 			int code = res.getInt("code");
-			if (res.wasNull()){
+			HiddenDiscount hd = new HiddenDiscount(code, res.getDate("discountEndDate"), res.getInt("discountPrecentage"));
+			stmt.close();
+			conn.close();
+			return hd;
+		}
+		else{
+			query="SELECT * FROM OvertDiscount "
+					+" WHERE policyId = '" + policyId + "';";
+			res = stmt.executeQuery(query);
+			if (res.next()){
 				OvertDiscount od = new OvertDiscount(res.getDate("discountEndDate"), res.getInt("discountPrecentage"));
 				stmt.close();
 				conn.close();
 				return od;
 			}
-			HiddenDiscount hd = new HiddenDiscount(code, res.getDate("discountEndDate"), res.getInt("discountPrecentage"));
-			stmt.close();
-			conn.close();
-			return hd;
 		}
 		stmt.close();
 		conn.close();
@@ -1097,7 +1122,7 @@ public class DALReal implements DAL {
 		ResultSet res = stmt.executeQuery(query);
 		Product ans=null;
 		if(res.next()){
-			ans= new Product(productId, res.getString("name"), res.getInt("price"),res.getInt("grading"), getPurchasePolicy(res.getInt("policyId")), getProductStore(productId), getCategory(res.getString("category")),getPurchaseType(productId));
+			ans= new Product(productId, res.getString("name"), res.getInt("price"),res.getInt("grading"), getPurchasePolicy(res.getInt("policyId")), null, getCategory(res.getString("category")),getPurchaseType(productId));
 		}
 		stmt.close();
 		conn.close();
@@ -1112,7 +1137,9 @@ public class DALReal implements DAL {
 		ResultSet res = stmt.executeQuery(query);
 		int ans=155;
 		if(res.next()){
-			ans=res.getInt("maxId") + 1;
+			if(res.getObject("maxId")!=null){
+				ans=res.getInt("maxId") + 1;
+			}
 		}
 		stmt.close();
 		conn.close();
@@ -1237,7 +1264,7 @@ public class DALReal implements DAL {
 				{
 					stmt.close();
 					conn.close();
-					throw new Exception("Error in policy type");
+					//throw new Exception("Error in policy type");
 				}
 			}
 		}
@@ -1453,7 +1480,7 @@ public class DALReal implements DAL {
 	
 	public boolean isCategoryExists(String category) {
 		//TODO not sure about categories
-		return false;
+		return true;
 	}
 	
 	public void addLotteryProductToCart(String username, Product p, int money) {

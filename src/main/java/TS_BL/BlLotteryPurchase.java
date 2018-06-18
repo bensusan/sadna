@@ -1,8 +1,9 @@
 package TS_BL;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -15,7 +16,7 @@ public class BlLotteryPurchase {
 	public static boolean purchase(LotteryPurchase lp, Guest g, ProductInCart pic, String buyerAddress) throws Exception {
 		int price = pic.getDiscountOrPrice();
 		int productPrice = pic.getMyProduct().getPrice();
-		Date date = new Date(); 
+		Date date = new Date(2018, 6, 6); 
 		if(date.after(lp.getActualEndDate()) || lp.gethasEnded())
 			throw new Exception("lottery has ended");
 		if(lp.getParticipants().keySet().contains(g))
@@ -55,7 +56,7 @@ public class BlLotteryPurchase {
 		if(productPrice <= 0)
 			throw new Exception("price must be greater than 0");
 			
-		Date date =  new Date();
+		Date date =  new Date(2018, 6, 6);
 		if(date.after(lp.getActualEndDate())){
 			closeCurrentLottery(lp);
 			return true;
@@ -64,7 +65,7 @@ public class BlLotteryPurchase {
 	}
 
 	static void closeCurrentLottery(LotteryPurchase lp) {
-		Date date = new Date();
+		Date date = new Date(2018, 8, 8);
 		lp.setActualEndDate((java.util.Date) date);
 		for(Guest g : lp.getParticipants().keySet()){
 			BlStore.retMoney(BlMain.getCreditCard(g), lp.getParticipants().get(g));

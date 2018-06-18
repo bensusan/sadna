@@ -1,7 +1,7 @@
 package TS_SharedClasses;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 import TS_BL.BlMain;
 

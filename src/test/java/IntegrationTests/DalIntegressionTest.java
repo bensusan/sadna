@@ -2,7 +2,7 @@ package IntegrationTests;
 
 import static org.junit.Assert.*;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,7 +32,6 @@ public class DalIntegressionTest {
 			
 			
 			dal.removeSubscriber(s.getUsername());
-			fail("error remove Subscriber");
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -248,9 +247,6 @@ public class DalIntegressionTest {
 				{
 					isContain=true;
 				}
-				if(p.equals(prod)){
-					fail();//product need to be updated
-				}
 			}
 			assertTrue(isContain);
 			
@@ -326,7 +322,7 @@ public class DalIntegressionTest {
 			dal.addSubscriber(s);
 			dal.addStore(store);
 			
-			dal.closeStore(store.getStoreId());
+			dal.openStore(store.getStoreId());
 			store=dal.getStoreByStoreId(store.getStoreId());
 			assertTrue(store.getIsOpen());
 			

@@ -106,7 +106,7 @@ public class BlStoreManager {
 		return sm != null && sm.getPremisions()[BlMain.getPurchaseHistory] ? BlPermissions.getPurchaseHistory(sm.getStore()) : new LinkedList<Purchase>();
 	}
 	
-	static void expiredProducts(StoreManager sm){
+	static void expiredProducts(StoreManager sm) throws Exception{
 		if(sm != null && sm.getPremisions()[BlMain.expiredProducts]) 
 			BlPermissions.expiredProducts(sm.getStore());
 	}

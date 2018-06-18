@@ -140,7 +140,7 @@ public class BlPermissions {
 		return s != null ? s.getPurchaseHistory() : null;
 	}
 	
-	static void expiredProducts(Store s){
+	static void expiredProducts(Store s) throws Exception{
 		if(s == null)
 			return;
 		for (Product product : s.getProducts().keySet()) {
@@ -150,7 +150,7 @@ public class BlPermissions {
 				today.set(Calendar.HOUR_OF_DAY, 0);
 				LotteryPurchase lpt = ((LotteryPurchase)pt); 
 				if(lpt.getLotteryEndDate().before(today.getTime())){
-					BlLotteryPurchase.closeCurrentLottery(lpt);
+					BlLotteryPurchase.closeCurrentLottery(lpt,product);
 				}
 			}
 		}

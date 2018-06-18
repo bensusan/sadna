@@ -185,21 +185,19 @@ public class BlPermissions {
 	static List<Purchase> getPurchaseHistory(Store s) throws Exception{
 		return s != null ? dalRef.getStorePurchase(s.getStoreId()) : null;
 	}
-<<<<<<< HEAD
 	
-	static void expiredProducts(Store s) throws Exception{
-		if(s == null)
-			throw new Exception("something went wrong");
-		for (Product product : s.getProducts().keySet()) {
-			PurchaseType pt = product.getType(); 
-			if(pt instanceof LotteryPurchase){
-				Calendar today = Calendar.getInstance();
-				today.set(Calendar.HOUR_OF_DAY, 0);
-				LotteryPurchase lpt = ((LotteryPurchase)pt); 
-				if(lpt.getLotteryEndDate().before(today.getTime())){
-					lpt.setHasEnded(true);
-					BlLotteryPurchase.closeCurrentLottery(lpt,product);
-=======
+//	static void expiredProducts(Store s) throws Exception{
+//		if(s == null)
+//			throw new Exception("something went wrong");
+//		for (Product product : s.getProducts().keySet()) {
+//			PurchaseType pt = product.getType(); 
+//			if(pt instanceof LotteryPurchase){
+//				Calendar today = Calendar.getInstance();
+//				today.set(Calendar.HOUR_OF_DAY, 0);
+//				LotteryPurchase lpt = ((LotteryPurchase)pt); 
+//				if(lpt.getLotteryEndDate().before(today.getTime())){
+//					lpt.setHasEnded(true);
+//					BlLotteryPurchase.closeCurrentLottery(lpt,product);
 
 	static void expiredProducts(Store s) throws Exception {
 		if (s == null)
@@ -212,8 +210,7 @@ public class BlPermissions {
 				today.set(Calendar.HOUR_OF_DAY, 0);
 				LotteryPurchase lpt = ((LotteryPurchase) pt);
 				if (lpt.getLotteryEndDate().before(today.getTime())) {
-					BlLotteryPurchase.closeCurrentLottery(lpt);
->>>>>>> Amit&Ofir
+					BlLotteryPurchase.closeCurrentLottery(lpt, product);
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 package TS_DAL;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -189,7 +190,7 @@ public class DALProxy implements DAL {
 		return getReal().getStores();
 	}
 
-	public void addLotteryProductToCart(String username, Product p, int money) {
+	public void addLotteryProductToCart(String username, Product p, int money) throws Exception{
 		getReal().addLotteryProductToCart(username, p, money);
 	}
 
@@ -244,6 +245,28 @@ public class DALProxy implements DAL {
 
 	public List<StoreManager> getStoreManagers(String username) throws Exception {
 		return getReal().getStoreManagers(username);
+	}
+
+	public void addParticipantToLottery(int productId, String id, GuestInLottery gil) throws Exception {
+		getReal().addParticipantToLottery(productId, id, gil);
+		
+	}
+
+	public void endLottery(int productId) throws Exception {
+		getReal().endLottery(productId);
+		
+	}
+
+	public void updateLotteryWinner(int productId, String winnerId) throws Exception {
+		getReal().updateLotteryWinner(productId, winnerId);
+	}
+
+	public void updateLotteryEndDate(int productId, Date endDate) throws Exception {
+		getReal().updateLotteryEndDate(productId, endDate);
+	}
+
+	public LotteryPurchase getLotteryByProductId(int productId) throws Exception {
+		return getReal().getLotteryByProductId(productId);
 	}
 
 }

@@ -2,6 +2,7 @@ package TS_DAL;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -119,12 +120,18 @@ public class DALReal implements DAL {
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE LotteryPurchases("
 					+ " productId INTEGER REFERENCES Products(productId),"
-					+ " lotteryId INTEGER UNIQUE,"
 					+ " actualEndDate DATE,"
 					+ " lotteryEndDate DATE,"
-					+ " winnerUserName VARCHAR(50)," //TODO Not so true.. what about guests...
+					+ " winner VARCHAR(50)," 
 					+ " hasEnd TINYINT(1),"
 					+ " PRIMARY KEY (productId));";
+			stmt.executeUpdate(sql);
+			sql = "CREATE TABLE LotteryParticipants(productId REFERENCES LotteryPurchases(productId),"
+					+ "	id VARCHAR(50),"
+					+ " creditCard VARCHAR(50),"
+					+ "	buyerAddress VARCHAR(50),"
+					+ " money INTEGER"
+					+ "	PRIMARY KEY (productId, id));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE StoreManagers(username VARCHAR(50) REFERENCES Subscribers(username),"
 					+ " storeId INTEGER REFERENCES Stores(storeId) ,"
@@ -149,12 +156,6 @@ public class DALReal implements DAL {
 					+ " discountEndDate DATE,"
 					+ " discountPercentage DATE,"
 					+ "	PRIMARY KEY (policyId));";
-			stmt.executeUpdate(sql);
-			sql = "CREATE TABLE SubscribersInLottery("
-					+ "lotteryId INTEGER REFERENCES LotteryPurchases(lotteryId),"
-					+ "	username VARCHAR(50) REFERENCES Subscribers(username),"
-					+ "	moneyPayed INTEGER,"
-					+ "	PRIMARY KEY (lotteryId, username));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE Categories("
 					+ "categoryName VARCHAR(50));";
@@ -350,9 +351,6 @@ public class DALReal implements DAL {
 	}
 
 	public void removeSubscriber(String username) throws Exception{
-		Connection conn = getConnection();
-		Statement stmt = conn.createStatement();
-		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
@@ -360,8 +358,8 @@ public class DALReal implements DAL {
 		query = "DELETE FROM Subscribers " +
                 "WHERE username = '" + username + "';";
 		statement.executeUpdate(query);
-		stmt.close();
-		conn.close();
+		statement.close();
+		c.close();
 	}
 
 	
@@ -477,9 +475,6 @@ public class DALReal implements DAL {
 	}
 
 	public void stockUpdate(Product p, int amount,Store s) throws Exception{
-		Connection conn = getConnection();
-		Statement stmt = conn.createStatement();
-		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
@@ -489,8 +484,8 @@ public class DALReal implements DAL {
 				"' WHERE storeId = '" + s.getStoreId() +
 				"' AND productId = '" + p.getId() + "';";
 		statement.executeUpdate(query);
-		stmt.close();
-		conn.close();
+		statement.close();
+		c.close();
 	}
 
 	public void updateMoneyEarned(Store s, int newMoneyEarend) throws Exception{
@@ -621,7 +616,6 @@ public class DALReal implements DAL {
 
 	
 	
-	//TODO - Missing updates... policies for example
 	//if isOpen insert 1 to store to the isOpen(TinyInt) field, else insert 0
 	public void updateStore(Store s) throws Exception{
 		Connection conn = getConnection();
@@ -629,9 +623,6 @@ public class DALReal implements DAL {
 		stmt.executeUpdate("USE TradingSystem");
 			
 		updateStorePolicy(s.getStoreId(), s.getStorePolicy());
-		//TODO - think if necessary to change purchase history
-		//TODO same to StoreOwners and to StoreManagers and to store's products
-		//ALL of them have add/remove functions..
 		updateStoreCategoryDiscount(s.getStoreId(), s.getCategoryDiscounts());
 		
 		int open = 0;
@@ -926,26 +917,7 @@ public class DALReal implements DAL {
 	}
 	
 	private LotteryPurchase tryLotteryPurchase(int productId) throws Exception{
-		Connection conn = getConnection();
-		Statement stmt = conn.createStatement();
-		stmt.executeUpdate("USE TradingSystem");
-		String query = "SELECT *  "
-				+ "FROM LotteryPurchases "
-				+ "WHERE productId = '" + productId + "';";
-		ResultSet res = stmt.executeQuery(query);
-		LotteryPurchase ans=null;
-		if(res.next()){
-			boolean hasEnded = false;
-			if(res.getInt("hasEnded") == 1) //TODO Need to check that 1 is true
-				hasEnded = true;
-			stmt.close();
-			conn.close();
-			ans= new LotteryPurchase(res.getDate("actualEndDate"), res.getDate("lotteryEndDate"), getLotteryParticipants(res.getInt("lotteryId")), null, hasEnded);
-			//TODO ????What about guests winner
-		}
-		stmt.close();
-		conn.close();
-		return ans;
+		return getLotteryByProductId(productId);
 	}
 	
 	public PurchaseType getPurchaseType(int productId) throws Exception{
@@ -1081,7 +1053,7 @@ public class DALReal implements DAL {
 		ResultSet res = stmt.executeQuery(query);
 		List<StoreOwner> ans = new LinkedList<StoreOwner>();
 		while(res.next()){
-			ans.add(new StoreOwner(s)); //TODO - very strange need to check...
+			ans.add(new StoreOwner(s)); 
 		}
 		stmt.close();
 		conn.close();
@@ -1465,7 +1437,7 @@ public class DALReal implements DAL {
 						+ " SET policyId = '" + PolicyId
 						+ "' WHERE storeId = '"+ storeId +"' AND categoryName = '"+ cat.getKey().getName() +"';";
 				stmt.executeUpdate(query);
-				deletePolicy(prevPolicyId);		//TODO - ask or why??
+				deletePolicy(prevPolicyId);
 			}
 			else{
 				query="INSERT INTO CategoryPolicy VALUES( '"
@@ -1493,12 +1465,11 @@ public class DALReal implements DAL {
 		return false;
 	}
 	
-	public void addLotteryProductToCart(String username, Product p, int money) {
-		// TODO Auto-generated method stub
+	public void addLotteryProductToCart(String username, Product p, int money) throws Exception{
+		addImeddiatleyProductToCart(username, p.getId(), 1, money); //code is used for price as well
 	}
 	
-	//policies....
-	//TODO ?????????????
+
 	public List<Category> getAllCategory() throws Exception{
 		Connection conn = getConnection();
 		Statement stmt = conn.createStatement();
@@ -1514,8 +1485,7 @@ public class DALReal implements DAL {
 		return ans;
 	}
 		
-	//policies...
-	//TODO ????????????
+
 	public Category getCategory(String categoryName) throws Exception{
 		Connection conn = getConnection();
 		Statement stmt = conn.createStatement();
@@ -1532,11 +1502,7 @@ public class DALReal implements DAL {
 	
 
 	public void deleteStore(int storeId) {
-		// TODO Yadani
-	}
-	private Map<Guest, Integer> getLotteryParticipants(int int1) {
-		// TODO Auto-generated method stub
-		return null;
+		// Yadani
 	}
 
 	public void removePurchase(int purchaseId) throws Exception {
@@ -1549,6 +1515,97 @@ public class DALReal implements DAL {
 		stmt.close();
 		conn.close();
 		
+	}
+	public void addParticipantToLottery(int productId, String id, GuestInLottery gil) throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
+		
+		String query = "INSERT INTO LotteryParticipants" +
+				"VALUES ('" + productId + "', '" + id + "', '" + gil.getCreditCard() + "', '" + gil.getBuyerAddress() + "', '" + gil.getMoney() + "');";
+		stmt.executeUpdate(query);
+		stmt.close();
+		conn.close();
+	}
+	public void endLottery(int productId) throws Exception {
+		stmt.executeUpdate("USE TradingSystem");
+		String query = "USE TradingSystem";
+		Connection c = getConnection();
+		Statement statement=c.createStatement();
+		statement.executeUpdate(query);
+		query = "DELETE FROM LotteryParticipants " +
+                "WHERE productId = '" + productId + "';";
+		statement.executeUpdate(query);
+		
+		query = "UPDATE LotteryPurchases"
+				+ " SET hasEnd = '1'"
+				+ " WHERE productId = '" + productId + "';";
+		statement.executeUpdate(query);
+		statement.close();
+		c.close();
+	}
+	public void updateLotteryWinner(int productId, String winnerId) throws Exception {
+		String query = "USE TradingSystem";
+		Connection c = getConnection();
+		Statement statement=c.createStatement();
+		statement.executeUpdate(query);
+		query = "UPDATE LotteryPurchases" +
+				" SET winner = '" + winnerId +
+				"' WHERE productId = '" + productId + "';";
+		statement.executeUpdate(query);
+		statement.close();
+		c.close();
+		
+	}
+	public void updateLotteryEndDate(int productId, Date endDate) throws Exception {
+		String query = "USE TradingSystem";
+		Connection c = getConnection();
+		Statement statement=c.createStatement();
+		statement.executeUpdate(query);
+		query = "UPDATE LotteryPurchases " +
+				" SET endDate = '" + endDate +
+				"' WHERE productId = '" + productId + "';";
+		statement.executeUpdate(query);
+		statement.close();
+		c.close();
+		
+	}
+	public LotteryPurchase getLotteryByProductId(int productId) throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
+		String query = "SELECT *  "
+				+ "FROM LotteryPurchases "
+				+ "WHERE productId = '" + productId + "';";
+		ResultSet res = stmt.executeQuery(query);
+		LotteryPurchase ans=null;
+		if(res.next()){
+			boolean hasEnded = false;
+			if(res.getInt("hasEnded") == 1)
+				hasEnded = true;
+			stmt.close();
+			conn.close();
+			ans= new LotteryPurchase(res.getDate("actualEndDate"), res.getDate("lotteryEndDate"), getLotteryParticipants(productId), res.getString("winner"), hasEnded);
+		}
+		stmt.close();
+		conn.close();
+		return ans;
+	}
+	private Map<String, GuestInLottery> getLotteryParticipants(int productId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
+		String query = "SELECT *  "
+				+ "FROM LotteryParticipants "
+				+ "WHERE productId = '" + productId + "';";
+		ResultSet res = stmt.executeQuery(query);
+		Map<String, GuestInLottery> ans = new HashMap<String, GuestInLottery>();
+		while(res.next()){
+			ans.put(res.getString("id"), new GuestInLottery(res.getString("creditCard"), res.getString("buyerAddress"), res.getInt("money")));
+		}
+		stmt.close();
+		conn.close();
+		return ans;
 	}
 	
 //	private ResultSet selectQuery(String selectQuery) throws Exception{

@@ -1,12 +1,12 @@
 package TS_BL;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import TS_ServiceLayer.GreetingController;
@@ -18,13 +18,12 @@ public class BlLotteryPurchase {
 	public static boolean purchase(LotteryPurchase lp, Guest g, ProductInCart pic, String buyerAddress) throws Exception {
 		int price = pic.getDiscountOrPrice();
 		int productPrice = pic.getMyProduct().getPrice();
-<<<<<<< HEAD
-		Date date = new Date(); 
+
+		Date date = new Date();
+		if(!BlMain.legalAddress(buyerAddress))
+			throw new Exception("Wrong address");
+		lp = dalRef.getLotteryByProductId(pic.getMyProduct().getId());
 		if(date.after(lp.getActualEndDate()) || lp.gethasEnded()){
-=======
-		Date date = new Date(2018, 6, 6); 
-		if(date.after(lp.getActualEndDate()) || lp.gethasEnded())
->>>>>>> Amit&Ofir
 			throw new Exception("lottery has ended");
 		}
 		if(lp.getParticipants().keySet().contains(g))
@@ -36,32 +35,26 @@ public class BlLotteryPurchase {
 		String creditCard;
 		if((creditCard = BlGuest.currGuest.get(g)) == null)
 			throw new Exception("wrong creditCart");
-		
-		if(g instanceof Subscriber)
-			lp.addParticipant(((Subscriber) g).getUsername(), new GuestInLottery(creditCard, buyerAddress, pic.getDiscountOrPrice()));
-		else
-			lp.addParticipant(GreetingController.holdMyData.guests.get(g) + "", new GuestInLottery(creditCard, buyerAddress, pic.getDiscountOrPrice()));
+		String id = "";
+		GuestInLottery gil = null; 
+		if(g instanceof Subscriber){
+			id = ((Subscriber) g).getUsername();
+			gil = new GuestInLottery(creditCard, buyerAddress, pic.getDiscountOrPrice());
+		}
+		else{
+			id = GreetingController.holdMyData.guests.get(g) + "";
+			gil = new GuestInLottery(creditCard, buyerAddress, pic.getDiscountOrPrice());
+		}
+		lp.addParticipant(id, gil);
+		dalRef.addParticipantToLottery(pic.getMyProduct().getId(),id, gil);
 		
 		BlStore.payToStore(pic.getMyProduct().getStore(), productPrice, creditCard);
 		
 		if(getSumOfMoney(lp) == productPrice){
 			lp.setLotteryEndDate(date);
-<<<<<<< HEAD
-			makeLottery(lp,pic);		
-=======
-			startLottery(lp);
-			lp.endLottery(true);
-			Guest winner = lp.getWinner();
-			int currentAmount = pic.getMyProduct().getStore().getProducts().get(pic.getMyProduct());
-//			int currentAmount = dalRef.getAmountProductsAmount(pic.getMyProduct());
-			BlStore.stockUpdate(pic.getMyProduct(), currentAmount - 1);
-			BlStore.addProductToHistory(pic);
-			if(winner instanceof Subscriber)
-				BlSubscriber.addPurchaseToHistory((Subscriber)(lp.getWinner()), new Purchase(date, pic));
-			BlStore.sendTheProducts(lp.getWinner(), buyerAddress);
->>>>>>> Amit&Ofir
+			dalRef.updateLotteryEndDate(pic.getMyProduct().getId(), date);
+			makeLottery(lp,pic);	
 		}
-//		dalRef.setLottery(pic.getMyProduct(), lp);
 		return true;
 	}
 
@@ -74,43 +67,29 @@ public class BlLotteryPurchase {
 		return sumOfMoney;
 	}
 
-<<<<<<< HEAD
 	static void closeCurrentLottery(LotteryPurchase lp,Product p) throws Exception {
 		Date date = new Date();
-=======
-	static boolean tryMakeLotteryDone(LotteryPurchase lp, int productPrice) throws Exception {
-		if(lp == null)
-			throw new Exception("something went wrong");
-		if(productPrice <= 0)
-			throw new Exception("price must be greater than 0");
-			
-		Date date =  new Date(2018, 6, 6);
-		if(date.after(lp.getActualEndDate())){
-			closeCurrentLottery(lp);
-			return true;
-		}
-		throw new Exception("lottery has passed");
-	}
-
-	static void closeCurrentLottery(LotteryPurchase lp) {
-		Date date = new Date(2018, 8, 8);
->>>>>>> Amit&Ofir
-		lp.setActualEndDate((java.util.Date) date);
+		p = dalRef.getProductById(p.getId());
+		lp = dalRef.getLotteryByProductId(p.getId());
+		lp.setActualEndDate(date);
+		dalRef.updateLotteryEndDate(p.getId(), date);
 		for(String g : lp.getParticipants().keySet()){
 			GuestInLottery gil = lp.getParticipants().get(g);
 			BlStore.retMoney(gil.getCreditCard() , gil.getMoney());
 			gil.resetAll();
 		}
 		
-		lp.removeAllParticipants();
 		lp.endLottery(true);
 		deleteFromAllParticipantsCarts(lp,p,"The lottery over " + p.getName() 
 				+ " , has ended and no one won<br>you got your money back");
+		lp.removeAllParticipants();
+		dalRef.endLottery(p.getId());
 	}
 
 	//get new arg of new end date
-	static void openNewLottery(LotteryPurchase lp, Date endDate) {
-		lp.setLotteryEndDate((java.sql.Date) endDate);
+	static void openNewLottery(Product p, LotteryPurchase lp, Date endDate) throws Exception{
+		lp.setLotteryEndDate(endDate);
+		dalRef.updateLotteryEndDate(p.getId(), endDate);
 	}
 	
 	static void makeLottery(LotteryPurchase lp,ProductInCart pic) throws Exception{
@@ -132,8 +111,6 @@ public class BlLotteryPurchase {
 		if(winner != null){
 			GreetingController.holdMyData.sendMsgToSub(s, "Congratulation! you are the lucky winner of the lottery!"
 					+ " We sent you " + pic.getMyProduct().getName() + "enjoy!<br>");
-			g = (Guest)winner;
-			lp.setWinner(g);
 		}
 		else{
 			g = GreetingController.holdMyData.guests.get(Integer.parseInt(s));
@@ -154,7 +131,8 @@ public class BlLotteryPurchase {
 			}
 		}
 		
-		lp.setWinner(winner); 
+		lp.setWinner(s); 
+		dalRef.updateLotteryWinner(pic.getMyProduct().getId(), s);
 		BlStore.sendTheProducts(winner, lp.getParticipants().get(s).getBuyerAddress());
 		
 		Purchase pur = BlStore.addProductToHistory(pic);
@@ -164,13 +142,14 @@ public class BlLotteryPurchase {
 		}
 		
 		Store store = pic.getMyProduct().getStore();
-		int toUpdate = store.getProducts().get(pic.getMyProduct()) - 1;
+		int toUpdate = dalRef.getAmountOfProduct(pic.getMyProduct().getStore().getStoreId(), pic.getMyProduct().getId())- 1;
 		boolean ans = BlStore.stockUpdate(pic.getMyProduct(),toUpdate);
 		GreetingController.holdMyData.sendMsgToStore(store,"Lottery has ended! there is a winner");
 		
 		lp.endLottery(true);
 		deleteFromAllParticipantsCarts(lp,pic.getMyProduct(),"");
 		lp.removeAllParticipants();
+		dalRef.endLottery(pic.getMyProduct().getId());
 	}
 	
 	private static void deleteFromAllParticipantsCarts(LotteryPurchase lp, Product pic,String msg) throws Exception{

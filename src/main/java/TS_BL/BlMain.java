@@ -15,8 +15,6 @@ import TS_DAL.*;
 import TS_SharedClasses.*;
 
 public class BlMain {
-<<<<<<< HEAD
-	
 	
 	static Logger logger = Logger.getLogger("SecurityLog");
     static FileHandler fh;
@@ -33,11 +31,7 @@ public class BlMain {
 		logger.addHandler(fh);fh.setFormatter(formatter);
 	}
 	
-	public final static int NUM_OF_PERMISSIONS = 14; 
-=======
-
 	public final static int NUM_OF_PERMISSIONS = 15; 
->>>>>>> Amit&Ofir
 	// constants according to BlPermission's functions order.
 	public final static int addProductToStore = 0, deleteProductFromStore = 1, updateProductDetails = 2,
 			addPolicyToProduct = 3, addDiscountToProduct = 4, addNewStoreOwner = 5, addNewManager = 6, closeStore = 7,
@@ -62,14 +56,8 @@ public class BlMain {
 //		}
 //	};
 	
-<<<<<<< HEAD
-
-	//public final static DAL dalRef = new DALProxy();
-=======
 	public final static DAL dalRef = new DALProxy();
-	//TODO need to remove after Lottery will be done
->>>>>>> Amit&Ofir
-	public static Map<Guest, LinkedList<String>> allUsersWithTheirCreditCards = new HashMap<Guest, LinkedList<String>>();
+//	public static Map<Guest, LinkedList<String>> allUsersWithTheirCreditCards = new HashMap<Guest, LinkedList<String>>();
 	
 	
 	// need to insert to here all guests that payed with their credit card for pay back
@@ -237,31 +225,18 @@ public class BlMain {
 
 	public static Subscriber signUp(Guest g, String username, String password, String fullName, String address,
 			String phone, String creditCardNumber) throws Exception {
-<<<<<<< HEAD
 		return BlGuest.signUp(g, username, password, fullName, address, phone, creditCardNumber);
-=======
-		Subscriber toReturn = BlGuest.signUp(g, username, password, fullName, address, phone, creditCardNumber);
-		return toReturn;
->>>>>>> Amit&Ofir
 	}
 
 	public static Subscriber signIn(Guest g, String username, String password) throws Exception {
 		return BlGuest.signIn(g, username, password);
 	}
 
-<<<<<<< HEAD
 	public static void expiredProducts(StoreOwner so) throws Exception {
 		BlStoreOwner.expiredProducts(so);
 	}
 
-	public static void expiredProducts(StoreManager sm) throws Exception {
-=======
-	public static void expiredProducts(StoreOwner so) throws Exception{
-		BlStoreOwner.expiredProducts(so);
-	}
-
 	public static void expiredProducts(StoreManager sm) throws Exception{
->>>>>>> Amit&Ofir
 		BlStoreManager.expiredProducts(sm);
 	}
 
@@ -391,14 +366,14 @@ public class BlMain {
 		return false;
 	}
 
-	static void addCreditCardToMap(String creditCardNumber, Guest g) {
-		LinkedList<String> lst = allUsersWithTheirCreditCards.get(g);
-		if(lst==null){
-			lst = new LinkedList<String>();
-		}
-		lst.add(creditCardNumber);
-		allUsersWithTheirCreditCards.put(g, lst);
-	}
+//	static void addCreditCardToMap(String creditCardNumber, Guest g) {
+//		LinkedList<String> lst = allUsersWithTheirCreditCards.get(g);
+//		if(lst==null){
+//			lst = new LinkedList<String>();
+//		}
+//		lst.add(creditCardNumber);
+//		allUsersWithTheirCreditCards.put(g, lst);
+//	}
 	
 	public static boolean equalsLists(List<?> a, List<?> b){
 		return (a==null && b==null) || (a!=null && b!=null && equalsLeftListToRightList(a, b) && equalsLeftListToRightList(b, a));
@@ -447,9 +422,9 @@ public class BlMain {
 	}
 	
 	//TODO - think how to call to dal - credit cards should not store in dal.
-	static String getCreditCard(Guest g){
-		return allUsersWithTheirCreditCards.get(g).get(0);
-	}
+//	static String getCreditCard(Guest g){
+//		return allUsersWithTheirCreditCards.get(g).get(0);
+//	}
 	
 	public static Subscriber getSubscriberFromUsername(String usrname) throws Exception{
 		return dalRef.getSubscriberIfExists(usrname);
@@ -572,6 +547,10 @@ public class BlMain {
 	
 	public static Store getStoreFromStoreId(int storeId) throws Exception{
 		return dalRef.getStoreByStoreId(storeId);
+	}
+
+	public static List<Subscriber> getAllSubscribers() throws Exception{
+		return dalRef.allSubscribers();
 	}
 	
 }

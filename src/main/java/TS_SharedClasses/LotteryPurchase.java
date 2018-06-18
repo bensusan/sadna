@@ -14,7 +14,7 @@ public class LotteryPurchase implements PurchaseType {
 	private Date actualEndDate;
 	private Date lotteryEndDate;
 	private Map<String, GuestInLottery> participants;
-	private Guest winner = null;
+	private String winner = null;
 	private boolean hasEnded = false;
 	
 	public LotteryPurchase(Date lotteryEndDate) {
@@ -31,7 +31,7 @@ public class LotteryPurchase implements PurchaseType {
 
 	
 	//WARNING FOR DAL!!!!!!!!!!
-	public LotteryPurchase(Date actualEndDate, Date lotteryEndDate, Map<Guest, Integer> participants, Guest winner,
+	public LotteryPurchase(Date actualEndDate, Date lotteryEndDate, Map<String, GuestInLottery> participants, String winner,
 			boolean hasEnded) {
 		super();
 		this.actualEndDate = actualEndDate;
@@ -103,7 +103,7 @@ public class LotteryPurchase implements PurchaseType {
 		this.participants.remove(g);
 	}
 	
-	public void setWinner(Guest winner){
+	public void setWinner(String winner){
 		if(this.winner == null)
 			this.winner = winner;
 	}
@@ -117,7 +117,7 @@ public class LotteryPurchase implements PurchaseType {
 		return this.hasEnded;
 	}
 	
-	public Guest getWinner(){
+	public String getWinner(){
 		return this.winner;
 	}
 	

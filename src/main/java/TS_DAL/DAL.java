@@ -1,5 +1,6 @@
 package TS_DAL;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +51,7 @@ public interface DAL {
 	public PurchaseType getPurchaseType(int productId) throws Exception;
 	public Subscriber getSubscriberIfExists(String username) throws Exception;
 	public List<Store> getStores() throws Exception;
-	public void addLotteryProductToCart(String username, Product p, int money);
+	public void addLotteryProductToCart(String username, Product p, int money) throws Exception;
 //	public void setNewCartForSubscriber(String username, Cart cart);
 	public int getAmountOfProduct(int storeId, int productId) throws Exception;
 	public boolean isCategoryExists(String category) throws Exception;
@@ -64,4 +65,9 @@ public interface DAL {
 	public int getNextStoreId() throws Exception;
 	public int getNextPolicyId() throws Exception;
 	public int getNextPurchaseId() throws Exception;
+	public void addParticipantToLottery(int productId,String id, GuestInLottery gil) throws Exception;
+	public void endLottery(int productId) throws Exception;
+	public void updateLotteryWinner(int productId, String winnerId) throws Exception;
+	public void updateLotteryEndDate(int productId, Date endDate) throws Exception;
+	public LotteryPurchase getLotteryByProductId(int productId) throws Exception;
 }

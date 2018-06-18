@@ -855,9 +855,10 @@ public class GreetingController {
 			massegesToSub.put(uname, tmp + msg);
 		}
 
-		public static void sendMsgToStore(Store store, String msg) {
+		public static void sendMsgToStore(Store store, String msg) throws Exception{
 			List<StoreOwner> so = store.getMyOwners();
-			for (Subscriber sub : BlMain.allSubscribers) {
+			List<Subscriber> allSubscribers = BlMain.getAllSubscribers();
+			for (Subscriber sub : allSubscribers) {
 				if(!Collections.disjoint(so, sub.getOwner())){
 					sendMsgToSub(sub.getUsername(),msg);
 				}	

@@ -177,12 +177,8 @@ public class BlGuest {
 			}
 		}
 		
-<<<<<<< HEAD
 		Map<ProductInCart,Integer>productToPrice=new HashMap<ProductInCart,Integer>();
 		currGuest = new HashMap<Guest, String>();
-=======
-		Map<ProductInCart,Integer> productToPrice = new HashMap<ProductInCart,Integer>();
->>>>>>> Amit&Ofir
 		//try to buy the products
 		for (ProductInCart pic : g.getCart().getProducts()) {
 			
@@ -207,23 +203,18 @@ public class BlGuest {
 					
 					if(categoryDiscountTree!=null)
 						productPrice=categoryDiscountTree.updatePriceProduct(productPrice, sameStoreAndCategoryCounter, buyerAddress, pic.getDiscountOrPrice());
-<<<<<<< HEAD
-				
 				productPrice*=pic.getAmount();
-=======
 				}
 				else{
 					productPrice = pic.getDiscountOrPrice();
 				}
-				productPrice *= pic.getAmount();
->>>>>>> Amit&Ofir
 				productToPrice.put(pic, productPrice);
 				boolean payMoney = BlStore.payToStore(pic.getMyProduct().getStore(), productPrice, creditCardNumber);
 				if(!payMoney){
 					BlPurchaseType.undoPurchase(pic, g);
 					notPurchased.getProducts().add(pic);
 				}	
-			}}
+			}
 			else 
 				notPurchased.getProducts().add(pic);
 			
@@ -290,11 +281,6 @@ public class BlGuest {
 			throw new Exception("the username is already taken, try again"); //user name exists
 		if(!BlMain.legalPassword(password))
 			throw new Exception("illegal password, try again"); //password rules failed.
-<<<<<<< HEAD
-=======
-		if(!BlMain.correctSpelledLettersSpacesNumbers(username) || !BlMain.correctSpelledLettersSpaces(fullName) || !BlMain.correctSpelledLettersSpacesNumbers(address) || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.correctSpelledNumbers(phone))
-			throw new Exception("problem with one of the fields,check spelling try again"); //exception spell in user name | full name | address
->>>>>>> Amit&Ofir
 		
 		Subscriber newSub = new Subscriber(g.getCart(), username, password, fullName, address, phone, creditCardNumber, new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>()); 
 		

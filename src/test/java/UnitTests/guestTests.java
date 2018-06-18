@@ -397,8 +397,7 @@ public class guestTests {
 	}
 	private void testSignIn() {
 		Guest g=new Guest();
-		List<Subscriber> temp = BlMain.allSubscribers;
-		BlMain.allSubscribers = new ArrayList<Subscriber>();
+		
 		
 		try{
 			BlMain.signIn(g, null, "123");
@@ -412,6 +411,7 @@ public class guestTests {
 		try {
 			BlMain.signUp(g, "abc", "123", "oded menashe", "herzel 23 herzelia", "0541234567", "1234567890123456");
 		} catch (Exception e1) {
+			fail();
 		}
 		
 		try {
@@ -436,7 +436,14 @@ public class guestTests {
 		assertEquals(s1.getAddress(),"herzel 23 herzelia");
 		//assertNotEquals(g.getCart(),s1.getCart()); //broken test
 		
-		BlMain.allSubscribers = temp;
+		try {
+			BlMain.removeSubscriber(new SystemAdministrator(null, null, null, null, null, null, null, null, null), s1);
+		} catch (Exception e) {
+			fail();
+			e.printStackTrace();
+		}
+		
+		
 		
 	}
 }

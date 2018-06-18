@@ -88,21 +88,22 @@ public class BlStoreManager {
 	/**
 	 * @return true if the store close false otherwise
 	 */
-	static boolean closeStore(StoreManager sm) {
+	static boolean closeStore(StoreManager sm) throws Exception{
 		return sm != null && sm.getPremisions()[BlMain.closeStore] && BlPermissions.closeStore(sm.getStore());
 	}
 
 	/**
 	 * @return true if the store reopen false otherwise
 	 */
-	static boolean openStore(StoreManager sm) {
+	static boolean openStore(StoreManager sm) throws Exception{
 		return sm != null && sm.getPremisions()[BlMain.openStore] && BlPermissions.openStore(sm.getStore());
 	}
 
 	/**
 	 * @return history of pruchase in the store
+	 * @throws Exception 
 	 */
-	static List<Purchase> getPurchaseHistory(StoreManager sm) {
+	static List<Purchase> getPurchaseHistory(StoreManager sm) throws Exception {
 		return sm != null && sm.getPremisions()[BlMain.getPurchaseHistory] ? BlPermissions.getPurchaseHistory(sm.getStore()) : new LinkedList<Purchase>();
 	}
 	
@@ -123,5 +124,9 @@ public class BlStoreManager {
 
 	public static boolean changeProductType(StoreManager sm, PurchaseType type, Product product) throws Exception {
 		return sm!=null &&sm.getPremisions()[BlMain.changeProductType] && BlPermissions.changeProductType(sm.getStore(),type,product);
+	}
+
+	public static boolean addPolicyToCategoryStore(StoreManager sm, PurchasePolicy policy, String category) throws Exception {
+		return sm != null && sm.getPremisions()[BlMain.addPolicyToCategoryStore] && BlPermissions.addPolicyToCategoryStore(sm.getStore(), policy, category);
 	}
 }

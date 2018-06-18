@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import TS_SharedClasses.*;
+import static TS_BL.BlMain.dalRef;
 
 public class BlGuest {
 	private final static String salt="DGE$5SGr@3VsHYUMas2323E4d57vfBfFSTRU@!DSH(*%FDSdfg13sgfsg";
@@ -24,11 +25,25 @@ public class BlGuest {
 	 * @throws Exception 
 	 */
 	static boolean addImmediatelyProduct(Guest g, Product p, int amount, int discountCode) throws Exception {
-		return g != null && BlCart.addImmediatelyProduct(g.getCart(), p, amount, discountCode);
+		if(g == null)
+			throw new Exception("addImmediatelyProduct Failed");
+		if(BlCart.addImmediatelyProduct(g.getCart(), p, amount, discountCode)){
+			if(g instanceof Subscriber)
+				dalRef.addImeddiatleyProductToCart(((Subscriber)g).getUsername(), p, amount, discountCode);
+			return true;
+		}
+		return false;
 	}
 	
 	static boolean addLotteryProduct(Guest g, Product p, int money) throws Exception {
-		return g != null && BlCart.addLotteryProduct(g.getCart(), p, money);
+		if(g == null)
+			throw new Exception("addLotteryProduct Failed");
+		if(BlCart.addLotteryProduct(g.getCart(), p, money)){
+			if(g instanceof Subscriber)
+				dalRef.addLotteryProductToCart(((Subscriber)g).getUsername(), p, money);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -39,7 +54,14 @@ public class BlGuest {
 	 * @throws Exception 
 	 */
 	static boolean removeProductFromCart(Guest g, Product p) throws Exception {
-		return g != null && BlCart.removeProduct(g.getCart(), p);
+		if(g == null)
+			throw new Exception("removeProductFromCart Failed");
+		if(BlCart.removeProduct(g.getCart(), p)){
+			if(g instanceof Subscriber)
+				dalRef.removeProductFromCart(((Subscriber)g).getUsername(), p.getId());
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -51,15 +73,36 @@ public class BlGuest {
 	 * @throws Exception 
 	 */
 	static boolean editProductAmount(Guest g, Product p, int amount) throws Exception {
-		return g != null && BlCart.editProductAmount(g.getCart(), p, amount);
+		if(g == null)
+			throw new Exception("editProductAmount Failed");
+		if(BlCart.editProductAmount(g.getCart(), p, amount)){
+			if(g instanceof Subscriber)
+				dalRef.editProductAmount(((Subscriber)g).getUsername(), p, amount);
+			return true;
+		}
+		return false;
 	}
 	
 	static boolean editProductDiscount(Guest g, Product p, int discountCode) throws Exception {
-		return g != null && BlCart.editProductDiscount(g.getCart(), p, discountCode,g);
+		if(g == null)
+			throw new Exception("editProductDiscount Failed");
+		if(BlCart.editProductDiscount(g.getCart(), p, discountCode,g)){
+			if(g instanceof Subscriber)
+				dalRef.editProductCode(((Subscriber)g).getUsername(), p, discountCode);
+			return true;
+		}
+		return false;
 	}
 	
 	static boolean editProductPrice(Guest g, Product p, int money) throws Exception {
-		return g != null && BlCart.editProductPrice(g.getCart(), p, money);
+		if(g == null)
+			throw new Exception("editProductPrice Failed");
+		if(BlCart.editProductPrice(g.getCart(), p, money)){
+			if(g instanceof Subscriber)
+				dalRef.editProductAmount(((Subscriber)g).getUsername(), p, money);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -69,8 +112,17 @@ public class BlGuest {
 	 * @return true if succseed false otherwise
 	 * @throws Exception 
 	 */
+	
+	//UNUSE SO I DONT SUPPORT IT IN DAL
 	static boolean editCart(Guest g, Cart newCart) throws Exception {
-		return g != null && BlCart.editCart(g.getCart(), newCart);
+		if(g == null)
+			throw new Exception("editProductPrice Failed");
+		if(BlCart.editCart(g.getCart(), newCart)){
+			if(g instanceof Subscriber)
+//				dalRef.setNewCartForSubscriber(((Subscriber)g).getUsername(), g.getCart()); //guest cart changed thats why g.getCart()
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -113,32 +165,37 @@ public class BlGuest {
 			}
 		}//check if cart comply the category policy
 		for(ProductInCart pic:g.getCart().getProducts()){
-			List<ProductInCart>CategoryProducts=new ArrayList<ProductInCart>();
+			List<ProductInCart>CategoryStoreProducts=new ArrayList<ProductInCart>();
 			for (ProductInCart pic2 : g.getCart().getProducts()) {
-				if(pic.getMyProduct().getCategory().equals(pic2.getMyProduct().getCategory())){
-					CategoryProducts.add(pic2);
+				if(pic.getMyProduct().getCategory().equals(pic2.getMyProduct().getCategory())&&
+						pic.getMyProduct().getStore().equals(pic2.getMyProduct().getStore())){
+					CategoryStoreProducts.add(pic2);
 				}
 			}
-			if (!pic.getMyProduct().getCategory().getPurchasePolicy().isCorrectProduct(CategoryProducts.size(), buyerAddress)){
+			if (!pic.getMyProduct().getStore().getCategoryPolicy().get(pic.getMyProduct().getCategory()).isCorrectProduct(CategoryStoreProducts.size(), buyerAddress)){
 				throw new Exception("the cart does not comply with "+pic.getMyProduct().getStore().getStoreName()+" store policy");
 			}
 		}
 		
+<<<<<<< HEAD
 		Map<ProductInCart,Integer>productToPrice=new HashMap<ProductInCart,Integer>();
 		currGuest = new HashMap<Guest, String>();
+=======
+		Map<ProductInCart,Integer> productToPrice = new HashMap<ProductInCart,Integer>();
+>>>>>>> Amit&Ofir
 		//try to buy the products
 		for (ProductInCart pic : g.getCart().getProducts()) {
 			
 			currGuest.put(g, creditCardNumber);
 			boolean purchase = BlPurchaseType.purchase(pic, g,buyerAddress);
 			if(purchase){
-				int productPrice=pic.getMyProduct().getPrice();
-				if (pic.getMyProduct().getType()instanceof ImmediatelyPurchase)
+				int productPrice = pic.getMyProduct().getPrice();
+				if (pic.getMyProduct().getType() instanceof ImmediatelyPurchase)
 				{
-					productPrice=pic.getMyProduct().getPurchasePolicy().updatePriceProduct(pic.getMyProduct().getPrice(), pic.getAmount(), buyerAddress, pic.getDiscountOrPrice());
-					PurchasePolicy categoryDiscountTree=pic.getMyProduct().getStore().getCategoryDiscounts().get(pic.getMyProduct().getCategory());
-					int sameStoreAndCategoryCounter=0;
-					for(ProductInCart pic2:g.getCart().getProducts())
+					productPrice = pic.getMyProduct().getPurchasePolicy().updatePriceProduct(pic.getMyProduct().getPrice(), pic.getAmount(), buyerAddress, pic.getDiscountOrPrice());
+					PurchasePolicy categoryDiscountTree = pic.getMyProduct().getStore().getCategoryDiscounts().get(pic.getMyProduct().getCategory());
+					int sameStoreAndCategoryCounter = 0;
+					for(ProductInCart pic2 : g.getCart().getProducts())
 					{
 						if(pic.getMyProduct().getStore().equals(pic2.getMyProduct().getStore())){
 							if(pic.getMyProduct().getCategory().equals(pic2.getMyProduct().getCategory()))
@@ -150,8 +207,16 @@ public class BlGuest {
 					
 					if(categoryDiscountTree!=null)
 						productPrice=categoryDiscountTree.updatePriceProduct(productPrice, sameStoreAndCategoryCounter, buyerAddress, pic.getDiscountOrPrice());
+<<<<<<< HEAD
 				
 				productPrice*=pic.getAmount();
+=======
+				}
+				else{
+					productPrice = pic.getDiscountOrPrice();
+				}
+				productPrice *= pic.getAmount();
+>>>>>>> Amit&Ofir
 				productToPrice.put(pic, productPrice);
 				boolean payMoney = BlStore.payToStore(pic.getMyProduct().getStore(), productPrice, creditCardNumber);
 				if(!payMoney){
@@ -225,11 +290,16 @@ public class BlGuest {
 			throw new Exception("the username is already taken, try again"); //user name exists
 		if(!BlMain.legalPassword(password))
 			throw new Exception("illegal password, try again"); //password rules failed.
+<<<<<<< HEAD
+=======
+		if(!BlMain.correctSpelledLettersSpacesNumbers(username) || !BlMain.correctSpelledLettersSpaces(fullName) || !BlMain.correctSpelledLettersSpacesNumbers(address) || !BlMain.legalCreditCard(creditCardNumber) || !BlMain.correctSpelledNumbers(phone))
+			throw new Exception("problem with one of the fields,check spelling try again"); //exception spell in user name | full name | address
+>>>>>>> Amit&Ofir
 		
 		Subscriber newSub = new Subscriber(g.getCart(), username, password, fullName, address, phone, creditCardNumber, new LinkedList<Purchase>(), new LinkedList<StoreManager>(), new LinkedList<StoreOwner>()); 
-		BlMain.allSubscribers.add(newSub);
-		return newSub;
 		
+		dalRef.addSubscriber(newSub);
+		return newSub;
 	}
 	
 	static Subscriber signIn(Guest g, String username, String password) throws Exception{
@@ -243,17 +313,18 @@ public class BlGuest {
 		
 		if(ans != null && ans.getPassword().toString().equals(password.toString()))
 		{
-			if(ans.getCart().getProducts().isEmpty())
-			{
-				ans.setCart(g.getCart());
-			}
+//			if(ans.getCart().getProducts().isEmpty())
+//			{
+//				ans.setCart(g.getCart());
+//				dalRef.setNewCartForSubscriber(((Subscriber)g).getUsername(), g.getCart());
+//			}
 			return ans;
 		}
 		
 		throw new Exception("incorrect password or username");
 	}
     
-    static String md5Hash(String chechSum) {
+    static String md5Hash(String chechSum) throws Exception{
         String hashedPass = null;
         try {
           MessageDigest messageDigest = MessageDigest.getInstance("MD5");
@@ -263,8 +334,7 @@ public class BlGuest {
             hashedPass = "0" + hashedPass;
           }
         } catch (Exception e) {
-          System.out.println("failed to create md5");
-          System.out.println(e.getMessage());
+        	throw new Exception("failed to encrypt with md5");
         }
         return hashedPass;
       }

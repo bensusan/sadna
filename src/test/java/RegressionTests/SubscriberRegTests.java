@@ -2,21 +2,13 @@ package RegressionTests;
 
 import static org.junit.Assert.*;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import TS_BL.BlMain;
-import TS_SharedClasses.Guest;
-import TS_SharedClasses.Product;
-import TS_SharedClasses.Purchase;
-import TS_SharedClasses.Store;
-import TS_SharedClasses.StoreManager;
-import TS_SharedClasses.StoreOwner;
-import TS_SharedClasses.Subscriber;
-import TS_SharedClasses.SystemAdministrator;
+import TS_SharedClasses.*;
 
 public class SubscriberRegTests {
 

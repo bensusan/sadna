@@ -3,13 +3,11 @@ package RegressionTests;
 import static org.junit.Assert.*;
 
 import java.sql.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.internal.matchers.InstanceOf;
 
 import TS_BL.BlMain;
 import TS_SharedClasses.*;
@@ -52,8 +50,18 @@ public class StoreOwnerRegTests {
 			e.printStackTrace();
 			fail();
 		}
-		assertTrue(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).containsKey(tennisProduct));
-		assertEquals(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).get(tennisProduct).intValue(),20);
+		try {
+			assertTrue(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).containsKey(tennisProduct));
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+		try {
+			assertEquals(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).get(tennisProduct).intValue(),20);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
 	private void testUpdateProductDetails() {
 		Guest g=new Guest();
@@ -106,11 +114,16 @@ public class StoreOwnerRegTests {
 			e.printStackTrace();
 			fail();
 		}
-		for(Product p:BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).keySet())
-		{
-			if (p.getName().equals("new tennis ball")){
-				assertEquals(((ImmediatelyPurchase)p.getType()).getDiscountTree().getCurrDiscount().getDiscountPrecentage(),20);
+		try{
+			for(Product p:BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).keySet())
+			{
+				if (p.getName().equals("new tennis ball")){
+					assertEquals(((ImmediatelyPurchase)p.getType()).getDiscountTree().getCurrDiscount().getDiscountPrecentage(),20);
+				}
 			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			fail();
 		}
 	}
 	private void testAddDiscountToCategoryStore(){
@@ -136,7 +149,12 @@ public class StoreOwnerRegTests {
 			e.printStackTrace();
 			fail();
 		}
-		assertTrue(ofirStore.getStorePolicy() instanceof MinPolicy);
+		try {
+			assertTrue(ofirStore.getStorePolicy() instanceof MinPolicy);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 		
 	}
 	
@@ -154,7 +172,12 @@ public class StoreOwnerRegTests {
 			e.printStackTrace();
 			fail();
 		}
-		assertFalse(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).containsKey(tennisProduct));
+		try {
+			assertFalse(BlMain.getAllStoresWithThierProductsAndAmounts().get(ofirStore).containsKey(tennisProduct));
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 		boolean productdelete=true;
 		for(ProductInCart p2 :g.getCart().getProducts())
 		{
@@ -173,19 +196,19 @@ public class StoreOwnerRegTests {
 			fail();
 		}
 		int storeown=ofirStore.getMyOwners().size();
-		for (Subscriber s:BlMain.allSubscribers)
-		{
-			if(s.getUsername().equals("sagiv123"))
-			{
-				int before=s.getOwner().size();
-				try {
-					BlMain.addNewStoreOwner(ofirOwnership, s);
-				} catch (Exception e) {
-					e.printStackTrace();
-					fail();
-				}
-				assertEquals(s.getOwner().size(),before+1);
+		try{
+			Subscriber s=BlMain.getSubscriberFromUsername("sagiv123");
+			int before=s.getOwner().size();
+			try {
+				BlMain.addNewStoreOwner(ofirOwnership, s);
+			} catch (Exception e) {
+				e.printStackTrace();
+				fail();
 			}
+			assertEquals(s.getOwner().size(),before+1);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
 		}
 		assertEquals(ofirStore.getMyOwners().size(),storeown+1);
 	}
@@ -198,20 +221,21 @@ public class StoreOwnerRegTests {
 		}
 		
 		int manBef=ofirStore.getMyManagers().size();
-		for (Subscriber s:BlMain.allSubscribers)
-		{
-			if(s.getUsername().equals("or123"))
-			{
-				int before=s.getManager().size();
-				try {
-					BlMain.addNewManager(ofirOwnership, s);
-				} catch (Exception e) {
-					e.printStackTrace();
-					fail();
-				}
-				assertEquals(s.getManager().size(),before+1);
+		try{
+			Subscriber s=BlMain.getSubscriberFromUsername("or123");
+			int before=s.getManager().size();
+			try {
+				BlMain.addNewManager(ofirOwnership, s);
+			} catch (Exception e) {
+				e.printStackTrace();
+				fail();
 			}
+			assertEquals(s.getManager().size(),before+1);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
 		}
+	
 		assertEquals(ofirStore.getMyManagers().size(),manBef+1);
 	}
 

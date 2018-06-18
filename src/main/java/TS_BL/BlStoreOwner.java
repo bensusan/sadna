@@ -126,4 +126,7 @@ public class BlStoreOwner {
 	public static boolean changeProductType(StoreOwner so, PurchaseType type, Product product) throws Exception {
 		return so!=null && BlPermissions.changeProductType(so.getStore(),type,product);
 	}
+	public static boolean addPolicyToCategoryStore(StoreOwner so, PurchasePolicy policy, String category) throws Exception {
+		return so!=null && BlPermissions.addPolicyToCategoryStore(so.getStore(),policy,category);
+	}
 }

@@ -1,19 +1,29 @@
 package TS_SharedClasses;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
+
+import TS_BL.BlMain;
 
 public class Purchase {
 
-	private static int nextID = 0;
+//	private static int nextID = 0;
 	//the purchase object
 	private Date whenPurchased;
 	private int purchaseID;
 	private ProductInCart purchased;
 
-	public Purchase(Date date, ProductInCart purchased){
+	public Purchase(Date date, ProductInCart purchased) throws Exception{
 		this.whenPurchased = date;
-		this.purchaseID = nextID++;
+		this.purchaseID = /*nextID++;*/ BlMain.dalRef.getNextPurchaseId();
+		this.purchased = purchased;
+	}
+	
+	//WARNING FOR DAL!!!!!!!
+	public Purchase(Date whenPurchased, int purchaseID, ProductInCart purchased) {
+		super();
+		this.whenPurchased = whenPurchased;
+		this.purchaseID = purchaseID;
 		this.purchased = purchased;
 	}
 

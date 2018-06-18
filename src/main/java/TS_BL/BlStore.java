@@ -1,9 +1,11 @@
 package TS_BL;
 
-import java.util.Date;
+
+import java.sql.Date;
 import java.util.Map;
 
 import TS_SharedClasses.*;
+import static TS_BL.BlMain.dalRef;
 
 public class BlStore {
 
@@ -12,9 +14,10 @@ public class BlStore {
 	 * @param amount
 	 * @return true if product in stock false otherwise
 	 */
-	static boolean checkInStock(Product p, int amount) {
-		Store s = p.getStore();
-		return s.getProducts().get(p) != null && s.getProducts().get(p) >= amount;
+	static boolean checkInStock(Product p, int amount) throws Exception{
+		Map<Product, Integer> pa = dalRef.getProductAmount(p.getStore().getStoreId());
+		Integer pAmount = pa.get(p);  
+		return pAmount != null && pAmount >= amount;
 	}
 
 	/**
@@ -23,9 +26,11 @@ public class BlStore {
 	 * @param cart
 	 * @return true if succseed false otherwise
 	 */
-	static Purchase addProductToHistory(ProductInCart pic) {
-		Purchase newPur = new Purchase(new Date(), pic);
-		pic.getMyProduct().getStore().getPurchaseHistory().add(newPur);
+	static Purchase addProductToHistory(ProductInCart pic) throws Exception{
+		Purchase newPur = new Purchase(new Date(2018,8,8), pic);
+		Store s = dalRef.getStoreByStoreId(pic.getMyProduct().getStore().getStoreId());
+		s.getPurchaseHistory().add(newPur);
+		dalRef.updateStore(s);
 		return newPur;
 	}
 
@@ -38,22 +43,25 @@ public class BlStore {
 	 * @throws Exception 
 	 */
 	static boolean stockUpdate(Product p, int amount) throws Exception {
-		Store s = p.getStore();
+		Store s = dalRef.getStoreByStoreId(p.getStore().getStoreId());
 		if(amount < 0)
 			throw new Exception("amount must be a positive number");
 		if(!checkInStock(p, amount))
 			throw new Exception("there isn't enough products in stock");
-		
-		Map<Product, Integer> products = s.getProducts();
+		Map<Product, Integer> products = dalRef.getProductAmount(s.getStoreId());
 		products.put(p, amount);
 		if(products.get(p) == 0)
 			products.remove(p);
+		dalRef.updateStore(s);
 		return true;
 	}
 	
-	static boolean payToStore(Store s, int price, String creditCard){
+	static boolean payToStore(Store s, int price, String creditCard) throws Exception{
 		//TODO maybe later this function will return false
-		s.setMoneyEarned(s.getMoneyEarned() + price);
+		Store updatedStore = dalRef.getStoreByStoreId(s.getStoreId());
+		s.setMoneyEarned(updatedStore.getMoneyEarned() + price);
+		dalRef.updateMoneyEarned(updatedStore, price);
+		s = updatedStore;
 		return true;
 	}
 	
@@ -73,7 +81,10 @@ public class BlStore {
 		return true;
 	}
 
-	public static void undoPayToStore(Store s, int price, String creditCardNumber) {
-		s.setMoneyEarned(s.getMoneyEarned() - price);
+	public static void undoPayToStore(Store s, int price, String creditCardNumber) throws Exception{
+		Store updatedStore = dalRef.getStoreByStoreId(s.getStoreId());
+		s.setMoneyEarned(updatedStore.getMoneyEarned() - price);
+		dalRef.updateMoneyEarned(updatedStore, price);
+		s = updatedStore;
 	}
 }

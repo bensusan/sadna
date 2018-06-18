@@ -5,40 +5,36 @@ import java.util.List;
 
 public class Category {
 	private String name;
-	private PurchasePolicy purchasePolicy;
-	private transient List<Product>products;
+	
+//	private transient List<Product>products;
 	
 	public Category(String name){
 		this.name=name;
-		this.purchasePolicy=null;
-		this.products=new LinkedList<Product>();
+//		this.products=new LinkedList<Product>();
 	}
 	
+	
+	//WARNING FOR DAL!!!!!
+//	public Category(String name/*, PurchasePolicy purchasePolicy, List<Product> products*/) {
+//		super();
+//		this.name = name;
+//		this.purchasePolicy = purchasePolicy;
+//		this.products = products;
+//	}
+
+
+
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public PurchasePolicy getPurchasePolicy() {
-		if(purchasePolicy==null)
-		{
-			return new EmptyPolicy();
-		}
-		else{
-			return purchasePolicy;
-		}
-	}
-	public void setPurchasePolicy(PurchasePolicy purchasePolicy) {
-		this.purchasePolicy = purchasePolicy;
-	}
-	public List<Product> getProducts() {
-		return products;
-	}
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
 	
-	
-
+//	public List<Product> getProducts() {
+//		return products;
+//	}
+//	public void setProducts(List<Product> products) {
+//		this.products = products;
+//	}
 }

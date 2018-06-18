@@ -5,7 +5,7 @@ package TS_SharedClasses;
 public class NotPolicy extends PurchasePolicy {
 
 	private PurchasePolicy subPolicy;
-	public NotPolicy(DiscountPolicy discount,PurchasePolicy subPolicy) {
+	public NotPolicy(DiscountPolicy discount,PurchasePolicy subPolicy) throws Exception {
 		super(discount);
 		this.setSubPolicy(subPolicy);
 	}

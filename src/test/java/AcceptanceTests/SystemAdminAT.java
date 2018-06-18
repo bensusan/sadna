@@ -78,7 +78,11 @@ public class SystemAdminAT {
 			fail();
 		}
 
-		assertFalse(BlMain.allSubscribers.contains(s1));
+		try {
+			assertNull(BlMain.getSubscriberFromUsername(s1.getUsername()));
+		} catch (Exception e) {
+			fail();
+		}
 	}
 	//5.4
 	private void testViewPurchaseHistory(){

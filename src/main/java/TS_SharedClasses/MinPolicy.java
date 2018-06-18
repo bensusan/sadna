@@ -3,7 +3,7 @@ package TS_SharedClasses;
 public class MinPolicy extends PurchasePolicy {
 
 	private int min;
-	public MinPolicy(DiscountPolicy discount,int min) {
+	public MinPolicy(DiscountPolicy discount,int min) throws Exception {
 		super(discount);
 		this.setMin(min);
 	}

@@ -1,23 +1,30 @@
 package TS_BL;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import TS_ServiceLayer.GreetingController;
 import TS_SharedClasses.*;
+import static TS_BL.BlMain.dalRef;
 
 public class BlLotteryPurchase {
 
-	public static boolean purchase(LotteryPurchase lp, Guest g, ProductInCart pic,String buyerAddress) throws Exception {
+	public static boolean purchase(LotteryPurchase lp, Guest g, ProductInCart pic, String buyerAddress) throws Exception {
 		int price = pic.getDiscountOrPrice();
 		int productPrice = pic.getMyProduct().getPrice();
+<<<<<<< HEAD
 		Date date = new Date(); 
 		if(date.after(lp.getActualEndDate()) || lp.gethasEnded()){
+=======
+		Date date = new Date(2018, 6, 6); 
+		if(date.after(lp.getActualEndDate()) || lp.gethasEnded())
+>>>>>>> Amit&Ofir
 			throw new Exception("lottery has ended");
 		}
 		if(lp.getParticipants().keySet().contains(g))
@@ -39,9 +46,22 @@ public class BlLotteryPurchase {
 		
 		if(getSumOfMoney(lp) == productPrice){
 			lp.setLotteryEndDate(date);
+<<<<<<< HEAD
 			makeLottery(lp,pic);		
+=======
+			startLottery(lp);
+			lp.endLottery(true);
+			Guest winner = lp.getWinner();
+			int currentAmount = pic.getMyProduct().getStore().getProducts().get(pic.getMyProduct());
+//			int currentAmount = dalRef.getAmountProductsAmount(pic.getMyProduct());
+			BlStore.stockUpdate(pic.getMyProduct(), currentAmount - 1);
+			BlStore.addProductToHistory(pic);
+			if(winner instanceof Subscriber)
+				BlSubscriber.addPurchaseToHistory((Subscriber)(lp.getWinner()), new Purchase(date, pic));
+			BlStore.sendTheProducts(lp.getWinner(), buyerAddress);
+>>>>>>> Amit&Ofir
 		}
-
+//		dalRef.setLottery(pic.getMyProduct(), lp);
 		return true;
 	}
 
@@ -54,8 +74,27 @@ public class BlLotteryPurchase {
 		return sumOfMoney;
 	}
 
+<<<<<<< HEAD
 	static void closeCurrentLottery(LotteryPurchase lp,Product p) throws Exception {
 		Date date = new Date();
+=======
+	static boolean tryMakeLotteryDone(LotteryPurchase lp, int productPrice) throws Exception {
+		if(lp == null)
+			throw new Exception("something went wrong");
+		if(productPrice <= 0)
+			throw new Exception("price must be greater than 0");
+			
+		Date date =  new Date(2018, 6, 6);
+		if(date.after(lp.getActualEndDate())){
+			closeCurrentLottery(lp);
+			return true;
+		}
+		throw new Exception("lottery has passed");
+	}
+
+	static void closeCurrentLottery(LotteryPurchase lp) {
+		Date date = new Date(2018, 8, 8);
+>>>>>>> Amit&Ofir
 		lp.setActualEndDate((java.util.Date) date);
 		for(String g : lp.getParticipants().keySet()){
 			GuestInLottery gil = lp.getParticipants().get(g);

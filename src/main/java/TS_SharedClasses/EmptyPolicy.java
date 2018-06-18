@@ -2,10 +2,10 @@ package TS_SharedClasses;
 
 public class EmptyPolicy extends PurchasePolicy {
 
-	public EmptyPolicy(DiscountPolicy discount) {
+	public EmptyPolicy(DiscountPolicy discount) throws Exception {
 		super(discount);
 	}
-	public EmptyPolicy() {
+	public EmptyPolicy() throws Exception {
 		super(null);
 	}
 

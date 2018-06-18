@@ -140,9 +140,9 @@ public class BlPermissions {
 		return s != null ? s.getPurchaseHistory() : null;
 	}
 	
-	static void expiredProducts(Store s){
+	static void expiredProducts(Store s) throws Exception{
 		if(s == null)
-			return;
+			throw new Exception("something went wrong");
 		for (Product product : s.getProducts().keySet()) {
 			PurchaseType pt = product.getType(); 
 			if(pt instanceof LotteryPurchase){
@@ -150,6 +150,7 @@ public class BlPermissions {
 				today.set(Calendar.HOUR_OF_DAY, 0);
 				LotteryPurchase lpt = ((LotteryPurchase)pt); 
 				if(lpt.getLotteryEndDate().before(today.getTime())){
+					lpt.setHasEnded(true);
 					BlLotteryPurchase.closeCurrentLottery(lpt);
 				}
 			}

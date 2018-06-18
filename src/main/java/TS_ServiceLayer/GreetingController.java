@@ -239,6 +239,9 @@ public class GreetingController {
 					String discountType = gson.fromJson(args[4], String.class);
 					int precentage = gson.fromJson(args[5], Integer.class);
 					Date endDate = Date.valueOf(gson.fromJson(args[6], String.class));
+					java.util.Date today = new java.util.Date();
+					if(endDate.before(today))
+						throw new Exception("Please choose date in the future!");
 					DiscountPolicy dp = null;
 					if(discountType.equals("overt")){
 						dp = new OvertDiscount(endDate, precentage);
@@ -412,11 +415,18 @@ public class GreetingController {
 				}
 				break;
 			case expiredProducts:
-				if (args.length == 1) {
-					try {
-						BlMain.expiredProducts(gson.fromJson(args[0], StoreManager.class));
-					} catch (JsonSyntaxException j) {
-						BlMain.expiredProducts(gson.fromJson(args[0], StoreOwner.class));
+				if (args.length == 3) {
+					boolean isOwner = gson.fromJson(args[0], Boolean.class);
+					if(isOwner){
+						StoreOwner so = BlMain.getStoreOwnerFromUsername(gson.fromJson(args[2], String.class),
+														gson.fromJson(args[1], Integer.class));
+						BlMain.expiredProducts(so);
+						ret.setContentAsJson(gson.toJson(true));
+					}else{
+						StoreManager so = BlMain.getStoreManagerFromUsername(gson.fromJson(args[2], String.class),
+																			gson.fromJson(args[1], Integer.class));
+						BlMain.expiredProducts(so);
+						ret.setContentAsJson(gson.toJson(true));
 					}
 				}
 				break;
@@ -704,6 +714,9 @@ public class GreetingController {
 						newType = new ImmediatelyPurchase();
 					else{
 						Date newDate = Date.valueOf(gson.fromJson(args[4], String.class));
+						java.util.Date today = new java.util.Date();
+						if(newDate.before(today))
+							throw new Exception("Please choose date in the future!");
 						newType = new LotteryPurchase(newDate);
 					}
 					if(isOwner){
@@ -726,6 +739,9 @@ public class GreetingController {
 					String discountType = gson.fromJson(args[4], String.class);
 					int precentage = gson.fromJson(args[5], Integer.class);
 					Date endDate = Date.valueOf(gson.fromJson(args[6], String.class));
+					java.util.Date today = new java.util.Date();
+					if(endDate.before(today))
+						throw new Exception("Please choose date in the future!");
 					DiscountPolicy dp = null;
 					if(discountType.equals("overt")){
 						dp = new OvertDiscount(endDate, precentage);

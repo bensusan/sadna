@@ -112,7 +112,7 @@ public class BlStoreOwner {
 		return so.getStore().getPurchaseHistory();
 	}
 	
-	static void expiredProducts(StoreOwner so){
+	static void expiredProducts(StoreOwner so) throws Exception{
 		if(so != null) BlPermissions.expiredProducts(so.getStore());
 	}
 	

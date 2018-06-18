@@ -112,8 +112,13 @@ public class LotteryPurchase implements PurchaseType {
 	
 	public String toString(){
 		String toRet = "";
-		toRet = "Lottery - finish date: " + lotteryEndDate.toString();
+		toRet = "Lottery - finish date: " + lotteryEndDate.toString() + ", Has Ended: " + this.gethasEnded();
 		
 		return toRet;
+	}
+	
+	public void setHasEnded(boolean ans){
+		this.hasEnded = ans;
+		
 	}
 }

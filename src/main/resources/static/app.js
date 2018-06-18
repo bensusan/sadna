@@ -244,6 +244,11 @@ function recieveStorePage(funcName, obj){
 			stompClient = null;
 			window.location.href = "storePage.html";
 			break;
+			
+		case "expiredProducts":
+			window.alert("All expired lotteries are closed!");
+			loadStoreProducts();
+			break;
         default:
             break;
     }
@@ -940,7 +945,18 @@ function editProductInStore(){
         }));
 }
 
-
+function expiredProducts(){
+	stompClient.send("/app/hello", {},
+    JSON.stringify(
+        {	'pageName': "storePage",
+            'functionName': "expiredProducts",
+            'paramsAsJSON': [localStorage.getItem('isOwner'),
+							JSON.parse(localStorage.getItem('currentStore'))['storeId'],
+							JSON.parse(localStorage.getItem('currentUser'))['username']
+							]
+							
+        }));
+}
 
 
 

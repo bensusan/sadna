@@ -201,11 +201,11 @@ public class DALProxy implements DAL {
 		return getReal().isCategoryExists(category);
 	}
 
-	public List<StoreOwner> getStoreOwnersFromStore(int storeId) throws Exception{
+	public List<StoreOwner> getStoreOwnersFromStore(Store storeId) throws Exception{
 		return getReal().getStoreOwnersFromStore(storeId);
 	}
 
-	public List<StoreManager> getStoreManagersFromStore(int storeId) throws Exception{
+	public List<StoreManager> getStoreManagersFromStore(Store storeId) throws Exception{
 		return getReal().getStoreManagersFromStore(storeId);
 	}
 

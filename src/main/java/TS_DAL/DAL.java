@@ -54,8 +54,8 @@ public interface DAL {
 //	public void setNewCartForSubscriber(String username, Cart cart);
 	public int getAmountOfProduct(int storeId, int productId) throws Exception;
 	public boolean isCategoryExists(String category);
-	public List<StoreOwner> getStoreOwnersFromStore(int storeId) throws Exception;
-	public List<StoreManager> getStoreManagersFromStore(int storeId) throws Exception;
+	public List<StoreOwner> getStoreOwnersFromStore(Store storeId) throws Exception;
+	public List<StoreManager> getStoreManagersFromStore(Store storeId) throws Exception;
 	public PurchasePolicy getStorePolicy(int storeId) throws Exception;
 	public Map<Category, PurchasePolicy> getStoreCategoryDiscount(int storeId) throws Exception;
 	public Product getProductById(int productId) throws Exception;

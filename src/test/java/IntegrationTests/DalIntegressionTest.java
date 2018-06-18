@@ -73,6 +73,7 @@ public class DalIntegressionTest {
 			dal.addSubscriber(s);
 			dal.addStore(store);
 			dal.addProductToStore(store, prod, 30, "category");
+			prod.setStore(store);
 			dal.addPurchaseToHistory(s, p);
 			
 			List<Purchase>listP=dal.getMyPurchase("newUserT3");
@@ -205,7 +206,7 @@ public class DalIntegressionTest {
 			Product prod = new Product("nameT8", 5, 4, new EmptyPolicy(),new ImmediatelyPurchase());
 			dal.addSubscriber(s);
 			dal.addStore(store);
-			dal.addProductToStore(store, prod, 30, "newCategory");
+			dal.addProductToStore(store, prod, 30, "newCategoryT8");
 			
 			boolean isContain=false;
 			for(Product p:dal.getProductAmount(store.getStoreId()).keySet()){
@@ -235,11 +236,11 @@ public class DalIntegressionTest {
 			Product prod = new Product("nameT9", 5, 4, new EmptyPolicy(),new ImmediatelyPurchase());
 			dal.addSubscriber(s);
 			dal.addStore(store);
-			dal.addProductToStore(store, prod, 30, "newCategory");
+			dal.addProductToStore(store, prod, 30, "newCategoryT9");
 			Product newProduct=new Product(prod);
 			newProduct.setPrice(7);
 			newProduct.setName("newProductName");
-			dal.updateProductDetails(store, prod, newProduct, 30, "newCategory");
+			dal.updateProductDetails(store, prod, newProduct, 30, "newCategoryT9");
 			
 			boolean isContain=false;
 			for(Product p:dal.getProductAmount(store.getStoreId()).keySet()){
@@ -271,7 +272,7 @@ public class DalIntegressionTest {
 			Product prod = new Product("nameT10", 5, 4, new EmptyPolicy(),new ImmediatelyPurchase());
 			dal.addSubscriber(s);
 			dal.addStore(store);
-			dal.addProductToStore(store, prod, 30, "newCategory");
+			dal.addProductToStore(store, prod, 30, "newCategoryT10");
 			dal.deleteProductFromStore(store.getStoreId(), prod.getId());
 			
 			boolean isContain=false;
@@ -370,7 +371,7 @@ public class DalIntegressionTest {
 			Product prod = new Product("nameT14", 5, 4, new EmptyPolicy(),new ImmediatelyPurchase());
 			dal.addSubscriber(s);
 			dal.addStore(store);
-			dal.addProductToStore(store, prod, 40, "newCategory");
+			dal.addProductToStore(store, prod, 40, "newCategoryT14");
 			
 			dal.stockUpdate(prod, 35, store);
 			Map<Product,Integer>map=dal.getProductAmount(store.getStoreId());

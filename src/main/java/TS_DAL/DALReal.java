@@ -45,7 +45,7 @@ public class DALReal implements DAL {
 					+ " fullname VARCHAR(50),"
 					+ " address VARCHAR(50),"
 					+ " phone VARCHAR(50),"
-					+ " credidCardNumber VARCHAR(50),"
+					+ " creditCardNumber VARCHAR(50),"
 					+ " PRIMARY KEY (username));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE SystemAdministrators(username VARCHAR(50),"
@@ -185,8 +185,11 @@ public class DALReal implements DAL {
 	//or
 	public List<Subscriber> allSubscribers() throws Exception
 	{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT * FROM Subscribers";
-		ResultSet rs = selectQuery(query);
+		ResultSet rs = stmt.executeQuery(query);
 		List<Subscriber>ans = new LinkedList<Subscriber>();
 		while(rs.next())
 		{
@@ -196,7 +199,7 @@ public class DALReal implements DAL {
 			
 			if(isAdmin(rs.getString("username")))
 			{
-				SystemAdministrator sa = new SystemAdministrator(rs.getString("username"), rs.getString("password"), rs.getString("fullname"), rs.getString("address"), rs.getString("phone"), rs.getString("credidCardNumber"), myPurchase, managers, owners);
+				SystemAdministrator sa = new SystemAdministrator(rs.getString("username"), rs.getString("password"), rs.getString("fullname"), rs.getString("address"), rs.getString("phone"), rs.getString("creditCardNumber"), myPurchase, managers, owners);
 				ans.add(sa);
 				continue;
 			}
@@ -206,42 +209,60 @@ public class DALReal implements DAL {
 					rs.getString("fullname"),
 					rs.getString("address"),
 					rs.getString("phone"),
-					rs.getString("credidCardNumber"),
+					rs.getString("creditCardNumber"),
 					myPurchase,
 					managers,
 					owners);
 			ans.add(s);
 		}
+		stmt.close();
+		conn.close();
 		return ans;
 	}
 
 	public List<StoreOwner> getStoreOwners(String username) throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT * FROM StoreOwners WHERE username = '" + username + "';";
-		ResultSet rs = selectQuery(query);
+		ResultSet rs = stmt.executeQuery(query);
 		List<StoreOwner>ans = new LinkedList<StoreOwner>();
 		while(rs.next())
 		{
 			StoreOwner so = new StoreOwner(getStoreByStoreId(rs.getInt("storeId")));
 			ans.add(so);
 		}
+		stmt.close();
+		conn.close();
 		return ans;
 	}
 
 	public Store getStoreByStoreId(int storeId) throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query ="SELECT * FROM Stores WHERE storeId = '" + storeId + "';";
-		ResultSet rs = selectQuery(query);
+		ResultSet rs = stmt.executeQuery(query);
 		if(rs.next())
 		{
 			int id = rs.getInt("storeId");
 			boolean isOpen = false;
 			if(rs.getInt("isOpen") == 1)
 				isOpen = true;
+			List<StoreOwner>so=new LinkedList<StoreOwner>();
+			List<StoreManager>sm=new LinkedList<StoreManager>();
+			//getStoreOwnersFromStore(id), getStoreManagersFromStore(id)
 			Store s = new Store(id, rs.getString("name"), rs.getString("address"), rs.getString("phone"),
 					rs.getInt("grading"), getProductAmount(storeId), getStorePurchase(storeId), isOpen,
-					getStoreOwnersFromStore(id), getStoreManagersFromStore(id), rs.getInt("moneyEarned"),
-					getStorePolicy(id), getStoreCategoryDiscount(id),getStoreCategoryPolicy(id));
+					so,sm, rs.getInt("moneyEarned"),getStorePolicy(id), getStoreCategoryDiscount(id),getStoreCategoryPolicy(id));
+			s.setMyOwners(getStoreOwnersFromStore(s));
+			s.setMyManagers(getStoreManagersFromStore(s));
+			stmt.close();
+			conn.close();
 			return s;
 		}
+		stmt.close();
+		conn.close();
 		return null;
 	}
 	
@@ -249,22 +270,30 @@ public class DALReal implements DAL {
 
 	
 	public  List<StoreManager> getSubscriberManagers(String username) throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query ="SELECT * FROM StoreManagers WHERE username = '" + username + "';";
-		ResultSet rs = selectQuery(query);
+		ResultSet rs = stmt.executeQuery(query);
 		List <StoreManager> ret = new LinkedList<StoreManager>();
 		while(rs.next())
 		{
 			StoreManager sm = new StoreManager(getStoreByStoreId(rs.getInt("storeId")));
 			ret.add(sm);
 		}
+		stmt.close();
+		conn.close();
 		return ret;
 	}
 
 	
 	public  List<Purchase> getMyPurchase(String username) throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query ="SELECT * FROM Purchases "
 				+ "WHERE Purchases.username = '" + username + "';";
-		ResultSet rs = selectQuery(query);
+		ResultSet rs = stmt.executeQuery(query);
 		List <Purchase> ret = new LinkedList<Purchase>();
 		while(rs.next())
 		{
@@ -273,31 +302,54 @@ public class DALReal implements DAL {
 			Purchase purchase = new Purchase(rs.getDate("whenPurchased"), rs.getInt("purchaseID"), pic);
 			ret.add(purchase);
 		}
+		stmt.close();
+		conn.close();
 		return ret;
 	}
 
 	public boolean isSubscriberExist(String username) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT username "
 				+ "FROM Subscribers "
 				+ "WHERE username = '" + username+ "';";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
 		if(res.next())
+		{
+			stmt.close();
+			conn.close();
 			return true;
+		}
+		stmt.close();
+		conn.close();
 		return false;
 	}
 
 	public boolean isAdmin(String username) throws Exception 
 	{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT *  "
 				+ "FROM SystemAdministrators "
 				+ "WHERE username = '" + username+ "';";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
 		if(res.next())
+		{
+			stmt.close();
+			conn.close();
 			return true;
+		}
+		stmt.close();
+		conn.close();
 		return false;
 	}
 
 	public void removeSubscriber(String username) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
@@ -305,6 +357,8 @@ public class DALReal implements DAL {
 		query = "DELETE FROM Subscribers " +
                 "WHERE username = '" + username + "';";
 		statement.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 
 	
@@ -328,6 +382,9 @@ public class DALReal implements DAL {
 
 	//removes owner named "username" from store with storeId
 	public void removeStoreOwner(String username, int storeId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
@@ -336,10 +393,15 @@ public class DALReal implements DAL {
 				"WHERE username = '" + username +
 				"' AND storeId = '" + storeId + "';";
 		statement.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 
 	//removes manager named "username" from store with storeId
 	public void deleteStoreManager(String username, int storeId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
@@ -348,72 +410,106 @@ public class DALReal implements DAL {
 				"WHERE username = '" + username +
 				"' AND storeId = '" + storeId + "';";
 		statement.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 
 	//checks if there is at least "amount" of this product with productId in store
 	public boolean checkInStock(int productId, int amount) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT ProductsInStore.amount, ProductsInStore.productId "
 				+ "FROM ProductsInStores "
 				+ "INNER JOIN Carts ON ProductsInStores.productId = Carts.productId "
 				+ "WHERE ProductsInStores.productId = '" + productId + "';";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
 		while(res.next()){
 			if(res.getInt("amount") >= amount)
+			{
+				stmt.close();
+				conn.close();
 				return true;
+			}
 		}
+		stmt.close();
+		conn.close();
 		return false;
 	}
 
 
 	public Store getProductStore(int productId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT Stores.storeId "
 				+ "FROM ProductsInStores "
 				+ "INNER JOIN Stores ON ProductsInStores.storeId=Stores.storeId "
 				+ "WHERE ProductsInStores.productId = '" + productId + "';";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
 		Store s = null;
 		while(res.next()){
 			s = getStoreByStoreId(res.getInt("storeId"));
 		}
+		stmt.close();
+		conn.close();
 		return s;
 	}
 
 	public List<Product> getAllProductsOfStore(int storeId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT productId FROM ProductsInStores"
 				+ " WHERE storeId = '" + storeId + "';";
-		ResultSet rs = selectQuery(query);
+		ResultSet rs = stmt.executeQuery(query);
 		List<Product>ans = new LinkedList<Product>();
 		while(rs.next())
 		{
 			ans.add(getProductById(rs.getInt("productId")));
 		}
+		stmt.close();
+		conn.close();
 		return ans;
 	}
 
 	public void stockUpdate(Product p, int amount,Store s) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
-		query = "UPDATE INTO ProductsInStores " +
-				"SET amount = '" + amount +
+		query = "UPDATE ProductsInStores " +
+				" SET amount = '" + amount +
 				"' WHERE storeId = '" + s.getStoreId() +
 				"' AND productId = '" + p.getId() + "';";
 		statement.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 
 	public void updateMoneyEarned(Store s, int newMoneyEarend) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
-		query = "UPDATE INTO Stores " +
+		query = "UPDATE Stores " +
 				"SET moneyEarned = '" + newMoneyEarend +
 				"' WHERE storeId = '" + s.getStoreId() + "';";
 		statement.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 
 	public void addProductToStore(Store s, Product product, int amount,String category) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement = c.createStatement();
@@ -424,31 +520,41 @@ public class DALReal implements DAL {
 		query = "INSERT INTO ProductsInCategory " +
 				"VALUES ('" + category + "', '" + product.getId() + "');";
 		statement.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 
 	public void deleteProductFromStore(int storeId, int productId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
-		query = "DELETE * FROM ProductsInStores " +
+		query = "DELETE FROM ProductsInStores " +
 				"WHERE productId = '" + productId +
 				"' AND storeId = '" + storeId + "';";
 		statement.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 
 	//polices....
 	public void updateProductDetails(Store s, Product oldProduct, Product newProduct, int amount,String newProductCategory) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "UPDATE ProductsInStores " + 
 				"SET amount = '" + amount +
 				"' WHERE productId = '" + oldProduct.getId() +
 				"' AND storeId = '" + s.getStoreId() + "';";
-		otherQuery(query);
+		stmt.executeUpdate(query);
 		
 		query = "UPDATE ProductsInCategory " +
 				"SET categoryName = '" + newProductCategory + 
 				"' WHERE productId = '" + oldProduct.getId() + "';";
-		otherQuery(query);
+		stmt.executeUpdate(query);
 		
 		query = "UPDATE Products " +
 				"SET productId = '" + newProduct.getId() +	
@@ -457,10 +563,15 @@ public class DALReal implements DAL {
 				"', grading = '" + newProduct.getGrading() + 
 				"', category = '" + newProduct.getCategory() +  
 				"' WHERE productId = '" + oldProduct.getId() + "';";
-		otherQuery(query);
+		stmt.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 
 	public void addNewStoreOwner(Store s, Subscriber owner) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement = c.createStatement();
@@ -468,9 +579,14 @@ public class DALReal implements DAL {
 		query = "INSERT INTO StoreOwners " +
 				"VALUES ('" + owner.getUsername() + "', '" + s.getStoreId() + "');";
 		statement.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 
 	public void addNewStoreManager(Store s, Subscriber newMan, int permission) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
@@ -478,6 +594,8 @@ public class DALReal implements DAL {
 		query = "INSERT INTO StoreManagers " +
 				"VALUES ('" + newMan.getUsername() + "', '" + s.getStoreId() + "', '" + permission + "');";
 		statement.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 
 	
@@ -485,7 +603,10 @@ public class DALReal implements DAL {
 	//TODO - Missing updates... policies for example
 	//if isOpen insert 1 to store to the isOpen(TinyInt) field, else insert 0
 	public void updateStore(Store s) throws Exception{
-		
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
+			
 		updateStorePolicy(s.getStoreId(), s.getStorePolicy());
 		//TODO - think if necessary to change purchase history
 		//TODO same to StoreOwners and to StoreManagers and to store's products
@@ -503,10 +624,15 @@ public class DALReal implements DAL {
 				"', isOpen = '" + open + 
 				"', moneyEarned = '" + s.getMoneyEarned() + 
 				"' WHERE storeId = '" + s.getStoreId() + "';";
-		otherQuery(query);
+		stmt.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 
 	public void addSubscriber(Subscriber s) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
@@ -520,19 +646,25 @@ public class DALReal implements DAL {
 					"VALUES ('" + s.getUsername() + "');";
 			statement.executeUpdate(query);
 		}
+		stmt.close();
+		conn.close();
 	}
 
 	public Subscriber getSubscriber(String username, String password) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT * "
 				+ "FROM Subscribers "
 				+ "WHERE username = '" + username
 				+ "' AND password = '"+ password + "';";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
+		Subscriber ans=null;
 		if(res.next()){
 			List<Purchase> myPurchase = getMyPurchase(res.getString("username"));
 			List<StoreManager>managers = getSubscriberManagers(res.getString("username"));
 			List<StoreOwner>owners = getStoreOwners(res.getString("username"));
-			return new Subscriber(res.getString("username"),
+			ans= new Subscriber(res.getString("username"),
 					res.getString("password"),
 					res.getString("fullname"),
 					res.getString("address"),
@@ -540,12 +672,17 @@ public class DALReal implements DAL {
 					res.getString("creditCardNumber"),
 					myPurchase, managers, owners);
 		}
-		return null;
+		stmt.close();
+		conn.close();
+		return ans;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
 	//add product to cart
 	public void addImeddiatleyProductToCart(String username, int productId, int amount, int code) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
@@ -553,10 +690,15 @@ public class DALReal implements DAL {
 		query = "INSERT INTO Carts " +
 				"VALUES ('" + username + "', '" + productId + "', '" + amount + "', '" + code + "');";
 		statement.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 	
 	
 	public void removeProductFromCart(String username, int productId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement = c.createStatement();
@@ -565,70 +707,100 @@ public class DALReal implements DAL {
 				"WHERE productId = '" + productId +
 				"' AND username = '" + username + "';";
 		statement.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 	
 	
 	public void editProductAmount(String username, int productId, int amount) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement = c.createStatement();
 		statement.executeUpdate(query);
-		query = "UPDATE INTO Carts " +
+		query = "UPDATE Carts " +
 				"SET amount = '" + amount +
 				"' WHERE productId = '"+ productId +
 				"' AND username = '" + username + "';";
 		statement.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 	
 	
 	public void editProductCode(String username, int productId, int code) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
-		query = "UPDATE INTO Carts " +
+		query = "UPDATE Carts " +
 				"SET code = '"+ code +
 				"' WHERE productId = '"+ productId +
 				"' AND username = '" + username +"';";
 		statement.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 	
 	
 	public void editProductPrice(int productId, int price) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
-		query = "UPDATE INTO Products " +
+		query = "UPDATE Products " +
 				"SET price = '" + price +
 				"' WHERE productId = '" + productId + "';";
 		statement.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 	//isOpen = false
 	public void closeStore(int storeId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
-		query = "UPDATE INTO Store " +
+		query = "UPDATE Stores " +
 				"SET isOpen = '" + 0 +
 				"' WHERE storeId = '" + storeId + "';";
 		statement.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 	//is
 	public void openStore(int storeId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "USE TradingSystem";
 		Connection c = getConnection();
 		Statement statement=c.createStatement();
 		statement.executeUpdate(query);
-		query = "UPDATE INTO Store " +
+		query = "UPDATE Store " +
 				"SET isOpen = '" + 1 +
 				"' WHERE storeId = '" + storeId + "';";
 		statement.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 
 	//should be primitive store - just create one to the dal 
 	public void addStore(Store s) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		AddPolicy(s.getStorePolicy(), s.getStorePolicy().getPolicyId());
 		String query = "INSERT INTO Stores " +
                 "VALUES ('" + s.getStoreId() + 
@@ -640,8 +812,9 @@ public class DALReal implements DAL {
                 "', '" + s.getMoneyEarned() + 
                 "', '"+ s.getStorePolicy().getPolicyId() + "');";
 		
-		otherQuery(query);
-		
+		stmt.executeUpdate(query);
+		stmt.close();
+		conn.close();
 		//should not have store policy here.
 		
 		//store owner is added outside from open store in BL
@@ -649,91 +822,135 @@ public class DALReal implements DAL {
 	}
 
 	public  Map<Product,Integer> getProductAmount(int storeId) throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT * "
 				+ "FROM ProductsInStores "
 				+ "WHERE ProductsInStores.storeId = '" + storeId + "';";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
 		Map <Product, Integer> prodAmount = new HashMap<Product, Integer>();
 		while(res.next()){
 			prodAmount.put(getProductById(res.getInt("productId")), res.getInt("amount"));
 		}
+		stmt.close();
+		conn.close();
 		return prodAmount;
 	}
 
 	public  List<Purchase> getStorePurchase(int storeId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT * FROM Purchases "
 				+ "WHERE storeId = '" + storeId + "';" ;
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
 		List<Purchase> ans = new LinkedList<Purchase>();
 		while(res.next()){
 			ans.add(new Purchase(res.getDate("whenPurchased"), res.getInt("purchaseID"), new ProductInCart(getProductById(res.getInt("productId")), res.getInt("price"), res.getInt("amount"))));
 		}
+		stmt.close();
+		conn.close();
 		return ans;
 	}
 
 	
 	public DiscountPolicy getDiscountPolicy(int policyId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT * "
 				+ "FROM HiddenDiscount "
-				+ "FULL OUTER JOIN OvertDiscount ON HiddenDiscount.policyId = OvertDiscount.policyId "
-				+ "INNER JOIN Policies " 
-				+ "WHERE OvertDiscount.policyId = Policies.policyId "
-				+ "OR HiddenDiscount.policyId = Poilcies.policyId;" ;
-		ResultSet res = selectQuery(query);
+				+ " FULL OUTER JOIN OvertDiscount INNER JOIN Policies "
+				+ " ON HiddenDiscount.policyId = OvertDiscount.policyId "
+				+ " WHERE OvertDiscount.policyId = Policies.policyId "
+				+ " OR HiddenDiscount.policyId = Poilcies.policyId;" ;
+		ResultSet res = stmt.executeQuery(query);
 		if(res.next()){
 			int code = res.getInt("code");
 			if (res.wasNull()){
 				OvertDiscount od = new OvertDiscount(res.getDate("discountEndDate"), res.getInt("discountPrecentage"));
+				stmt.close();
+				conn.close();
 				return od;
 			}
 			HiddenDiscount hd = new HiddenDiscount(code, res.getDate("discountEndDate"), res.getInt("discountPrecentage"));
+			stmt.close();
+			conn.close();
 			return hd;
 		}
+		stmt.close();
+		conn.close();
 		return null;
 	}
 	
 	private ImmediatelyPurchase tryImmediatelyPurchase(int productId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT *  "
 				+ "FROM ImmediatelyPurchases "
 				+ "WHERE productId = '" + productId + "';";
-		ResultSet res = selectQuery(query);
-		if(res.next())
-			return new ImmediatelyPurchase(getPurchasePolicy(res.getInt("policyId")));
-		return null;
+		ResultSet res = stmt.executeQuery(query);
+		ImmediatelyPurchase ans=null;
+		if(res.next()){
+			ans= new ImmediatelyPurchase(getPurchasePolicy(res.getInt("policyId")));
+		}
+		stmt.close();
+		conn.close();
+		return ans;
 	}
 	
 	private LotteryPurchase tryLotteryPurchase(int productId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT *  "
 				+ "FROM LotteryPurchases "
 				+ "WHERE productId = '" + productId + "';";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
+		LotteryPurchase ans=null;
 		if(res.next()){
 			boolean hasEnded = false;
 			if(res.getInt("hasEnded") == 1) //TODO Need to check that 1 is true
 				hasEnded = true;
-			return new LotteryPurchase(res.getDate("actualEndDate"), res.getDate("lotteryEndDate"), getLotteryParticipants(res.getInt("lotteryId")), null, hasEnded);
+			stmt.close();
+			conn.close();
+			ans= new LotteryPurchase(res.getDate("actualEndDate"), res.getDate("lotteryEndDate"), getLotteryParticipants(res.getInt("lotteryId")), null, hasEnded);
 			//TODO ????What about guests winner
 		}
-		return null;
+		stmt.close();
+		conn.close();
+		return ans;
 	}
 	
 	public PurchaseType getPurchaseType(int productId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		PurchaseType ans = tryImmediatelyPurchase(productId);  
 		if(ans == null)
-			ans = tryLotteryPurchase(productId); 
+			ans = tryLotteryPurchase(productId);
+		stmt.close();
+		conn.close();
 		return ans;
 	}
 	
 	public Subscriber getSubscriberIfExists(String username) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT username "
 				+ "FROM Subscribers "
 				+ "WHERE username = '" + username + "';";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
+		Subscriber ans=null;
 		if(res.next()){
 			List<Purchase> myPurchase = getMyPurchase(res.getString("username"));
 			List<StoreManager> managers = getSubscriberManagers(res.getString("username"));
 			List<StoreOwner> owners = getStoreOwners(res.getString("username"));
-			return new Subscriber(res.getString("username"),
+			
+			ans= new Subscriber(res.getString("username"),
 					res.getString("password"),
 					res.getString("fullname"),
 					res.getString("address"),
@@ -741,12 +958,17 @@ public class DALReal implements DAL {
 					res.getString("creditCardNumber"),
 					myPurchase, managers, owners);
 		}
-		return null;
+		stmt.close();
+		conn.close();
+		return ans;
 	}
 	
 	public List<Store> getStores() throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT * FROM Stores";
-		ResultSet rs = selectQuery(query);
+		ResultSet rs = stmt.executeQuery(query);
 		List <Store> ret = new LinkedList<Store>();
 		while(rs.next())
 		{
@@ -756,59 +978,98 @@ public class DALReal implements DAL {
 			int storeId = rs.getInt("storeId");
 			Store s = new Store(storeId, rs.getString("name"), rs.getString("address"), rs.getString("phone"),
 					rs.getInt("grading"),getProductAmount(storeId), getStorePurchase(storeId), isOpen,
-					getStoreOwnersFromStore(storeId), getStoreManagersFromStore(storeId),
-					rs.getInt("moneyEarned"), getStorePolicy(storeId), getStoreCategoryDiscount(storeId),getStoreCategoryPolicy(storeId));	
+					null, null,rs.getInt("moneyEarned"), getStorePolicy(storeId),
+					getStoreCategoryDiscount(storeId),getStoreCategoryPolicy(storeId));	
+			s.setMyOwners(getStoreOwnersFromStore(s));
+			s.setMyManagers(getStoreManagersFromStore(s));
 			ret.add(s);
 		}
+		stmt.close();
+		conn.close();
 		return ret;
 	}
 	
 	public void addImeddiatleyProductToCart(String username, Product p, int amount, int code) throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "INSERT INTO Carts VALUES('" + username +"', '" + p.getId() + "', '" + amount + "', '" + code + "');";
-		otherQuery(query);
+		stmt.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 	public void editProductAmount(String username, Product p, int amount) throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "UPDATE Carts SET amount = '" + amount + "' WHERE username = '"
 						+ username + "' AND productId = '" + p.getId() + "';"; 
-		otherQuery(query);
+		stmt.executeUpdate(query);
+		stmt.close();
+		conn.close();
 		
 	}
 	public void editProductCode(String username, Product p, int code) throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "UPDATE Carts SET code = '" + code + "' WHERE username = '"
 						+ username + "' AND productId = '" + p.getId() + "';"; 
-		otherQuery(query);
+		stmt.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 	
 	public int getAmountOfProduct(int storeId, int productId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT * FROM ProductsInStores WHERE storeId = '" + storeId + "' AND productId = '" + productId + "';";
-		ResultSet res = selectQuery(query);
-		if(res.next())
-			return res.getInt("amount");
-		return 0;
+		ResultSet res = stmt.executeQuery(query);
+		int ans=0;
+		if(res.next()){
+			ans= res.getInt("amount");
+		}
+		stmt.close();
+		conn.close();
+		return ans;
 	}
 	
 	public void addPurchaseToHistory(Subscriber sub, Purchase p) throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "INSERT INTO Purchases VALUES('"
 						+ p.getPurchaseID() + "', '" + sub.getUsername() + "', '"
 						+ p.getPurchased().getMyProduct().getId() + "', '" 
 						+ p.getPurchased().getMyProduct().getStore().getStoreId() + "', '" 
 						+ p.getWhenPurchased() + "', '" + p.getPurchased().getDiscountOrPrice() + "', '" 
 						+ p.getPurchased().getAmount() + "');";
-		otherQuery(query);
+		stmt.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
-	public List<StoreOwner> getStoreOwnersFromStore(int storeId) throws Exception{
-		String query = "SELECT * FROM StoreOwners WHERE storeId = '" + storeId + "';" ;
-		ResultSet res = selectQuery(query);
+	public List<StoreOwner> getStoreOwnersFromStore(Store s) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
+		String query = "SELECT * FROM StoreOwners WHERE storeId = '" + s.getStoreId() + "';" ;
+		ResultSet res = stmt.executeQuery(query);
 		List<StoreOwner> ans = new LinkedList<StoreOwner>();
 		while(res.next()){
-			ans.add(new StoreOwner(getStoreByStoreId(storeId))); //TODO - very strange need to check...
+			ans.add(new StoreOwner(s)); //TODO - very strange need to check...
 		}
+		stmt.close();
+		conn.close();
 		return ans;
 	}
 	
-	public List<StoreManager> getStoreManagersFromStore(int storeId) throws Exception{
-		String query = "SELECT * FROM StoreManagers WHERE storeId = '" + storeId + "';" ;
-		ResultSet res = selectQuery(query);
+	public List<StoreManager> getStoreManagersFromStore(Store s) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
+		String query = "SELECT * FROM StoreManagers WHERE storeId = '" + s.getStoreId() + "';" ;
+		ResultSet res = stmt.executeQuery(query);
 		Map<String,StoreManager>map=new HashMap<String, StoreManager>();
 		while(res.next()){
 			String username=res.getString("username");
@@ -816,66 +1077,105 @@ public class DALReal implements DAL {
 				map.get(username).setSpecificPermission(res.getInt("permission"), true);
 			}
 			else{
-				StoreManager sm=new StoreManager(getStoreByStoreId(storeId));
-				sm.setSpecificPermission(res.getInt("permission"), true);
+				StoreManager sm=new StoreManager(s);
+				if(res.getInt("permission")>=0)
+					sm.setSpecificPermission(res.getInt("permission"), true);
 				map.put(username,sm);
 			}
 		}
+		stmt.close();
+		conn.close();
 		return new LinkedList<StoreManager>(map.values());
 	}
 	
 	
 	public Product getProductById(int productId) throws Exception{
-		String query = "SELECT * FROM Products WHERE ptoductId = '" + productId + "';";
-		ResultSet res = selectQuery(query);
-		if(res.next())
-			return new Product(productId, res.getString("name"), res.getInt("price"),res.getInt("grading"), getPurchasePolicy(res.getInt("policyId")), getProductStore(productId), getCategory(res.getString("category")),getPurchaseType(productId));
-		return null;
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
+		String query = "SELECT * FROM Products WHERE productId = '" + productId + "';";
+		ResultSet res = stmt.executeQuery(query);
+		Product ans=null;
+		if(res.next()){
+			ans= new Product(productId, res.getString("name"), res.getInt("price"),res.getInt("grading"), getPurchasePolicy(res.getInt("policyId")), getProductStore(productId), getCategory(res.getString("category")),getPurchaseType(productId));
+		}
+		stmt.close();
+		conn.close();
+		return ans;
 	}
 	
 	public int getNextProductId() throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT MAX(productId) AS maxId FROM Products;";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
+		int ans=155;
 		if(res.next()){
-			return res.getInt("maxId") + 1;
+			ans=res.getInt("maxId") + 1;
 		}
-		return 155;
+		stmt.close();
+		conn.close();
+		return ans;
 	}
 	public int getNextStoreId() throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT MAX(storeId) AS maxId FROM Stores;";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
+		int ans=144;
 		if(res.next()){
-			return res.getInt("maxId") + 1;
+			ans= res.getInt("maxId") + 1;
 		}
-		return 144;
+		stmt.close();
+		conn.close();
+		return ans;
 	}
 	public int getNextPolicyId() throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT MAX(policyId) AS maxId FROM Policies;";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
+		int ans=133;
 		if(res.next()){
-			return res.getInt("maxId") + 1;
+			ans= res.getInt("maxId") + 1;
 		}
-		return 133;
+		stmt.close();
+		conn.close();
+		return ans;
 	}
 
 	public int getNextPurchaseId() throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT MAX(purchaseID) AS maxId FROM Purchases;";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
+		int ans=122;
 		if(res.next()){
-			return res.getInt("maxId") + 1;
+			ans= res.getInt("maxId") + 1;
 		}
-		return 122;
+		stmt.close();
+		conn.close();
+		return ans;
 	}
 	
 	public List<StoreManager> getStoreManagers(String username) throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT * FROM StoreManagers WHERE username = '" + username + "';";
-		ResultSet rs = selectQuery(query);
+		ResultSet rs = stmt.executeQuery(query);
 		List<StoreManager>ans = new LinkedList<StoreManager>();
 		while(rs.next())
 		{
 			StoreManager sm = new StoreManager(getStoreByStoreId(rs.getInt("storeId")));
 			ans.add(sm);
 		}
+		stmt.close();
+		conn.close();
 		return ans;
 	}
 	
@@ -889,105 +1189,133 @@ public class DALReal implements DAL {
 		return conn;
 	}
 	
-	private ResultSet selectQuery(String selectQuery) throws Exception{
-		conn = getConnection();
-		stmt = conn.createStatement();
-		stmt.executeUpdate("USE TradingSystem");
-		ResultSet ans = stmt.executeQuery(selectQuery);
-		stmt.close();
-		conn.close();
-		
-		return ans;
-	}
 	
-	private void otherQuery(String otherQuery) throws Exception{
-		conn = getConnection();
-		stmt = conn.createStatement();
-		stmt.executeUpdate("USE TradingSystem");
-		stmt.executeUpdate(otherQuery);
-		stmt.close();
-		conn.close();
-		
-	}
 	
 	////////////////////////////////////////////////////////////////////////////
 	public PurchasePolicy getPurchasePolicy(int policyId) throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT * FROM Policies WHERE policyId = '" + policyId + "';";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
+		PurchasePolicy ans=null;
 		if(res.next()){
 			DiscountPolicy discount=getDiscountPolicy(policyId);
 			switch(res.getInt("policyType"))
 			{
-				case emptyPolicyTypeCode: 
-					return new EmptyPolicy(discount);
+				case emptyPolicyTypeCode:{
+					ans=new EmptyPolicy(discount);
+				}
 				case andPolicyTypeCode:
-					return new AndPolicy(discount, getSubPolicies(policyId));
-				case orPolicyTypeCode:
-					return new OrPolicy(discount, getSubPolicies(policyId));
+				{
+					ans=new AndPolicy(discount, getSubPolicies(policyId));
+				}
+				case orPolicyTypeCode:{
+					ans=new OrPolicy(discount, getSubPolicies(policyId));
+				}
 				case notPolicyTypeCode:
 					List<PurchasePolicy>lst=getSubPolicies(policyId);
 					if(lst.size()>0)
-						return new NotPolicy(discount, lst.get(0));
+					{
+						ans= new NotPolicy(discount, lst.get(0));
+					}
 					else
-						return new NotPolicy(discount, null);
-				case maxPolicyTypeCode:
-					return new MaxPolicy(discount, res.getInt("IValue"));
+					{
+						ans=new NotPolicy(discount, null);
+					}
+				case maxPolicyTypeCode:{
+					ans= new MaxPolicy(discount, res.getInt("IValue"));
+					}
 				case minPolicyTypeCode:
-					return new MinPolicy(discount, res.getInt("IValue"));
-				case addressPolicyTypeCode:
-					return new AddressPolicy(discount, res.getString("SValue"));
-				default: throw new Exception("Error in policy type");
+				{
+					ans=new MinPolicy(discount, res.getInt("IValue"));
+				}
+				case addressPolicyTypeCode:{
+					ans=new AddressPolicy(discount, res.getString("SValue"));
+				}
+				default:
+				{
+					stmt.close();
+					conn.close();
+					throw new Exception("Error in policy type");
+				}
 			}
 		}
-		return null;
+		stmt.close();
+		conn.close();
+		return ans;
 	}
 	
 	public List<PurchasePolicy> getSubPolicies(int policyId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT * FROM SubPolicies WHERE fatherPolicyId = '" + policyId + "';";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
 		List<PurchasePolicy> ans=new ArrayList<PurchasePolicy>();
 		while(res.next()){
 			ans.add(getPurchasePolicy(res.getInt("sonPolicyId")));
 		}
+		stmt.close();
+		conn.close();
 		return ans;
 	}
 	
 	public PurchasePolicy getStorePolicy(int storeId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT * FROM Stores WHERE storeId = '" + storeId + "';";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
+		PurchasePolicy ans=null;
 		if(res.next())
 		{
-			return getPurchasePolicy(res.getInt("policyId"));
+			ans=getPurchasePolicy(res.getInt("policyId"));
 		}
-		return null;
+		stmt.close();
+		conn.close();
+		return ans;
 	}
 
 	public Map<Category, PurchasePolicy> getStoreCategoryDiscount(int storeId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT * FROM CategoryDiscount WHERE storeId = '" + storeId + "';";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
 		Map<Category, PurchasePolicy> ans=new HashMap<Category, PurchasePolicy>();
 		while(res.next())
 		{
 			ans.put(getCategory(res.getString("categoryName")), getPurchasePolicy(res.getInt("policyId")));
 		}
+		stmt.close();
+		conn.close();
 		return ans;
 	}
 	
 	private Map<Category, PurchasePolicy> getStoreCategoryPolicy(int storeId) throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		String query = "SELECT * FROM CategoryPolicy WHERE storeId = '" + storeId + "';";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
 		Map<Category, PurchasePolicy> ans=new HashMap<Category, PurchasePolicy>();
 		while(res.next())
 		{
 			ans.put(getCategory(res.getString("categoryName")), getPurchasePolicy(res.getInt("policyId")));
 		}
+		stmt.close();
+		conn.close();
 		return ans;
 	}
 
 	private void updateStorePolicy(int storeId, PurchasePolicy newPolicy) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		int prevPolicyId=-1;
 		String query = "SELECT * FROM Stores WHERE storeId = '" + storeId + "';";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
 		if(res.next())
 		{
 			prevPolicyId= res.getInt("policyId");
@@ -999,89 +1327,105 @@ public class DALReal implements DAL {
 			query="UPDATE Stores "
 					+ " SET policyId = '" +PolicyId
 					+ "' WHERE storeId = '"+ storeId +"';";
-			otherQuery(query);
+			stmt.executeUpdate(query);
 			deletePolicy(prevPolicyId);
 		}
+		stmt.close();
+		conn.close();
 	}
 
 	private void deletePolicy(int policyId) throws Exception {
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
+		
 		String query = "SELECT * FROM SubPolicies WHERE fatherPolicyId = '" + policyId + "';";
-		ResultSet res = selectQuery(query);
+		ResultSet res = stmt.executeQuery(query);
 		while(res.next()){
-			query = "DELETE * FROM SubPolicies WHERE fatherPolicyId = '" + policyId 
+			query = "DELETE FROM SubPolicies WHERE fatherPolicyId = '" + policyId 
 					+"' AND sonPolicyId = '"+res.getInt("sonPolicyId") +"';";
-			otherQuery(query);
+			stmt.executeUpdate(query);
 			deletePolicy(res.getInt("sonPolicyId"));
 		}
-		query = "DELETE * FROM Policies WHERE policyId = '" + policyId + "' ;";
-		otherQuery(query);
-		
+		query = "DELETE FROM Policies WHERE policyId = '" + policyId + "' ;";
+		stmt.executeUpdate(query);
+		stmt.close();
+		conn.close();
 	}
 
 	private void AddPolicy(PurchasePolicy newPolicy,int policyId) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
+		
 		if(newPolicy instanceof AndPolicy){
 			String query = "INSERT INTO Policies (policyId, policyType) VALUES('"
 						+ policyId + "', '" + andPolicyTypeCode + "');";
-			otherQuery(query);
+			stmt.executeUpdate(query);
 			for(PurchasePolicy policy:((AndPolicy)newPolicy).getSubPolicy()){
 				int sonPolicyId=getNextPolicyId();
 				AddPolicy(policy,sonPolicyId);
 				query = "INSERT INTO SubPolicies VALUES('" + policyId + "', '" + sonPolicyId+ "');";
-				otherQuery(query);
+				stmt.executeUpdate(query);
 			}
 		}
 		if(newPolicy instanceof NotPolicy){
 			String query = "INSERT INTO Policies (policyId, policyType) VALUES('"
 					+ policyId + "', '" + notPolicyTypeCode + "');";
-			otherQuery(query);
+			stmt.executeUpdate(query);
 			PurchasePolicy policy=((NotPolicy)newPolicy).getSubPolicy();
 			int sonPolicyId=getNextPolicyId();
 			AddPolicy(policy,sonPolicyId);
 			query = "INSERT INTO SubPolicies VALUES('" + policyId + "', '" + sonPolicyId+ "');";
-			otherQuery(query);
+			stmt.executeUpdate(query);
 		}
 		if(newPolicy instanceof OrPolicy){
 			String query = "INSERT INTO Policies (policyId, policyType) VALUES('"
 					+ policyId + "', '" + orPolicyTypeCode + "');";
-			otherQuery(query);
+			stmt.executeUpdate(query);
 			for(PurchasePolicy policy:((OrPolicy)newPolicy).getSubPolicy()){
 				int sonPolicyId=getNextPolicyId();
 				AddPolicy(policy,sonPolicyId);
 				query = "INSERT INTO SubPolicies VALUES('" + policyId + "', '" + sonPolicyId+ "');";
-				otherQuery(query);
+				stmt.executeUpdate(query);
 			}
 		}
 		if(newPolicy instanceof EmptyPolicy){
 			String query = "INSERT INTO Policies (policyId, policyType) VALUES('"
 					+ policyId + "', '" + emptyPolicyTypeCode + "');";
-			otherQuery(query);
+			stmt.executeUpdate(query);
 		}
 		if(newPolicy instanceof MaxPolicy){
 			String query = "INSERT INTO Policies (policyId, policyType,IValue) VALUES('"
 					+ policyId + "', '" + maxPolicyTypeCode + "', '"
 					+ ((MaxPolicy)newPolicy).getMax() + "');";
-			otherQuery(query);
+			stmt.executeUpdate(query);
 		}
 		if(newPolicy instanceof MinPolicy){
 			String query = "INSERT INTO Policies (policyId, policyType,IValue) VALUES('" 
 					+ policyId + "', '" + minPolicyTypeCode + "', '"
 					+ ((MinPolicy)newPolicy).getMin() + "');";
-			otherQuery(query);
+			stmt.executeUpdate(query);
 		}
 		if(newPolicy instanceof AddressPolicy){
 			String query = "INSERT INTO Policies (policyId, policyType,SValue) VALUES('"
 							+ policyId + "', '" + addressPolicyTypeCode + "', '"
 							+ ((AddressPolicy)newPolicy).getAddress() + "');";
-			otherQuery(query);
+			stmt.executeUpdate(query);
 		}
+		stmt.close();
+		conn.close();
 	}
 
 	private void updateStoreCategoryDiscount(int storeId, Map<Category, PurchasePolicy> categorys) throws Exception{
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
 		for (Entry<Category, PurchasePolicy> cat:categorys.entrySet()){
 			int prevPolicyId=-1;
 			String query = "SELECT * FROM CategoryPolicy WHERE storeId = '" + storeId + "' AND categoryName = '" 
 							+ cat.getKey().getName()+"' ;";
-			ResultSet res = selectQuery(query);
+			ResultSet res = stmt.executeQuery(query);
 			if(res.next())
 			{
 				prevPolicyId= res.getInt("policyId");
@@ -1094,15 +1438,17 @@ public class DALReal implements DAL {
 				query="UPDATE CategoryPolicy "
 						+ " SET policyId = '" +PolicyId
 						+ "' WHERE storeId = '"+ storeId +"' AND categoryName = '"+ cat.getKey().getName() +"';";
-				otherQuery(query);
+				stmt.executeUpdate(query);
 				deletePolicy(prevPolicyId);
 			}
 			else{
 				query="INSERT INTO CategoryPolicy VALUES( '"
 						+ storeId+"' , '"+cat.getKey().getName()+"' , '"+PolicyId+"' );";
-				otherQuery(query);
+				stmt.executeUpdate(query);
 			}
 		}
+		stmt.close();
+		conn.close();
 	}
 	
 	public boolean isCategoryExists(String category) {
@@ -1136,11 +1482,37 @@ public class DALReal implements DAL {
 	}
 
 	public void removePurchase(int purchaseId) throws Exception {
-		String query = "DELETE * FROM Purchases WHERE purchaseID = '" + purchaseId + "' ;";
-		otherQuery(query);
+		Connection conn = getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("USE TradingSystem");
+		
+		String query = "DELETE FROM Purchases WHERE purchaseID = '" + purchaseId + "' ;";
+		stmt.executeUpdate(query);
+		stmt.close();
+		conn.close();
 		
 	}
 	
+//	private ResultSet selectQuery(String selectQuery) throws Exception{
+//		conn = getConnection();
+//		stmt = conn.createStatement();
+//		stmt.executeUpdate("USE TradingSystem");
+//		ResultSet ans = stmt.executeQuery(selectQuery);
+//		stmt.close();
+//		conn.close();
+//		
+//		return ans;
+//	}
+	
+//	private void otherQuery(String otherQuery) throws Exception{
+//		Connection conn = getConnection();
+//		Statement stmt = conn.createStatement();
+//		stmt.executeUpdate("USE TradingSystem");
+//		stmt.executeUpdate(otherQuery);
+//		stmt.close();
+//		conn.close();
+//		
+//	}
 	
 	
 	

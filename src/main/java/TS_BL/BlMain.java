@@ -41,7 +41,7 @@ public class BlMain {
 	public static Map<Guest, LinkedList<String>> allUsersWithTheirCreditCards = new HashMap<Guest, LinkedList<String>>();
 	
 	// need to insert to here all guests that payed with their credit card for pay back
-	public static List<String> getAllCategorys() {
+	public static List<String> getAllCategorys() throws Exception {
 		List<String>ans=new LinkedList<String>();
 		List<Category> allCategory = dalRef.getAllCategory(); 
 		for(Category c:allCategory){

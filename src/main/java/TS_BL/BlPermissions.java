@@ -21,9 +21,9 @@ public class BlPermissions {
 		List<Category> allCategory = dalRef.getAllCategory();
 		for (Category c : allCategory) {
 			if (c.getName().equals(category)) {
-				List<Product> prod = c.getProducts();
-				prod.add(product);
-				c.setProducts(prod);
+//				List<Product> prod = c.getProducts();
+//				prod.add(product);
+//				c.setProducts(prod);
 				product.setCategory(c);
 				break;
 			}

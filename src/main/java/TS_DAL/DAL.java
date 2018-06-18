@@ -23,8 +23,8 @@ public interface DAL {
 	public List<Product> getAllProductsOfStore(int storeId) throws Exception;
 	public void stockUpdate(Product p, int amount,Store s) throws Exception;
 	public void updateMoneyEarned(Store s, int newMoneyEarend) throws Exception;
-	public List<Category>getAllCategory();
-	public Category getCategory(String categoryName);
+	public List<Category>getAllCategory() throws Exception;
+	public Category getCategory(String categoryName) throws Exception;
 	public void addProductToStore(Store s, Product product, int amount,  String category) throws Exception;
 	public void deleteProductFromStore(int storeId, int productId) throws Exception;
 	public void updateProductDetails(Store s, Product oldProduct, Product newProduct, int amount,String newProductCategory) throws Exception;
@@ -53,7 +53,7 @@ public interface DAL {
 	public void addLotteryProductToCart(String username, Product p, int money);
 //	public void setNewCartForSubscriber(String username, Cart cart);
 	public int getAmountOfProduct(int storeId, int productId) throws Exception;
-	public boolean isCategoryExists(String category);
+	public boolean isCategoryExists(String category) throws Exception;
 	public List<StoreOwner> getStoreOwnersFromStore(Store storeId) throws Exception;
 	public List<StoreManager> getStoreManagersFromStore(Store storeId) throws Exception;
 	public PurchasePolicy getStorePolicy(int storeId) throws Exception;

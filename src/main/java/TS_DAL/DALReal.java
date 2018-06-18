@@ -15,6 +15,7 @@ public class DALReal implements DAL {
 
 	private Connection conn = null;
 	private Statement stmt = null;
+	private boolean isOpen = false;
 
 	private final static int emptyPolicyTypeCode = 0, andPolicyTypeCode = 1, orPolicyTypeCode = 2,
 			notPolicyTypeCode = 3, maxPolicyTypeCode = 4, minPolicyTypeCode = 5,addressPolicyTypeCode=6;
@@ -93,13 +94,13 @@ public class DALReal implements DAL {
 			stmt.executeUpdate(sql);
 			sql="CREATE TABLE CategoryDiscount("
 					+ " storeId INTEGER REFERENCES Stores(storeId),"
-					+ " categoryName INTEGER,"
+					+ " categoryName VARCHAR(50) REFERENCES Categories(categoryName),"
 					+ " policyId INTEGER REFERENCES Policies(policyId),"
 					+ " PRIMARY KEY (storeId, categoryName));";
 			stmt.executeUpdate(sql);
 			sql="CREATE TABLE CategoryPolicy("
 					+ " storeId INTEGER REFERENCES Stores(storeId),"
-					+ " categoryName INTEGER,"
+					+ " categoryName VARCHAR(50) REFERENCES Categories(categoryName),"
 					+ " policyId INTEGER REFERENCES Policies(policyId),"
 					+ " PRIMARY KEY (storeId, categoryName));";
 			stmt.executeUpdate(sql);
@@ -107,7 +108,7 @@ public class DALReal implements DAL {
 					+ " name VARCHAR(50),"
 					+ " price INTEGER,"
 					+ " grading INTEGER ,"
-					+ " category VARCHAR(50),"
+					+ " categoryName VARCHAR(50) REFERENCES Categories(categoryName),"
 					+ " policyId INTEGER REFERENCES Policies(policyId),"
 					+ " PRIMARY KEY (productId));";
 			stmt.executeUpdate(sql);
@@ -136,28 +137,27 @@ public class DALReal implements DAL {
 					+ " code INTEGER,"
 					+ " PRIMARY KEY (username, productId));";
 			stmt.executeUpdate(sql);
-			sql = "CREATE TABLE ProductsInCategory(categoryName VARCHAR(50) REFERENCES CategoryDiscount(categoryName),"
-					+ " productId INTEGER REFERENCES Products(productId),"
-					+ "	PRIMARY KEY (categoryName, productId));";
-			stmt.executeUpdate(sql); 
 			sql = "CREATE TABLE HiddenDiscount("
-					+ "	policyId INTEGER REFERENCES Policies(policyId),"
+					+ "policyId INTEGER REFERENCES Policies(policyId),"
 					+ "	code INTEGER,"
 					+ " discountEndDate DATE,"
 					+ " discountPercentage DATE,"
 					+ "	PRIMARY KEY (policyId));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE OvertDiscount("
-					+ "	policyId INTEGER REFERENCES Policies(policyId),"
+					+ "policyId INTEGER REFERENCES Policies(policyId),"
 					+ " discountEndDate DATE,"
 					+ " discountPercentage DATE,"
 					+ "	PRIMARY KEY (policyId));";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE SubscribersInLottery("
-					+ "	lotteryId INTEGER REFERENCES LotteryPurchases(lotteryId),"
+					+ "lotteryId INTEGER REFERENCES LotteryPurchases(lotteryId),"
 					+ "	username VARCHAR(50) REFERENCES Subscribers(username),"
 					+ "	moneyPayed INTEGER,"
 					+ "	PRIMARY KEY (lotteryId, username));";
+			stmt.executeUpdate(sql);
+			sql = "CREATE TABLE Categories("
+					+ "categoryName VARCHAR(50));";
 			stmt.executeUpdate(sql);
 
 			System.out.println("Created Tables");
@@ -577,13 +577,12 @@ public class DALReal implements DAL {
 				"SET categoryName = '" + newProductCategory + 
 				"' WHERE productId = '" + oldProduct.getId() + "';";
 		stmt.executeUpdate(query);
-		
 		query = "UPDATE Products " +
 				"SET productId = '" + newProduct.getId() +	
 				"', name = '" + newProduct.getName() +
 				"', price = '" + newProduct.getPrice() +
 				"', grading = '" + newProduct.getGrading() + 
-				"', category = '" + newProduct.getCategory() +  
+				"', categoryName = '" + newProductCategory +  
 				"' WHERE productId = '" + oldProduct.getId() + "';";
 		stmt.executeUpdate(query);
 		stmt.close();
@@ -1444,13 +1443,13 @@ public class DALReal implements DAL {
 		conn.close();
 	}
 
-	private void updateStoreCategoryDiscount(int storeId, Map<Category, PurchasePolicy> categorys) throws Exception{
+	private void updateStoreCategoryDiscount(int storeId, Map<Category, PurchasePolicy> categories) throws Exception{
 		Connection conn = getConnection();
 		Statement stmt = conn.createStatement();
 		stmt.executeUpdate("USE TradingSystem");
 		for (Entry<Category, PurchasePolicy> cat:categorys.entrySet()){
 			int prevPolicyId=-1;
-			String query = "SELECT * FROM CategoryPolicy WHERE storeId = '" + storeId + "' AND categoryName = '" 
+			String query = "SELECT * FROM CategoryDiscount WHERE storeId = '" + storeId + "' AND categoryName = '" 
 							+ cat.getKey().getName()+"' ;";
 			ResultSet res = stmt.executeQuery(query);
 			if(res.next())
@@ -1462,15 +1461,15 @@ public class DALReal implements DAL {
 			
 			
 			if(prevPolicyId!=-1){
-				query="UPDATE CategoryPolicy "
-						+ " SET policyId = '" +PolicyId
+				query="UPDATE CategoryDiscount "
+						+ " SET policyId = '" + PolicyId
 						+ "' WHERE storeId = '"+ storeId +"' AND categoryName = '"+ cat.getKey().getName() +"';";
 				stmt.executeUpdate(query);
-				deletePolicy(prevPolicyId);
+				deletePolicy(prevPolicyId);		//TODO - ask or why??
 			}
 			else{
 				query="INSERT INTO CategoryPolicy VALUES( '"
-						+ storeId+"' , '"+cat.getKey().getName()+"' , '"+PolicyId+"' );";
+						+ storeId+"', '" + cat.getKey().getName() + "', '" + PolicyId + "' );";
 				stmt.executeUpdate(query);
 			}
 		}
@@ -1478,9 +1477,12 @@ public class DALReal implements DAL {
 		conn.close();
 	}
 	
-	public boolean isCategoryExists(String category) {
-		//TODO not sure about categories
-		return true;
+	public boolean isCategoryExists(String category) throws Exception {
+		String query = "SELECT * FROM Categories WHERE categoryName = '" + category + "';";
+		ResultSet res = selectQuery(query);
+		if(res.next())
+			return true;
+		return false;
 	}
 	
 	public void addLotteryProductToCart(String username, Product p, int money) {
@@ -1489,13 +1491,23 @@ public class DALReal implements DAL {
 	
 	//policies....
 	//TODO ?????????????
-	public List<Category> getAllCategory(){
-		return null;
+	public List<Category> getAllCategory() throws Exception{
+		String query = "SELECT * FROM Categories;";
+		ResultSet res = selectQuery(query);
+		List<Category> ans = new LinkedList<Category>();
+		while(res.next()){
+			ans.add(new Category(res.getString("categoryName")));
+		}
+		return ans;
 	}
 		
 	//policies...
 	//TODO ????????????
-	public Category getCategory(String categoryName){
+	public Category getCategory(String categoryName) throws Exception{
+		String query = "SELECT * FROM Categories WHERE categoryName = '" + categoryName + "';";
+		ResultSet res = selectQuery(query);
+		if(res.next())
+			return new Category(res.getString("categoryName"));
 		return null;
 	}
 	

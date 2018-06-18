@@ -151,7 +151,7 @@ public class BlPermissions {
 				LotteryPurchase lpt = ((LotteryPurchase)pt); 
 				if(lpt.getLotteryEndDate().before(today.getTime())){
 					lpt.setHasEnded(true);
-					BlLotteryPurchase.closeCurrentLottery(lpt);
+					BlLotteryPurchase.closeCurrentLottery(lpt,product);
 				}
 			}
 		}

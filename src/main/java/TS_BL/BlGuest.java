@@ -13,6 +13,7 @@ import TS_SharedClasses.*;
 
 public class BlGuest {
 	private final static String salt="DGE$5SGr@3VsHYUMas2323E4d57vfBfFSTRU@!DSH(*%FDSdfg13sgfsg";
+	public static HashMap<Guest,String> currGuest;
 	
 	/**
 	 * add product to cart amount times
@@ -93,6 +94,8 @@ public class BlGuest {
 			throw new Exception("ilegal address");
 //		boolean isExistLotteryPurchase = false;
 		Cart notPurchased = new Cart();
+		Cart oldCart = g.getCart();
+		
 		//check if all product comply the product policy
 		for (ProductInCart pic : g.getCart().getProducts()) {
 			if (!(pic.getMyProduct().getPurchasePolicy().isCorrectProduct(pic.getAmount(), buyerAddress))){
@@ -122,9 +125,11 @@ public class BlGuest {
 		}
 		
 		Map<ProductInCart,Integer>productToPrice=new HashMap<ProductInCart,Integer>();
+		currGuest = new HashMap<Guest, String>();
 		//try to buy the products
 		for (ProductInCart pic : g.getCart().getProducts()) {
-
+			
+			currGuest.put(g, creditCardNumber);
 			boolean purchase = BlPurchaseType.purchase(pic, g,buyerAddress);
 			if(purchase){
 				int productPrice=pic.getMyProduct().getPrice();
@@ -142,12 +147,10 @@ public class BlGuest {
 							}
 						}
 					}
+					
 					if(categoryDiscountTree!=null)
 						productPrice=categoryDiscountTree.updatePriceProduct(productPrice, sameStoreAndCategoryCounter, buyerAddress, pic.getDiscountOrPrice());
-				}
-				else{
-					productPrice=pic.getDiscountOrPrice();
-				}
+				
 				productPrice*=pic.getAmount();
 				productToPrice.put(pic, productPrice);
 				boolean payMoney = BlStore.payToStore(pic.getMyProduct().getStore(), productPrice, creditCardNumber);
@@ -155,15 +158,31 @@ public class BlGuest {
 					BlPurchaseType.undoPurchase(pic, g);
 					notPurchased.getProducts().add(pic);
 				}	
-			}
+			}}
 			else 
 				notPurchased.getProducts().add(pic);
+			
+			currGuest.remove(g);
 		}
 		
+
 		if(notPurchased.getProducts().size() == g.getCart().getProducts().size())
 			throw new Exception("there aren't any products for immediate purchase");
 		
-		g.getCart().getProducts().removeAll(notPurchased.getProducts());
+		if(oldCart.getProducts().size() != g.getCart().getProducts().size()){
+			oldCart.getProducts().removeAll(g.getCart().getProducts());
+			notPurchased.getProducts().addAll(oldCart.getProducts());
+		}
+		
+		for (ProductInCart ppp : g.getCart().getProducts()) {
+			if(ppp.getMyProduct().getType() instanceof LotteryPurchase)
+				notPurchased.getProducts().add(ppp);
+		}
+	
+		Cart tmp = g.getCart();
+		tmp.getProducts().removeAll(notPurchased.getProducts());
+		g.setCart(tmp);
+		
 		//g.getCart() now has all the products that purchased.
 		if(!BlStore.sendTheProducts(g, buyerAddress)){
 			for(ProductInCart pic : g.getCart().getProducts()){
@@ -174,19 +193,15 @@ public class BlGuest {
 		}
 		
 		for (ProductInCart pic : g.getCart().getProducts()) {
-			PurchaseType pt = pic.getMyProduct().getType(); 
-			if(pt instanceof LotteryPurchase)
-				BlLotteryPurchase.startLottery(((LotteryPurchase)pt));
-			
 			Purchase pur = BlStore.addProductToHistory(pic);
 			
 			if(g instanceof Subscriber)
 				BlSubscriber.addPurchaseToHistory((Subscriber)g, pur);
 		}
+		
+		notPurchased.getProducts().removeAll(oldCart.getProducts());
 		g.setCart(notPurchased);
-		//TODO
-//		if(isExistLotteryPurchase)
-//			BlMain.addCreditCardToMap(creditCardNumber, g);
+		
 		return true;
 	}
 

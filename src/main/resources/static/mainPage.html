@@ -51,7 +51,7 @@
 <br><hr><br>
 <div>
 <th><u><center>Massages</center></u></th>
-<p id="msgDiv"></p>
+<p id="msgDiv" align="center"></p>
 </div>
 <br><hr>
 <div id="searchProductsSection">
@@ -90,8 +90,8 @@
 		function loadMsg(){
 			var msg = document.getElementById('msgDiv');
 			var toBeInner = localStorage.getItem('msgToPrint');
+			toBeInner = toBeInner.replace(/"/g, '');
 			msg.innerHTML = toBeInner;
-			
 		}
 	</script>
 </body>

@@ -13,17 +13,17 @@ public class LotteryPurchase implements PurchaseType {
 	
 	private Date actualEndDate;
 	private Date lotteryEndDate;
-	private Map<Guest, Integer> participants;
+	private Map<String, GuestInLottery> participants;
 	private Guest winner = null;
 	private boolean hasEnded = false;
 	
 	public LotteryPurchase(Date lotteryEndDate) {
 		this.actualEndDate = lotteryEndDate;
 		this.lotteryEndDate = lotteryEndDate;
-		this.participants = new HashMap<Guest, Integer>();
+		this.participants = new HashMap<String, GuestInLottery>();
 	}
 	
-	public LotteryPurchase(Date lotteryEndDate, Map<Guest,Integer> participants) {
+	public LotteryPurchase(Date lotteryEndDate, Map<String,GuestInLottery> participants) {
 		this(lotteryEndDate);
 		if(participants != null)
 			this.participants = participants;
@@ -40,12 +40,12 @@ public class LotteryPurchase implements PurchaseType {
 	}
 
 	
-	public Map<Guest, Integer> getParticipants() {
+	public Map<String, GuestInLottery> getParticipants() {
 		return participants;
 	}
 
 	public void removeAllParticipants(){
-		this.participants = new HashMap<Guest, Integer>();
+		this.participants = new HashMap<String, GuestInLottery>();
 	}
 
 	public boolean purchase(Guest g, ProductInCart pic,String buyerAddress) throws Exception {
@@ -76,8 +76,8 @@ public class LotteryPurchase implements PurchaseType {
 	}
 	
 	
-	public boolean addParticipant(Guest g, int price){
-		return this.participants.put(g, price) == null;
+	public boolean addParticipant(String uname, GuestInLottery gil){
+		return this.participants.put(uname, gil) == null;
 	}
 
 	public Date getActualEndDate() {

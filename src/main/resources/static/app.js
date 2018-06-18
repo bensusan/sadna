@@ -618,12 +618,16 @@ function loadProduct(){
 	pg.innerHTML = product.grading;
 	var pc = document.getElementById('productCategoryInProductPage');
 	pc.innerHTML = product.category.name;
+	var ppp = document.getElementById('productPriceInProductPage');
+	ppp.innerHTML = product.price;
 	var pt = document.getElementById('productTypeInProductPage');
 	if(JSON.stringify(product.type) == "{}"){
 		pt.innerHTML = "Immediatly Purchase";
 	}else{
+		document.getElementById('amountorlot').innerHTML = "Insert Money for Lottery:";
 		pt.innerHTML = "Lottery Purchase: End Date: " + product.type.lotteryEndDate + ", Has Ended: " + JSON.stringify(product.type.hasEnded);
 	}
+	
 	var pp = document.getElementById('productPolicyInProductPage');
 	if(JSON.stringify(product.purchasePolicy) == "{}"){
 		pp.innerHTML = "Emplty Policy";
@@ -957,11 +961,6 @@ function expiredProducts(){
 							
         }));
 }
-
-
-
-
-
 function loadStoresIManage(){
 	var storeManagers = JSON.parse(localStorage.getItem('currentUser')).manager;
 	var tableRef = document.getElementById('storeIManageTable');

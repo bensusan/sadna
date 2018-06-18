@@ -3,6 +3,7 @@ package TS_ServiceLayer;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -485,7 +486,11 @@ public class GreetingController {
 					Product p = BlMain.getProductFromProdId(pid);
 					int amount = gson.fromJson(args[2], Integer.class);
 					int discountCode = gson.fromJson(args[3], Integer.class);
-					BlMain.addImmediatelyProduct((Guest)sub, p, amount, discountCode);
+					
+					if(p.getType() instanceof ImmediatelyPurchase)
+						BlMain.addImmediatelyProduct((Guest)sub, p, amount, discountCode);
+					else
+						BlMain.addLotteryProduct((Guest)sub, p, amount);
 					
 					ret.setContentAsJson(gson.toJson(sub.getCart()));
 				}
@@ -509,7 +514,11 @@ public class GreetingController {
 					else
 						g = holdMyData.guests.get(init);
 					
-					BlMain.addImmediatelyProduct(g, p, amount, discountCode);
+					if(p.getType() instanceof ImmediatelyPurchase)
+						BlMain.addImmediatelyProduct(g, p, amount, discountCode);
+					else
+						BlMain.addLotteryProduct(g, p, amount);
+					
 					holdMyData.guests.put(init,g);
 					
 					String json1 = new Gson().toJson(init); 
@@ -583,11 +592,21 @@ public class GreetingController {
 					String creditCard = gson.fromJson(args[1], String.class);
 					String address = gson.fromJson(args[2], String.class);
 					try{
+					Cart cart = s.getCart();
 					BlMain.purchaseCart((Guest)s,creditCard,address);
-					}
+					
+					List<ProductInCart> p1 = cart.getProducts();
+					List<ProductInCart> p2 = s.getCart().getProducts();
+					p1.removeAll(p2);
+					
+					for (ProductInCart pic : p1) {
+						holdMyData.sendMsgToStore(pic.getMyProduct().getStore(), "Product: " + pic.getMyProduct().getName() + " ,amount: " + pic.getAmount()
+										+ " , was purchased!<br>");
+					}}
 					catch(Exception e){
 						ret.setContentAsJson(gson.toJson(e));
 					}
+					
 					ret.setContentAsJson(gson.toJson(s.getCart()));
 				}
 				if (args.length == 4){
@@ -605,22 +624,11 @@ public class GreetingController {
 					p1.removeAll(p2);
 					
 					for (ProductInCart pic : p1) {
-						for (Subscriber sub : BlMain.allSubscribers) {
-							List<StoreOwner> storeSo = pic.getMyProduct().getStore().getMyOwners();
-							List<StoreOwner> subSo = sub.getOwner();
-							storeSo.retainAll(subSo);
-							if(!storeSo.isEmpty()){
-								String msg1 = "";
-								if(holdMyData.masseges.containsKey(subSo))
-									msg1 = holdMyData.masseges.get(sub);
-									
-								holdMyData.masseges.put(sub.getUsername(), msg1 +
-										"Product: " + pic.getMyProduct().getId() + " ,amount: " + pic.getAmount()
-										+ " , was purchased!\n");
-							}
-						}
+						holdMyData.sendMsgToStore(pic.getMyProduct().getStore(), "Product: " + pic.getMyProduct().getId() + " ,amount: " + pic.getAmount()
+										+ " , was purchased!<br>");
 					}
 					}
+					
 					catch(Exception e){
 						ret.setContentAsJson(gson.toJson(e));
 					}
@@ -633,8 +641,8 @@ public class GreetingController {
 					Subscriber sub = BlMain.getSubscriberFromUsername(uname);
 					
 					String msg2 = "";
-					if(holdMyData.masseges.containsKey(uname))
-						msg2 = holdMyData.masseges.get(uname);
+					if(holdMyData.massegesToSub.containsKey(uname))
+						msg2 = holdMyData.massegesToSub.get(uname);
 					
 					String json1 = new Gson().toJson(msg2); 
 					String json2 = new Gson().toJson(BlMain.getAllStoresWithThierProductsAndAmounts()); 
@@ -653,7 +661,7 @@ public class GreetingController {
 						init = holdMyData.guestNum;
 						holdMyData.guests.put(++holdMyData.guestNum, g);
 						holdMyData.guests.put(init,g);
-						msg3 = "welcome";
+						msg3 = "welcome<br>and enjoy";
 					}
 					else{
 						msg3 = "keep enjoying!";
@@ -826,9 +834,35 @@ public class GreetingController {
 	}
 	
 	public static class holdMyData{
-		static Map<String,String> masseges = new HashMap<String,String>();
-		static Map<Integer,Guest> guests = new HashMap<Integer,Guest>();
+		static Map<String,String> massegesToSub = new HashMap<String,String>();
+		static Map<Guest,String> massegesToGuest = new HashMap<Guest,String>();
+		public static Map<Integer,Guest> guests = new HashMap<Integer,Guest>();
 		static int guestNum = 0;
+		
+		public static void sendMsgToGuest(Guest g,String msg){
+			String tmp = "";
+			if(massegesToGuest.containsKey(g))
+				tmp = massegesToGuest.get(g);
+			
+			massegesToGuest.put(g, tmp + msg);
+		}
+		
+		public static void sendMsgToSub(String uname,String msg){
+			String tmp = "";
+			if(massegesToSub.containsKey(uname))
+				tmp = massegesToSub.get(uname);
+			
+			massegesToSub.put(uname, tmp + msg);
+		}
+
+		public static void sendMsgToStore(Store store, String msg) {
+			List<StoreOwner> so = store.getMyOwners();
+			for (Subscriber sub : BlMain.allSubscribers) {
+				if(!Collections.disjoint(so, sub.getOwner())){
+					sendMsgToSub(sub.getUsername(),msg);
+				}	
+			}
+		}
 	}
 }
 

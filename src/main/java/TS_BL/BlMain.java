@@ -224,11 +224,11 @@ public class BlMain {
 		return BlGuest.signIn(g, username, password);
 	}
 
-	public static void expiredProducts(StoreOwner so) throws Exception{
+	public static void expiredProducts(StoreOwner so) throws Exception {
 		BlStoreOwner.expiredProducts(so);
 	}
 
-	public static void expiredProducts(StoreManager sm) throws Exception{
+	public static void expiredProducts(StoreManager sm) throws Exception {
 		BlStoreManager.expiredProducts(sm);
 	}
 

@@ -158,6 +158,8 @@ public class BlCart {
 			throw new Exception("the product isn't belongs to any lottery");
 		if(isProductExistInCart(c, lotteryProduct) != -1)
 			throw new Exception("the product alreadt exists in cart");
+		if(((LotteryPurchase)lotteryProduct.getType()).gethasEnded())
+			throw new Exception("the lottery has ended");
 		
 		return c.getProducts().add(new ProductInCart(lotteryProduct, money, 1));
 	}

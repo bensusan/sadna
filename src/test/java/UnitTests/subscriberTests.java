@@ -21,8 +21,18 @@ public class subscriberTests {
 	@BeforeClass
     public static void oneTimeSetUp() {
 		sub=new Subscriber(new Cart(), "abc123", "0987654", "moshe datz", "herzel 23 herzelia", "0541234567", "1234567890123456", new LinkedList(), new LinkedList(), new LinkedList());
-		owner=new StoreOwner(new Store("new Store4", "4444", "0548787878", 1, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true));
-		manager=new StoreManager(new Store("new Store4", "4444", "0548787878", 1, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true));
+		try {
+			owner=new StoreOwner(new Store("new Store4", "4444", "0548787878", 1, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true));
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+		try {
+			manager=new StoreManager(new Store("new Store4", "4444", "0548787878", 1, new HashMap<Product,Integer>(), new LinkedList<Purchase>(), true));
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
 	
 

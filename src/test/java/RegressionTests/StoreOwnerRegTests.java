@@ -149,7 +149,12 @@ public class StoreOwnerRegTests {
 			e.printStackTrace();
 			fail();
 		}
-		assertTrue(ofirStore.getStorePolicy() instanceof MinPolicy);
+		try {
+			assertTrue(ofirStore.getStorePolicy() instanceof MinPolicy);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 		
 	}
 	

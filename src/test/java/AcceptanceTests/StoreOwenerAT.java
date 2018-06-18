@@ -239,10 +239,15 @@ public class StoreOwenerAT {
 		}
 
 		//good case
-		PurchasePolicy newPolicy =new EmptyPolicy();
-		try {
-			assertTrue(BlMain.addPolicyToProduct(so, newPolicy, prod1));
-		} catch (Exception e) {
+		try{
+			PurchasePolicy newPolicy =new EmptyPolicy();
+			try {
+				assertTrue(BlMain.addPolicyToProduct(so, newPolicy, prod1));
+			} catch (Exception e) {
+				e.printStackTrace();
+				fail();
+			}
+		}catch (Exception e) {
 			e.printStackTrace();
 			fail();
 		}

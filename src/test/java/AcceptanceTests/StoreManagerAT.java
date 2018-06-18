@@ -113,18 +113,24 @@ public class StoreManagerAT {
 	}
 	//4.1
 	private void testAddProductToStore() {
-		Product product=new Product("ball", 10, 7, new EmptyPolicy(), null);
 		try{
-			assertFalse(BlMain.addProductToStore(sm, product, 5,"toys"));
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			fail();
-		}
-
-		sm.setSpecificPermission(BlMain.addProductToStore, true);
-		try{
-			assertTrue(BlMain.addProductToStore(sm, product, 5,"toys"));
+			Product product=new Product("ball", 10, 7, new EmptyPolicy(), null);
+			try{
+				assertFalse(BlMain.addProductToStore(sm, product, 5,"toys"));
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				fail();
+			}
+	
+			sm.setSpecificPermission(BlMain.addProductToStore, true);
+			try{
+				assertTrue(BlMain.addProductToStore(sm, product, 5,"toys"));
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				fail();
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -134,21 +140,27 @@ public class StoreManagerAT {
 
 	private void testUpdateProductDetails() {
 
-		Product oldProduct=new Product("ball", 10, 7, new EmptyPolicy(), null);
-		Product newProduct=new Product("ball", 10, 7, new EmptyPolicy(), null);
-		newProduct.setPrice(8);
 		try{
-			BlMain.addProductToStore(sm, oldProduct, 1,"toys");
-			assertFalse(BlMain.updateProductDetails(sm, oldProduct, newProduct, 5,"toys"));
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			fail();
-		}
-		sm.setSpecificPermission(BlMain.updateProductDetails, true);
-		try{
-			BlMain.addProductToStore(sm, oldProduct, 1,"toys");
-			assertTrue(BlMain.updateProductDetails(sm, oldProduct, newProduct, 5,"toys"));
+			Product oldProduct=new Product("ball", 10, 7, new EmptyPolicy(), null);
+			Product newProduct=new Product("ball", 10, 7, new EmptyPolicy(), null);
+			newProduct.setPrice(8);
+			try{
+				BlMain.addProductToStore(sm, oldProduct, 1,"toys");
+				assertFalse(BlMain.updateProductDetails(sm, oldProduct, newProduct, 5,"toys"));
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				fail();
+			}
+			sm.setSpecificPermission(BlMain.updateProductDetails, true);
+			try{
+				BlMain.addProductToStore(sm, oldProduct, 1,"toys");
+				assertTrue(BlMain.updateProductDetails(sm, oldProduct, newProduct, 5,"toys"));
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				fail();
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -157,18 +169,25 @@ public class StoreManagerAT {
 	}
 
 	private void testDeleteProductFromStore() {
-		Product product=new Product("ball", 8, 7, new EmptyPolicy(), null);
 		try{
-			BlMain.addProductToStore(sm, product, 1,"toys");
-			BlMain.deleteProductFromStore(sm, product);
-		}
-		catch (Exception e) {
-			assertEquals(e.getMessage(), "something went wrong");
-		}
-		sm.setSpecificPermission(BlMain.deleteProductFromStore, true);
-		try{
-			BlMain.addProductToStore(sm, product, 1,"toys");
-			assertTrue(BlMain.deleteProductFromStore(sm, product));
+			Product product=new Product("ball", 8, 7, new EmptyPolicy(), null);
+		
+			try{
+				BlMain.addProductToStore(sm, product, 1,"toys");
+				BlMain.deleteProductFromStore(sm, product);
+			}
+			catch (Exception e) {
+				assertEquals(e.getMessage(), "something went wrong");
+			}
+			sm.setSpecificPermission(BlMain.deleteProductFromStore, true);
+			try{
+				BlMain.addProductToStore(sm, product, 1,"toys");
+				assertTrue(BlMain.deleteProductFromStore(sm, product));
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				fail();
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -275,7 +294,12 @@ public class StoreManagerAT {
 	}
 
 	private void testGetPurchaseHistory() {
-		assertTrue(BlMain.getPurchaseHistory(sm).isEmpty());
+		try {
+			assertTrue(BlMain.getPurchaseHistory(sm).isEmpty());
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
 
 

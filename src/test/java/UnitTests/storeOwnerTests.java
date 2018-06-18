@@ -18,7 +18,12 @@ public class storeOwnerTests {
 	@BeforeClass
     public static void oneTimeSetUp() {
 		
-		s=new Store("new Store", "hadekel 72 Ranana", "1542365985", 3, new HashMap<Product,Integer>(),new LinkedList<Purchase> (), true);
+		try {
+			s=new Store("new Store", "hadekel 72 Ranana", "1542365985", 3, new HashMap<Product,Integer>(),new LinkedList<Purchase> (), true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 		so=new StoreOwner(s);
 	}
 	
@@ -106,14 +111,17 @@ public class storeOwnerTests {
 			e.printStackTrace();
 			fail();
 		}
-		
-		Product new2=new Product("temp", 3, 3, new EmptyPolicy(), null);
-		try {
-			BlMain.updateProductDetails(so, new2, oldProduct, 1,"toys");
-		} catch (Exception e) {
-			assertEquals(e.getMessage(),"this product doesn't belongs to this store");
-		}//product does not exist
-		
+		try{
+			Product new2=new Product("temp", 3, 3, new EmptyPolicy(), null);
+			try {
+				BlMain.updateProductDetails(so, new2, oldProduct, 1,"toys");
+			} catch (Exception e) {
+				assertEquals(e.getMessage(),"this product doesn't belongs to this store");
+			}//product does not exist
+		}catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
 		try {
 			assertTrue(BlMain.updateProductDetails(so, oldProduct, newProduct, 1,"toys"));
 		} catch (Exception e) {
@@ -165,68 +173,73 @@ public class storeOwnerTests {
 		}
 	}
 	private void testAddDiscountToProduct() {
-		Product product=new Product("ping pong ball", 5, 5, new EmptyPolicy(), new LotteryPurchase(new java.sql.Date(0)));
-		try {
-			BlMain.addDiscountToProduct(so, new EmptyPolicy(new OvertDiscount(new java.sql.Date(2018,7,9),30)), product);
-			fail();
-		} catch (Exception e2) {
-			assertEquals(e2.getMessage(),"something went wrong");
-		}
-		try {
-			BlMain.addProductToStore(so, product, 10,"toys");
-		} catch (Exception e) {
-			e.printStackTrace();
-			fail();
-		}
-		try {
-			BlMain.addDiscountToProduct(so, new EmptyPolicy(new OvertDiscount(new java.sql.Date(2018,12,12), 30)), product);
-		} catch (Exception e) {
-			assertEquals(e.getMessage(),"discount can be added only to products that are for immediate purchase");
-		}
-		try {
-			BlMain.changeProductType(so, new ImmediatelyPurchase(), product);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			fail();
-		}
-		try {
-			BlMain.addDiscountToProduct(so, new EmptyPolicy(new OvertDiscount(new java.sql.Date(0), -10)), product);
-			fail();
-		} catch (Exception e) {
-			assertEquals(e.getMessage() , "Invalid Discount precentage.");
-		}
-		try {
-			BlMain.addDiscountToProduct(so, new EmptyPolicy(new OvertDiscount(new java.sql.Date(0), 130)), product);
-			fail();
-		} catch (Exception e1) {
-			assertEquals(e1.getMessage() , "Invalid Discount precentage.");
-		}
-		try {
-			BlMain.addDiscountToProduct(so, new EmptyPolicy(new OvertDiscount(new java.sql.Date(0), 30)), null);
-		} catch (Exception e) {
-			assertEquals(e.getMessage() , "something went wrong");
-		}
-		try {
-			BlMain.addDiscountToProduct(so, new EmptyPolicy(new OvertDiscount(null, 30)), product);
-		} catch (Exception e) {
-			assertEquals(e.getMessage(),"discount can be added only to products that are for immediate purchase");
-			
-		}
-		try {
-			BlMain.addDiscountToProduct(so, null, product);
-		} catch (Exception e) {
-			assertEquals(e.getMessage() , "something went wrong");
-		}
-		StoreOwner so2=null;
-		try {
-			assertFalse(BlMain.addDiscountToProduct(so2, new EmptyPolicy(new OvertDiscount(new java.sql.Date(0), 30)), product));
-		} catch (Exception e) {
-			e.printStackTrace();
-			fail();
-		}
-		try {
-			assertTrue(BlMain.addDiscountToProduct(so, new EmptyPolicy(new OvertDiscount(new java.sql.Date(0), 30)), product));
-		} catch (Exception e) {
+		try{
+			Product product=new Product("ping pong ball", 5, 5, new EmptyPolicy(), new LotteryPurchase(new java.sql.Date(0)));
+			try {
+				BlMain.addDiscountToProduct(so, new EmptyPolicy(new OvertDiscount(new java.sql.Date(2018,7,9),30)), product);
+				fail();
+			} catch (Exception e2) {
+				assertEquals(e2.getMessage(),"something went wrong");
+			}
+			try {
+				BlMain.addProductToStore(so, product, 10,"toys");
+			} catch (Exception e) {
+				e.printStackTrace();
+				fail();
+			}
+			try {
+				BlMain.addDiscountToProduct(so, new EmptyPolicy(new OvertDiscount(new java.sql.Date(2018,12,12), 30)), product);
+			} catch (Exception e) {
+				assertEquals(e.getMessage(),"discount can be added only to products that are for immediate purchase");
+			}
+			try {
+				BlMain.changeProductType(so, new ImmediatelyPurchase(), product);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				fail();
+			}
+			try {
+				BlMain.addDiscountToProduct(so, new EmptyPolicy(new OvertDiscount(new java.sql.Date(0), -10)), product);
+				fail();
+			} catch (Exception e) {
+				assertEquals(e.getMessage() , "Invalid Discount precentage.");
+			}
+			try {
+				BlMain.addDiscountToProduct(so, new EmptyPolicy(new OvertDiscount(new java.sql.Date(0), 130)), product);
+				fail();
+			} catch (Exception e1) {
+				assertEquals(e1.getMessage() , "Invalid Discount precentage.");
+			}
+			try {
+				BlMain.addDiscountToProduct(so, new EmptyPolicy(new OvertDiscount(new java.sql.Date(0), 30)), null);
+			} catch (Exception e) {
+				assertEquals(e.getMessage() , "something went wrong");
+			}
+			try {
+				BlMain.addDiscountToProduct(so, new EmptyPolicy(new OvertDiscount(null, 30)), product);
+			} catch (Exception e) {
+				assertEquals(e.getMessage(),"discount can be added only to products that are for immediate purchase");
+				
+			}
+			try {
+				BlMain.addDiscountToProduct(so, null, product);
+			} catch (Exception e) {
+				assertEquals(e.getMessage() , "something went wrong");
+			}
+			StoreOwner so2=null;
+			try {
+				assertFalse(BlMain.addDiscountToProduct(so2, new EmptyPolicy(new OvertDiscount(new java.sql.Date(0), 30)), product));
+			} catch (Exception e) {
+				e.printStackTrace();
+				fail();
+			}
+			try {
+				assertTrue(BlMain.addDiscountToProduct(so, new EmptyPolicy(new OvertDiscount(new java.sql.Date(0), 30)), product));
+			} catch (Exception e) {
+				e.printStackTrace();
+				fail();
+			}
+		}catch (Exception e) {
 			e.printStackTrace();
 			fail();
 		}

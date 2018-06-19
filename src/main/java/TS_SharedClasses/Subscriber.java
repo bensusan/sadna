@@ -14,7 +14,7 @@ public class Subscriber extends Guest {
 	protected String address;
 	protected String phone;
 	protected String creditCardNumber;
-	protected List<Purchase> purchaseHistory;
+	protected transient List<Purchase> purchaseHistory;
 	protected List<StoreManager> manager;
 	protected List<StoreOwner> owner;
 	protected boolean isAdmin;

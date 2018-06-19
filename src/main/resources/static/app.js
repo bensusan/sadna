@@ -684,7 +684,6 @@ function loadSearchProducts(){
 	var tableRef = document.getElementById('searchProductResultTable');
 	if(foundProds.length != 0){
 		for(var i = 0; i < foundProds.length; i++){
-			window.alert(JSON.stringify(foundProds[i]));
 			var newRow   = tableRef.insertRow(-1);
 			var newCell  = newRow.insertCell(0);
 			var newElem = document.createElement( 'button' );

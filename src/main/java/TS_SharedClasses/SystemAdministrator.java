@@ -7,8 +7,8 @@ import java.util.List;
 import TS_BL.BlMain;
 
 public class SystemAdministrator extends Subscriber {
-	private List<Subscriber> listOfSubs;
-	private List<Store> listOfStores;
+	private transient List<Subscriber> listOfSubs;
+	private transient List<Store> listOfStores;
 
 	public SystemAdministrator(String username, String password, String fullName, String address, String phone,
 			String creditCardNumber, List<Purchase> purchaseHistory, List<StoreManager> manager, List<StoreOwner> owner) {
